@@ -9,31 +9,32 @@
 # Pervasive Healthcare
 
 <!---Sottotitolo / Slogan / Descrizione breve-->
-> Project for course of Pervasive Computing and Software Systems Laboratory.
+> Progetto per il corso di Pervasive Computing e Laboratorio di Sistemi Software.
+>
 
-Read this in other languages: [Italiano](README.IT.md).
+Leggi questo in un'altra lingua: [English](README.md).
 
 <!---*## Immagini e GIF
 
 ![Recordit GIF](http://g.recordit.co/iLN6A0vSD8.gif)
 *-->
-# Index
+# Indice
 
-- [How to start](#How-to-start)
-- [How to contribute](#How-to-contribute)
-- [Maintenance](#Maintenance)
-- [Licence](#licence)
+- [Come iniziare](#Come-iniziare)
+- [Come contribuire](#Come-contribuire)
+- [Manutenzione](#Manutenzione)
+- [Licenza](#Licenza)
 
-# How to start
+# Come iniziare
 
-## Dependencies
-## How to install
+## Dipendenze
+## Come installare
 
-## Documentation
-### Link to external documentation
+## Documentazione
+### Link a documentazione esterna
 
-# How to contribute
-## Directory structure / branch
+# Come contribuire
+## Struttura delle directory / branch
 
 ## Community
 
@@ -41,14 +42,14 @@ Read this in other languages: [Italiano](README.IT.md).
 
 ### Responsible Disclosure
 
-### Bug reports and requests for help
+### Segnalazione bug e richieste di aiuto
 
-# Maintenance
+# Manutenzione
 
-# Licence
+# Licenza
 
-## General licence
+## Licenza generale
 
-## Authors and Copyright
+## Autori e Copyright
 
-## Software licences of third-part components
+## Licenze software dei componenti di terze parti
