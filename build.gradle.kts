@@ -3,6 +3,7 @@ plugins {
     scala
     jacoco
     id("org.danilopianini.git-sensitive-semantic-versioning")
+    //id ("org.sonatype.gradle.plugins.scan") version "2.0.0" // Update the version as needed
 }
 
 group = "io.github.enrignagna"
