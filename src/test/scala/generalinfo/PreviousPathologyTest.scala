@@ -24,8 +24,7 @@ import org.scalatestplus.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest._
 import freespec._
-import generalinfo.PathologySeverity.PathologySeverity
-import generalinfo.PreviousPathologies.PreviousPathologies
+import generalinfo.PreviousPathologies._
 
 @RunWith(classOf[JUnitRunner])
 class PreviousPathologyTest extends AnyFreeSpec {
@@ -50,7 +49,7 @@ class PreviousPathologyTest extends AnyFreeSpec {
   val previousPathology: PreviousPathology = PreviousPathology(PathologyName("Hearth disease"), DetectionDate(), PathologySeverity(PathologySeverityLevels.FOUR))
   "A previous pathology should have" - {
     "a name" in {
-      assert(previousPathology.pathologyName.name.nonEmpty)
+      assert(previousPathology.pathologyName.value.nonEmpty)
     }
     "a detection date" in {
       assert(previousPathology.detectionDate != null)
@@ -61,17 +60,22 @@ class PreviousPathologyTest extends AnyFreeSpec {
   }
 
   "A detection date should not be after the current date" in {
-    previousPathology.detectionDate.detectionDate.isAfter(LocalDate.now())
+    previousPathology.detectionDate.value.isAfter(LocalDate.now())
   }
 
   val previousPathologies: PreviousPathologies = PreviousPathologies()
 
   "Previous pathologies" - {
-    "should be initially empty" in {
-      assert(previousPathologies.previousPathologies.isEmpty)
+    "should be" - {
+      "a set" in {
+        assert(previousPathologies.pathologies.isInstanceOf[Set[PreviousPathology]])
+      }
+      "initially empty" in {
+        assert(previousPathologies.pathologies.isEmpty)
+      }
     }
     "can be added" in {
-      assert(previousPathologies.addNewPathology(previousPathology).previousPathologies.nonEmpty)
+      assert(previousPathologies.addNewPathology(previousPathology).pathologies.nonEmpty)
     }
   }
 

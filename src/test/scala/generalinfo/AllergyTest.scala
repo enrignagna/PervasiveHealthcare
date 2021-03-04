@@ -22,6 +22,7 @@ import org.scalatestplus.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest._
 import freespec._
+import generalinfo.Allergies.Allergies
 
 @RunWith(classOf[JUnitRunner])
 class AllergyTest extends AnyFreeSpec {
@@ -36,8 +37,24 @@ class AllergyTest extends AnyFreeSpec {
         assert(AllergyClass.values.contains(allergy.allergyClass))
       }
       "a description" in {
-        assert(allergy.description.description.nonEmpty)
+        assert(allergy.description.value.nonEmpty)
       }
+    }
+  }
+
+  val allergies: Allergies = Allergies()
+
+  "The Allergies of a person" - {
+    "should be" - {
+      "a set" in {
+        assert(allergies.allergies.isInstanceOf[Set[Allergy]])
+      }
+      "initially empty" in {
+        assert(allergies.allergies.isEmpty)
+      }
+    }
+    "can be updated" in {
+      assert(allergies.addNewAllergy(allergy).allergies.nonEmpty)
     }
   }
 }

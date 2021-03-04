@@ -30,7 +30,6 @@ object PathologySeverityLevels extends Enumeration {
 
 import PathologySeverityLevels.PathologySeverityLevels
 
-//TODO maybe is more correct use case objects
 object PathologySeverity{
   case class PathologySeverity private(description: String, severity: PathologySeverityLevels)
 
@@ -42,16 +41,16 @@ object PathologySeverity{
   }
 }
 
-//TODO: check correctness
-case class DetectionDate(detectionDate: LocalDate = LocalDate.now())
+//TODO: check correctness of the date
+case class DetectionDate(value: LocalDate = LocalDate.now())
 
-case class PathologyName(name: String)
+case class PathologyName(value: String)
 
 case class PreviousPathology(pathologyName: PathologyName, detectionDate: DetectionDate, pathologySeverity: PathologySeverity)
 
 object PreviousPathologies{
-  case class PreviousPathologies private (previousPathologies: Set[PreviousPathology] = Set.empty){
-    def addNewPathology(previousPathology: PreviousPathology): PreviousPathologies = PreviousPathologies(this.previousPathologies + previousPathology)
+  case class PreviousPathologies private (pathologies: Set[PreviousPathology] = Set.empty){
+    def addNewPathology(previousPathology: PreviousPathology): PreviousPathologies = PreviousPathologies(this.pathologies + previousPathology)
   }
 
   def apply(): PreviousPathologies = PreviousPathologies()

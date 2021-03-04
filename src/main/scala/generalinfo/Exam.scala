@@ -18,15 +18,20 @@
 
 package generalinfo
 
-import generalinfo.Allergies.Allergies
-import generalinfo.ExamHistory.ExamHistory
-import generalinfo.PrescriptionHistory.PrescriptionHistory
-import generalinfo.PreviousPathologies.PreviousPathologies
+import java.time.LocalDate
 
-case class Weight(value: Double)
-case class Height(value: Double)
+//TODO check date correctness
+case class ExamDate(value: LocalDate = LocalDate.now())
+case class ExamReport(value: String)
+case class ExamInfo(value: String)
 
-case class GeneralInfo(bloodGroup: BloodGroup, weight: Weight, height: Height, allergies: Allergies = Allergies(),
-                       previousPathologies: PreviousPathologies = PreviousPathologies(),
-                       prescriptionHistory: PrescriptionHistory = PrescriptionHistory(),
-                       examHistory: ExamHistory = ExamHistory())
+case class Exam(examDate: ExamDate, examReport: ExamReport, examInfo: ExamInfo)
+
+object ExamHistory{
+
+  case class ExamHistory private(history: Set[Exam] = Set.empty){
+    def addNewExam(exam: Exam): ExamHistory = ExamHistory(this.history + exam)
+  }
+
+  def apply(): ExamHistory = ExamHistory()
+}

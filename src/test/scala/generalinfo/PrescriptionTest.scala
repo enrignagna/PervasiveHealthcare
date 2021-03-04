@@ -18,15 +18,38 @@
 
 package generalinfo
 
-import generalinfo.Allergies.Allergies
-import generalinfo.ExamHistory.ExamHistory
 import generalinfo.PrescriptionHistory.PrescriptionHistory
-import generalinfo.PreviousPathologies.PreviousPathologies
+import org.junit.runner.RunWith
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatestplus.junit.JUnitRunner
 
-case class Weight(value: Double)
-case class Height(value: Double)
+@RunWith(classOf[JUnitRunner])
+class PrescriptionTest extends AnyFreeSpec {
 
-case class GeneralInfo(bloodGroup: BloodGroup, weight: Weight, height: Height, allergies: Allergies = Allergies(),
-                       previousPathologies: PreviousPathologies = PreviousPathologies(),
-                       prescriptionHistory: PrescriptionHistory = PrescriptionHistory(),
-                       examHistory: ExamHistory = ExamHistory())
+  val prescription: Prescription = Prescription(prescriptionDate = PrescriptionDate(), prescriptionInfo = PrescriptionInfo("Antiviral"))
+
+  "A prescription should have" - {
+    "a date" in {
+      assert(prescription.prescriptionDate != null)
+    }
+    "a brief information description" in {
+      assert(prescription.prescriptionInfo.value.nonEmpty)
+    }
+  }
+
+  val prescriptionHistory: PrescriptionHistory = PrescriptionHistory()
+
+  "Prescription history" - {
+    "should be" - {
+      "a set" in {
+        assert(prescriptionHistory.history.isInstanceOf[Set[Prescription]])
+      }
+      "initially empty" in {
+        assert(prescriptionHistory.history.isEmpty)
+      }
+    }
+    "can be updated" in {
+      assert(prescriptionHistory.addNewPrescription(prescription).history.nonEmpty)
+    }
+  }
+}

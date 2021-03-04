@@ -26,5 +26,14 @@ object AllergyClass extends Enumeration{
 
 import generalinfo.AllergyClass.AllergyClass
 
-case class AllergyDescription(description: String)
+case class AllergyDescription(value: String)
 case class Allergy(allergyClass: AllergyClass, description: AllergyDescription)
+
+object Allergies{
+
+  case class Allergies private(allergies: Set[Allergy] = Set.empty){
+    def addNewAllergy(allergy: Allergy): Allergies = Allergies(this.allergies + allergy)
+  }
+
+  def apply(): Allergies = Allergies()
+}
