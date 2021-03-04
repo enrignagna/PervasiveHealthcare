@@ -18,23 +18,23 @@
 
 package generalpractitionerinfo
 
-class MedicalCertificates(private val medicalCertificateId: Int,
-                          private var medicalCertificate: Set[Byte]) {
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
-  private val id= medicalCertificateId
-
-  def getId: Int = id
-
-  def getMedicalCertificate: Set[Byte] = medicalCertificate
-
-  def setMedicalCertificate(newMedicalCertificate: Set[Byte]): Unit = {
-    medicalCertificate = newMedicalCertificate
+@RunWith(classOf[JUnitRunner])
+class BookingVisitsTest extends AnyFreeSpec {
+  val visit: Visit = Visit(VisitDate())
+  val bookingVisits: BookingVisits = BookingVisits(1, visit, "visit for shoulder surgery")
+  "A booking visits should have" - {
+    "an id" in {
+      assert(bookingVisits.getId == 1)
+    }
+    "a visit information" in {
+      assert(bookingVisits.getVisit == visit)
+    }
+    "a description" in {
+      assert(bookingVisits.getDescription == "visit for shoulder surgery")
+    }
   }
-
 }
-
-object MedicalCertificates {
-  def apply(medicalCertificateId: Int, medicalCertificate: Set[Byte]): MedicalCertificates =
-    new MedicalCertificates(medicalCertificateId, medicalCertificate)
-}
-

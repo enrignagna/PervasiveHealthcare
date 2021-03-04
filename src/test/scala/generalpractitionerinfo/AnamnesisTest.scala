@@ -18,23 +18,36 @@
 
 package generalpractitionerinfo
 
-class MedicalCertificates(private val medicalCertificateId: Int,
-                          private var medicalCertificate: Set[Byte]) {
+import generalpractitionerinfo.Remotes.Remotes
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
-  private val id= medicalCertificateId
+@RunWith(classOf[JUnitRunner])
+class AnamnesisTest extends AnyFreeSpec {
+  val remote: Remote = Remote("first anamnesis")
+  val anamnesis: Anamensis = Anamensis(Familiar("Rossi Mario", Father, "3387514876"), remote, Physiologic("self conscious"))
+  "An anamnesis should have" - {
+    "a familiar information" in {
+      assert(anamnesis.familiar != null)
+    }
+    "a remote information" in {
+      assert(anamnesis.remote != null)
+    }
+    "a physiologic information" in {
+      assert(anamnesis.physiologic != null)
+    }
+  }
 
-  def getId: Int = id
+  val remotes: Remotes = Remotes()
+  "A remotes" - {
+    "should be initially empty" in {
+      assert(remotes.remotes.isEmpty)
+    }
 
-  def getMedicalCertificate: Set[Byte] = medicalCertificate
-
-  def setMedicalCertificate(newMedicalCertificate: Set[Byte]): Unit = {
-    medicalCertificate = newMedicalCertificate
+    "can added" in {
+      assert(remotes.addNewRemote(remote).remotes.nonEmpty)
+    }
   }
 
 }
-
-object MedicalCertificates {
-  def apply(medicalCertificateId: Int, medicalCertificate: Set[Byte]): MedicalCertificates =
-    new MedicalCertificates(medicalCertificateId, medicalCertificate)
-}
-

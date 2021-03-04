@@ -22,15 +22,16 @@ import java.time.LocalDate
 
 class BookingVisits(private val bookingId: Int,
                     private var visit: Visit,
-                    private var visitTime: LocalDate = java.time.LocalDate.now,
-                    private var description: String) {
+                    private var description: String,
+                    private var visitTime: LocalDate) {
 
   private val id = bookingId
 
+  def getId: Int = id
+
   def getVisit: Visit = visit
 
-  def getVisitDate: LocalDate = java.time.LocalDate.now
-    visitTime
+  def getVisitDate: LocalDate = visitTime
 
   def getDescription: String = description
 
@@ -38,7 +39,7 @@ class BookingVisits(private val bookingId: Int,
     visit = newVisit
   }
 
-  def setVisitTime(newVisitTime: LocalDate = java.time.LocalDate.now): Unit = {
+  def setVisitTime(newVisitTime: LocalDate): Unit = {
     visitTime = newVisitTime
   }
 
@@ -49,7 +50,7 @@ class BookingVisits(private val bookingId: Int,
 }
 
 object BookingVisits {
-  def apply(bookingId: Int, visit: Visit, visitTime: LocalDate = java.time.LocalDate.now, description: String): BookingVisits =
-    new BookingVisits(bookingId, visit, visitTime, description)
+  def apply(bookingId: Int, visit: Visit, description: String, visitTime: LocalDate = java.time.LocalDate.now): BookingVisits =
+    new BookingVisits(bookingId, visit, description, visitTime)
 }
 

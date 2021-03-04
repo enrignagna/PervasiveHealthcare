@@ -24,9 +24,9 @@ case class TherapyDate(therapyDate: LocalDate = LocalDate.now())
 
 case class TherapyDescription(therapyDescription: String)
 
-case class TherapyInitialDate(therapyInitialDate: LocalDate = LocalDate.now())
+case class TherapyInitialDate(therapyInitialDate: LocalDate)
 
-case class TherapyFinalDate(therapyFinalDate: LocalDate = LocalDate.now())
+case class TherapyFinalDate(therapyFinalDate: LocalDate)
 
 case class Therapy(therapyDate: TherapyDate, therapyDescription: TherapyDescription, therapyInitialDate: TherapyInitialDate, therapyFinalDate: TherapyFinalDate)
 

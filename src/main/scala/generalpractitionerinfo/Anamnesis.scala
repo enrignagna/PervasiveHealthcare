@@ -28,19 +28,17 @@ case object LegalTutor extends KinshipDegree
 
 case class Familiar(name: String, kinshipDegree: KinshipDegree, phoneNumber: String)
 
-case class Remote(date: LocalDate = java.time.LocalDate.now, info: String)
+case class Remote(info: String, date: LocalDate = java.time.LocalDate.now)
 
-case class Physiologic(date: LocalDate = java.time.LocalDate.now, info: String)
+case class Physiologic(info: String, date: LocalDate = java.time.LocalDate.now)
 
-case class Anamensis(familiar: Option[Familiar], remote: Remote, physiologic: Physiologic) {
+case class Anamensis(familiar: Familiar, remote: Remote, physiologic: Physiologic)
 
 object Remotes {
 
-   case class Remotes private(remotes: Set[Remote] = Set.empty) {
-     def addNewRemote(remote: Remote): Remotes = Remotes(this.remotes + remote)
-   }
-
-  def apply(): Remotes = Remotes()
+  case class Remotes private(remotes: Set[Remote] = Set.empty) {
+    def addNewRemote(remote: Remote): Remotes = Remotes(this.remotes + remote)
   }
 
+  def apply(): Remotes = Remotes()
 }

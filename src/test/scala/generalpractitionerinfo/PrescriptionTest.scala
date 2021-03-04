@@ -18,18 +18,37 @@
 
 package generalpractitionerinfo
 
+import java.time.LocalDate
 import generalpractitionerinfo.Prescriptions.Prescriptions
-import generalpractitionerinfo.Therapies.Therapies
-import generalpractitionerinfo.Visits._
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
-class GeneralPractitionerInfo(private var doctorId: Int,
-                              private var visits: Visits,
-                              private var anamensis: Anamensis,
-                              private var bookingVisits: BookingVisits,
-                              private var prescriptions: Prescriptions,
-                              private var therapies: Therapies) {
+@RunWith(classOf[JUnitRunner])
+class PrescriptionTest extends AnyFreeSpec {
+  val prescription: Prescription = Prescription(PrescriptionInitialDate(), PrescriptionDescription("First prescription"))
+  "A prescription should have" - {
+    "a date" in {
+      assert(prescription.prescriptionInitialDate != null)
+    }
+    "a description" in {
+      assert(prescription.description != null)
+    }
+  }
 
-  def createGeneralPractitionerInfo(doctorId: Int, visit: Visit, anamensis: Anamensis, bookingVisits: BookingVisits, prescription: Prescription, therapy: Therapy): GeneralPractitionerInfo =
-    new GeneralPractitionerInfo(doctorId, Visits().addNewVisit(visit), Anamensis(anamensis.familiar, anamensis.remote, anamensis.physiologic), bookingVisits, Prescriptions().addNewPrescription(prescription), Therapies().addNewTherapy(therapy))
+  "A prescription date should not be after the current date" in {
+    prescription.prescriptionInitialDate.prescriptionInitialDate.isAfter(LocalDate.now())
+  }
+
+  val prescriptions: Prescriptions = Prescriptions()
+  "A prescriptions" - {
+    "should be initially empty" in {
+      assert(prescriptions.prescriptions.isEmpty)
+    }
+
+    "can added" in {
+      assert(prescriptions.addNewPrescription(prescription).prescriptions.nonEmpty)
+    }
+  }
 
 }

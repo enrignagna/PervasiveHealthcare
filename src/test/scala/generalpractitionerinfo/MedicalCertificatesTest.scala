@@ -18,23 +18,20 @@
 
 package generalpractitionerinfo
 
-class MedicalCertificates(private val medicalCertificateId: Int,
-                          private var medicalCertificate: Set[Byte]) {
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
-  private val id= medicalCertificateId
-
-  def getId: Int = id
-
-  def getMedicalCertificate: Set[Byte] = medicalCertificate
-
-  def setMedicalCertificate(newMedicalCertificate: Set[Byte]): Unit = {
-    medicalCertificate = newMedicalCertificate
+@RunWith(classOf[JUnitRunner])
+class MedicalCertificatesTest extends AnyFreeSpec {
+  val bytes: Set[Byte] = Set()
+  val medicalCertificate: MedicalCertificates = MedicalCertificates(1, bytes)
+  "A medical certificate should have" - {
+    "an id" in {
+      assert(medicalCertificate.getId == 1)
+    }
+    "a set of bytes" in {
+      assert(medicalCertificate.getMedicalCertificate != null)
+    }
   }
-
 }
-
-object MedicalCertificates {
-  def apply(medicalCertificateId: Int, medicalCertificate: Set[Byte]): MedicalCertificates =
-    new MedicalCertificates(medicalCertificateId, medicalCertificate)
-}
-

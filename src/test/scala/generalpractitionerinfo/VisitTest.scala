@@ -18,23 +18,30 @@
 
 package generalpractitionerinfo
 
-class MedicalCertificates(private val medicalCertificateId: Int,
-                          private var medicalCertificate: Set[Byte]) {
+import generalpractitionerinfo.Visits.Visits
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
-  private val id= medicalCertificateId
-
-  def getId: Int = id
-
-  def getMedicalCertificate: Set[Byte] = medicalCertificate
-
-  def setMedicalCertificate(newMedicalCertificate: Set[Byte]): Unit = {
-    medicalCertificate = newMedicalCertificate
+@RunWith(classOf[JUnitRunner])
+class VisitTest extends AnyFreeSpec {
+  val visit: Visit = Visit(VisitDate())
+  "A visit" - {
+    "should have" - {
+      "a date" in {
+        assert(visit.visitDate != null)
+      }
+    }
   }
 
-}
+  val visits: Visits = Visits()
+  "A visits" - {
+    "should be initially empty" in {
+      assert(visits.visits.isEmpty)
+    }
 
-object MedicalCertificates {
-  def apply(medicalCertificateId: Int, medicalCertificate: Set[Byte]): MedicalCertificates =
-    new MedicalCertificates(medicalCertificateId, medicalCertificate)
+    "can added" in {
+      assert(visits.addNewVisit(visit).visits.nonEmpty)
+    }
+  }
 }
-
