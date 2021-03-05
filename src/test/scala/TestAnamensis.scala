@@ -14,29 +14,24 @@
  *                              limitations under the License.
  */
 
-package MedicalRecords.InitialAnalysis
 
-import Utility.Info
-import java.time.LocalDate
+import MedicalRecords.InitialAnalysis.{Anamensis, Familiar, Info, Physiologic, Remote}
+import org.scalatest.freespec.AnyFreeSpec
 
+class TestAnamensis extends AnyFreeSpec {
 
-sealed trait KinshipDegree
-case object Mother extends KinshipDegree
-case object Father extends KinshipDegree
-case object LegalTutor extends KinshipDegree
+  "An Anamensis" - {
+    "should have an optional familiar" in {
+      val remote = Remote(Info("Patient with Covid-19"))
+      val physiologic = Physiologic(Info("Patient have low level of emoglobine in blood"))
+      val anamensis = Anamensis(Option.empty, remote, physiologic)
+      assert(anamensis.familiar.get equals  Familiar(Option.empty))
+    }
 
-case class Phone(value: String)
-
-case class Familiar(name: String, kinship: KinshipDegree, phone: Phone)
-
-
-case class Remote(info: Info, date: LocalDate = LocalDate.now)
-
-
-case class Physiologic(info: Info, date: LocalDate = LocalDate.now)
-
-
-
-case class Anamensis(familiar: Option[Familiar], remote: Remote, physiologic: Physiologic){
-
+    "should produce NoSuchElementException when head is invoked" in {
+      assertThrows[NoSuchElementException] {
+        Set.empty.head
+      }
+    }
+  }
 }

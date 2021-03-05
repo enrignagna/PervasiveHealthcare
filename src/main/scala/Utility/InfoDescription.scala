@@ -14,29 +14,8 @@
  *                              limitations under the License.
  */
 
-package MedicalRecords.InitialAnalysis
+package Utility
 
-import Utility.Info
-import java.time.LocalDate
+case class Info(value: String)
 
-
-sealed trait KinshipDegree
-case object Mother extends KinshipDegree
-case object Father extends KinshipDegree
-case object LegalTutor extends KinshipDegree
-
-case class Phone(value: String)
-
-case class Familiar(name: String, kinship: KinshipDegree, phone: Phone)
-
-
-case class Remote(info: Info, date: LocalDate = LocalDate.now)
-
-
-case class Physiologic(info: Info, date: LocalDate = LocalDate.now)
-
-
-
-case class Anamensis(familiar: Option[Familiar], remote: Remote, physiologic: Physiologic){
-
-}
+case class Description(value: String)
