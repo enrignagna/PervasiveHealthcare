@@ -28,8 +28,19 @@ case class TherapyInitialDate(therapyInitialDate: LocalDate)
 
 case class TherapyFinalDate(therapyFinalDate: LocalDate)
 
+/**
+ * This class represents the therapies prescribed by the general practitioner for the patient.
+ *
+ * @param therapyDate, date of therapy
+ * @param therapyDescription, therapy description
+ * @param therapyInitialDate, initial date of the therapy
+ * @param therapyFinalDate, final date of the therapy
+ */
 case class Therapy(therapyDate: TherapyDate, therapyDescription: TherapyDescription, therapyInitialDate: TherapyInitialDate, therapyFinalDate: TherapyFinalDate)
 
+/**
+ * Factory to add a new remote therapy to the therapies's history.
+ */
 object Therapies{
   case class Therapies private (therapies: Set[Therapy] = Set.empty){
     def addNewTherapy(therapy: Therapy): Therapies = Therapies(this.therapies + therapy)

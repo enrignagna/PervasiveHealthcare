@@ -22,8 +22,15 @@ import java.time.LocalDate
 
 case class VisitDate(visitDate: LocalDate = LocalDate.now())
 
+/**
+ * This class represents the visit.
+ * @param visitDate, date of the visit.
+ */
 case class Visit(visitDate: VisitDate)
 
+/**
+ * Factory to add a new visit to the visits's history.
+ */
 object Visits {
 
   case class Visits private(visits: Set[Visit] = Set.empty) {

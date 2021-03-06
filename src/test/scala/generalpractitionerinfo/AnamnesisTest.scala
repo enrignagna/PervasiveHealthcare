@@ -18,6 +18,7 @@
 
 package generalpractitionerinfo
 
+import generalpractitionerinfo.Familiars.Familiars
 import generalpractitionerinfo.Remotes.Remotes
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
@@ -26,7 +27,8 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class AnamnesisTest extends AnyFreeSpec {
   val remote: Remote = Remote("first anamnesis")
-  val anamnesis: Anamensis = Anamensis(Familiar("Rossi Mario", Father, "3387514876"), remote, Physiologic("self conscious"))
+  val familiar: Familiar = Familiar("Rossi Mario", Father, new PreviousPathology() ,"3387514876")
+  val anamnesis: Anamensis = Anamensis(familiar, remote, Physiologic("self conscious"))
   "An anamnesis should have" - {
     "a familiar information" in {
       assert(anamnesis.familiar != null)
@@ -40,13 +42,24 @@ class AnamnesisTest extends AnyFreeSpec {
   }
 
   val remotes: Remotes = Remotes()
-  "A remotes" - {
+    "A remotes" - {
+      "should be initially empty" in {
+        assert(remotes.remotes.isEmpty)
+      }
+
+      "can added" in {
+        assert(remotes.addNewRemote(remote).remotes.nonEmpty)
+      }
+  }
+
+  val familiars: Familiars = Familiars()
+  "A familiars" - {
     "should be initially empty" in {
-      assert(remotes.remotes.isEmpty)
+      assert(familiars.familiars.isEmpty)
     }
 
     "can added" in {
-      assert(remotes.addNewRemote(remote).remotes.nonEmpty)
+      assert(familiars.addNewFamiliar(familiar).familiars.nonEmpty)
     }
   }
 

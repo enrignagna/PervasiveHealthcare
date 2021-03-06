@@ -20,6 +20,14 @@ package generalpractitionerinfo
 
 import java.time.LocalDate
 
+/**
+ * This class represents the history of the visits that make up the patient's clinical history.
+ *
+ * @param bookingId, booking id
+ * @param visit, visit's information
+ * @param description, visit's description
+ * @param visitTime, visit's date.
+ */
 class BookingVisits(private val bookingId: Int,
                     private var visit: Visit,
                     private var description: String,
@@ -27,28 +35,55 @@ class BookingVisits(private val bookingId: Int,
 
   private val id = bookingId
 
+  /**
+   * Get booking visit's id.
+   */
   def getId: Int = id
 
+  /**
+   * Get booking visit's visit.
+   */
   def getVisit: Visit = visit
 
+  /**
+   * Get a visit date.
+   */
   def getVisitDate: LocalDate = visitTime
 
+  /**
+   * Get booking visit's description.
+   */
   def getDescription: String = description
 
+  /**
+   * Set a new visit.
+   * @param newVisit, new visit.
+   */
   def setVisit(newVisit: Visit): Unit = {
     visit = newVisit
   }
 
+  /**
+   * Set booking visit's date.
+   * @param newVisitTime, date of the visit.
+   */
   def setVisitTime(newVisitTime: LocalDate): Unit = {
     visitTime = newVisitTime
   }
 
+  /**
+   * Set booking visit's description.
+   * @param newDescription, description.
+   */
   def setDescription(newDescription: String): Unit = {
     description = newDescription
   }
 
 }
 
+/**
+ * Factory to create a booking visits.
+ */
 object BookingVisits {
   def apply(bookingId: Int, visit: Visit, description: String, visitTime: LocalDate = java.time.LocalDate.now): BookingVisits =
     new BookingVisits(bookingId, visit, description, visitTime)

@@ -24,8 +24,14 @@ case class PrescriptionInitialDate(prescriptionInitialDate: LocalDate = LocalDat
 
 case class PrescriptionDescription(prescriptionDescription: String)
 
+/**
+ * This class represents the prescriptions prescribed by the general practitioner for the patient.
+ */
 case class Prescription(prescriptionInitialDate: PrescriptionInitialDate, description: PrescriptionDescription)
 
+/**
+ * Factory to add a new remote prescription to the prescriptions's history.
+ */
 object Prescriptions{
   case class Prescriptions private (prescriptions: Set[Prescription] = Set.empty){
     def addNewPrescription(prescription: Prescription): Prescriptions = Prescriptions(this.prescriptions + prescription)

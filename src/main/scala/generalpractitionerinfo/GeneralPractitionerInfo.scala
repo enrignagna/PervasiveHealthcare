@@ -22,14 +22,26 @@ import generalpractitionerinfo.Prescriptions.Prescriptions
 import generalpractitionerinfo.Therapies.Therapies
 import generalpractitionerinfo.Visits._
 
-class GeneralPractitionerInfo(private var doctorId: Int,
-                              private var visits: Visits,
-                              private var anamensis: Anamensis,
-                              private var bookingVisits: BookingVisits,
-                              private var prescriptions: Prescriptions,
-                              private var therapies: Therapies) {
+case class GeneralPractitionerInfoDoctor(doctorID: Int, name: String)
 
-  def createGeneralPractitionerInfo(doctorId: Int, visit: Visit, anamensis: Anamensis, bookingVisits: BookingVisits, prescription: Prescription, therapy: Therapy): GeneralPractitionerInfo =
-    new GeneralPractitionerInfo(doctorId, Visits().addNewVisit(visit), Anamensis(anamensis.familiar, anamensis.remote, anamensis.physiologic), bookingVisits, Prescriptions().addNewPrescription(prescription), Therapies().addNewTherapy(therapy))
+case class GeneralPractitionerInfoVisits(visit: Visits)
 
-}
+case class GeneralPractitionerInfoAnamnesis(anamensis: Anamensis)
+
+case class GeneralPractitionerInfoBookingVisits(bookingVisits: BookingVisits)
+
+case class GeneralPractitionerInfoPrescriptions(prescriptions: Prescriptions)
+
+case class GeneralPractitionerInfoTherapies(therapies: Therapies)
+
+/**
+ * This class represents the information entered by the general practitioner for each patient.
+ * @param doctor, doctor's information
+ * @param visits, visit's information
+ * @param anamnesis, anamnesis information
+ * @param bookingVisits, booking visits information
+ * @param prescriptions, prescriptions's information
+ * @param generalPractitionerInfoTherapies, therapies's information.
+ */
+case class GeneralPractitionerInfo(doctor: GeneralPractitionerInfoDoctor, visits: GeneralPractitionerInfoVisits, anamnesis: GeneralPractitionerInfoAnamnesis, bookingVisits: GeneralPractitionerInfoBookingVisits, prescriptions: GeneralPractitionerInfoPrescriptions, generalPractitionerInfoTherapies: GeneralPractitionerInfoTherapies)
+
