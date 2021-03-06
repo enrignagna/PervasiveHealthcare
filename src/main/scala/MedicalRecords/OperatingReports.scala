@@ -14,39 +14,15 @@
  *                              limitations under the License.
  */
 
-package MedicalRecords.InitialAnalysis
-
-import MedicalRecords.InitialAnalysis.Familiars.Familiars
-import Utility.Info
-
-import java.time.LocalDate
+package MedicalRecords
 
 
-sealed trait KinshipDegree
-
-case object Mother extends KinshipDegree
-
-case object Father extends KinshipDegree
-
-case object LegalTutor extends KinshipDegree
-
-case class Familiar(name: String, kinship: KinshipDegree, previousPathology: PreviousPathology)
-
-object Familiars {
-
-  case class Familiars private(familiars: Set[Familiar] = Set.empty) {
-    def addNewFamiliars(familiar: Familiar): Familiars = Familiars(this.familiars + familiar)
-  }
-
-  def apply(): Familiars = Familiars()
-}
+//TODO: Implement this.
+// chiedere parere su compound types o se tenere sempre delle case class
 
 
-case class Remote(info: Info, date: LocalDate = LocalDate.now)
+case class Medical()
 
-case class Physiologic(info: Info, date: LocalDate = LocalDate.now)
-
-
-case class Anamensis(familiars: Familiars, remote: Remote, physiologic: Physiologic) {
+case class OperatingReports() {
 
 }

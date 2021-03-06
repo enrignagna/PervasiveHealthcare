@@ -16,5 +16,14 @@
 
 package MedicalRecords.ClinicalDiary
 
-case class
-case class HealthEvolution()
+import Utility.Info
+
+import java.time.LocalDateTime
+
+/**
+ * Value object of HealthEvolution.
+ *
+ * @param info     info of HealthEvolution
+ * @param dateTime time stamp of HealthEvolution
+ */
+case class HealthEvolution(info: Info, dateTime: LocalDateTime)

@@ -15,7 +15,8 @@
  */
 
 
-import MedicalRecords.InitialAnalysis.{Anamensis, Familiar, Info, Physiologic, Remote}
+import MedicalRecords.InitialAnalysis.{Anamensis, Familiar, Physiologic, Remote}
+import Utility.Info
 import org.scalatest.freespec.AnyFreeSpec
 
 class TestAnamensis extends AnyFreeSpec {

@@ -14,39 +14,16 @@
  *                              limitations under the License.
  */
 
-package MedicalRecords.InitialAnalysis
+package MedicalRecords
 
-import MedicalRecords.InitialAnalysis.Familiars.Familiars
-import Utility.Info
+import Utility.Description
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
-
-sealed trait KinshipDegree
-
-case object Mother extends KinshipDegree
-
-case object Father extends KinshipDegree
-
-case object LegalTutor extends KinshipDegree
-
-case class Familiar(name: String, kinship: KinshipDegree, previousPathology: PreviousPathology)
-
-object Familiars {
-
-  case class Familiars private(familiars: Set[Familiar] = Set.empty) {
-    def addNewFamiliars(familiar: Familiar): Familiars = Familiars(this.familiars + familiar)
-  }
-
-  def apply(): Familiars = Familiars()
-}
-
-
-case class Remote(info: Info, date: LocalDate = LocalDate.now)
-
-case class Physiologic(info: Info, date: LocalDate = LocalDate.now)
-
-
-case class Anamensis(familiars: Familiars, remote: Remote, physiologic: Physiologic) {
-
-}
+/**
+ * Pain reliever.
+ *
+ * @param datetime    date and time of administration.
+ * @param description description of administration.
+ */
+case class Painrelief(datetime: LocalDateTime = LocalDateTime.now(), description: Description)

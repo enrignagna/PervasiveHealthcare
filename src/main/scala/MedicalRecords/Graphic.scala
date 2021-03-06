@@ -14,39 +14,48 @@
  *                              limitations under the License.
  */
 
-package MedicalRecords.InitialAnalysis
+package MedicalRecords
 
-import MedicalRecords.InitialAnalysis.Familiars.Familiars
+import MedicalRecords.VitalSigns.VitalSigns
 import Utility.Info
 
-import java.time.LocalDate
+import java.time.LocalDateTime
 
+/**
+ * Vital sign.
+ *
+ * @param info information of vital sign.
+ * @param date date of registration of vital sign.
+ */
+case class VitalSign(info: Info, date: LocalDateTime = LocalDateTime.now())
 
-sealed trait KinshipDegree
+/**
+ * Collection of vital signs.
+ */
+object VitalSigns {
 
-case object Mother extends KinshipDegree
-
-case object Father extends KinshipDegree
-
-case object LegalTutor extends KinshipDegree
-
-case class Familiar(name: String, kinship: KinshipDegree, previousPathology: PreviousPathology)
-
-object Familiars {
-
-  case class Familiars private(familiars: Set[Familiar] = Set.empty) {
-    def addNewFamiliars(familiar: Familiar): Familiars = Familiars(this.familiars + familiar)
+  case class VitalSigns private(vitalSigns: Set[VitalSign] = Set.empty) {
+    /**
+     * Method to add new vital sign at the collection.
+     *
+     * @param vitalSign vital sign to add.
+     * @return collection of vital sign.
+     */
+    def addNewVitalSign(vitalSign: VitalSign): VitalSigns = VitalSigns(this.vitalSigns + vitalSign)
   }
 
-  def apply(): Familiars = Familiars()
+  /**
+   * Apply method.
+   *
+   * @return collection of vital sign.
+   */
+  def apply(): VitalSigns = VitalSigns()
 }
 
+/**
+ * Graphics of vital signs.
+ *
+ * @param vitalSigns vital signs in graphics.
+ */
+case class Graphic(vitalSigns: VitalSigns)
 
-case class Remote(info: Info, date: LocalDate = LocalDate.now)
-
-case class Physiologic(info: Info, date: LocalDate = LocalDate.now)
-
-
-case class Anamensis(familiars: Familiars, remote: Remote, physiologic: Physiologic) {
-
-}

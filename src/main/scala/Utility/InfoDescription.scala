@@ -16,6 +16,16 @@
 
 package Utility
 
+/**
+ * Information.
+ *
+ * @param value text of information.
+ */
 case class Info(value: String)
 
-case class Description(value: String)
+/**
+ * Description.
+ *
+ * @param value text of description.
+ */
+class Description(value: String)

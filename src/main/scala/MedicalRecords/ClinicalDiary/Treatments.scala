@@ -14,39 +14,39 @@
  *                              limitations under the License.
  */
 
-package MedicalRecords.InitialAnalysis
+package MedicalRecords.ClinicalDiary
 
-import MedicalRecords.InitialAnalysis.Familiars.Familiars
-import Utility.Info
+import Utility.Description
 
 import java.time.LocalDate
 
+/**
+ * General treatment.
+ *
+ * @param date        date of treatment.
+ * @param description description of treatment.
+ * @param doctor      doctor that has made treatment.
+ */
+class Treatment(date: LocalDate, description: Description, doctor: Doctor)
 
-sealed trait KinshipDegree
+//TODO: Pensavo all'ereditarietà, ma ho visto anche questa soluzione
+/**
+ * Diagnostic Treatments
+ *
+ * @param treatment treatment executed.
+ */
+case class DiagnosticTreatments(treatment: Treatment)
 
-case object Mother extends KinshipDegree
+/**
+ * Therapeutic Treatments
+ *
+ * @param treatment treatment executed.
+ */
+case class TherapeuticTreatments(treatment: Treatment)
 
-case object Father extends KinshipDegree
-
-case object LegalTutor extends KinshipDegree
-
-case class Familiar(name: String, kinship: KinshipDegree, previousPathology: PreviousPathology)
-
-object Familiars {
-
-  case class Familiars private(familiars: Set[Familiar] = Set.empty) {
-    def addNewFamiliars(familiar: Familiar): Familiars = Familiars(this.familiars + familiar)
-  }
-
-  def apply(): Familiars = Familiars()
-}
-
-
-case class Remote(info: Info, date: LocalDate = LocalDate.now)
-
-case class Physiologic(info: Info, date: LocalDate = LocalDate.now)
-
-
-case class Anamensis(familiars: Familiars, remote: Remote, physiologic: Physiologic) {
-
-}
+/**
+ * Rehabilitation Treatments
+ *
+ * @param treatment treatment executed.
+ */
+case class RehabilitationTreatments(treatment: Treatment)

@@ -14,25 +14,21 @@
  *                              limitations under the License.
  */
 
-package MedicalRecords.ClinicalDiary
+package MedicalRecords
 
-import MedicalRecords.ClinicalDiary.VitalSigns.VitalSigns
-import MedicalRecords.InitialAnalysis.Info
+import java.time.LocalDateTime
 
-import java.time.LocalDate
+/**
+ * Request.
+ *
+ * @param value description of request.
+ */
+case class Request(value: String)
 
-//TODO: Aggiungere anche orario oltre che data.
-case class VitalSign(info: Info, date: LocalDate = LocalDate.now())
-
-
-object VitalSigns {
-
-  case class VitalSigns private(vitalSigns: Set[VitalSign] = Set.empty) {
-    def addNewPVitalSign(vitalSign: VitalSign): VitalSigns = VitalSigns(this.vitalSigns + vitalSign)
-  }
-
-  def apply(): VitalSigns = VitalSigns()
-}
-
-case class Graphic(vitalSigns: VitalSigns)
-
+/**
+ * Advice request.
+ *
+ * @param datetime date and time when the request was made.
+ * @param request  the request made.
+ */
+case class AdviceRequest(datetime: LocalDateTime = LocalDateTime.now(), request: Request)
