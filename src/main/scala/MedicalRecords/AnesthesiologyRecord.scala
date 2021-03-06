@@ -20,23 +20,14 @@ import Utility.Description
 
 import java.time.LocalDateTime
 
-case class NursingDocumentation(
-                                 registration: Registration,
-                                 needsIdentification: NeedsIdentification,
-                                 nursingInterventionPlanning: NursingInterventionPlanning,
-                                 careDiary: CareDiary,
-                                 interventionEvaluation: InterventionEvaluation
-                               )
 
-case class InterventionEvaluation(value: String)
+case class AnesthesiologyRecord(anesthesist: Anesthetist, operationEvalutation: OperationEvalutation) {
 
-case class CareDiary(value: String)
+}
 
-case class NursingInterventionPlanning(datetime: LocalDateTime = LocalDateTime.now(), description: Description)
+case class OperationEvalutation(anestheticCard: AnestheticCard,
+                                postOperationEvaluation: PostOperationEvaluation)
 
-case class NeedsIdentification(datetime: LocalDateTime = LocalDateTime.now(), description: Description)
+case class PostOperationEvaluation(datetime: LocalDateTime = LocalDateTime.now(), description: Description)
 
-//TODO: referenza di clinical data e copia dei dati personali. Finish implementation.
-case class Registration(personalData: PersonalData, clinicalData: ClinicalData)
-
-
+case class AnestheticCard(datetime: LocalDateTime = LocalDateTime.now(), description: Description)

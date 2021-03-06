@@ -14,16 +14,14 @@
  *                              limitations under the License.
  */
 
-package MedicalRecords.ClinicalDiary
+package ClinicalDiary
 
-import Utility.Info
+import org.junit.runner.RunWith
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatestplus.junit.JUnitRunner
 
-import java.time.LocalDateTime
-
-/**
- * Value object of HealthEvolution.
- *
- * @param info     info of HealthEvolution
- * @param dateTime time stamp of HealthEvolution
- */
-case class HealthEvolution(info: Info, dateTime: LocalDateTime = LocalDateTime.now())
+@RunWith(classOf[JUnitRunner])
+class TestHealthEvolution extends AnyFreeSpec {
+  "The HealthEvolution should have  can be four levels" in {
+  assert(H.maxId == 4)
+}

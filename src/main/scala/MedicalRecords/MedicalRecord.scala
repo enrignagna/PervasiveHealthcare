@@ -18,12 +18,13 @@ package MedicalRecords
 
 import java.util.UUID
 
+//TODO: Implement medical records.
 case class MedicalRecordsID(value: UUID)
 
 
 
 
 trait MedicalRecord{
-  def addInitialAnamnesis()
 
 }
+

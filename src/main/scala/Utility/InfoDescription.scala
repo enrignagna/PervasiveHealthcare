@@ -29,3 +29,11 @@ case class Info(value: String)
  * @param value text of description.
  */
 class Description(value: String)
+
+
+/**
+ * Note.
+ *
+ * @param value text of note.
+ */
+class Note(value: String)
