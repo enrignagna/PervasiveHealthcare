@@ -18,6 +18,7 @@
 
 package domainmodel.generalpractitionerinfo
 
+import domainmodel.Anamensis
 import domainmodel.generalpractitionerinfo.Prescriptions.Prescriptions
 import domainmodel.generalpractitionerinfo.Therapies.Therapies
 import domainmodel.generalpractitionerinfo.Visits._

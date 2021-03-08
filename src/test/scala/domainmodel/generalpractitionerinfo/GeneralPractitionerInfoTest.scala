@@ -18,8 +18,9 @@
 
 package domainmodel.generalpractitionerinfo
 
-import java.time.LocalDate
+import domainmodel.{Anamensis, Familiar, Father, Physiologic, Remote}
 
+import java.time.LocalDate
 import domainmodel.PreviousPathologies.PreviousPathologies
 import domainmodel.generalpractitionerinfo.Visits.Visits
 import org.junit.runner.RunWith

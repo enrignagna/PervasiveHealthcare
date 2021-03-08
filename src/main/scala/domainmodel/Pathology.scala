@@ -18,27 +18,10 @@
 
 package domainmodel
 
-/*
- *
- *  * Copyright (c) 2021.  Ylenia Battistini, Enrico Gnagnarella, Matteo Scucchia
- *  *
- *  *                              Licensed under the Apache License, Version 2.0 (the "License");
- *  *                              you may not use this file except in compliance with the License.
- *  *                              You may obtain a copy of the License at
- *  *
- *  *                                  http://www.apache.org/licenses/LICENSE-2.0
- *  *
- *  *                              Unless required by applicable law or agreed to in writing, software
- *  *                              distributed under the License is distributed on an "AS IS" BASIS,
- *  *                              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- *  *                              See the License for the specific language governing permissions and
- *  *                              limitations under the License.
- *
- */
-
-import java.time.LocalDate
 
 import domainmodel.PathologySeverity.PathologySeverity
+
+import java.time.LocalDate
 
 /**
  * Different levels of pathology severity.
@@ -53,17 +36,19 @@ import domainmodel.PathologySeverityLevels.PathologySeverityLevels
 /**
  * Companion object for the pathology severity.
  */
-object PathologySeverity{
+object PathologySeverity {
 
   /**
    * Class that models the pathology severity.
+   *
    * @param description a brief description of the pathology.
-   * @param severity the severity level of the pathology.
+   * @param severity    the severity level of the pathology.
    */
   case class PathologySeverity private(description: String, severity: PathologySeverityLevels)
 
   /**
    * Factory method for domainmodel.PathologySeverity.
+   *
    * @param pathologySeverityLevels the level of severity.
    * @return a domainmodel.PathologySeverity.
    */
@@ -77,21 +62,23 @@ object PathologySeverity{
 
 /**
  * Class that models the date of detection of a previous pathology.
+ *
  * @param value the date of diagnosis.
  */
-//TODO: check correctness of the date
 case class DetectionDate(value: LocalDate = LocalDate.now())
 
 /**
  * Class that models the name of the pathology.
+ *
  * @param value the name of the pathology.
  */
 case class PathologyName(value: String)
 
 /**
  * Class that models a previous pathology.
- * @param pathologyName the name of the pathology.
- * @param detectionDate the date of diagnosis.
+ *
+ * @param pathologyName     the name of the pathology.
+ * @param detectionDate     the date of diagnosis.
  * @param pathologySeverity the severity of the pathology.
  */
 case class Pathology(pathologyName: PathologyName, detectionDate: DetectionDate, pathologySeverity: PathologySeverity)
@@ -99,16 +86,18 @@ case class Pathology(pathologyName: PathologyName, detectionDate: DetectionDate,
 /**
  * The set of previous pathologies of a patient.
  */
-object PreviousPathologies{
+object PreviousPathologies {
 
   /**
    * Class that models the previous pathologies.
+   *
    * @param pathologies the set of previous pathologies.
    */
-  case class PreviousPathologies private (pathologies: Set[Pathology] = Set.empty){
+  case class PreviousPathologies private(pathologies: Set[Pathology] = Set.empty) {
 
     /**
      * Add new pathology to the previous pathologies.
+     *
      * @param previousPathology the pathology to add.
      * @return an updated set of previous pathologies.
      */
@@ -117,6 +106,7 @@ object PreviousPathologies{
 
   /**
    * Factory method for domainmodel.PreviousPathologies.
+   *
    * @return an empty set of previous pathologies.
    */
   def apply(): PreviousPathologies = PreviousPathologies()

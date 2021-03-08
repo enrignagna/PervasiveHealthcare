@@ -24,7 +24,6 @@ import java.time.LocalDate
  * Class that models the date of a prescription.
  * @param value the date.
  */
-//TODO: check correctness of the date
 case class PrescriptionDate(value: LocalDate = LocalDate.now())
 
 /**

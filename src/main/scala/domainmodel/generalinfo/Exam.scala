@@ -24,7 +24,6 @@ import java.time.LocalDate
  * Class that models the date of an exam.
  * @param value the exam data.
  */
-//TODO check date correctness
 case class ExamDate(value: LocalDate = LocalDate.now())
 
 /**

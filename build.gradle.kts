@@ -16,7 +16,6 @@ repositories {
 }
 
 dependencies {
-    //TODO: Remove imperative part of scala version
     val scalaVersion = "2.12"
 
     implementation("org.mongodb.scala:mongo-scala-driver_$scalaVersion:_")
