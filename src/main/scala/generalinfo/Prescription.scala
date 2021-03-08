@@ -20,19 +20,49 @@ package generalinfo
 
 import java.time.LocalDate
 
+/**
+ * Class that models the date of a prescription.
+ * @param value the date.
+ */
 //TODO: check correctness of the date
 case class PrescriptionDate(value: LocalDate = LocalDate.now())
+
+/**
+ * Class that models the information about the prescription.
+ * @param value the information.
+ */
 case class PrescriptionInfo(value: String)
 
+/**
+ * Class that models a prescription.
+ * @param prescriptionDate the date of the prescription.
+ * @param prescriptionInfo the information of the prescription.
+ */
 case class Prescription(prescriptionDate: PrescriptionDate, prescriptionInfo: PrescriptionInfo)
 
-
+/**
+ * The set of prescriptions of the patient.
+ */
 object PrescriptionHistory {
 
+  /**
+   * Class that models the history of a patient's prescriptions.
+   * @param history the set of prescriptions.
+   */
   case class PrescriptionHistory private(history: Set[Prescription] = Set.empty){
+
+    /**
+     * Add a new prescription to the history.
+     * @param prescription the prescription to add.
+     * @return the updated history.
+     */
     def addNewPrescription(prescription: Prescription) : PrescriptionHistory = PrescriptionHistory(this.history + prescription)
   }
 
+  /**
+   * Factory method per PrescriptionHistory.
+   * @return an empty set od prescriptions.
+   */
   def apply(): PrescriptionHistory = PrescriptionHistory()
 
 }

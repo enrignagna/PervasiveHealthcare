@@ -18,11 +18,17 @@
 
 package generalinfo
 
+/**
+ * Different blood types.
+ */
 object BloodType extends Enumeration{
   type BloodType = Value
   val A, B, AB, ZERO = Value
 }
 
+/**
+ * Different RH bloods.
+ */
 object Rh extends Enumeration{
   type Rh = Value
   val POSITIVE, NEGATIVE = Value
@@ -30,4 +36,10 @@ object Rh extends Enumeration{
 
 import generalinfo.BloodType.BloodType
 import generalinfo.Rh.Rh
+
+/**
+ * Class that models the blood group.
+ * @param bloodType the type of the blood.
+ * @param rh the RH of the blood.
+ */
 case class BloodGroup(bloodType: BloodType, rh: Rh)

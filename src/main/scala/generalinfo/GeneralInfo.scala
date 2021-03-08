@@ -23,9 +23,27 @@ import generalinfo.ExamHistory.ExamHistory
 import generalinfo.PrescriptionHistory.PrescriptionHistory
 import generalinfo.PreviousPathologies.PreviousPathologies
 
+/**
+ * Class that models the weight of a patient.
+ * @param value the weight in kilograms.
+ */
 case class Weight(value: Double)
-case class Height(value: Double)
+/**
+ * Class that models the height of a patient.
+ * @param value the height in centimeters.
+ */
+case class Height(value: Int)
 
+/**
+ * Class that models the general info of a patient.
+ * @param bloodGroup the blood group.
+ * @param weight the weight.
+ * @param height the height.
+ * @param allergies the allergies.
+ * @param previousPathologies the previous pathologies.
+ * @param prescriptionHistory the prescriptions history.
+ * @param examHistory the exams history.
+ */
 case class GeneralInfo(bloodGroup: BloodGroup, weight: Weight, height: Height, allergies: Allergies = Allergies(),
                        previousPathologies: PreviousPathologies = PreviousPathologies(),
                        prescriptionHistory: PrescriptionHistory = PrescriptionHistory(),

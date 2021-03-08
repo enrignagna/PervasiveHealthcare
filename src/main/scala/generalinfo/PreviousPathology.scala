@@ -22,7 +22,9 @@ import java.time.LocalDate
 
 import generalinfo.PathologySeverity.PathologySeverity
 
-//Four levels of severity
+/**
+ * Different levels of pathology severity.
+ */
 object PathologySeverityLevels extends Enumeration {
   type PathologySeverityLevels = Value
   val ONE, TWO, THREE, FOUR = Value
@@ -30,9 +32,23 @@ object PathologySeverityLevels extends Enumeration {
 
 import PathologySeverityLevels.PathologySeverityLevels
 
+/**
+ * Companion object for the pathology severity.
+ */
 object PathologySeverity{
+
+  /**
+   * Class that models the pathology severity.
+   * @param description a brief description of the pathology.
+   * @param severity the severity level of the pathology.
+   */
   case class PathologySeverity private(description: String, severity: PathologySeverityLevels)
 
+  /**
+   * Factory method for PathologySeverity.
+   * @param pathologySeverityLevels the level of severity.
+   * @return a PathologySeverity.
+   */
   def apply(pathologySeverityLevels: PathologySeverityLevels): PathologySeverity = pathologySeverityLevels match {
     case PathologySeverityLevels.ONE => PathologySeverity(description = "Low disease", severity = PathologySeverityLevels.ONE)
     case PathologySeverityLevels.TWO => PathologySeverity(description = "Changes life quality", severity = PathologySeverityLevels.TWO)
@@ -41,18 +57,50 @@ object PathologySeverity{
   }
 }
 
+/**
+ * Class that models the date of detection of a previous pathology.
+ * @param value the date of diagnosis.
+ */
 //TODO: check correctness of the date
 case class DetectionDate(value: LocalDate = LocalDate.now())
 
+/**
+ * Class that models the name of the pathology.
+ * @param value the name of the pathology.
+ */
 case class PathologyName(value: String)
 
+/**
+ * Class that models a previous pathology.
+ * @param pathologyName the name of the pathology.
+ * @param detectionDate the date of diagnosis.
+ * @param pathologySeverity the severity of the pathology.
+ */
 case class PreviousPathology(pathologyName: PathologyName, detectionDate: DetectionDate, pathologySeverity: PathologySeverity)
 
+/**
+ * The set of previous pathologies of a patient.
+ */
 object PreviousPathologies{
+
+  /**
+   * Class that models the previous pathologies.
+   * @param pathologies the set of previous pathologies.
+   */
   case class PreviousPathologies private (pathologies: Set[PreviousPathology] = Set.empty){
+
+    /**
+     * Add new pathology to the previous pathologies.
+     * @param previousPathology the pathology to add.
+     * @return an updated set of previous pathologies.
+     */
     def addNewPathology(previousPathology: PreviousPathology): PreviousPathologies = PreviousPathologies(this.pathologies + previousPathology)
   }
 
+  /**
+   * Factory method for PreviousPathologies.
+   * @return an empty set of previous pathologies.
+   */
   def apply(): PreviousPathologies = PreviousPathologies()
 }
 
