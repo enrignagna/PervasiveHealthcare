@@ -16,45 +16,43 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalinfo
 
-import java.time.LocalDate
-import generalpractitionerinfo.Therapies.Therapies
+import domainmodel.generalinfo.ExamHistory.ExamHistory
 import org.junit.runner.RunWith
-import org.scalatest.freespec._
+import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class TherapyTest extends AnyFreeSpec {
-  val therapy: Therapy = Therapy(TherapyDate(), TherapyDescription("Therapy for shoulder surgery"), TherapyInitialDate(LocalDate.of(2021, 5, 15)), TherapyFinalDate(LocalDate.of(2021, 6, 15)))
-  "A therapy should have" - {
+class ExamTest extends AnyFreeSpec {
+
+  val exam: Exam = Exam(ExamDate(), ExamReport("Hearth disease"), ExamInfo("Checked the hearth rhythm"))
+
+  "Am exam should have" - {
     "a date" in {
-      assert(therapy.therapyDate != null)
+      assert(exam.examDate != null)
     }
-    "a description" in {
-      assert(therapy.therapyDescription != null)
+    "a report of the exam" in {
+      assert(exam.examReport.value.nonEmpty)
     }
-    "an initial date" in {
-      assert(therapy.therapyInitialDate != null)
-    }
-    "a final date" in {
-      assert(therapy.therapyFinalDate != null)
+    "a brief information description" in {
+      assert(exam.examInfo.value.nonEmpty)
     }
   }
 
-  "A therapy date should not be after the current date" in {
-    therapy.therapyDate.therapyDate.isAfter(LocalDate.now())
-  }
+  val examHistory: ExamHistory = ExamHistory()
 
-  val therapies: Therapies = Therapies()
-  "A therapies" - {
-    "should be initially empty" in {
-      assert(therapies.therapies.isEmpty)
+  "Exams history" - {
+    "should be" - {
+      "a set" in {
+        assert(examHistory.history.isInstanceOf[Set[Exam]])
+      }
+      "initially empty" in {
+        assert(examHistory.history.isEmpty)
+      }
     }
-
-    "can added" in {
-      assert(therapies.addNewTherapy(therapy).therapies.nonEmpty)
+    "can be updated" in {
+      assert(examHistory.addNewExam(exam).history.nonEmpty)
     }
   }
-
 }

@@ -16,11 +16,12 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
 import java.time.LocalDate
 
-import generalpractitionerinfo.Visits.Visits
+import domainmodel.PreviousPathologies.PreviousPathologies
+import domainmodel.generalpractitionerinfo.Visits.Visits
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
@@ -29,7 +30,7 @@ import org.scalatestplus.junit.JUnitRunner
 class GeneralPractitionerInfoTest extends AnyFreeSpec {
   val visit: Visit = Visit(VisitDate())
   val generalVisit: GeneralPractitionerInfoVisits = GeneralPractitionerInfoVisits(Visits().addNewVisit(visit))
-  val anamnesis: GeneralPractitionerInfoAnamnesis = GeneralPractitionerInfoAnamnesis(Anamensis(Familiar("Rossi Mario", Father, new PreviousPathology, "3387514876"), Remote("first anamnesis"), Physiologic("self conscious")))
+  val anamnesis: GeneralPractitionerInfoAnamnesis = GeneralPractitionerInfoAnamnesis(Anamensis(Familiar("Rossi Mario", Father, PreviousPathologies(), "3387514876"), Remote("first anamnesis"), Physiologic("self conscious")))
   val prescription: GeneralPractitionerInfoPrescriptions = GeneralPractitionerInfoPrescriptions(Prescriptions().addNewPrescription(Prescription(PrescriptionInitialDate(), PrescriptionDescription("First prescription"))))
   val therapy: GeneralPractitionerInfoTherapies = GeneralPractitionerInfoTherapies(Therapies().addNewTherapy(Therapy(TherapyDate(), TherapyDescription("Therapy for shoulder surgery"), TherapyInitialDate(LocalDate.of(2021, 5, 15)), TherapyFinalDate(LocalDate.of(2021, 6, 15)))))
   val bookingVisits: GeneralPractitionerInfoBookingVisits = GeneralPractitionerInfoBookingVisits(BookingVisits(1, visit, "visit for shoulder surgery"))

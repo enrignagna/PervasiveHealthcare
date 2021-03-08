@@ -16,9 +16,11 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
 import java.time.LocalDate
+
+import domainmodel.PreviousPathologies.PreviousPathologies
 
 sealed trait KinshipDegree
 
@@ -26,7 +28,7 @@ case object Mother extends KinshipDegree
 case object Father extends KinshipDegree
 case object LegalTutor extends KinshipDegree
 
-case class Familiar(name: String, kinshipDegree: KinshipDegree, previousPathology: PreviousPathology, phoneNumber: String)
+case class Familiar(name: String, kinshipDegree: KinshipDegree, previousPathologies: PreviousPathologies, phoneNumber: String)
 
 case class Remote(info: String, date: LocalDate = java.time.LocalDate.now)
 

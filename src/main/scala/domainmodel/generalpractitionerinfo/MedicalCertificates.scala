@@ -16,7 +16,7 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
 /**
  * This class represents the set of the patient's medical certificates.

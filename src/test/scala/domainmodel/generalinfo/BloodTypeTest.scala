@@ -16,45 +16,30 @@
  *
  */
 
-package generalinfo
+package domainmodel.generalinfo
 
 import org.scalatestplus.junit.JUnitRunner
 import org.junit.runner.RunWith
 import org.scalatest._
 import freespec._
-import generalinfo.Allergies.Allergies
 
 @RunWith(classOf[JUnitRunner])
-class AllergyTest extends AnyFreeSpec {
-  "Allergies can be of eight types" in {
-      assert(AllergyClass.maxId == 8)
+class BloodTypeTest extends AnyFreeSpec {
+  "BloodType can be of four types" in {
+      assert(BloodType.maxId == 4)
   }
 
-  val allergy: Allergy = Allergy(AllergyClass.CELIAC_DISEASE, AllergyDescription("Celiac disease"))
-  "An Allergy" - {
-    "should have" - {
-      "a type" in {
-        assert(AllergyClass.values.contains(allergy.allergyClass))
-      }
-      "a description" in {
-        assert(allergy.description.value.nonEmpty)
-      }
-    }
+  "Rh can be of two types" in {
+      assert(Rh.maxId == 2)
   }
 
-  val allergies: Allergies = Allergies()
-
-  "The Allergies of a person" - {
-    "should be" - {
-      "a set" in {
-        assert(allergies.allergies.isInstanceOf[Set[Allergy]])
-      }
-      "initially empty" in {
-        assert(allergies.allergies.isEmpty)
-      }
+  val bloodGroup: BloodGroup = BloodGroup(BloodType.ZERO, Rh.POSITIVE)
+  "Blood group should have" - {
+    "a type" in {
+      assert(BloodType.values.contains(bloodGroup.bloodType))
     }
-    "can be updated" in {
-      assert(allergies.addNewAllergy(allergy).allergies.nonEmpty)
+    "a Rh" in {
+      assert(Rh.values.contains(bloodGroup.rh))
     }
   }
 }

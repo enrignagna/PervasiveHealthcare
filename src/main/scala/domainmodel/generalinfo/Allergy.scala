@@ -16,7 +16,7 @@
  *
  */
 
-package generalinfo
+package domainmodel.generalinfo
 
 /**
  * Different kinds of allergies.
@@ -27,7 +27,7 @@ object AllergyClass extends Enumeration{
   ALLERGIC_CONTACT_DERMATITIS, FOOD_INTOLERANCE, CELIAC_DISEASE = Value
 }
 
-import generalinfo.AllergyClass.AllergyClass
+import domainmodel.generalinfo.AllergyClass.AllergyClass
 
 /**
  * A brief allergy description.

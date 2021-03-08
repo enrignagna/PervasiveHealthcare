@@ -16,25 +16,22 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class BookingVisitsTest extends AnyFreeSpec {
-  val visit: Visit = Visit(VisitDate())
-  val bookingVisits: BookingVisits = BookingVisits(1, visit, "visit for shoulder surgery")
-  "A booking visits should have" - {
+class MedicalCertificatesTest extends AnyFreeSpec {
+  val bytes: Set[Byte] = Set()
+  val medicalCertificate: MedicalCertificates = MedicalCertificates(1, bytes)
+  "A medical certificate should have" - {
     "an id" in {
-      assert(bookingVisits.getId == 1)
+      assert(medicalCertificate.getId == 1)
     }
-    "a visit information" in {
-      assert(bookingVisits.getVisit == visit)
-    }
-    "a description" in {
-      assert(bookingVisits.getDescription == "visit for shoulder surgery")
+    "a set of bytes" in {
+      assert(medicalCertificate.getMedicalCertificate != null)
     }
   }
 }

@@ -16,30 +16,40 @@
  *
  */
 
-package generalinfo
+package domainmodel.generalinfo
 
-import org.scalatestplus.junit.JUnitRunner
+import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
 import org.junit.runner.RunWith
-import org.scalatest._
-import freespec._
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class BloodTypeTest extends AnyFreeSpec {
-  "BloodType can be of four types" in {
-      assert(BloodType.maxId == 4)
-  }
+class PrescriptionTest extends AnyFreeSpec {
 
-  "Rh can be of two types" in {
-      assert(Rh.maxId == 2)
-  }
+  val prescription: Prescription = Prescription(prescriptionDate = PrescriptionDate(), prescriptionInfo = PrescriptionInfo("Antiviral"))
 
-  val bloodGroup: BloodGroup = BloodGroup(BloodType.ZERO, Rh.POSITIVE)
-  "Blood group should have" - {
-    "a type" in {
-      assert(BloodType.values.contains(bloodGroup.bloodType))
+  "A prescription should have" - {
+    "a date" in {
+      assert(prescription.prescriptionDate != null)
     }
-    "a Rh" in {
-      assert(Rh.values.contains(bloodGroup.rh))
+    "a brief information description" in {
+      assert(prescription.prescriptionInfo.value.nonEmpty)
+    }
+  }
+
+  val prescriptionHistory: PrescriptionHistory = PrescriptionHistory()
+
+  "Prescription history" - {
+    "should be" - {
+      "a set" in {
+        assert(prescriptionHistory.history.isInstanceOf[Set[Prescription]])
+      }
+      "initially empty" in {
+        assert(prescriptionHistory.history.isEmpty)
+      }
+    }
+    "can be updated" in {
+      assert(prescriptionHistory.addNewPrescription(prescription).history.nonEmpty)
     }
   }
 }

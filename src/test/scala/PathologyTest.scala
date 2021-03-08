@@ -16,18 +16,18 @@
  *
  */
 
-package generalinfo
+package scala
 
 import java.time.LocalDate
 
-import org.scalatestplus.junit.JUnitRunner
+import domainmodel.PreviousPathologies.PreviousPathologies
+import domainmodel.{DetectionDate, Pathology, PathologyName, PathologySeverity, PathologySeverityLevels}
 import org.junit.runner.RunWith
-import org.scalatest._
-import freespec._
-import generalinfo.PreviousPathologies._
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class PreviousPathologyTest extends AnyFreeSpec {
+class PathologyTest extends AnyFreeSpec {
   "The severity of a pathology can be four levels" in {
     assert(PathologySeverityLevels.maxId == 4)
   }
@@ -46,7 +46,7 @@ class PreviousPathologyTest extends AnyFreeSpec {
       assert(PathologySeverity(PathologySeverityLevels.FOUR).description == "Threatens life")
     }
   }
-  val previousPathology: PreviousPathology = PreviousPathology(PathologyName("Hearth disease"), DetectionDate(), PathologySeverity(PathologySeverityLevels.FOUR))
+  val previousPathology: Pathology = Pathology(PathologyName("Hearth disease"), DetectionDate(), PathologySeverity(PathologySeverityLevels.FOUR))
   "A previous pathology should have" - {
     "a name" in {
       assert(previousPathology.pathologyName.value.nonEmpty)
@@ -68,7 +68,7 @@ class PreviousPathologyTest extends AnyFreeSpec {
   "Previous pathologies" - {
     "should be" - {
       "a set" in {
-        assert(previousPathologies.pathologies.isInstanceOf[Set[PreviousPathology]])
+        assert(previousPathologies.pathologies.isInstanceOf[Set[Pathology]])
       }
       "initially empty" in {
         assert(previousPathologies.pathologies.isEmpty)

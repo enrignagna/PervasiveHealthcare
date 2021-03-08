@@ -16,11 +16,11 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
-import generalpractitionerinfo.Prescriptions.Prescriptions
-import generalpractitionerinfo.Therapies.Therapies
-import generalpractitionerinfo.Visits._
+import domainmodel.generalpractitionerinfo.Prescriptions.Prescriptions
+import domainmodel.generalpractitionerinfo.Therapies.Therapies
+import domainmodel.generalpractitionerinfo.Visits._
 
 case class GeneralPractitionerInfoDoctor(doctorID: Int, name: String)
 

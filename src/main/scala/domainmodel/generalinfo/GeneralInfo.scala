@@ -16,12 +16,12 @@
  *
  */
 
-package generalinfo
+package domainmodel.generalinfo
 
-import generalinfo.Allergies.Allergies
-import generalinfo.ExamHistory.ExamHistory
-import generalinfo.PrescriptionHistory.PrescriptionHistory
-import generalinfo.PreviousPathologies.PreviousPathologies
+import domainmodel.PreviousPathologies.PreviousPathologies
+import domainmodel.generalinfo.Allergies.Allergies
+import domainmodel.generalinfo.ExamHistory.ExamHistory
+import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
 
 /**
  * Class that models the weight of a patient.

@@ -16,9 +16,9 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
-import generalpractitionerinfo.Visits.Visits
+import domainmodel.generalpractitionerinfo.Visits.Visits
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner

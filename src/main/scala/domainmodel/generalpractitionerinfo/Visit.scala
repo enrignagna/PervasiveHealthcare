@@ -16,30 +16,26 @@
  *
  */
 
-package generalinfo
+package domainmodel.generalpractitionerinfo
+
+import java.time.LocalDate
+
+case class VisitDate(visitDate: LocalDate = LocalDate.now())
 
 /**
- * Different blood types.
+ * This class represents the visit.
+ * @param visitDate, date of the visit.
  */
-object BloodType extends Enumeration{
-  type BloodType = Value
-  val A, B, AB, ZERO = Value
+case class Visit(visitDate: VisitDate)
+
+/**
+ * Factory to add a new visit to the visits's history.
+ */
+object Visits {
+
+  case class Visits private(visits: Set[Visit] = Set.empty) {
+    def addNewVisit(visit: Visit): Visits = Visits(this.visits + visit)
+  }
+
+  def apply(): Visits = Visits()
 }
-
-/**
- * Different RH bloods.
- */
-object Rh extends Enumeration{
-  type Rh = Value
-  val POSITIVE, NEGATIVE = Value
-}
-
-import generalinfo.BloodType.BloodType
-import generalinfo.Rh.Rh
-
-/**
- * Class that models the blood group.
- * @param bloodType the type of the blood.
- * @param rh the RH of the blood.
- */
-case class BloodGroup(bloodType: BloodType, rh: Rh)

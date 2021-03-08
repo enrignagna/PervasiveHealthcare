@@ -16,10 +16,11 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
-import generalpractitionerinfo.Familiars.Familiars
-import generalpractitionerinfo.Remotes.Remotes
+import domainmodel.PreviousPathologies.PreviousPathologies
+import domainmodel.generalpractitionerinfo.Familiars.Familiars
+import domainmodel.generalpractitionerinfo.Remotes.Remotes
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
@@ -27,7 +28,7 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class AnamnesisTest extends AnyFreeSpec {
   val remote: Remote = Remote("first anamnesis")
-  val familiar: Familiar = Familiar("Rossi Mario", Father, new PreviousPathology() ,"3387514876")
+  val familiar: Familiar = Familiar("Rossi Mario", Father, PreviousPathologies() ,"3387514876")
   val anamnesis: Anamensis = Anamensis(familiar, remote, Physiologic("self conscious"))
   "An anamnesis should have" - {
     "a familiar information" in {

@@ -16,22 +16,30 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalinfo
 
-import org.junit.runner.RunWith
-import org.scalatest.freespec._
-import org.scalatestplus.junit.JUnitRunner
-
-@RunWith(classOf[JUnitRunner])
-class MedicalCertificatesTest extends AnyFreeSpec {
-  val bytes: Set[Byte] = Set()
-  val medicalCertificate: MedicalCertificates = MedicalCertificates(1, bytes)
-  "A medical certificate should have" - {
-    "an id" in {
-      assert(medicalCertificate.getId == 1)
-    }
-    "a set of bytes" in {
-      assert(medicalCertificate.getMedicalCertificate != null)
-    }
-  }
+/**
+ * Different blood types.
+ */
+object BloodType extends Enumeration{
+  type BloodType = Value
+  val A, B, AB, ZERO = Value
 }
+
+/**
+ * Different RH bloods.
+ */
+object Rh extends Enumeration{
+  type Rh = Value
+  val POSITIVE, NEGATIVE = Value
+}
+
+import domainmodel.generalinfo.BloodType.BloodType
+import domainmodel.generalinfo.Rh.Rh
+
+/**
+ * Class that models the blood group.
+ * @param bloodType the type of the blood.
+ * @param rh the RH of the blood.
+ */
+case class BloodGroup(bloodType: BloodType, rh: Rh)

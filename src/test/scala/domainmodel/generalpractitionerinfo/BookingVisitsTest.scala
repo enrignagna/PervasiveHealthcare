@@ -16,26 +16,25 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
-import java.time.LocalDate
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
-case class VisitDate(visitDate: LocalDate = LocalDate.now())
-
-/**
- * This class represents the visit.
- * @param visitDate, date of the visit.
- */
-case class Visit(visitDate: VisitDate)
-
-/**
- * Factory to add a new visit to the visits's history.
- */
-object Visits {
-
-  case class Visits private(visits: Set[Visit] = Set.empty) {
-    def addNewVisit(visit: Visit): Visits = Visits(this.visits + visit)
+@RunWith(classOf[JUnitRunner])
+class BookingVisitsTest extends AnyFreeSpec {
+  val visit: Visit = Visit(VisitDate())
+  val bookingVisits: BookingVisits = BookingVisits(1, visit, "visit for shoulder surgery")
+  "A booking visits should have" - {
+    "an id" in {
+      assert(bookingVisits.getId == 1)
+    }
+    "a visit information" in {
+      assert(bookingVisits.getVisit == visit)
+    }
+    "a description" in {
+      assert(bookingVisits.getDescription == "visit for shoulder surgery")
+    }
   }
-
-  def apply(): Visits = Visits()
 }

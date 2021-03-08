@@ -16,10 +16,10 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
 import java.time.LocalDate
-import generalpractitionerinfo.Prescriptions.Prescriptions
+import domainmodel.generalpractitionerinfo.Prescriptions.Prescriptions
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner

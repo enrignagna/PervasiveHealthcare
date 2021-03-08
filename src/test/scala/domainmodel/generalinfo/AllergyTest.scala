@@ -16,40 +16,45 @@
  *
  */
 
-package generalinfo
+package domainmodel.generalinfo
 
-import generalinfo.PrescriptionHistory.PrescriptionHistory
-import org.junit.runner.RunWith
-import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner
+import org.junit.runner.RunWith
+import org.scalatest._
+import freespec._
+import domainmodel.generalinfo.Allergies.Allergies
 
 @RunWith(classOf[JUnitRunner])
-class PrescriptionTest extends AnyFreeSpec {
+class AllergyTest extends AnyFreeSpec {
+  "Allergies can be of eight types" in {
+      assert(AllergyClass.maxId == 8)
+  }
 
-  val prescription: Prescription = Prescription(prescriptionDate = PrescriptionDate(), prescriptionInfo = PrescriptionInfo("Antiviral"))
-
-  "A prescription should have" - {
-    "a date" in {
-      assert(prescription.prescriptionDate != null)
-    }
-    "a brief information description" in {
-      assert(prescription.prescriptionInfo.value.nonEmpty)
+  val allergy: Allergy = Allergy(AllergyClass.CELIAC_DISEASE, AllergyDescription("Celiac disease"))
+  "An Allergy" - {
+    "should have" - {
+      "a type" in {
+        assert(AllergyClass.values.contains(allergy.allergyClass))
+      }
+      "a description" in {
+        assert(allergy.description.value.nonEmpty)
+      }
     }
   }
 
-  val prescriptionHistory: PrescriptionHistory = PrescriptionHistory()
+  val allergies: Allergies = Allergies()
 
-  "Prescription history" - {
+  "The Allergies of a person" - {
     "should be" - {
       "a set" in {
-        assert(prescriptionHistory.history.isInstanceOf[Set[Prescription]])
+        assert(allergies.allergies.isInstanceOf[Set[Allergy]])
       }
       "initially empty" in {
-        assert(prescriptionHistory.history.isEmpty)
+        assert(allergies.allergies.isEmpty)
       }
     }
     "can be updated" in {
-      assert(prescriptionHistory.addNewPrescription(prescription).history.nonEmpty)
+      assert(allergies.addNewAllergy(allergy).allergies.nonEmpty)
     }
   }
 }

@@ -16,43 +16,45 @@
  *
  */
 
-package generalinfo
+package domainmodel.generalpractitionerinfo
 
-import generalinfo.ExamHistory.ExamHistory
+import java.time.LocalDate
+import domainmodel.generalpractitionerinfo.Therapies.Therapies
 import org.junit.runner.RunWith
-import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class ExamTest extends AnyFreeSpec {
-
-  val exam: Exam = Exam(ExamDate(), ExamReport("Hearth disease"), ExamInfo("Checked the hearth rhythm"))
-
-  "Am exam should have" - {
+class TherapyTest extends AnyFreeSpec {
+  val therapy: Therapy = Therapy(TherapyDate(), TherapyDescription("Therapy for shoulder surgery"), TherapyInitialDate(LocalDate.of(2021, 5, 15)), TherapyFinalDate(LocalDate.of(2021, 6, 15)))
+  "A therapy should have" - {
     "a date" in {
-      assert(exam.examDate != null)
+      assert(therapy.therapyDate != null)
     }
-    "a report of the exam" in {
-      assert(exam.examReport.value.nonEmpty)
+    "a description" in {
+      assert(therapy.therapyDescription != null)
     }
-    "a brief information description" in {
-      assert(exam.examInfo.value.nonEmpty)
+    "an initial date" in {
+      assert(therapy.therapyInitialDate != null)
+    }
+    "a final date" in {
+      assert(therapy.therapyFinalDate != null)
     }
   }
 
-  val examHistory: ExamHistory = ExamHistory()
+  "A therapy date should not be after the current date" in {
+    therapy.therapyDate.therapyDate.isAfter(LocalDate.now())
+  }
 
-  "Exams history" - {
-    "should be" - {
-      "a set" in {
-        assert(examHistory.history.isInstanceOf[Set[Exam]])
-      }
-      "initially empty" in {
-        assert(examHistory.history.isEmpty)
-      }
+  val therapies: Therapies = Therapies()
+  "A therapies" - {
+    "should be initially empty" in {
+      assert(therapies.therapies.isEmpty)
     }
-    "can be updated" in {
-      assert(examHistory.addNewExam(exam).history.nonEmpty)
+
+    "can added" in {
+      assert(therapies.addNewTherapy(therapy).therapies.nonEmpty)
     }
   }
+
 }

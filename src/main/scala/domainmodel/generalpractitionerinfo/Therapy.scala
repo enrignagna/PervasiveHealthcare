@@ -16,7 +16,7 @@
  *
  */
 
-package generalpractitionerinfo
+package domainmodel.generalpractitionerinfo
 
 import java.time.LocalDate
 

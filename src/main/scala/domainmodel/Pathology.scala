@@ -16,11 +16,29 @@
  *
  */
 
-package generalinfo
+package domainmodel
+
+/*
+ *
+ *  * Copyright (c) 2021.  Ylenia Battistini, Enrico Gnagnarella, Matteo Scucchia
+ *  *
+ *  *                              Licensed under the Apache License, Version 2.0 (the "License");
+ *  *                              you may not use this file except in compliance with the License.
+ *  *                              You may obtain a copy of the License at
+ *  *
+ *  *                                  http://www.apache.org/licenses/LICENSE-2.0
+ *  *
+ *  *                              Unless required by applicable law or agreed to in writing, software
+ *  *                              distributed under the License is distributed on an "AS IS" BASIS,
+ *  *                              WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *  *                              See the License for the specific language governing permissions and
+ *  *                              limitations under the License.
+ *
+ */
 
 import java.time.LocalDate
 
-import generalinfo.PathologySeverity.PathologySeverity
+import domainmodel.PathologySeverity.PathologySeverity
 
 /**
  * Different levels of pathology severity.
@@ -30,7 +48,7 @@ object PathologySeverityLevels extends Enumeration {
   val ONE, TWO, THREE, FOUR = Value
 }
 
-import PathologySeverityLevels.PathologySeverityLevels
+import domainmodel.PathologySeverityLevels.PathologySeverityLevels
 
 /**
  * Companion object for the pathology severity.
@@ -45,9 +63,9 @@ object PathologySeverity{
   case class PathologySeverity private(description: String, severity: PathologySeverityLevels)
 
   /**
-   * Factory method for PathologySeverity.
+   * Factory method for domainmodel.PathologySeverity.
    * @param pathologySeverityLevels the level of severity.
-   * @return a PathologySeverity.
+   * @return a domainmodel.PathologySeverity.
    */
   def apply(pathologySeverityLevels: PathologySeverityLevels): PathologySeverity = pathologySeverityLevels match {
     case PathologySeverityLevels.ONE => PathologySeverity(description = "Low disease", severity = PathologySeverityLevels.ONE)
@@ -76,7 +94,7 @@ case class PathologyName(value: String)
  * @param detectionDate the date of diagnosis.
  * @param pathologySeverity the severity of the pathology.
  */
-case class PreviousPathology(pathologyName: PathologyName, detectionDate: DetectionDate, pathologySeverity: PathologySeverity)
+case class Pathology(pathologyName: PathologyName, detectionDate: DetectionDate, pathologySeverity: PathologySeverity)
 
 /**
  * The set of previous pathologies of a patient.
@@ -87,18 +105,18 @@ object PreviousPathologies{
    * Class that models the previous pathologies.
    * @param pathologies the set of previous pathologies.
    */
-  case class PreviousPathologies private (pathologies: Set[PreviousPathology] = Set.empty){
+  case class PreviousPathologies private (pathologies: Set[Pathology] = Set.empty){
 
     /**
      * Add new pathology to the previous pathologies.
      * @param previousPathology the pathology to add.
      * @return an updated set of previous pathologies.
      */
-    def addNewPathology(previousPathology: PreviousPathology): PreviousPathologies = PreviousPathologies(this.pathologies + previousPathology)
+    def addNewPathology(previousPathology: Pathology): PreviousPathologies = PreviousPathologies(this.pathologies + previousPathology)
   }
 
   /**
-   * Factory method for PreviousPathologies.
+   * Factory method for domainmodel.PreviousPathologies.
    * @return an empty set of previous pathologies.
    */
   def apply(): PreviousPathologies = PreviousPathologies()

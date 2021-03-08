@@ -16,7 +16,7 @@
  *
  */
 
-package generalinfo
+package domainmodel.generalinfo
 
 import java.time.LocalDate
 
