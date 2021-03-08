@@ -28,7 +28,7 @@ case class Info(value: String)
  *
  * @param value text of description.
  */
-class Description(value: String)
+case class Description(value: String)
 
 
 /**
@@ -36,4 +36,4 @@ class Description(value: String)
  *
  * @param value text of note.
  */
-class Note(value: String)
+case class Note(value: String)

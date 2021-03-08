@@ -14,7 +14,7 @@
  *                              limitations under the License.
  */
 
-package ClinicalDiary
+package MedicalRecords.ClinicalDiary
 
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
