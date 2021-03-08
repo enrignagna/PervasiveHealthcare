@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 if [ -x 'gradlew' ]; then
-    echo 'Detected gradle wrapper, checking for known tasks'
+    echo 'Detected gradle wrapper'
     if ./gradlew tasks | grep '^assemble\s'; then
         echo 'Detected assemble task'
         ./gradlew assemble --parallel
@@ -9,11 +9,10 @@ if [ -x 'gradlew' ]; then
         echo 'Detected build task'
         ./gradlew build --parallel
     else
-        echo 'No known tasks, fall back to the default tasks'
+        echo 'No known tasks'
         ./gradlew
     fi
 else
-    echo 'No valid configuration detected, failing'
-    echo "To fix, provide an *executable* build script "
+    echo 'No configuration detected, build failing'
     exit 1
 fi

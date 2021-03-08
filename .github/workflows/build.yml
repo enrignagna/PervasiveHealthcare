@@ -30,7 +30,7 @@ jobs:
         run: git fetch --tags -f
       - name: Populate TAG and BRANCH environment variables
         shell: bash
-        #Setup in the TAG and in BRANCH TAG environment variable
+        #Setup up TAG and BRANCH TAG environment variable
         run: |
           TAG=$(git describe --tags --exact-match HEAD || echo '')
           echo "Current tag is: '$TAG'"

@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 if [ -x 'gradlew' ]; then
-    echo 'Detected gradle wrapper, checking for known tasks'
+    echo 'Detected gradle wrapper'
     if ./gradlew tasks | grep '^check\s'; then
         echo 'Detected check task'
         ./gradlew check --parallel
@@ -12,5 +12,5 @@ if [ -x 'gradlew' ]; then
         echo 'No known check tasks'
     fi
 else
-    echo 'No valid configuration detected, skipping checks'
+    echo 'No configuration detected, skipping checks'
 fi
