@@ -20,7 +20,7 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-      - name: Fetch tags
+      - name: Fetch tags #Fetch all tags from remote repository
         shell: bash
         run: git fetch --tags -f
       - name: Populate TAG and BRANCH environment variables
@@ -36,7 +36,7 @@ jobs:
       - uses: joschi/setup-jdk@v2.3.0
         with:
           java-version: ${{ matrix.jvm_version }}
-      # Install additional packages
+      # Install additional packages, if are present some specific configurations.
       - name: Configure Linux
         shell: bash
         if: ${{ contains(matrix.os, 'ubuntu') }}
@@ -67,6 +67,7 @@ jobs:
       - name: Check
         shell: bash
         run: .github/build-steps/check.sh
+        #Upload coverage report to Codecov by action "codecov/codecov-action@v1"
       - name: CodeCov
         uses: codecov/codecov-action@v1
         with:
