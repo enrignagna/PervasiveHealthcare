@@ -21,6 +21,7 @@ package server
 import domainmodel.professionalfigure.Specialization._
 import domainmodel.professionalfigure.{DoctorID, Specialization, Surgeon}
 import server.controllers.AdministratorController.CreateSurgeonResponse
+import server.controllers.Surgeons
 import spray.json.{DeserializationException, JsNumber, JsString, JsValue, RootJsonFormat}
 
 object JsonFormats  {
@@ -59,5 +60,6 @@ object JsonFormats  {
 
   implicit val enumConverter: EnumJsonConverter[Specialization.type] = new EnumJsonConverter(Specialization)
   implicit val surgeonJsonFormat: RootJsonFormat[Surgeon] = jsonFormat6(Surgeon)
+  implicit val surgeonsJsonFormat: RootJsonFormat[Surgeons] = jsonFormat1(Surgeons)
 
 }

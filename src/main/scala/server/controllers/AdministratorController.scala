@@ -22,20 +22,28 @@ import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
 import domainmodel.professionalfigure.{Doctor, Surgeon}
 
+//TODO move it to models
+final case class Surgeons(surgeons: Set[Surgeon] = Set.empty)
+
 object AdministratorController {
   // actor protocol
   sealed trait Command
+  final case class GetSurgeons(replyTo: ActorRef[Surgeons]) extends Command
   final case class CreateSurgeon(surgeon: Surgeon, replyTo: ActorRef[CreateSurgeonResponse]) extends Command
 
-  final case class CreateSurgeonResponse(maybeUser: Option[Surgeon])
 
-  def apply(): Behavior[Command] = registry()
+  final case class CreateSurgeonResponse(maybeSurgeon: Option[Surgeon])
 
-  private def registry(): Behavior[Command] =
+  def apply(): Behavior[Command] = registry(Surgeons())
+
+  private def registry(surgeons: Surgeons): Behavior[Command] =
     Behaviors.receiveMessage {
+      case GetSurgeons(replyTo) =>
+        replyTo ! surgeons
+        Behaviors.same
       case CreateSurgeon(surgeon, replyTo) =>
         //TODO check inside the db and than response
         replyTo ! CreateSurgeonResponse(Some(surgeon))
-        Behaviors.same
+        registry(Surgeons(surgeons.surgeons + surgeon))
     }
 }
