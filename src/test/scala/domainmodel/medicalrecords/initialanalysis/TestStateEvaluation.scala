@@ -14,25 +14,37 @@
  *                              limitations under the License.
  */
 
-package domainmodel.medicalrecords.clinicaldiary
+package domainmodel.medicalrecords.initialanalysis
 
-import domainmodel.utility.Info
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner
 
-import java.time.LocalDateTime
-
 @RunWith(classOf[JUnitRunner])
-class TestHealthEvolution extends AnyFreeSpec {
-  val health: HealthEvolution = HealthEvolution(Info("The patient defecated"), LocalDateTime.now())
-  "An healthevolution should have" - {
-    "an information field" in {
-      assert(health.info != null && health.info.equals(Info("The patient defecated")))
+class TestStateEvaluation extends AnyFreeSpec {
+  val stateEvaluation: StateEvaluation = StateEvaluation(
+    Psychological("All OK"),
+    Nutritional("All OK"),
+    Educational("All OK"),
+    Social("All OK")
+  )
+  "A state evaluation should have" - {
+    "an psycological state" in {
+      assert(stateEvaluation.psychological != null)
+      assert(stateEvaluation.psychological.equals(Psychological("All OK")))
+
     }
-    "a date of registration" in {
-      assert(health.dateTime != null)
-      assert(health.dateTime.isInstanceOf[LocalDateTime])
+    "an nutritional state" in {
+      assert(stateEvaluation.nutritional != null)
+      assert(stateEvaluation.nutritional.equals(Nutritional("All OK")))
+    }
+    "an educational state" in {
+      assert(stateEvaluation.educational != null)
+      assert(stateEvaluation.educational.equals(Educational("All OK")))
+    }
+    "an social state" in {
+      assert(stateEvaluation.social != null)
+      assert(stateEvaluation.social.equals(Social("All OK")))
     }
   }
 }

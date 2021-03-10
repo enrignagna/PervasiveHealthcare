@@ -16,7 +16,7 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.professionalfigure.Doctor
+import domainmodel.professionalfigure.DoctorID
 import domainmodel.utility.Description
 
 /**
@@ -24,7 +24,7 @@ import domainmodel.utility.Description
  *
  * @param id id of diagnostic services request.
  */
-class DiagnosticServicesRequestID(id: String)
+case class DiagnosticServicesRequestID(id: String)
 
 /**
  * Form to fill.
@@ -41,7 +41,7 @@ case class Form(value: String)
  * @param doctor      doctor that require of diagnostic services.
  * @param form        form to request.
  */
-case class DiagnosticServicesRequest(id: DiagnosticServicesRequestID, description: Description, doctor: Doctor, form: Form)
+case class DiagnosticServicesRequest(id: DiagnosticServicesRequestID, description: Description, doctorID: DoctorID, form: Form)
 
 
 /**

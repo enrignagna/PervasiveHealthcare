@@ -16,46 +16,23 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.medicalrecords.VitalSigns.VitalSigns
-import domainmodel.utility.Info
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
 import java.time.LocalDateTime
 
-/**
- * Vital sign.
- *
- * @param info information of vital sign.
- * @param date date of registration of vital sign.
- */
-case class VitalSign(info: Info, datetime: LocalDateTime = LocalDateTime.now())
+@RunWith(classOf[JUnitRunner])
+class AdviceRequestTest extends AnyFreeSpec {
+  val adviceRequest: AdviceRequest = AdviceRequest(LocalDateTime.now(), Request("Stop smoke"))
+  "An advice request should have" - {
+    "a date time" in {
+      assert(adviceRequest.datetime != null)
+    }
+    "a request " in {
+      assert(adviceRequest.request != null)
+      assert(adviceRequest.request.value.equals("Stop smoke"))
 
-/**
- * Collection of vital signs.
- */
-object VitalSigns {
-
-  case class VitalSigns private(vitalSigns: Set[VitalSign] = Set.empty) {
-    /**
-     * Method to add new vital sign at the collection.
-     *
-     * @param vitalSign vital sign to add.
-     * @return collection of vital sign.
-     */
-    def addNewVitalSign(vitalSign: VitalSign): VitalSigns = VitalSigns(this.vitalSigns + vitalSign)
+    }
   }
-
-  /**
-   * Apply method.
-   *
-   * @return collection of vital sign.
-   */
-  def apply(): VitalSigns = VitalSigns()
 }
-
-/**
- * Graphics of vital signs.
- *
- * @param vitalSigns vital signs in graphics.
- */
-case class Graphic(vitalSigns: VitalSigns)
-

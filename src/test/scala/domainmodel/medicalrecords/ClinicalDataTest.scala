@@ -14,20 +14,13 @@
  *                              limitations under the License.
  */
 
-package domainmodel.medicalrecords.clinicaldiary
+package domainmodel.medicalrecords
 
-import domainmodel.medicalrecords.clinicaldiary.DiagnosticTreatments.DiagnosticTreatments
-import domainmodel.medicalrecords.clinicaldiary.RehabilitationTreatments.RehabilitationTreatments
-import domainmodel.medicalrecords.clinicaldiary.TherapeuticTreatments.TherapeuticTreatments
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
-/**
- * Clinical diary.
- *
- * @param healthEvolution          evolution of healt of patient.
- * @param diagnosticTreatments     diagnostic treatments made.
- * @param therapeuticTreatments    therapeutic treatments made.
- * @param rehabilitationTreatments rehabilitation treatments made.
- */
-case class ClinicalDiary(healthEvolution: HealthEvolution, diagnosticTreatments: DiagnosticTreatments, therapeuticTreatments: TherapeuticTreatments, rehabilitationTreatments: RehabilitationTreatments) {
-
+@RunWith(classOf[JUnitRunner])
+class ClinicalDataTest extends AnyFreeSpec {
+  //TODO: To implement during implementation of correct code.
 }
