@@ -1,0 +1,24 @@
+name: Website
+
+on: release
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      #Execute control of repository
+      - name: Checkout
+        uses: actions/checkout@v2
+      #Generate scaladoc of the project, through the specific script.
+      - name: Generate documentation
+        shell: bash
+        run: .github/build-steps/docs.sh
+      #Push scaladoc on Github Pages by the action ghaction-github-pages@v2
+      - name: Deploy to GitHub Pages
+        if: success()
+        uses: crazy-max/ghaction-github-pages@v2
+        with:
+          target_branch: gh-pages
+          build_dir: build/docs/scaladoc #Folder of generated scaladoc
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
