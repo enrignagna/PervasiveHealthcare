@@ -14,25 +14,39 @@
  *                              limitations under the License.
  */
 
-package domainmodel.medicalrecords.clinicaldiary
+package domainmodel.medicalrecords
 
-import domainmodel.utility.Info
+import domainmodel.medicalrecords.MedicalSurgicalDevices.MedicalSurgicalDevices
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner
 
-import java.time.LocalDateTime
-
 @RunWith(classOf[JUnitRunner])
-class TestHealthEvolution extends AnyFreeSpec {
-  val health: HealthEvolution = HealthEvolution(Info("The patient defecated"), LocalDateTime.now())
-  "An healthevolution should have" - {
-    "an information field" in {
-      assert(health.info != null && health.info.equals(Info("The patient defecated")))
+class MedicalSurgicalDevicesTest extends AnyFreeSpec {
+
+  val medicalSurgicalDevice: MedicalSurgicalDevice = MedicalSurgicalDevice("scalpel", "newly")
+  "A medical surgical device should have" - {
+    "a name" in {
+      assert(medicalSurgicalDevice.name.nonEmpty)
     }
-    "a date of registration" in {
-      assert(health.dateTime != null)
-      assert(health.dateTime.isInstanceOf[LocalDateTime])
+    "a label" in {
+      assert(medicalSurgicalDevice.label.nonEmpty)
+    }
+  }
+
+  val medicalSurgicalDevices: MedicalSurgicalDevices = MedicalSurgicalDevices()
+
+  "medical surgical devices" - {
+    "should be" - {
+      "a set" in {
+        assert(medicalSurgicalDevices.medicalSurgicalDevices.isInstanceOf[Set[MedicalSurgicalDevice]])
+      }
+      "initially empty" in {
+        assert(medicalSurgicalDevices.medicalSurgicalDevices.isEmpty)
+      }
+    }
+    "can be updated" in {
+      assert(medicalSurgicalDevices.addNewMedicalSurgicalDevice(medicalSurgicalDevice).medicalSurgicalDevices.nonEmpty)
     }
   }
 }

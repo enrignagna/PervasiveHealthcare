@@ -16,35 +16,25 @@
 
 package domainmodel.medicalrecords
 
+import domainmodel.utility.Description
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
-/**
- * Medical surgical device.
- *
- * @param name  name of medical surgical device.
- * @param label label of medical surgical device.
- */
-case class MedicalSurgicalDevice(name: String, label: String)
+import java.time.LocalDateTime
 
-/**
- * Collection of medical surgical device.
- */
-object MedicalSurgicalDevices {
-
-  case class MedicalSurgicalDevices private(medicalSurgicalDevices: Set[MedicalSurgicalDevice] = Set.empty) {
-    /**
-     * Add new medical surgical device.
-     *
-     * @param medicalSurgicalDevice
-     * @return collection of medical surgical device.
-     */
-    def addNewMedicalSurgicalDevice(medicalSurgicalDevice: MedicalSurgicalDevice): MedicalSurgicalDevices =
-      MedicalSurgicalDevices(this.medicalSurgicalDevices + medicalSurgicalDevice)
+@RunWith(classOf[JUnitRunner])
+class PainreliefTest extends AnyFreeSpec {
+  val painrelief: Painrelief =
+    Painrelief(LocalDateTime.now(), Description("One dose at day"))
+  "An painrelief should have" - {
+    "a date time" in {
+      assert(painrelief.datetime != null)
+      assert(painrelief.datetime.isInstanceOf[LocalDateTime])
+    }
+    "a description" in {
+      assert(painrelief.description != null)
+      assert(painrelief.description.equals(Description("One dose at day")))
+    }
   }
-
-  /**
-   * Apply method.
-   *
-   * @return collection of medical surgical device.
-   */
-  def apply(): MedicalSurgicalDevices = MedicalSurgicalDevices()
 }

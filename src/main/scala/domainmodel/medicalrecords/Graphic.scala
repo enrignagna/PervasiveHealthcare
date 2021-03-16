@@ -27,7 +27,7 @@ import java.time.LocalDateTime
  * @param info information of vital sign.
  * @param date date of registration of vital sign.
  */
-case class VitalSign(info: Info, date: LocalDateTime = LocalDateTime.now())
+case class VitalSign(info: Info, datetime: LocalDateTime = LocalDateTime.now())
 
 /**
  * Collection of vital signs.

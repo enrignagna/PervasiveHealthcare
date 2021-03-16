@@ -14,20 +14,29 @@
  *                              limitations under the License.
  */
 
-package domainmodel.medicalrecords.clinicaldiary
+package domainmodel.medicalrecords.initialanalysis
 
-import domainmodel.medicalrecords.clinicaldiary.DiagnosticTreatments.DiagnosticTreatments
-import domainmodel.medicalrecords.clinicaldiary.RehabilitationTreatments.RehabilitationTreatments
-import domainmodel.medicalrecords.clinicaldiary.TherapeuticTreatments.TherapeuticTreatments
 
-/**
- * Clinical diary.
- *
- * @param healthEvolution          evolution of healt of patient.
- * @param diagnosticTreatments     diagnostic treatments made.
- * @param therapeuticTreatments    therapeutic treatments made.
- * @param rehabilitationTreatments rehabilitation treatments made.
- */
-case class ClinicalDiary(healthEvolution: HealthEvolution, diagnosticTreatments: DiagnosticTreatments, therapeuticTreatments: TherapeuticTreatments, rehabilitationTreatments: RehabilitationTreatments) {
+import org.junit.runner.RunWith
+import org.scalatest.freespec.AnyFreeSpec
+import org.scalatestplus.junit.JUnitRunner
+
+@RunWith(classOf[JUnitRunner])
+class TestPhysicalExamination extends AnyFreeSpec {
+  val physicalExamination: PhysicalExamination = PhysicalExamination(
+    HospitalizationMotivation("Hearth attack"),
+    SystemsInvestigation("Electrocardiogram")
+  )
+
+  "A physical examination should have" - {
+    "an hospitalization motivation" in {
+      assert(physicalExamination.hospitalizationMotivation.value != null)
+      assert(physicalExamination.hospitalizationMotivation.value.equals("Hearth attack"))
+    }
+    "a system of investigation" in {
+      assert(physicalExamination.systemsInvestigation.value != null)
+      assert(physicalExamination.systemsInvestigation.isInstanceOf[SystemsInvestigation])
+    }
+  }
 
 }

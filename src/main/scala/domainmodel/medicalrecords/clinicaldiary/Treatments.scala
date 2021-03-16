@@ -16,7 +16,7 @@
 
 package domainmodel.medicalrecords.clinicaldiary
 
-import domainmodel.professionalfigure.Doctor
+import domainmodel.professionalfigure.DoctorID
 import domainmodel.utility.Description
 
 import java.time.LocalDate
@@ -26,9 +26,9 @@ import java.time.LocalDate
  *
  * @param date        date of treatment.
  * @param description description of treatment.
- * @param doctor      doctor that has made treatment.
+ * @param doctorID      doctorID that has made treatment.
  */
-class Treatment(date: LocalDate, description: Description, doctor: Doctor)
+case class Treatment(date: LocalDate, description: Description, doctorID: DoctorID)
 
 //TODO: Pensavo all'ereditarietà, ma ho visto anche questa soluzione
 /**
@@ -36,18 +36,90 @@ class Treatment(date: LocalDate, description: Description, doctor: Doctor)
  *
  * @param treatment treatment executed.
  */
-case class DiagnosticTreatments(treatment: Treatment)
+case class DiagnosticTreatment(treatment: Treatment)
+
+/**
+ * Collection of diagnostic treatments.
+ */
+object DiagnosticTreatments {
+
+  case class DiagnosticTreatments private(diagnosticTreatments: Set[DiagnosticTreatment] = Set.empty) {
+    /**
+     * Method to add new diagnostic treatment at the collection.
+     *
+     * @param diagnosticTreatment diagnostic treatment to add.
+     * @return collection of diagnostic treatment.
+     */
+    def addNewDiagnosticTreatment(diagnosticTreatment: DiagnosticTreatment): DiagnosticTreatments =
+      DiagnosticTreatments(this.diagnosticTreatments + diagnosticTreatment)
+  }
+
+  /**
+   * Apply method.
+   *
+   * @return collection of diagnostic treatments.
+   */
+  def apply(): DiagnosticTreatments = DiagnosticTreatments()
+}
 
 /**
  * Therapeutic Treatments
  *
  * @param treatment treatment executed.
  */
-case class TherapeuticTreatments(treatment: Treatment)
+case class TherapeuticTreatment(treatment: Treatment)
+
+/**
+ * Collection of therapeutic treatments.
+ */
+object TherapeuticTreatments {
+
+  case class TherapeuticTreatments private(therapeuticTreatments: Set[TherapeuticTreatment] = Set.empty) {
+    /**
+     * Method to add new therapeutic treatment at the collection.
+     *
+     * @param therapeuticTreatment therapeutic treatment to add.
+     * @return collection of therapeutic treatment.
+     */
+    def addNewTherapeuticTreatment(therapeuticTreatment: TherapeuticTreatment): TherapeuticTreatments =
+      TherapeuticTreatments(this.therapeuticTreatments + therapeuticTreatment)
+  }
+
+  /**
+   * Apply method.
+   *
+   * @return collection of therapeutic treatments.
+   */
+  def apply(): TherapeuticTreatments = TherapeuticTreatments()
+}
 
 /**
  * Rehabilitation Treatments
  *
  * @param treatment treatment executed.
  */
-case class RehabilitationTreatments(treatment: Treatment)
+case class RehabilitationTreatment(treatment: Treatment)
+
+/**
+ * Collection of rehabilitation treatments.
+ */
+object RehabilitationTreatments {
+
+  case class RehabilitationTreatments private(rehabilitationTreatments: Set[RehabilitationTreatment] = Set.empty) {
+    /**
+     * Method to add new rehabilitation treatment at the collection.
+     *
+     * @param rehabilitationTreatment rehabilitation treatment to add.
+     * @return collection of rehabilitation treatment.
+     */
+    def addNewRehabilitationTreatment(rehabilitationTreatment: RehabilitationTreatment): RehabilitationTreatments =
+      RehabilitationTreatments(this.rehabilitationTreatments + rehabilitationTreatment)
+  }
+
+  /**
+   * Apply method.
+   *
+   * @return collection of rehabilitation treatment.
+   */
+  def apply(): RehabilitationTreatments = RehabilitationTreatments()
+}

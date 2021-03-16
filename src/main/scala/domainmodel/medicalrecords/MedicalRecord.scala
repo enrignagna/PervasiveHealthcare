@@ -16,15 +16,34 @@
 
 package domainmodel.medicalrecords
 
+import domainmodel.medicalrecords.DiagnosticServicesRequests.DiagnosticServicesRequests
+import domainmodel.medicalrecords.MedicalSurgicalDevices.MedicalSurgicalDevices
+import domainmodel.medicalrecords.PainreliefHistory.PainreliefHistory
+import domainmodel.medicalrecords.Reports.Reports
+import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
+import domainmodel.medicalrecords.initialanalysis.InitialAnalysis
+
 import java.util.UUID
 
 //TODO: Implement medical records.
 case class MedicalRecordsID(value: UUID)
 
 
+case class MedicalRecord(
+                          medicalRecordID: MedicalRecordsID,
+                          initialAnalysis: InitialAnalysis,
+                          clinicalDiary: ClinicalDiary,
+                          diagnosticServicesRequests: DiagnosticServicesRequests,
+                          graphic: Graphic,
+                          painreliefHistory: PainreliefHistory,
+                          singleSheetTherapy: SingleSheetTherapy,
+                          adviceRequest: AdviceRequest,
+                          reports: Reports,
+                          operatingReports: OperatingReports,
+                          nursingDocumentation: NursingDocumentation,
+                          anesthesiologyRecord: AnesthesiologyRecord,
+                          medicalSurgicalDevices: MedicalSurgicalDevices,
+                          dischargeLetter: DischargeLetter) {}
 
 
-trait MedicalRecord{
-
-}
 

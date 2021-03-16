@@ -16,35 +16,11 @@
 
 package domainmodel.medicalrecords
 
+import org.junit.runner.RunWith
+import org.scalatest.freespec._
+import org.scalatestplus.junit.JUnitRunner
 
-/**
- * Medical surgical device.
- *
- * @param name  name of medical surgical device.
- * @param label label of medical surgical device.
- */
-case class MedicalSurgicalDevice(name: String, label: String)
-
-/**
- * Collection of medical surgical device.
- */
-object MedicalSurgicalDevices {
-
-  case class MedicalSurgicalDevices private(medicalSurgicalDevices: Set[MedicalSurgicalDevice] = Set.empty) {
-    /**
-     * Add new medical surgical device.
-     *
-     * @param medicalSurgicalDevice
-     * @return collection of medical surgical device.
-     */
-    def addNewMedicalSurgicalDevice(medicalSurgicalDevice: MedicalSurgicalDevice): MedicalSurgicalDevices =
-      MedicalSurgicalDevices(this.medicalSurgicalDevices + medicalSurgicalDevice)
-  }
-
-  /**
-   * Apply method.
-   *
-   * @return collection of medical surgical device.
-   */
-  def apply(): MedicalSurgicalDevices = MedicalSurgicalDevices()
+@RunWith(classOf[JUnitRunner])
+class ClinicalDataTest extends AnyFreeSpec {
+  //TODO: To implement during implementation of correct code.
 }
