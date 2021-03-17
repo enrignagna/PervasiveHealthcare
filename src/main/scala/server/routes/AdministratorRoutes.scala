@@ -30,7 +30,7 @@ import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.professionalfigure.Surgeon
 import server.controllers.{AdministratorController, Surgeons}
-import server.controllers.AdministratorController.{CreateSurgeon, CreateSurgeonResponse, GetSurgeons}
+import server.controllers.AdministratorController.{ActionPerformed, GetSurgeons, InsertSurgeon, UpdateSurgeon}
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
@@ -44,8 +44,10 @@ class AdministratorRoutes(administratorController: ActorRef[AdministratorControl
 
   def getSurgeons(): Future[Surgeons] =
     administratorController.ask(GetSurgeons)
-  def createSurgeon(surgeon: Surgeon): Future[CreateSurgeonResponse] =
-    administratorController.ask(CreateSurgeon(surgeon, _))
+  def insertSurgeon(surgeon: Surgeon): Future[ActionPerformed] =
+    administratorController.ask(InsertSurgeon(surgeon, _))
+  def updateSurgeon(id: String, surgeon: Surgeon): Future[ActionPerformed] =
+    administratorController.ask(UpdateSurgeon(id, surgeon, _))
 
   val administratorRoutes: Route =
   pathPrefix("surgeons") {
@@ -57,12 +59,26 @@ class AdministratorRoutes(administratorController: ActorRef[AdministratorControl
           },
           post {
             entity(as[Surgeon]) { surgeon =>
-              onSuccess(createSurgeon(surgeon)) { response =>
-                complete(StatusCodes.Created, response.maybeSurgeon)
+              onSuccess(insertSurgeon(surgeon)) { response =>
+                complete(StatusCodes.Created, response.description)
               }
             }
-          })
-      })
+          },
+
+        )
+      },
+      path(Segment){
+        id => concat(
+          put {
+            entity(as[Surgeon]) { surgeon =>
+              onSuccess(updateSurgeon(id, surgeon)) { response =>
+                complete(StatusCodes.OK, response.description)
+              }
+            }
+          }
+        )
+      }
+    )
   }
 
 }

@@ -20,7 +20,8 @@ package server.controllers
 
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
-import domainmodel.professionalfigure.{Doctor, Surgeon}
+import database.AdminCRUD
+import domainmodel.professionalfigure.{Doctor, DoctorID, Surgeon}
 
 //TODO move it to models
 final case class Surgeons(surgeons: Set[Surgeon] = Set.empty)
@@ -29,21 +30,26 @@ object AdministratorController {
   // actor protocol
   sealed trait Command
   final case class GetSurgeons(replyTo: ActorRef[Surgeons]) extends Command
-  final case class CreateSurgeon(surgeon: Surgeon, replyTo: ActorRef[CreateSurgeonResponse]) extends Command
+  final case class InsertSurgeon(surgeon: Surgeon, replyTo: ActorRef[ActionPerformed]) extends Command
+  final case class UpdateSurgeon(id: String, surgeon: Surgeon, replyTo: ActorRef[ActionPerformed]) extends Command
 
 
-  final case class CreateSurgeonResponse(maybeSurgeon: Option[Surgeon])
+  final case class ActionPerformed(description: String)
 
-  def apply(): Behavior[Command] = registry(Surgeons())
+  def apply(): Behavior[Command] = registry()
 
-  private def registry(surgeons: Surgeons): Behavior[Command] =
+  private def registry(): Behavior[Command] =
     Behaviors.receiveMessage {
-      case GetSurgeons(replyTo) =>
-        replyTo ! surgeons
-        Behaviors.same
-      case CreateSurgeon(surgeon, replyTo) =>
+
+      case InsertSurgeon(surgeon, replyTo) =>
         //TODO check inside the db and than response
-        replyTo ! CreateSurgeonResponse(Some(surgeon))
-        registry(Surgeons(surgeons.surgeons + surgeon))
+        val res = AdminCRUD.insertSurgeon(surgeon)
+        replyTo ! ActionPerformed(res)
+        registry()
+      case UpdateSurgeon(id, surgeon, replyTo) =>
+        val res = AdminCRUD.updateSurgeon(DoctorID(id), surgeon)
+        replyTo ! ActionPerformed(res)
+        registry()
+      case _ => registry()
     }
 }
