@@ -20,7 +20,6 @@ package server
 
 import domainmodel.professionalfigure.Specialization._
 import domainmodel.professionalfigure.{DoctorID, Specialization, Surgeon}
-import server.controllers.AdministratorController.CreateSurgeonResponse
 import server.controllers.Surgeons
 import spray.json.{DeserializationException, JsNumber, JsString, JsValue, RootJsonFormat}
 
