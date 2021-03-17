@@ -27,3 +27,27 @@ import java.time.LocalDateTime
  * @param description description of administration.
  */
 case class Painrelief(datetime: LocalDateTime = LocalDateTime.now(), description: Description)
+
+
+object PainreliefHistory {
+
+  case class PainreliefHistory private(painreliefs: Set[Painrelief] = Set.empty) {
+
+    /**
+     * Add new painreief .
+     *
+     * @param drug painrelief to add.
+     * @return collection of painreliefs.
+     */
+    def addNewPainrelief(painrelief: Painrelief): PainreliefHistory = PainreliefHistory(this.painreliefs + painrelief)
+
+
+  }
+
+  /**
+   * Apply method.
+   *
+   * @return collection of painreiefs.
+   */
+  def apply(): PainreliefHistory = PainreliefHistory()
+}

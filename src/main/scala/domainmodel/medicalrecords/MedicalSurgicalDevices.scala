@@ -17,7 +17,6 @@
 package domainmodel.medicalrecords
 
 
-//TODO: label abbiamo definita mockata.
 /**
  * Medical surgical device.
  *
