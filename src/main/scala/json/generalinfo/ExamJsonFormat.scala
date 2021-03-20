@@ -16,24 +16,18 @@
  *
  */
 
-package database
+package json.generalinfo
 
-import java.util.concurrent.TimeUnit
+import domainmodel.generalinfo.ExamHistory.ExamHistory
+import domainmodel.generalinfo.{Exam, ExamDate, ExamInfo, ExamReport}
+import json.LocalDateJsonFormat.DateFormat
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat3}
+import spray.json.RootJsonFormat
 
-import database.Helpers.GenericObservable
-import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase, Observable}
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.Updates.set
-
-object WriteModel {
-
-  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
-
-  val doctorsCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("doctors")
-
-
+object ExamJsonFormat {
+  implicit val examDateJsonFormat: RootJsonFormat[ExamDate] = jsonFormat1(ExamDate)
+  implicit val examReportJsonFormat: RootJsonFormat[ExamReport] = jsonFormat1(ExamReport)
+  implicit val examInfoJsonFormat: RootJsonFormat[ExamInfo] = jsonFormat1(ExamInfo)
+  implicit val examJsonFormat: RootJsonFormat[Exam] = jsonFormat3(Exam)
+  implicit val examHistoryJsonFormat: RootJsonFormat[ExamHistory] = jsonFormat1(ExamHistory)
 }
-
-

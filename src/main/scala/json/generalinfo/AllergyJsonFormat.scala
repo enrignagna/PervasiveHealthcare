@@ -16,24 +16,19 @@
  *
  */
 
-package database
+package json.generalinfo
 
-import java.util.concurrent.TimeUnit
+import domainmodel.generalinfo.Allergies.Allergies
+import domainmodel.generalinfo.{Allergy, AllergyClass, AllergyDescription}
+import json.EnumerationJsonFormat.EnumJsonConverter
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat2}
+import spray.json.RootJsonFormat
 
-import database.Helpers.GenericObservable
-import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase, Observable}
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.Updates.set
+object AllergyJsonFormat {
+  implicit val allergyClassJsonFormat: EnumJsonConverter[AllergyClass.type] = new EnumJsonConverter(AllergyClass)
 
-object WriteModel {
+  implicit val allergyDescriptionJsonFormat: RootJsonFormat[AllergyDescription] = jsonFormat1(AllergyDescription)
+  implicit val allergyJsonFormat: RootJsonFormat[Allergy] = jsonFormat2(Allergy)
 
-  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
-
-  val doctorsCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("doctors")
-
-
+  implicit val allergiesJsonFormat: RootJsonFormat[Allergies] = jsonFormat1(Allergies)
 }
-
-

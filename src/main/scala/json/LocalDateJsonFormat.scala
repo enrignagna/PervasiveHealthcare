@@ -16,24 +16,25 @@
  *
  */
 
-package database
+package json
 
-import java.util.concurrent.TimeUnit
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-import database.Helpers.GenericObservable
-import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase, Observable}
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.Updates.set
+import spray.json.{JsString, JsValue, RootJsonFormat, deserializationError}
 
-object WriteModel {
+object LocalDateJsonFormat {
+  implicit object DateFormat extends RootJsonFormat[LocalDate] {
 
-  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
 
-  val doctorsCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("doctors")
+    override def write(date: LocalDate): JsValue = {
+      JsString(date.format(formatter))
+    }
 
-
+    override def read(json: JsValue): LocalDate = json match {
+      case JsString(s) => LocalDate.parse(s, formatter)
+      case error => deserializationError(s"Expected JsString, got $error")
+    }
+  }
 }
-
-

@@ -16,24 +16,17 @@
  *
  */
 
-package database
+package json.generalinfo
 
-import java.util.concurrent.TimeUnit
+import domainmodel.generalinfo.{BloodGroup, BloodType, Rh}
+import json.EnumerationJsonFormat.EnumJsonConverter
+import spray.json.DefaultJsonProtocol.jsonFormat2
+import spray.json.RootJsonFormat
 
-import database.Helpers.GenericObservable
-import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase, Observable}
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.Updates.set
+object BloodGroupJsonFormat {
+  implicit val bloodTypeJsonFormat: EnumJsonConverter[BloodType.type] = new EnumJsonConverter(BloodType)
+  implicit val rhJsonFormat: EnumJsonConverter[Rh.type] = new EnumJsonConverter(Rh)
 
-object WriteModel {
-
-  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
-
-  val doctorsCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("doctors")
-
+  implicit val bloodGroupJsonFormat: RootJsonFormat[BloodGroup] = jsonFormat2(BloodGroup)
 
 }
-
-

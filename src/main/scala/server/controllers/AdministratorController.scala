@@ -20,7 +20,7 @@ package server.controllers
 
 import akka.actor.typed.scaladsl.Behaviors
 import akka.actor.typed.{ActorRef, Behavior}
-import database.AdminCRUD
+import database.{AdminCRUD, Repository}
 import domainmodel.professionalfigure.{Doctor, DoctorID, Surgeon}
 
 //TODO move it to models
@@ -43,11 +43,11 @@ object AdministratorController {
 
       case InsertSurgeon(surgeon, replyTo) =>
         //TODO check inside the db and than response
-        val res = AdminCRUD.insertSurgeon(surgeon)
+        val res = Repository.adminRepository.insertSurgeon(surgeon)
         replyTo ! ActionPerformed(res)
         registry()
       case UpdateSurgeon(id, surgeon, replyTo) =>
-        val res = AdminCRUD.updateSurgeon(DoctorID(id), surgeon)
+        val res = Repository.adminRepository.updateSurgeon(DoctorID(id), surgeon)
         replyTo ! ActionPerformed(res)
         registry()
       case _ => registry()
