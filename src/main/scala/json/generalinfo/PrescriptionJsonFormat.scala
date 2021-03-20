@@ -16,24 +16,17 @@
  *
  */
 
-package database
+package json.generalinfo
 
-import java.util.concurrent.TimeUnit
+import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
+import domainmodel.generalinfo.{Prescription, PrescriptionDate, PrescriptionInfo}
+import json.LocalDateJsonFormat.DateFormat
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat2}
+import spray.json.RootJsonFormat
 
-import database.Helpers.GenericObservable
-import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase, Observable}
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.Updates.set
-
-object WriteModel {
-
-  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
-
-  val doctorsCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("doctors")
-
-
+object PrescriptionJsonFormat {
+  implicit val prescriptionDateJsonFormat: RootJsonFormat[PrescriptionDate] = jsonFormat1(PrescriptionDate)
+  implicit val prescriptionInfoJsonFormat: RootJsonFormat[PrescriptionInfo] = jsonFormat1(PrescriptionInfo)
+  implicit val prescriptionJsonFormat: RootJsonFormat[Prescription] = jsonFormat2(Prescription)
+  implicit val prescriptionHistoryJsonFormat: RootJsonFormat[PrescriptionHistory] = jsonFormat1(PrescriptionHistory)
 }
-
-

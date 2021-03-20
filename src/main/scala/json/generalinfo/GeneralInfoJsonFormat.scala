@@ -16,24 +16,19 @@
  *
  */
 
-package database
+package json.generalinfo
 
-import java.util.concurrent.TimeUnit
+import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
+import json.PathologyJsonFormat.previousPathologiesJsonFormat
+import json.generalinfo.AllergyJsonFormat.allergiesJsonFormat
+import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
+import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
+import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
+import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
+import spray.json.RootJsonFormat
 
-import database.Helpers.GenericObservable
-import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase, Observable}
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.Updates.set
-
-object WriteModel {
-
-  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
-
-  val doctorsCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("doctors")
-
-
+object GeneralInfoJsonFormat {
+  implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
+  implicit val heightJsonFormat: RootJsonFormat[Height] = jsonFormat1(Height)
+  implicit val prescriptionJsonFormat: RootJsonFormat[GeneralInfo] = jsonFormat7(GeneralInfo)
 }
-
-

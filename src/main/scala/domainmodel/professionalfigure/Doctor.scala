@@ -21,8 +21,7 @@ import domainmodel.professionalfigure.Specialization.Specialization
 
 case class DoctorID(value: String)
 
-
-abstract class Doctor() {
+trait Doctor {
   val doctorID: DoctorID
   val name: String
   val surname: String

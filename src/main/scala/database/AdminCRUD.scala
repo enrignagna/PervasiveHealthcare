@@ -20,31 +20,26 @@ package database
 
 import java.util.concurrent.TimeUnit
 
-import com.mongodb.client.model.Filters
-import com.mongodb.client.model.Updates.set
-import database.Helpers.GenericObservable
-import database.WriteModel.surgeonsCollection
-import domainmodel.professionalfigure.{DoctorID, Surgeon}
-import org.mongodb.scala.Observer
+import database.WriteModel.{doctorsCollection}
+import domainmodel.professionalfigure.{Anesthetist, DoctorID, Instrumentalist, Surgeon}
+import json.professionalfigure.ProfessionalFigureJsonFormat.{AnesthetistJsonFormat, InstrumentalistJsonFormat, SurgeonJsonFormat, doctorIDJsonFormat}
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.result.InsertOneResult
-import server.JsonFormats._
 import spray.json.enrichAny
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
-object AdminCRUD {
+class AdminCRUD {
 
   def insertSurgeon(surgeon: Surgeon): String = {
     val document: BsonDocument = BsonDocument.apply(surgeon.toJson.compactPrint)
 
-    val res: Seq[BsonDocument] = Await.result(surgeonsCollection.find(
+    val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
       equal("doctorID", document.get("doctorID"))).toFuture(),
       Duration(1, TimeUnit.SECONDS))
     if(res.isEmpty){
-      Await.result(surgeonsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
       "Surgeon created."
     } else{
       "Error! Surgeon with the same doctorID already exists!"
@@ -54,9 +49,57 @@ object AdminCRUD {
   def updateSurgeon(doctorID: DoctorID, surgeon: Surgeon): String = {
     val document: BsonDocument = BsonDocument.apply(surgeon.toJson.compactPrint)
     val id: BsonDocument = BsonDocument.apply(doctorID.toJson.compactPrint)
-    Await.result(surgeonsCollection.findOneAndReplace(
+    Await.result(doctorsCollection.findOneAndReplace(
       equal("doctorID", id), document).toFuture(),
-      Duration(10, TimeUnit.SECONDS))
+      Duration(1, TimeUnit.SECONDS))
     "Surgeon updated."
   }
+
+  def insertAnesthetist(anesthetist: Anesthetist): String = {
+    val document: BsonDocument = BsonDocument.apply(anesthetist.toJson.compactPrint)
+
+    val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
+      equal("doctorID", document.get("doctorID"))).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if(res.isEmpty){
+      Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      "Anesthetist created."
+    } else{
+      "Error! Anesthetist with the same doctorID already exists!"
+    }
+  }
+
+  def updateAnesthetist(doctorID: DoctorID, anesthetist: Anesthetist): String = {
+    val document: BsonDocument = BsonDocument.apply(anesthetist.toJson.compactPrint)
+    val id: BsonDocument = BsonDocument.apply(doctorID.toJson.compactPrint)
+    Await.result(doctorsCollection.findOneAndReplace(
+      equal("doctorID", id), document).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    "Anesthetist updated."
+  }
+
+  def insertInstrumentalist(instrumentalist: Instrumentalist): String = {
+    val document: BsonDocument = BsonDocument.apply(instrumentalist.toJson.compactPrint)
+
+    val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
+      equal("doctorID", document.get("doctorID"))).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if(res.isEmpty){
+      Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      "Instrumentalist created."
+    } else{
+      "Error! Instrumentalist with the same doctorID already exists!"
+    }
+  }
+
+  def updateInstrumentalist(doctorID: DoctorID, instrumentalist: Instrumentalist): String = {
+    val document: BsonDocument = BsonDocument.apply(instrumentalist.toJson.compactPrint)
+    val id: BsonDocument = BsonDocument.apply(doctorID.toJson.compactPrint)
+    Await.result(doctorsCollection.findOneAndReplace(
+      equal("doctorID", id), document).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    "Instrumentalist updated."
+  }
+
+
 }

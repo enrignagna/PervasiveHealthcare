@@ -29,6 +29,7 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.professionalfigure.Surgeon
+import json.professionalfigure.ProfessionalFigureJsonFormat.{SurgeonJsonFormat, surgeonsJsonFormat}
 import server.controllers.{AdministratorController, Surgeons}
 import server.controllers.AdministratorController.{ActionPerformed, GetSurgeons, InsertSurgeon, UpdateSurgeon}
 
@@ -40,7 +41,6 @@ class AdministratorRoutes(administratorController: ActorRef[AdministratorControl
   private implicit val timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-  import server.JsonFormats._
 
   def getSurgeons(): Future[Surgeons] =
     administratorController.ask(GetSurgeons)

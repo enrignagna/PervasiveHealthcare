@@ -16,24 +16,9 @@
  *
  */
 
-package database
+package domainmodel.professionalfigure
 
-import java.util.concurrent.TimeUnit
-
-import database.Helpers.GenericObservable
-import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase, Observable}
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.Updates.set
-
-object WriteModel {
-
-  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
-
-  val doctorsCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("doctors")
-
-
+object Role extends Enumeration {
+  type Role = Value
+  val PATIENT, GENERAL_PRACTITIONER, SURGEON, ANESTHETIST, INSTRUMENTALIST = Value //TODO soccorritor
 }
-
-

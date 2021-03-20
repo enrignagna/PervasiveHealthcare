@@ -16,21 +16,11 @@
  *
  */
 
-package server
+package json
 
-import domainmodel.professionalfigure.Specialization._
-import domainmodel.professionalfigure.{DoctorID, Specialization, Surgeon}
-import server.controllers.Surgeons
-import spray.json.{DeserializationException, JsNumber, JsString, JsValue, RootJsonFormat}
+import spray.json.{DeserializationException, JsNumber, JsValue, RootJsonFormat}
 
-object JsonFormats  {
-  // import the default encoders for primitive types (Int, String, Lists etc)
-  import spray.json.DefaultJsonProtocol._
-
-  implicit val doctorIDJsonFormat: RootJsonFormat[DoctorID] = jsonFormat1(DoctorID)
-
-  //With ID, i prefer
-
+object EnumerationJsonFormat {
   class EnumJsonConverter[T <: scala.Enumeration](enu: T) extends RootJsonFormat[T#Value] {
     override def write(obj: T#Value): JsValue = JsNumber(obj.id)
 
@@ -41,24 +31,5 @@ object JsonFormats  {
       }
     }
   }
-
-  //With string
-
-  /*
-  class EnumJsonConverter[T <: scala.Enumeration](enu: T) extends RootJsonFormat[T#Value] {
-    override def write(obj: T#Value): JsValue = JsString(obj.toString)
-
-    override def read(json: JsValue): T#Value = {
-      json match {
-        case JsString(txt) => enu.withName(txt)
-        case somethingElse => throw DeserializationException(s"Expected a value from enum $enu instead of $somethingElse")
-      }
-    }
-  }
-  */
-
-  implicit val enumConverter: EnumJsonConverter[Specialization.type] = new EnumJsonConverter(Specialization)
-  implicit val surgeonJsonFormat: RootJsonFormat[Surgeon] = jsonFormat6(Surgeon)
-  implicit val surgeonsJsonFormat: RootJsonFormat[Surgeons] = jsonFormat1(Surgeons)
 
 }

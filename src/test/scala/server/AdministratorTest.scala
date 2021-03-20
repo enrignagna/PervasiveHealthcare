@@ -46,7 +46,6 @@ class AdministratorTest extends AnyFreeSpec with Matchers with ScalaFutures with
   lazy val routes: Route = new AdministratorRoutes(administratorController).administratorRoutes
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-  import server.JsonFormats._
 
   "AdministratorRoute should" - {
     "return no surgeon if no present (GET /surgeons)" in {
