@@ -27,7 +27,7 @@ import java.time.LocalDateTime
 @RunWith(classOf[JUnitRunner])
 class AnesthesiologyRecordTest extends AnyFreeSpec {
   val anesthesiologyRecord: AnesthesiologyRecord = AnesthesiologyRecord(
-    Anesthetist(HospitalStaffID("AJBDIB"), "Luigi", "Marcelli", "4325467389", "marcelli@doctor.it"),
+    Anesthetist(HospitalStaffID("AJBDIB"), "Luigi", "Marcelli", "4325467389", "marcelli@doctor.it", "102/110"),
     OperationEvaluation(
       AnestheticCard(LocalDateTime.now(), Description("Total Anesthetic")),
       PostOperationEvaluation(LocalDateTime.now(), Description("All OK"))

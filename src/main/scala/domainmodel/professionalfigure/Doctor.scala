@@ -19,9 +19,6 @@ package domainmodel.professionalfigure
 import domainmodel.professionalfigure.Specialization.Specialization
 
 
-case class HospitalStaffID(value: String)
-
-
 abstract class Doctor() {
   val hospitalStaffID: HospitalStaffID
   val name: String

@@ -74,7 +74,7 @@ case class SdoCompilation(value: String)
 /**
  * Pharmacological Therapy.
  *
- * @param doctor      doctor that administrated this.
+ * @param doctorID      doctor that administrated this.
  * @param datetime    date and time of administration.
  * @param description description of pharmacological therapy.
  * @param initialDate initial date to administration.
