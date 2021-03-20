@@ -17,7 +17,7 @@
 package domainmodel.medicalrecords
 
 import domainmodel.medicalrecords.PharmacologicalTherapies.PharmacologicalTherapies
-import domainmodel.professionalfigure.DoctorID
+import domainmodel.professionalfigure.HospitalStaffID
 import domainmodel.utility.Description
 
 import java.time.{LocalDate, LocalDateTime}
@@ -81,7 +81,7 @@ case class SdoCompilation(value: String)
  * @param finalDate   final date to administration.
  */
 case class PharmacologicalTherapy(
-                                   doctorID: DoctorID,
+                                   doctorID: HospitalStaffID,
                                    datetime: LocalDateTime = LocalDateTime.now(),
                                    description: Description,
                                    initialDate: LocalDate,

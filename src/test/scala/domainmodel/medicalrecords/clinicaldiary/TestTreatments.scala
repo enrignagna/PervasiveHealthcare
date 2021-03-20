@@ -19,7 +19,7 @@ package domainmodel.medicalrecords.clinicaldiary
 import domainmodel.medicalrecords.clinicaldiary.DiagnosticTreatments.DiagnosticTreatments
 import domainmodel.medicalrecords.clinicaldiary.RehabilitationTreatments.RehabilitationTreatments
 import domainmodel.medicalrecords.clinicaldiary.TherapeuticTreatments.TherapeuticTreatments
-import domainmodel.professionalfigure.DoctorID
+import domainmodel.professionalfigure.HospitalStaffID
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
@@ -30,7 +30,7 @@ import java.time.LocalDate
 @RunWith(classOf[JUnitRunner])
 class TestTreatments extends AnyFreeSpec {
   val diagnostic: DiagnosticTreatment = DiagnosticTreatment(
-    Treatment(LocalDate.now(), Description("X-Ray"), DoctorID("KUGDBIUB!$"))
+    Treatment(LocalDate.now(), Description("X-Ray"), HospitalStaffID("KUGDBIUB!$"))
   )
 
 
@@ -47,7 +47,7 @@ class TestTreatments extends AnyFreeSpec {
   }
 
   val therapeutic: TherapeuticTreatment = TherapeuticTreatment(
-    Treatment(LocalDate.now(), Description("Physiotherapy"), DoctorID("YVDII!$"))
+    Treatment(LocalDate.now(), Description("Physiotherapy"), HospitalStaffID("YVDII!$"))
   )
 
   "A therapeutic treatment should have" - {
@@ -63,7 +63,7 @@ class TestTreatments extends AnyFreeSpec {
   }
 
   val rehabilitation: RehabilitationTreatment = RehabilitationTreatment(
-    Treatment(LocalDate.now(), Description("X-Ray"), DoctorID("KUGDBIUB!$"))
+    Treatment(LocalDate.now(), Description("X-Ray"), HospitalStaffID("KUGDBIUB!$"))
   )
 
 

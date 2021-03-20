@@ -25,7 +25,6 @@ import domainmodel.medicalrecords.initialanalysis.InitialAnalysis
 
 import java.util.UUID
 
-//TODO: Implement medical records.
 case class MedicalRecordsID(value: UUID)
 
 
@@ -46,4 +45,26 @@ case class MedicalRecord(
                           dischargeLetter: DischargeLetter) {}
 
 
+/**
+ * Collection of medical records.
+ */
+object MedicalRecords {
 
+  case class MedicalRecords private(medicalRecords: Set[MedicalRecord] = Set.empty) {
+
+    /**
+     * Add new medical records.
+     *
+     * @param medicalRecord medical record to add.
+     * @return collection of medical records.
+     */
+    def addNewMedicalRecord(medicalRecord: MedicalRecord): MedicalRecords = MedicalRecords(this.medicalRecords + medicalRecord)
+  }
+
+  /**
+   * Apply method.
+   *
+   * @return collection of medical records.
+   */
+  def apply(): MedicalRecords = MedicalRecords()
+}

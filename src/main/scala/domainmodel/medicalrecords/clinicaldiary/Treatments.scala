@@ -16,7 +16,7 @@
 
 package domainmodel.medicalrecords.clinicaldiary
 
-import domainmodel.professionalfigure.DoctorID
+import domainmodel.professionalfigure.HospitalStaffID
 import domainmodel.utility.Description
 
 import java.time.LocalDate
@@ -28,7 +28,7 @@ import java.time.LocalDate
  * @param description description of treatment.
  * @param doctorID      doctorID that has made treatment.
  */
-case class Treatment(date: LocalDate, description: Description, doctorID: DoctorID)
+case class Treatment(date: LocalDate, description: Description, doctorID: HospitalStaffID)
 
 //TODO: Pensavo all'ereditarietà, ma ho visto anche questa soluzione
 /**

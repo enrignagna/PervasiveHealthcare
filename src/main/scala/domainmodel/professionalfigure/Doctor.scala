@@ -19,16 +19,18 @@ package domainmodel.professionalfigure
 import domainmodel.professionalfigure.Specialization.Specialization
 
 
-case class DoctorID(value: String)
+case class HospitalStaffID(value: String)
 
 
 abstract class Doctor() {
-  val doctorID: DoctorID
+  val hospitalStaffID: HospitalStaffID
   val name: String
   val surname: String
   val phoneNumber: String
   val email: String
+  val medicalDegreeGrade: String
 }
+
 
 object Specialization extends Enumeration {
   type Specialization = Value
@@ -36,34 +38,32 @@ object Specialization extends Enumeration {
   VASCULAR_SURGERY = Value
 }
 
+
 case class Surgeon(
-                    override val doctorID: DoctorID,
+                    override val hospitalStaffID: HospitalStaffID,
                     override val name: String,
                     override val surname: String,
                     override val phoneNumber: String,
                     override val email: String,
-                    specialization: Specialization) extends Doctor {
-
-}
+                    override val medicalDegreeGrade: String,
+                    specialization: Specialization) extends Doctor
 
 
 case class Anesthetist(
-                        override val doctorID: DoctorID,
+                        override val hospitalStaffID: HospitalStaffID,
                         override val name: String,
                         override val surname: String,
                         override val phoneNumber: String,
                         override val email: String,
-                      ) extends Doctor {
+                        override val medicalDegreeGrade: String
+                      ) extends Doctor
 
-}
 
-
-case class Instrumentalist(
-                            override val doctorID: DoctorID,
-                            override val name: String,
-                            override val surname: String,
-                            override val phoneNumber: String,
-                            override val email: String,
-                          ) extends Doctor {
-
-}
+case class GeneralPractitioner(
+                                override val hospitalStaffID: HospitalStaffID,
+                                override val name: String,
+                                override val surname: String,
+                                override val phoneNumber: String,
+                                override val email: String,
+                                override val medicalDegreeGrade: String
+                              ) extends Doctor
