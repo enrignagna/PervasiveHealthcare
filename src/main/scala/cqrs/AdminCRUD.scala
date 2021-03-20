@@ -16,26 +16,22 @@
  *
  */
 
-package database
+package cqrs
 
-import java.util.concurrent.TimeUnit
-
-import com.mongodb.client.model.Filters
-import com.mongodb.client.model.Updates.set
-import database.Helpers.GenericObservable
-import database.WriteModel.surgeonsCollection
+import cqrs.WriteModel.surgeonsCollection
 import domainmodel.professionalfigure.{DoctorID, Surgeon}
-import org.mongodb.scala.Observer
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.result.InsertOneResult
 import server.JsonFormats._
 import spray.json.enrichAny
 
+import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
 object AdminCRUD {
+  def removeSurgeon(surgeon: Surgeon): String = ???
+
 
   def insertSurgeon(surgeon: Surgeon): String = {
     val document: BsonDocument = BsonDocument.apply(surgeon.toJson.compactPrint)
@@ -43,10 +39,10 @@ object AdminCRUD {
     val res: Seq[BsonDocument] = Await.result(surgeonsCollection.find(
       equal("doctorID", document.get("doctorID"))).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    if(res.isEmpty){
+    if (res.isEmpty) {
       Await.result(surgeonsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
       "Surgeon created."
-    } else{
+    } else {
       "Error! Surgeon with the same doctorID already exists!"
     }
   }

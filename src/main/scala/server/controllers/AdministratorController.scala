@@ -19,26 +19,36 @@
 package server.controllers
 
 import akka.actor.typed.Behavior
-import akka.persistence.typed.scaladsl.EventSourcedBehavior
 import akka.persistence.typed.PersistenceId
-import akka.persistence.typed.scaladsl.Effect
-import database.AdminCRUD
+import akka.persistence.typed.scaladsl.{Effect, EventSourcedBehavior}
+import cqrs.AdminCRUD
+import cqrs.readmodel.ReadModel
 import domainmodel.professionalfigure.{DoctorID, Surgeon, Surgeons}
 import server.models.Protocol._
 
 object AdministratorController {
 
+
   final case class State(items: Surgeons) {
-    def insertSurgeon(surgeon: Surgeon): State =
-      copy()
-      //copy(items = Surgeons(items = (items.surgeons.toMap+=surgeon)))// return a new instance because the event is immutable
-    def updateSurgeon(id: DoctorID, surgeon: Surgeon): State =
-      copy()
-      //copy (Surgeons(items.surgeons.map{case (_) => (surgeon) }))
+
+    def insertSurgeon(surgeon: Surgeon): State = {
+      ReadModel().createSurgeon(surgeon)
+      State(Surgeons(items.surgeons + surgeon))
+    }
+
+    def updateSurgeon(id: DoctorID, surgeon: Surgeon): State = {
+      ReadModel().updateSurgeon(surgeon)
+      State(Surgeons((items.surgeons - items.surgeons.find(x => x.doctorID equals id).get) + surgeon))
+    }
+
+    def removeSurgeon(surgeon: Surgeon): State = {
+      ReadModel().removeSurgeon(surgeon)
+      State(Surgeons((items.surgeons - items.surgeons.find(x => x.doctorID equals surgeon.doctorID).get)))
+    }
   }
 
   object State {
-    val empty = State(Surgeons())
+    val empty: State = State(Surgeons())
   }
 
   def apply(id: String): Behavior[Command] = {
@@ -57,6 +67,7 @@ object AdministratorController {
           Effect
             .persist(SurgeonAdded(surgeon))
             .thenRun(_ => replyTo ! Accepted(res))
+
         } else {
           replyTo ! Rejected(res)
           Effect.none
@@ -71,13 +82,23 @@ object AdministratorController {
           replyTo ! Rejected(res)
           Effect.none
         }
-      case _ => ???
+      case RemoveSurgeon(surgeon, replyTo) =>
+        val res = AdminCRUD.removeSurgeon(surgeon)
+        if (res == "Surgeon removed.") {
+          Effect //if there is an error the events are not stored, otherwise the events will be stored.
+            .persist(SurgeonRemoved(surgeon))
+            .thenRun(_ => replyTo ! Accepted(res)) // actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+          Effect.none
+        }
     }
 
   def handleEvent(state: State, event: Event): State =
     event match {
       case SurgeonAdded(surgeon) => state.insertSurgeon(surgeon)
       case SurgeonUpdated(id, surgeon) => state.updateSurgeon(id, surgeon)
+      case SurgeonRemoved(surgeon) => state.removeSurgeon(surgeon)
     }
 
 }

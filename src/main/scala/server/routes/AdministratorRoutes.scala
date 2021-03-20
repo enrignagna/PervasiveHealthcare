@@ -20,15 +20,13 @@ package server.routes
 
 import akka.actor.typed.scaladsl.AskPattern.{Askable, schedulerFromActorSystem}
 import akka.actor.typed.{ActorRef, ActorSystem}
-import akka.http.scaladsl.server.Directives.{complete, pathPrefix}
-import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.professionalfigure.Surgeon
 import server.models.Protocol
 import server.models.Protocol.{InsertSurgeon, UpdateSurgeon}
-
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
@@ -40,10 +38,11 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
   import server.JsonFormats._
 
+  //TODO: Understand how to get object from read model.
   /*def getSurgeons(): Future[Surgeons] =
     administratorController.ask(GetSurgeons)*/
   def insertSurgeon(surgeon: Surgeon): Future[Protocol.Confirmation] =
-    administratorController.ask(InsertSurgeon(surgeon, _))
+  administratorController.ask(InsertSurgeon(surgeon, _))
 
   def updateSurgeon(id: String, surgeon: Surgeon): Future[Protocol.Confirmation] =
     administratorController.ask(UpdateSurgeon(id, surgeon, _))
