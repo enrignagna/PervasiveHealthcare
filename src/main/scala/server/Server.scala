@@ -54,7 +54,7 @@ object Server {
   def main(args: Array[String]): Unit = {
 
     val rootBehavior = Behaviors.setup[Nothing] { context =>
-      val administratorControllerActor = context.spawn(AdministratorController(), "AdministratorControllerActor")
+      val administratorControllerActor = context.spawn(AdministratorController("admin"), "AdministratorControllerActor")
       context.watch(administratorControllerActor)
 
       val administratorRoutes = new AdministratorRoutes(administratorControllerActor)(context.system)

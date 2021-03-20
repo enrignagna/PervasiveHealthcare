@@ -19,7 +19,6 @@ package domainmodel.professionalfigure
 import domainmodel.professionalfigure.Specialization.Specialization
 
 
-
 case class DoctorID(value: String)
 
 trait Doctor {
@@ -67,3 +66,5 @@ case class GeneralPractitioner(
                                 override val email: String,
                                 override val medicalDegreeGrade: String
                               ) extends Doctor
+
+final case class Surgeons(surgeons: Set[Surgeon] = Set.empty)

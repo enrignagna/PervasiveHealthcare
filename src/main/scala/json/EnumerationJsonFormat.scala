@@ -20,6 +20,7 @@ package json
 
 import spray.json.{DeserializationException, JsNumber, JsValue, RootJsonFormat}
 
+
 object EnumerationJsonFormat {
   class EnumJsonConverter[T <: scala.Enumeration](enu: T) extends RootJsonFormat[T#Value] {
     override def write(obj: T#Value): JsValue = JsNumber(obj.id)
