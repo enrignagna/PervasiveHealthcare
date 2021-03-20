@@ -18,16 +18,16 @@
 
 package server
 
-import domainmodel.professionalfigure.Specialization._
-import domainmodel.professionalfigure.{DoctorID, Specialization, Surgeon}
-import server.controllers.Surgeons
-import spray.json.{DeserializationException, JsNumber, JsString, JsValue, RootJsonFormat}
+import domainmodel.professionalfigure.{DoctorID, Specialization, Surgeon, Surgeons}
+import server.models.Protocol.{Accepted, Confirmation}
+import spray.json.{DefaultJsonProtocol, DerivedFormats, DeserializationException, JsNumber, JsString, JsValue, RootJsonFormat}
 
-object JsonFormats  {
+object JsonFormats extends DefaultJsonProtocol with DerivedFormats  {
   // import the default encoders for primitive types (Int, String, Lists etc)
   import spray.json.DefaultJsonProtocol._
 
   implicit val doctorIDJsonFormat: RootJsonFormat[DoctorID] = jsonFormat1(DoctorID)
+  implicit val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
 
   //With ID, i prefer
 

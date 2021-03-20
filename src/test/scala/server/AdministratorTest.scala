@@ -31,18 +31,21 @@ import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.junit.JUnitRunner
 import server.controllers.AdministratorController
+import server.models.Protocol
 import server.routes.AdministratorRoutes
-import spray.json.JsString
 
 @RunWith(classOf[JUnitRunner])
 class AdministratorTest extends AnyFreeSpec with Matchers with ScalaFutures with ScalatestRouteTest {
 
   lazy val testKit: ActorTestKit = ActorTestKit()
+
   implicit def typedSystem: ActorSystem[Nothing] = testKit.system
+
   override def createActorSystem(): akka.actor.ActorSystem =
     testKit.system.classicSystem
 
-  val administratorController: ActorRef[AdministratorController.Command] = testKit.spawn(AdministratorController())
+  val id = "surgeon1"
+  val administratorController: ActorRef[Protocol.Command] = testKit.spawn(AdministratorController(id))
   lazy val routes: Route = new AdministratorRoutes(administratorController).administratorRoutes
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
@@ -75,7 +78,6 @@ class AdministratorTest extends AnyFreeSpec with Matchers with ScalaFutures with
         entityAs[String] should ===("""{"doctorID":{"value":"12345"},"email":"marco@gmail.com","name":"Marco","phoneNumber":"333444555","specialization":0,"surname":"Rossi"}""")
       }
     }
-
 
 
   }
