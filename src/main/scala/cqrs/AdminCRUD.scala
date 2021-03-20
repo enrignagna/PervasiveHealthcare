@@ -16,7 +16,7 @@
  *
  */
 
-package database
+package cqrs
 
 import java.util.concurrent.TimeUnit
 
@@ -27,6 +27,7 @@ import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import spray.json.enrichAny
 
+import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -41,7 +42,7 @@ class AdminCRUD {
     if(res.isEmpty){
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
       "Surgeon created."
-    } else{
+    } else {
       "Error! Surgeon with the same doctorID already exists!"
     }
   }

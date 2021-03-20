@@ -37,8 +37,12 @@ object Protocol {
 
   final case class UpdateSurgeon(id: String, surgeon: Surgeon, replyTo: ActorRef[Confirmation]) extends Command
 
+  final case class RemoveSurgeon(surgeon: Surgeon, replyTo: ActorRef[Confirmation]) extends Command
+
   final case class SurgeonAdded(surgeon: Surgeon) extends Event
 
   final case class SurgeonUpdated(id: DoctorID, surgeon: Surgeon) extends Event
+
+  final case class SurgeonRemoved(surgeon: Surgeon) extends Event
 
 }

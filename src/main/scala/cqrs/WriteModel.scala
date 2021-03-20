@@ -16,10 +16,10 @@
  *
  */
 
-package database
+package cqrs
 
-import org.mongodb.scala.{MongoClient, MongoCollection, MongoDatabase, Observable}
 import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.{MongoClient, MongoCollection, MongoDatabase}
 
 object WriteModel {
 
