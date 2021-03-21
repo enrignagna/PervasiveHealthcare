@@ -16,25 +16,18 @@
  *
  */
 
-package json
+package cqrs
 
+import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.{MongoClient, MongoCollection, MongoDatabase}
 
+object WriteModel {
 
+  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
 
-import domainmodel.professionalfigure.{DoctorID, Specialization, Surgeon, Surgeons}
-import server.models.Protocol.{Accepted, Confirmation}
-import spray.json.{DefaultJsonProtocol, DerivedFormats, DeserializationException, JsNumber, JsString, JsValue, RootJsonFormat}
+  val doctorsCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("doctors")
 
-object EnumerationJsonFormat {
-
-  implicit class EnumJsonConverter[T <: scala.Enumeration](enu: T) extends RootJsonFormat[T#Value] {
-    override def write(obj: T#Value): JsValue = JsNumber(obj.id)
-
-    override def read(json: JsValue): T#Value = {
-      json match {
-        case JsNumber(txt) => enu.withName(enu.values.toList(txt.intValue()).toString)
-        case somethingElse => throw DeserializationException(s"Expected a value from enum $enu instead of $somethingElse")
-      }
-    }
-  }
 }
+
+

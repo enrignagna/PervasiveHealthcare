@@ -66,3 +66,5 @@ case class Instrumentalist(
                           ) extends Doctor {
 
 }
+
+final case class Surgeons(surgeons: Set[Surgeon] = Set.empty)

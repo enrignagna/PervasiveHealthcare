@@ -18,23 +18,12 @@
 
 package json
 
+import server.models.Protocol.Confirmation
+import spray.json.DerivedJsonProtocol.jsonFormat
+import spray.json.{DefaultJsonProtocol, DerivedFormats, RootJsonFormat}
 
-
-
-import domainmodel.professionalfigure.{DoctorID, Specialization, Surgeon, Surgeons}
-import server.models.Protocol.{Accepted, Confirmation}
-import spray.json.{DefaultJsonProtocol, DerivedFormats, DeserializationException, JsNumber, JsString, JsValue, RootJsonFormat}
-
-object EnumerationJsonFormat {
-
-  implicit class EnumJsonConverter[T <: scala.Enumeration](enu: T) extends RootJsonFormat[T#Value] {
-    override def write(obj: T#Value): JsValue = JsNumber(obj.id)
-
-    override def read(json: JsValue): T#Value = {
-      json match {
-        case JsNumber(txt) => enu.withName(enu.values.toList(txt.intValue()).toString)
-        case somethingElse => throw DeserializationException(s"Expected a value from enum $enu instead of $somethingElse")
-      }
-    }
-  }
+object RequestJsonFormats extends DefaultJsonProtocol with DerivedFormats{
+  implicit val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
 }
+
+

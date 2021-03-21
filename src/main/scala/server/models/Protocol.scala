@@ -15,9 +15,34 @@
  *  *                              limitations under the License.
  *
  */
+package server.models
 
-package database
+import akka.actor.typed.ActorRef
+import domainmodel.professionalfigure.{DoctorID, Surgeon}
 
-object Repository {
-  val adminRepository: AdminCRUD = new AdminCRUD()
+object Protocol {
+
+  sealed trait Command
+
+  sealed trait Event
+
+  sealed trait Confirmation
+
+  final case class Accepted(description: String) extends Confirmation
+
+  final case class Rejected(reason: String) extends Confirmation
+
+  //Administrator protocol
+  final case class InsertSurgeon(surgeon: Surgeon, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateSurgeon(id: String, surgeon: Surgeon, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class RemoveSurgeon(surgeon: Surgeon, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class SurgeonAdded(surgeon: Surgeon) extends Event
+
+  final case class SurgeonUpdated(id: DoctorID, surgeon: Surgeon) extends Event
+
+  final case class SurgeonRemoved(surgeon: Surgeon) extends Event
+
 }

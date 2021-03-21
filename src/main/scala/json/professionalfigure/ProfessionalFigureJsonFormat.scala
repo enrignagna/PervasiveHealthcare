@@ -18,28 +18,27 @@
 
 package json.professionalfigure
 
-import domainmodel.professionalfigure._
+import domainmodel.professionalfigure.{Anesthetist, DoctorID, Instrumentalist, Role, Specialization, Surgeon, Surgeons}
 import json.EnumerationJsonFormat.EnumJsonConverter
-import server.controllers.Surgeons
-import spray.json.{DefaultJsonProtocol, DeserializationException, JsNumber, JsObject, JsString, JsValue, JsonFormat, RootJsonFormat}
+import spray.json.DefaultJsonProtocol._
+import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
+
 
 object ProfessionalFigureJsonFormat {
 
-  import spray.json.DefaultJsonProtocol._
-
   implicit val doctorIDJsonFormat: RootJsonFormat[DoctorID] = jsonFormat1(DoctorID)
 
-  implicit val enumConverter: EnumJsonConverter[Specialization.type] = new EnumJsonConverter(Specialization)
+  implicit val specializationJsonFormat: EnumJsonConverter[Specialization.type] = new EnumJsonConverter(Specialization)
 
   implicit object SurgeonJsonFormat extends RootJsonFormat[Surgeon] {
     override def read(json: JsValue): Surgeon = {
       json.asJsObject.getFields(
-      "doctorID", "name", "surname", "phoneNumber", "email", "specialization", "role") match {
-      case Seq(JsObject(doctorID), JsString(name), JsString(surname), JsString(phoneNumber), JsString(email),
-      JsNumber(specialization), JsNumber(_)) => Surgeon(DoctorID(doctorID("value").toString()), name, surname, phoneNumber,
-        email, Specialization(specialization.toInt))
-      case _ => throw DeserializationException("Surgeon expected")
-    }
+        "doctorID", "name", "surname", "phoneNumber", "email", "specialization", "role") match {
+        case Seq(JsObject(doctorID), JsString(name), JsString(surname), JsString(phoneNumber), JsString(email),
+        JsNumber(specialization), JsNumber(_)) => Surgeon(DoctorID(doctorID("value").toString()), name, surname, phoneNumber,
+          email, Specialization(specialization.toInt))
+        case _ => throw DeserializationException("Surgeon expected")
+      }
     }
 
     override def write(obj: Surgeon): JsValue = JsObject(

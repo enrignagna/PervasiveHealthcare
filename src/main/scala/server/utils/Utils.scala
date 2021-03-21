@@ -15,25 +15,12 @@
  *  *                              limitations under the License.
  *
  */
+package server.utils
 
-package database
+import domainmodel.professionalfigure.{DoctorID, Surgeon}
 
-import java.util.concurrent.TimeUnit
+object Utils {
 
-import database.Helpers.GenericObservable
-import org.mongodb.scala.{Document, MongoClient, MongoCollection, MongoDatabase, Observable}
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.model.Updates.set
-
-object WriteModel {
-
-  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
-
-  val doctorsCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("doctors")
-
+  final case class Summary(items: Map[DoctorID, Surgeon])
 
 }
-
-

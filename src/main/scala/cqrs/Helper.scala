@@ -16,7 +16,7 @@
  *
  */
 
-package database
+package cqrs
 
 import java.util.concurrent.TimeUnit
 
