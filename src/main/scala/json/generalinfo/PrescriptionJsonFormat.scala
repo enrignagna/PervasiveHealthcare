@@ -16,12 +16,17 @@
  *
  */
 
-package server.routes
+package json.generalinfo
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
+import domainmodel.generalinfo.{Prescription, PrescriptionDate, PrescriptionInfo}
+import json.LocalDateJsonFormat.DateFormat
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat2}
+import spray.json.RootJsonFormat
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object PrescriptionJsonFormat {
+  implicit val prescriptionDateJsonFormat: RootJsonFormat[PrescriptionDate] = jsonFormat1(PrescriptionDate)
+  implicit val prescriptionInfoJsonFormat: RootJsonFormat[PrescriptionInfo] = jsonFormat1(PrescriptionInfo)
+  implicit val prescriptionJsonFormat: RootJsonFormat[Prescription] = jsonFormat2(Prescription)
+  implicit val prescriptionHistoryJsonFormat: RootJsonFormat[PrescriptionHistory] = jsonFormat1(PrescriptionHistory)
 }

@@ -14,13 +14,21 @@
  *                              limitations under the License.
  */
 
-package domainmodel.professionalfigure
+package cqrs.readmodel
 
+import cqrs.readmodel.eventsourcing.{EventStore, insertSurgeonEvent, removeSurgeonEvent}
+import domainmodel.professionalfigure.Surgeon
 
-case class Rescuer(doctorID: DoctorID,
-                   name: String,
-                   surname: String,
-                   phoneNumber: String,
-                   email: String,
-                   medicalDegreeGrade: String
-                  )
+case class ReadModel() {
+  def removeSurgeon(surgeon: Surgeon): Unit = {
+    EventStore.addEvent(surgeon.doctorID, new removeSurgeonEvent(surgeon))
+  }
+
+  def createSurgeon(surgeon: Surgeon): Unit = {
+    EventStore.addEvent(surgeon.doctorID, new insertSurgeonEvent(surgeon))
+  }
+
+  def updateSurgeon(surgeon: Surgeon): Unit = {
+    EventStore.addEvent(surgeon.doctorID, new insertSurgeonEvent(surgeon))
+  }
+}

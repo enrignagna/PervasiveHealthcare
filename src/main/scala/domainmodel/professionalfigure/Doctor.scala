@@ -19,8 +19,8 @@ package domainmodel.professionalfigure
 import domainmodel.professionalfigure.Specialization.Specialization
 
 
-abstract class Doctor() {
-  val hospitalStaffID: HospitalStaffID
+trait Doctor {
+  val doctorID: DoctorID
   val name: String
   val surname: String
   val phoneNumber: String
@@ -37,7 +37,7 @@ object Specialization extends Enumeration {
 
 
 case class Surgeon(
-                    override val hospitalStaffID: HospitalStaffID,
+                    override val doctorID: DoctorID,
                     override val name: String,
                     override val surname: String,
                     override val phoneNumber: String,
@@ -47,7 +47,7 @@ case class Surgeon(
 
 
 case class Anesthetist(
-                        override val hospitalStaffID: HospitalStaffID,
+                        override val doctorID: DoctorID,
                         override val name: String,
                         override val surname: String,
                         override val phoneNumber: String,
@@ -57,10 +57,13 @@ case class Anesthetist(
 
 
 case class GeneralPractitioner(
-                                override val hospitalStaffID: HospitalStaffID,
+                                override val doctorID: DoctorID,
                                 override val name: String,
                                 override val surname: String,
                                 override val phoneNumber: String,
                                 override val email: String,
                                 override val medicalDegreeGrade: String
                               ) extends Doctor
+
+final case class Surgeons(surgeons: Set[Surgeon] = Set.empty)
+

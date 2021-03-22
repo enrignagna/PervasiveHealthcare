@@ -16,12 +16,13 @@
  *
  */
 
-package server.routes
+package json
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import domainmodel.User
+import json.RequestJsonFormats.{StringJsonFormat, jsonFormat2}
+import spray.json.RootJsonFormat
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object UserJsonFormat {
+
+  implicit val userJsonFormat: RootJsonFormat[User] = jsonFormat2(User)
 }

@@ -16,12 +16,17 @@
  *
  */
 
-package server.routes
+package json.generalinfo
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import domainmodel.generalinfo.{BloodGroup, BloodType, Rh}
+import json.EnumerationJsonFormat.EnumJsonConverter
+import spray.json.DefaultJsonProtocol.jsonFormat2
+import spray.json.RootJsonFormat
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object BloodGroupJsonFormat {
+  implicit val bloodTypeJsonFormat: EnumJsonConverter[BloodType.type] = new EnumJsonConverter(BloodType)
+  implicit val rhJsonFormat: EnumJsonConverter[Rh.type] = new EnumJsonConverter(Rh)
+
+  implicit val bloodGroupJsonFormat: RootJsonFormat[BloodGroup] = jsonFormat2(BloodGroup)
+
 }

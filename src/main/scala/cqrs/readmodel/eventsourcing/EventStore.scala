@@ -14,13 +14,24 @@
  *                              limitations under the License.
  */
 
-package domainmodel.professionalfigure
+package cqrs.readmodel.eventsourcing
 
+import domainmodel.professionalfigure.DoctorID
 
-case class Rescuer(doctorID: DoctorID,
-                   name: String,
-                   surname: String,
-                   phoneNumber: String,
-                   email: String,
-                   medicalDegreeGrade: String
-                  )
+import java.util
+
+//TODO: conversion of hashmap in scala collection
+object EventStore {
+  private val store = new util.HashMap[DoctorID, Set[Event]]
+
+  def addEvent(id: DoctorID, event: Event): Unit = {
+    var events = store.get(id)
+    if (events == null) {
+      events = Set.empty
+      store.put(id, events + event)
+    }
+    else store.replace(id, events + event)
+  }
+
+  def getEvents(id: DoctorID): Set[Event] = store.get(id)
+}

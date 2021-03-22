@@ -16,12 +16,9 @@
  *
  */
 
-package server.routes
+package cqrs
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
-
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object Role extends Enumeration {
+  type Role = Value
+  val PATIENT, GENERAL_PRACTITIONER, SURGEON, ANESTHETIST, INSTRUMENTALIST, ADMIN = Value //TODO soccorritore
 }

@@ -14,13 +14,27 @@
  *                              limitations under the License.
  */
 
-package domainmodel.professionalfigure
+package cqrs.readmodel.eventsourcing
+
+import domainmodel.professionalfigure.Surgeon
+
+import java.util.{Date, UUID}
 
 
-case class Rescuer(doctorID: DoctorID,
-                   name: String,
-                   surname: String,
-                   phoneNumber: String,
-                   email: String,
-                   medicalDegreeGrade: String
-                  )
+abstract class Event {
+  final val id = UUID.randomUUID
+  final val created = new Date
+}
+
+
+class insertSurgeonEvent(s: Surgeon) extends Event {
+  final val surgeon: Surgeon = s
+}
+
+class updateSurgeonEvent(s: Surgeon) extends Event {
+  final val surgeon: Surgeon = s
+}
+
+class removeSurgeonEvent(s: Surgeon) extends Event {
+  final val surgeon: Surgeon = s
+}

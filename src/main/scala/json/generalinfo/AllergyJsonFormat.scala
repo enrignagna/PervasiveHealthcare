@@ -16,12 +16,19 @@
  *
  */
 
-package server.routes
+package json.generalinfo
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import domainmodel.generalinfo.Allergies.Allergies
+import domainmodel.generalinfo.{Allergy, AllergyClass, AllergyDescription}
+import json.EnumerationJsonFormat.EnumJsonConverter
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat2}
+import spray.json.RootJsonFormat
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object AllergyJsonFormat {
+  implicit val allergyClassJsonFormat: EnumJsonConverter[AllergyClass.type] = new EnumJsonConverter(AllergyClass)
+
+  implicit val allergyDescriptionJsonFormat: RootJsonFormat[AllergyDescription] = jsonFormat1(AllergyDescription)
+  implicit val allergyJsonFormat: RootJsonFormat[Allergy] = jsonFormat2(Allergy)
+
+  implicit val allergiesJsonFormat: RootJsonFormat[Allergies] = jsonFormat1(Allergies)
 }

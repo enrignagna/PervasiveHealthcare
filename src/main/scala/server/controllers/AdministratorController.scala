@@ -17,25 +17,66 @@
  */
 
 package server.controllers
-
+import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
-import akka.actor.typed.{ActorRef, Behavior}
-import domainmodel.professionalfigure.{Doctor, Surgeon}
+import cqrs.Repository
+import cqrs.readmodel.ReadModel
+import domainmodel.professionalfigure.{DoctorID, Surgeon, Surgeons}
+import server.models.Protocol._
 
 object AdministratorController {
-  // actor protocol
-  sealed trait Command
-  final case class CreateSurgeon(surgeon: Surgeon, replyTo: ActorRef[CreateSurgeonResponse]) extends Command
 
-  final case class CreateSurgeonResponse(maybeUser: Option[Surgeon])
+  final case class State(items: Surgeons) {
+    def insertSurgeon(surgeon: Surgeon): State = {
+      ReadModel().createSurgeon(surgeon)
+      State(Surgeons(items.surgeons + surgeon))
+    }
+    def updateSurgeon(surgeon: Surgeon): State = {
+      ReadModel().updateSurgeon(surgeon)
+      State(Surgeons((items.surgeons - items.surgeons.find(x => x.doctorID equals surgeon.doctorID).get) + surgeon))
+    }
+    def removeSurgeon(surgeon: Surgeon): State = {
+      ReadModel().removeSurgeon(surgeon)
+      State(Surgeons((items.surgeons - items.surgeons.find(x => x.doctorID equals surgeon.doctorID).get)))
+    }
+  }
+  object State {
+    var state: State = State(Surgeons())
+  }
 
-  def apply(): Behavior[Command] = registry()
-
-  private def registry(): Behavior[Command] =
+  def apply(): Behavior[Command] = handleCommand()
+  def handleCommand(): Behavior[Command] =
     Behaviors.receiveMessage {
-      case CreateSurgeon(surgeon, replyTo) =>
-        //TODO check inside the db and than response
-        replyTo ! CreateSurgeonResponse(Some(surgeon))
+      case InsertSurgeon(surgeon, replyTo) =>
+        val res = Repository.adminRepository.insertSurgeon(surgeon)
+        if (res == "Surgeon created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+          State.state = State.state.insertSurgeon(surgeon)
+          replyTo ! Accepted(res)
+        } else {
+          replyTo ! Rejected(res)
+        }
         Behaviors.same
+      case UpdateSurgeon(id, surgeon, replyTo) =>
+        val res = Repository.adminRepository.updateSurgeon(DoctorID(id), surgeon)
+        if (res == "Surgeon updated.") {
+          State.state = State.state.updateSurgeon(surgeon)
+          replyTo ! Accepted(res)// actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+
+        /*
+      case RemoveSurgeon(surgeon, replyTo) =>
+        val res = Repository.adminRepository.removeSurgeon(surgeon)
+        if (res == "Surgeon removed.") {
+          State.state = State.state.removeSurgeon(surgeon)
+          replyTo ! Accepted(res) // actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+
+         */
     }
 }

@@ -16,12 +16,25 @@
  *
  */
 
-package server.routes
+package json
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+import spray.json.{JsString, JsValue, RootJsonFormat, deserializationError}
+
+object LocalDateJsonFormat {
+  implicit object DateFormat extends RootJsonFormat[LocalDate] {
+
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+
+    override def write(date: LocalDate): JsValue = {
+      JsString(date.format(formatter))
+    }
+
+    override def read(json: JsValue): LocalDate = json match {
+      case JsString(s) => LocalDate.parse(s, formatter)
+      case error => deserializationError(s"Expected JsString, got $error")
+    }
+  }
 }

@@ -16,12 +16,9 @@
  *
  */
 
-package server.routes
+package domainmodel
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import cqrs.Role.Role
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
-}
+case class User(id: String, password: String)
+

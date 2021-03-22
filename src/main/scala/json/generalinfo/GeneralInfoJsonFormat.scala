@@ -16,12 +16,19 @@
  *
  */
 
-package server.routes
+package json.generalinfo
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
+import json.PathologyJsonFormat.previousPathologiesJsonFormat
+import json.generalinfo.AllergyJsonFormat.allergiesJsonFormat
+import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
+import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
+import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
+import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
+import spray.json.RootJsonFormat
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object GeneralInfoJsonFormat {
+  implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
+  implicit val heightJsonFormat: RootJsonFormat[Height] = jsonFormat1(Height)
+  implicit val prescriptionJsonFormat: RootJsonFormat[GeneralInfo] = jsonFormat7(GeneralInfo)
 }

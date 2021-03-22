@@ -17,7 +17,7 @@
 package domainmodel.medicalrecords
 
 import domainmodel.medicalrecords.DiagnosticServicesRequests.DiagnosticServicesRequests
-import domainmodel.professionalfigure.HospitalStaffID
+import domainmodel.professionalfigure.DoctorID
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
@@ -31,7 +31,7 @@ class DiagnosticServicesRequestTest extends AnyFreeSpec {
     DiagnosticServicesRequest(
       DiagnosticServicesRequestID("ABDYBF@fdiwb"),
       Description("Requset of X-RAY"),
-      HospitalStaffID("HBAYBDU"),
+      DoctorID("HBAYBDU"),
       Form("Compiled")
     )
   "A prescription should have" - {

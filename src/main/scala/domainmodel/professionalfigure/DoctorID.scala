@@ -16,11 +16,4 @@
 
 package domainmodel.professionalfigure
 
-
-case class Rescuer(doctorID: DoctorID,
-                   name: String,
-                   surname: String,
-                   phoneNumber: String,
-                   email: String,
-                   medicalDegreeGrade: String
-                  )
+case class DoctorID(value: String)

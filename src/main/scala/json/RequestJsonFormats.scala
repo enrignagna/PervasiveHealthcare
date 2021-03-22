@@ -16,12 +16,14 @@
  *
  */
 
-package server.routes
+package json
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import server.models.Protocol.Confirmation
+import spray.json.DerivedJsonProtocol.jsonFormat
+import spray.json.{DefaultJsonProtocol, DerivedFormats, RootJsonFormat}
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object RequestJsonFormats extends DefaultJsonProtocol with DerivedFormats{
+  implicit val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
 }
+
+

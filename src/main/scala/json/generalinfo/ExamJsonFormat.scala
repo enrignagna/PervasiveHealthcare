@@ -16,12 +16,18 @@
  *
  */
 
-package server.routes
+package json.generalinfo
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import domainmodel.generalinfo.ExamHistory.ExamHistory
+import domainmodel.generalinfo.{Exam, ExamDate, ExamInfo, ExamReport}
+import json.LocalDateJsonFormat.DateFormat
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat3}
+import spray.json.RootJsonFormat
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object ExamJsonFormat {
+  implicit val examDateJsonFormat: RootJsonFormat[ExamDate] = jsonFormat1(ExamDate)
+  implicit val examReportJsonFormat: RootJsonFormat[ExamReport] = jsonFormat1(ExamReport)
+  implicit val examInfoJsonFormat: RootJsonFormat[ExamInfo] = jsonFormat1(ExamInfo)
+  implicit val examJsonFormat: RootJsonFormat[Exam] = jsonFormat3(Exam)
+  implicit val examHistoryJsonFormat: RootJsonFormat[ExamHistory] = jsonFormat1(ExamHistory)
 }

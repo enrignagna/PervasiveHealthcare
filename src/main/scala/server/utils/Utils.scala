@@ -15,13 +15,18 @@
  *  *                              limitations under the License.
  *
  */
+package server.utils
 
-package server.routes
+import java.math.BigInteger
+import java.security.MessageDigest
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import domainmodel.professionalfigure.{DoctorID, Surgeon}
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object Utils {
+
+  final case class Summary(items: Map[DoctorID, Surgeon])
+
+  def getHashedPassword(password: String): String = String.format("%032x", new BigInteger(
+    1, MessageDigest.getInstance("SHA-256").digest(password.getBytes("UTF-8"))))
+
 }

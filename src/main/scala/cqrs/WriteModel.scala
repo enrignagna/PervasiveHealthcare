@@ -16,12 +16,23 @@
  *
  */
 
-package server.routes
+package cqrs
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import org.mongodb.scala.bson.BsonDocument
+import org.mongodb.scala.{MongoClient, MongoCollection, MongoDatabase}
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object WriteModel {
+
+  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
+
+  val authCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("credentials")
+
+  val doctorsCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("doctors")
+
+
+
 }
+
+

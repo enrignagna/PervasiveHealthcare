@@ -18,46 +18,115 @@
 
 package server.routes
 
-import java.time
-import java.time.Duration
-
 import akka.actor.typed.scaladsl.AskPattern.{Askable, schedulerFromActorSystem}
 import akka.actor.typed.{ActorRef, ActorSystem}
-import akka.http.scaladsl.server.Directives.{complete, get, pathPrefix}
-import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.professionalfigure.Surgeon
-import server.controllers.AdministratorController
-import server.controllers.AdministratorController.{CreateSurgeon, CreateSurgeonResponse}
+import json.RequestJsonFormats.acceptedJsonFormat
+import json.professionalfigure.ProfessionalFigureJsonFormat.SurgeonJsonFormat
+import server.models.JwtAuthentication.hasAdminPermissions
+import server.models.Protocol
+import server.models.Protocol._
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
-class AdministratorRoutes(administratorController: ActorRef[AdministratorController.Command])(implicit val system: ActorSystem[_]) {
+class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(implicit val system: ActorSystem[_]) {
 
   private implicit val timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-  import server.JsonFormats._
 
-  def createSurgeon(surgeon: Surgeon): Future[CreateSurgeonResponse] =
-    administratorController.ask(CreateSurgeon(surgeon, _))
+  //TODO: Understand how to get object from read model.
+  /*def getSurgeons(): Future[Surgeons] =
+    administratorController.ask(GetSurgeons)*/
+
+  def insertSurgeon(surgeon: Surgeon): Future[Confirmation] =
+    administratorController.ask(InsertSurgeon(surgeon, _))
+
+  def updateSurgeon(id: String, surgeon: Surgeon): Future[Confirmation] =
+    administratorController.ask(UpdateSurgeon(id, surgeon, _))
 
   val administratorRoutes: Route =
-  pathPrefix("surgeon") {
-    concat(
-      pathEnd {
-        concat(
+    pathPrefix("api") {
+      path("surgeons") {
+        pathEnd {
+
           post {
-            entity(as[Surgeon]) { surgeon =>
-              onSuccess(createSurgeon(surgeon)) { response =>
-                complete(response.maybeUser)
+            headerValueByName("x-access-token") { value =>
+              authorize(hasAdminPermissions(value)) {
+                entity(as[Surgeon]) { surgeon =>
+                  onSuccess(insertSurgeon(surgeon)) { response =>
+                    response match {
+                      case _: Accepted => complete(StatusCodes.Created, response)
+                      case _: Rejected => complete(StatusCodes.BadRequest, response)
+                    }
+                  }
+                }
               }
             }
-          })
-      })
-  }
+          }
+        } ~
+          path(Segment) {
+            id =>
+              concat(
+                put {
+                  headerValueByName("x-access-token") { value =>
+                    entity(as[Surgeon]) { surgeon =>
+                      onSuccess(updateSurgeon(id, surgeon)) { response =>
+                        response match {
+                          case _: Accepted => complete(StatusCodes.Created, response)
+                          case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        }
+                      }
+                    }
+                  }
+                }
+              )
+          }
+      }
+    }
+  //TODO add other routes
+  /*~
+      path("anesthetists"){
+        pathEnd {
+          post {
+            headerValueByName("x-access-token") { value =>
+              authorize(hasAdminPermissions(value)) {
+                entity(as[Anesthetist]) { anesthetist =>
+                  onSuccess(insertSurgeon(surgeon)) { response =>
+                    response match {
+                      case _: Accepted => complete(StatusCodes.Created, response)
+                      case _: Rejected => complete(StatusCodes.BadRequest, response)
+                    }
+                  }
+                }
+              }
+            }
+          }
+      } ~
+        path(Segment) {
+          id =>
+            concat(
+              put {
+                headerValueByName("x-access-token") { value =>
+                  entity(as[Surgeon]) { surgeon =>
+                    onSuccess(updateSurgeon(id, surgeon)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
+                }
+              }
+            )
+        }
+      }
+      */
+
 
 }

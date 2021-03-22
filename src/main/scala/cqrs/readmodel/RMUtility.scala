@@ -14,6 +14,20 @@
  *                              limitations under the License.
  */
 
-package domainmodel.professionalfigure
+package cqrs.readmodel
 
-case class HospitalStaffID(value: String)
+import cqrs.readmodel.eventsourcing.{EventStore, insertSurgeonEvent, removeSurgeonEvent, updateSurgeonEvent}
+import domainmodel.professionalfigure.{DoctorID, Surgeon}
+
+object RMUtility {
+  def recreateSurgeonState(doctorID: DoctorID): Option[Surgeon] = {
+    val events = EventStore.getEvents(doctorID)
+    var user: Surgeon = null
+    events.foreach {
+      case x: insertSurgeonEvent => user = x.surgeon
+      case x: updateSurgeonEvent => user = x.surgeon
+      case _: removeSurgeonEvent => user = null
+    }
+    Option(user)
+  }
+}

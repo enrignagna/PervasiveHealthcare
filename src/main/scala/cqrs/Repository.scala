@@ -16,12 +16,10 @@
  *
  */
 
-package server.routes
+package cqrs
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+object Repository {
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+  val auth: Auth = new Auth()
+  val adminRepository: AdminCRUD = new AdminCRUD()
 }

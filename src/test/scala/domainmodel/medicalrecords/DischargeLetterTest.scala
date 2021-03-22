@@ -17,7 +17,7 @@
 package domainmodel.medicalrecords
 
 import domainmodel.medicalrecords.PharmacologicalTherapies.PharmacologicalTherapies
-import domainmodel.professionalfigure.HospitalStaffID
+import domainmodel.professionalfigure.DoctorID
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
@@ -42,7 +42,7 @@ class DischargeLetterTest extends AnyFreeSpec {
     "can be updated" in {
       assert(pharmacologicalTherapies.addNewPharmacologicalTherapy(
         PharmacologicalTherapy(
-          HospitalStaffID("HBDYA"),
+          DoctorID("HBDYA"),
           LocalDateTime.now(),
           Description("2 compress"),
           LocalDate.of(2021, 6, 3),

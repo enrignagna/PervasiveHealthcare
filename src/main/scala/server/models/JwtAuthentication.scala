@@ -16,12 +16,28 @@
  *
  */
 
-package server.routes
+package server.models
 
-import akka.http.scaladsl.server.Route
-import akka.http.scaladsl.server.Directives._
+import cqrs.Role
+import server.models.JwtAuthentication.Tokens.Tokens
 
-//TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+object JwtAuthentication {
+
+  var tokens: Tokens = Tokens()
+
+  case class Token(token: (String, Int))
+
+  object Tokens {
+
+    case class Tokens private(tokens: Map[String, Int] = Map.empty){
+      def addNewToken(token: Token): Tokens = Tokens(tokens + token.token)
+    }
+
+    def apply(): Tokens = Tokens()
+
+  }
+
+  def hasAdminPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.ADMIN.id
+
+
 }
