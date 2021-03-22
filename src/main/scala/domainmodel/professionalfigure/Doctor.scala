@@ -66,3 +66,4 @@ case class GeneralPractitioner(
                               ) extends Doctor
 
 final case class Surgeons(surgeons: Set[Surgeon] = Set.empty)
+

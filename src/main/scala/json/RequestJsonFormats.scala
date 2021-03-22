@@ -16,13 +16,14 @@
  *
  */
 
-package database
+package json
 
+import server.models.Protocol.Confirmation
+import spray.json.DerivedJsonProtocol.jsonFormat
+import spray.json.{DefaultJsonProtocol, DerivedFormats, RootJsonFormat}
 
-import cqrs.{AdminCRUD, Auth}
-
-object Repository {
-
-  val auth: Auth = new Auth()
-  val adminRepository: AdminCRUD = new AdminCRUD()
+object RequestJsonFormats extends DefaultJsonProtocol with DerivedFormats{
+  implicit val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
 }
+
+

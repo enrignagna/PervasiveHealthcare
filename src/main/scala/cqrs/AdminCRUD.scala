@@ -18,10 +18,14 @@
 
 package cqrs
 
+
 import cqrs.WriteModel.doctorsCollection
 import database.Repository
 import domainmodel.User
 import domainmodel.professionalfigure.{Anesthetist, DoctorID, Instrumentalist, Surgeon}
+import json.professionalfigure.ProfessionalFigureJsonFormat.ProfessionalFigureJsonFormat.SurgeonJsonFormat
+import json.professionalfigure.ProfessionalFigureJsonFormat.ProfessionalFigureJsonFormat.SurgeonJsonFormat.AnesthetistJsonFormat
+import json.professionalfigure.ProfessionalFigureJsonFormat.ProfessionalFigureJsonFormat.SurgeonJsonFormat.AnesthetistJsonFormat.InstrumentalistJsonFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat._
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
@@ -31,6 +35,7 @@ import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
+
 class AdminCRUD {
 
   def insertSurgeon(surgeon: Surgeon): String = {
@@ -39,7 +44,7 @@ class AdminCRUD {
     val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
       equal("doctorID", document.get("doctorID"))).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    if(res.isEmpty){
+    if (res.isEmpty) {
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
       Await.result(Repository.auth.signUp(User(surgeon.doctorID.value, "surgeon"), Role.SURGEON), Duration(1, TimeUnit.SECONDS))
       "Surgeon created."
@@ -63,10 +68,10 @@ class AdminCRUD {
     val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
       equal("doctorID", document.get("doctorID"))).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    if(res.isEmpty){
+    if (res.isEmpty) {
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
       "Anesthetist created."
-    } else{
+    } else {
       "Error! Anesthetist with the same doctorID already exists!"
     }
   }
@@ -86,10 +91,10 @@ class AdminCRUD {
     val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
       equal("doctorID", document.get("doctorID"))).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    if(res.isEmpty){
+    if (res.isEmpty) {
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
       "Instrumentalist created."
-    } else{
+    } else {
       "Error! Instrumentalist with the same doctorID already exists!"
     }
   }

@@ -65,17 +65,18 @@ object AdministratorController {
           replyTo ! Rejected(res)
         }
         Behaviors.same
-      /*
-    case RemoveSurgeon(surgeon, replyTo) =>
-      val res = Repository.adminRepository.removeSurgeon(surgeon)
-      if (res == "Surgeon removed.") {
-        State.state = State.state.removeSurgeon(surgeon)
-        replyTo ! Accepted(res) // actions that are to be performed after successful.
-      } else {
-        replyTo ! Rejected(res)
-      }
-      Behaviors.same
 
-       */
+        /*
+      case RemoveSurgeon(surgeon, replyTo) =>
+        val res = Repository.adminRepository.removeSurgeon(surgeon)
+        if (res == "Surgeon removed.") {
+          State.state = State.state.removeSurgeon(surgeon)
+          replyTo ! Accepted(res) // actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+
+         */
     }
 }

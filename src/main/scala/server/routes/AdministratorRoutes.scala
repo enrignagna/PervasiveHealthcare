@@ -25,11 +25,11 @@ import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.professionalfigure.Surgeon
+import json.RequestJsonFormats.acceptedJsonFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat.SurgeonJsonFormat
 import server.models.JwtAuthentication.hasAdminPermissions
 import server.models.Protocol
-import server.models.Protocol.{Accepted, InsertSurgeon, Rejected, UpdateSurgeon}
-import spray.json.ImplicitDerivedJsonProtocol.implicitJsonFormat
+import server.models.Protocol._
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
@@ -43,16 +43,18 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
   //TODO: Understand how to get object from read model.
   /*def getSurgeons(): Future[Surgeons] =
     administratorController.ask(GetSurgeons)*/
-  def insertSurgeon(surgeon: Surgeon): Future[Protocol.Confirmation] =
-  administratorController.ask(InsertSurgeon(surgeon, _))
 
-  def updateSurgeon(id: String, surgeon: Surgeon): Future[Protocol.Confirmation] =
+  def insertSurgeon(surgeon: Surgeon): Future[Confirmation] =
+    administratorController.ask(InsertSurgeon(surgeon, _))
+
+  def updateSurgeon(id: String, surgeon: Surgeon): Future[Confirmation] =
     administratorController.ask(UpdateSurgeon(id, surgeon, _))
 
   val administratorRoutes: Route =
     pathPrefix("api") {
       path("surgeons") {
         pathEnd {
+
           post {
             headerValueByName("x-access-token") { value =>
               authorize(hasAdminPermissions(value)) {

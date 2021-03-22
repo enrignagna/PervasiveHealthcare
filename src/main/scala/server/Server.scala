@@ -21,17 +21,11 @@ package server
 import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
-import akka.http.scaladsl.model.{ContentTypes, HttpEntity}
-import akka.http.scaladsl.server.Directives.{complete, get, path, pathPrefix}
 import akka.http.scaladsl.server.Route
-import akka.stream.scaladsl.Source
-import akka.util.ByteString
-import controllers.{AdministratorController, AuthenticationController}
-import routes.{AdministratorRoutes, AuthenticationRoutes, Routes}
+import server.controllers.{AdministratorController, AuthenticationController}
+import server.routes.{AdministratorRoutes, AuthenticationRoutes, Routes}
 
-import scala.concurrent.ExecutionContextExecutor
-import scala.io.StdIn
-import scala.util.{Failure, Random, Success}
+import scala.util.{Failure, Success}
 
 object Server {
 
@@ -54,7 +48,7 @@ object Server {
   def main(args: Array[String]): Unit = {
 
     val rootBehavior = Behaviors.setup[Nothing] { context =>
-      val administratorControllerActor = context.spawn(AdministratorController("admin"), "AdministratorControllerActor")
+      val administratorControllerActor = context.spawn(AdministratorController(), "AdministratorControllerActor")
       context.watch(administratorControllerActor)
 
       val authenticationControllerActor = context.spawn(AuthenticationController(), "AuthenticationControllerActor")
