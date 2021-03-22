@@ -18,8 +18,10 @@
 
 package database
 
-import cqrs.AdminCRUD
+import cqrs.{AdminCRUD, Auth}
 
 object Repository {
+
+  val auth: Auth = new Auth()
   val adminRepository: AdminCRUD = new AdminCRUD()
 }

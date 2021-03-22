@@ -18,10 +18,13 @@
 
 package json.professionalfigure
 
-import domainmodel.professionalfigure.{Anesthetist, DoctorID, Instrumentalist, Role, Specialization, Surgeon, Surgeons}
+import cqrs.Role
+import domainmodel.professionalfigure.{Anesthetist, DoctorID, Instrumentalist, Specialization, Surgeon, Surgeons}
 import json.EnumerationJsonFormat.EnumJsonConverter
 import spray.json.DefaultJsonProtocol._
 import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
+
+import scala.collection.immutable.Map
 
 
 object ProfessionalFigureJsonFormat {
@@ -34,8 +37,9 @@ object ProfessionalFigureJsonFormat {
     override def read(json: JsValue): Surgeon = {
       json.asJsObject.getFields(
         "doctorID", "name", "surname", "phoneNumber", "email", "specialization", "role") match {
-        case Seq(JsObject(doctorID), JsString(name), JsString(surname), JsString(phoneNumber), JsString(email),
-        JsNumber(specialization), JsNumber(_)) => Surgeon(DoctorID(doctorID("value").toString()), name, surname, phoneNumber,
+        case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber), JsString(email),
+        JsNumber(specialization), JsNumber(_)) =>
+          Surgeon(doctorID.convertTo[DoctorID], name, surname, phoneNumber,
           email, Specialization(specialization.toInt))
         case _ => throw DeserializationException("Surgeon expected")
       }
@@ -56,8 +60,8 @@ object ProfessionalFigureJsonFormat {
     override def read(json: JsValue): Anesthetist = {
       json.asJsObject.getFields(
         "doctorID", "name", "surname", "phoneNumber", "email", "role") match {
-        case Seq(JsObject(doctorID), JsString(name), JsString(surname), JsString(phoneNumber),
-        JsString(email), JsNumber(_)) => Anesthetist(DoctorID(doctorID("value").toString()), name, surname, phoneNumber,
+        case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
+        JsString(email), JsNumber(_)) => Anesthetist(doctorID.convertTo[DoctorID], name, surname, phoneNumber,
           email)
         case _ => throw DeserializationException("Anesthetist expected")
       }
@@ -77,8 +81,8 @@ object ProfessionalFigureJsonFormat {
     override def read(json: JsValue): Instrumentalist = {
       json.asJsObject.getFields(
         "doctorID", "name", "surname", "phoneNumber", "email", "role") match {
-        case Seq(JsObject(doctorID), JsString(name), JsString(surname), JsString(phoneNumber),
-        JsString(email), JsNumber(_)) => Instrumentalist(DoctorID(doctorID("value").toString()), name, surname, phoneNumber,
+        case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
+        JsString(email), JsNumber(_)) => Instrumentalist(doctorID.convertTo[DoctorID], name, surname, phoneNumber,
           email)
         case _ => throw DeserializationException("Anesthetist expected")
       }

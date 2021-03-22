@@ -26,8 +26,8 @@ import akka.http.scaladsl.server.Directives.{complete, get, path, pathPrefix}
 import akka.http.scaladsl.server.Route
 import akka.stream.scaladsl.Source
 import akka.util.ByteString
-import controllers.AdministratorController
-import routes.{AdministratorRoutes, Routes}
+import controllers.{AdministratorController, AuthenticationController}
+import routes.{AdministratorRoutes, AuthenticationRoutes, Routes}
 
 import scala.concurrent.ExecutionContextExecutor
 import scala.io.StdIn
@@ -57,9 +57,13 @@ object Server {
       val administratorControllerActor = context.spawn(AdministratorController(), "AdministratorControllerActor")
       context.watch(administratorControllerActor)
 
-      val administratorRoutes = new AdministratorRoutes(administratorControllerActor)(context.system)
+      val authenticationControllerActor = context.spawn(AuthenticationController(), "AuthenticationControllerActor")
+      context.watch(authenticationControllerActor)
 
-      val mainRoutes = new Routes(administratorRoutes)
+      val administratorRoutes = new AdministratorRoutes(administratorControllerActor)(context.system)
+      val authenticationRoutes = new AuthenticationRoutes(authenticationControllerActor)(context.system)
+
+      val mainRoutes = new Routes(administratorRoutes, authenticationRoutes)
       startHttpServer(mainRoutes.routes)(context.system)
 
       Behaviors.empty

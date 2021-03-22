@@ -20,15 +20,16 @@ package server.routes
 
 import akka.actor.typed.scaladsl.AskPattern.{Askable, schedulerFromActorSystem}
 import akka.actor.typed.{ActorRef, ActorSystem}
-import akka.http.scaladsl.model.StatusCodes
+import akka.http.scaladsl.model.{HttpHeader, StatusCodes}
 import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import domainmodel.professionalfigure.Surgeon
+import domainmodel.professionalfigure.{Anesthetist, Surgeon}
 import json.RequestJsonFormats.acceptedJsonFormat
-import json.professionalfigure.ProfessionalFigureJsonFormat.{SurgeonJsonFormat, surgeonsJsonFormat}
-import server.models.Protocol
-import server.models.Protocol.{Confirmation, InsertSurgeon, UpdateSurgeon}
+import json.professionalfigure.ProfessionalFigureJsonFormat.{AnesthetistJsonFormat, SurgeonJsonFormat, surgeonsJsonFormat}
+import server.models.JwtAuthentication.hasAdminPermissions
+import server.models.{JwtAuthentication, Protocol}
+import server.models.Protocol.{Accepted, Confirmation, InsertSurgeon, Rejected, UpdateSurgeon}
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
@@ -49,33 +50,81 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
     administratorController.ask(UpdateSurgeon(id, surgeon, _))
 
   val administratorRoutes: Route =
-    pathPrefix("surgeons") {
-      concat(
+    pathPrefix("api") {
+      path("surgeons") {
         pathEnd {
-          concat(
             post {
-              entity(as[Surgeon]) { surgeon =>
-                onSuccess(insertSurgeon(surgeon)) { response =>
-                  complete(StatusCodes.Created, response)
+              headerValueByName("x-access-token") { value =>
+                authorize(hasAdminPermissions(value)) {
+                  entity(as[Surgeon]) { surgeon =>
+                    onSuccess(insertSurgeon(surgeon)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
                 }
               }
-            },
-
-          )
-        },
+            }
+        } ~
+          path(Segment) {
+            id =>
+              concat(
+                put {
+                  headerValueByName("x-access-token") { value =>
+                    entity(as[Surgeon]) { surgeon =>
+                      onSuccess(updateSurgeon(id, surgeon)) { response =>
+                        response match {
+                          case _: Accepted => complete(StatusCodes.Created, response)
+                          case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        }
+                      }
+                    }
+                  }
+                }
+              )
+          }
+      }
+    }
+  //TODO add other routes
+  /*~
+      path("anesthetists"){
+        pathEnd {
+          post {
+            headerValueByName("x-access-token") { value =>
+              authorize(hasAdminPermissions(value)) {
+                entity(as[Anesthetist]) { anesthetist =>
+                  onSuccess(insertSurgeon(surgeon)) { response =>
+                    response match {
+                      case _: Accepted => complete(StatusCodes.Created, response)
+                      case _: Rejected => complete(StatusCodes.BadRequest, response)
+                    }
+                  }
+                }
+              }
+            }
+          }
+      } ~
         path(Segment) {
           id =>
             concat(
               put {
-                entity(as[Surgeon]) { surgeon =>
-                  onSuccess(updateSurgeon(id, surgeon)) { response =>
-                    complete(StatusCodes.OK, response)
+                headerValueByName("x-access-token") { value =>
+                  entity(as[Surgeon]) { surgeon =>
+                    onSuccess(updateSurgeon(id, surgeon)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
                   }
                 }
               }
             )
         }
-      )
-    }
+      }
+      */
+
 
 }

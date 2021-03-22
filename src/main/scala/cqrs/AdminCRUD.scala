@@ -21,12 +21,15 @@ package cqrs
 
 import java.util.concurrent.TimeUnit
 
-import cqrs.WriteModel.doctorsCollection
+import cqrs.WriteModel.{authCollection, doctorsCollection}
+import database.Repository
+import domainmodel.User
 import domainmodel.professionalfigure.{Anesthetist, DoctorID, Instrumentalist, Surgeon}
+import json.RequestJsonFormats.RootJsObjectFormat
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import json.professionalfigure.ProfessionalFigureJsonFormat._
-import spray.json.enrichAny
+import spray.json.{JsObject, JsString, enrichAny}
 
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -43,6 +46,7 @@ class AdminCRUD {
       Duration(1, TimeUnit.SECONDS))
     if(res.isEmpty){
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(surgeon.doctorID.value, "surgeon"), Role.SURGEON), Duration(1, TimeUnit.SECONDS))
 
       "Surgeon created."
     } else {

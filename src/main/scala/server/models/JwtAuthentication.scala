@@ -16,9 +16,28 @@
  *
  */
 
-package domainmodel.professionalfigure
+package server.models
 
-object Role extends Enumeration {
-  type Role = Value
-  val PATIENT, GENERAL_PRACTITIONER, SURGEON, ANESTHETIST, INSTRUMENTALIST = Value //TODO soccorritor
+import cqrs.Role
+import server.models.JwtAuthentication.Tokens.Tokens
+
+object JwtAuthentication {
+
+  var tokens: Tokens = Tokens()
+
+  case class Token(token: (String, Int))
+
+  object Tokens {
+
+    case class Tokens private(tokens: Map[String, Int] = Map.empty){
+      def addNewToken(token: Token): Tokens = Tokens(tokens + token.token)
+    }
+
+    def apply(): Tokens = Tokens()
+
+  }
+
+  def hasAdminPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.ADMIN.id
+
+
 }
