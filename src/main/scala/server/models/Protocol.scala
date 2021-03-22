@@ -18,6 +18,7 @@
 package server.models
 
 import akka.actor.typed.ActorRef
+import domainmodel.User
 import domainmodel.professionalfigure.{DoctorID, Surgeon}
 
 object Protocol {
@@ -28,11 +29,16 @@ object Protocol {
 
   sealed trait Confirmation
 
+  final case class LoginAccepted(description: String, token: String) extends Confirmation
+
   final case class Accepted(description: String) extends Confirmation
 
   final case class Rejected(reason: String) extends Confirmation
 
-  //Administrator protocol
+  //Authentication protocol
+  final case class Login(user: User, replyTo: ActorRef[Confirmation]) extends Command
+
+  //Administrator protocol is also authentication for the signup
   final case class InsertSurgeon(surgeon: Surgeon, replyTo: ActorRef[Confirmation]) extends Command
 
   final case class UpdateSurgeon(id: String, surgeon: Surgeon, replyTo: ActorRef[Confirmation]) extends Command

@@ -16,4 +16,4 @@
 
 package domainmodel.professionalfigure
 
-case class HospitalStaffID(value: String)
+case class DoctorID(value: String)

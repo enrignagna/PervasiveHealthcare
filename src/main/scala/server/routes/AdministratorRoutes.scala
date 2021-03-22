@@ -25,8 +25,11 @@ import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.professionalfigure.Surgeon
+import json.professionalfigure.ProfessionalFigureJsonFormat.SurgeonJsonFormat
+import server.models.JwtAuthentication.hasAdminPermissions
 import server.models.Protocol
-import server.models.Protocol.{InsertSurgeon, UpdateSurgeon}
+import server.models.Protocol.{Accepted, InsertSurgeon, Rejected, UpdateSurgeon}
+import spray.json.ImplicitDerivedJsonProtocol.implicitJsonFormat
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
@@ -47,33 +50,81 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
     administratorController.ask(UpdateSurgeon(id, surgeon, _))
 
   val administratorRoutes: Route =
-    pathPrefix("surgeons") {
-      concat(
+    pathPrefix("api") {
+      path("surgeons") {
         pathEnd {
-          concat(
-            post {
-              entity(as[Surgeon]) { surgeon =>
-                onSuccess(insertSurgeon(surgeon)) { response =>
-                  complete(StatusCodes.Created, response)
+          post {
+            headerValueByName("x-access-token") { value =>
+              authorize(hasAdminPermissions(value)) {
+                entity(as[Surgeon]) { surgeon =>
+                  onSuccess(insertSurgeon(surgeon)) { response =>
+                    response match {
+                      case _: Accepted => complete(StatusCodes.Created, response)
+                      case _: Rejected => complete(StatusCodes.BadRequest, response)
+                    }
+                  }
                 }
               }
-            },
-
-          )
-        },
+            }
+          }
+        } ~
+          path(Segment) {
+            id =>
+              concat(
+                put {
+                  headerValueByName("x-access-token") { value =>
+                    entity(as[Surgeon]) { surgeon =>
+                      onSuccess(updateSurgeon(id, surgeon)) { response =>
+                        response match {
+                          case _: Accepted => complete(StatusCodes.Created, response)
+                          case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        }
+                      }
+                    }
+                  }
+                }
+              )
+          }
+      }
+    }
+  //TODO add other routes
+  /*~
+      path("anesthetists"){
+        pathEnd {
+          post {
+            headerValueByName("x-access-token") { value =>
+              authorize(hasAdminPermissions(value)) {
+                entity(as[Anesthetist]) { anesthetist =>
+                  onSuccess(insertSurgeon(surgeon)) { response =>
+                    response match {
+                      case _: Accepted => complete(StatusCodes.Created, response)
+                      case _: Rejected => complete(StatusCodes.BadRequest, response)
+                    }
+                  }
+                }
+              }
+            }
+          }
+      } ~
         path(Segment) {
           id =>
             concat(
               put {
-                entity(as[Surgeon]) { surgeon =>
-                  onSuccess(updateSurgeon(id, surgeon)) { response =>
-                    complete(StatusCodes.OK, response)
+                headerValueByName("x-access-token") { value =>
+                  entity(as[Surgeon]) { surgeon =>
+                    onSuccess(updateSurgeon(id, surgeon)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
                   }
                 }
               }
             )
         }
-      )
-    }
+      }
+      */
+
 
 }

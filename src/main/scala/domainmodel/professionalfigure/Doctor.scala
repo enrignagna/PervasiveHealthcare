@@ -19,8 +19,6 @@ package domainmodel.professionalfigure
 import domainmodel.professionalfigure.Specialization.Specialization
 
 
-case class DoctorID(value: String)
-
 trait Doctor {
   val doctorID: DoctorID
   val name: String

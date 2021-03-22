@@ -22,6 +22,6 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
 
 //TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes // concatenate other routes with ~ administratorRoutes.administratorRoutes
+class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
+  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
 }

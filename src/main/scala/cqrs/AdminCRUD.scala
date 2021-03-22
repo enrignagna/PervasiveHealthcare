@@ -18,11 +18,11 @@
 
 package cqrs
 
-import java.util.concurrent.TimeUnit
-
-import database.WriteModel.{doctorsCollection}
+import cqrs.WriteModel.doctorsCollection
+import database.Repository
+import domainmodel.User
 import domainmodel.professionalfigure.{Anesthetist, DoctorID, Instrumentalist, Surgeon}
-import json.professionalfigure.ProfessionalFigureJsonFormat.{AnesthetistJsonFormat, InstrumentalistJsonFormat, SurgeonJsonFormat, doctorIDJsonFormat}
+import json.professionalfigure.ProfessionalFigureJsonFormat._
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import spray.json.enrichAny
@@ -41,6 +41,7 @@ class AdminCRUD {
       Duration(1, TimeUnit.SECONDS))
     if(res.isEmpty){
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(surgeon.doctorID.value, "surgeon"), Role.SURGEON), Duration(1, TimeUnit.SECONDS))
       "Surgeon created."
     } else {
       "Error! Surgeon with the same doctorID already exists!"

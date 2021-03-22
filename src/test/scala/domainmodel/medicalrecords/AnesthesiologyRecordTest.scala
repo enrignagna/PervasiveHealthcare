@@ -16,7 +16,7 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.professionalfigure.{Anesthetist, HospitalStaffID}
+import domainmodel.professionalfigure.{Anesthetist, DoctorID}
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
@@ -27,7 +27,7 @@ import java.time.LocalDateTime
 @RunWith(classOf[JUnitRunner])
 class AnesthesiologyRecordTest extends AnyFreeSpec {
   val anesthesiologyRecord: AnesthesiologyRecord = AnesthesiologyRecord(
-    Anesthetist(HospitalStaffID("AJBDIB"), "Luigi", "Marcelli", "4325467389", "marcelli@doctor.it", "102/110"),
+    Anesthetist(DoctorID("AJBDIB"), "Luigi", "Marcelli", "4325467389", "marcelli@doctor.it", "102/110"),
     OperationEvaluation(
       AnestheticCard(LocalDateTime.now(), Description("Total Anesthetic")),
       PostOperationEvaluation(LocalDateTime.now(), Description("All OK"))

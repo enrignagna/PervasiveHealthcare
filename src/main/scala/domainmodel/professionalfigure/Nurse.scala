@@ -18,7 +18,7 @@ package domainmodel.professionalfigure
 
 
 abstract class Nurse() {
-  val hospitalStaffID: HospitalStaffID
+  val doctorID: DoctorID
   val name: String
   val surname: String
   val phoneNumber: String
@@ -27,7 +27,7 @@ abstract class Nurse() {
 }
 
 case class Instrumentalist(
-                            override val hospitalStaffID: HospitalStaffID,
+                            override val doctorID: DoctorID,
                             override val name: String,
                             override val surname: String,
                             override val phoneNumber: String,
@@ -36,7 +36,7 @@ case class Instrumentalist(
                           ) extends Nurse
 
 case class WardNurse(
-                      override val hospitalStaffID: HospitalStaffID,
+                      override val doctorID: DoctorID,
                       override val name: String,
                       override val surname: String,
                       override val phoneNumber: String,

@@ -25,8 +25,13 @@ object WriteModel {
 
   val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
 
+  val authCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("credentials")
+
   val doctorsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("doctors")
+
+
 
 }
 

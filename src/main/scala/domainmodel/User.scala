@@ -15,18 +15,10 @@
  *  *                              limitations under the License.
  *
  */
-package server.utils
 
-import java.math.BigInteger
-import java.security.MessageDigest
+package domainmodel
 
-import domainmodel.professionalfigure.{DoctorID, Surgeon}
+import cqrs.Role.Role
 
-object Utils {
+case class User(id: String, password: String)
 
-  final case class Summary(items: Map[DoctorID, Surgeon])
-
-  def getHashedPassword(password: String): String = String.format("%032x", new BigInteger(
-    1, MessageDigest.getInstance("SHA-256").digest(password.getBytes("UTF-8"))))
-
-}
