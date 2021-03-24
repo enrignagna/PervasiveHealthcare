@@ -31,8 +31,8 @@ Leggi questo in un'altra lingua: [English](README.md).
 ## Come installare
 
 ## Documentazione
-### Link a documentazione esterna
-
+La documentazione aggiornata del progetto è disponibile 
+[qui](https://enrignagna.github.io/PervasiveHealthcare/).
 # Come contribuire
 ## Struttura delle directory / branch
 
@@ -48,8 +48,19 @@ Leggi questo in un'altra lingua: [English](README.md).
 
 # Licenza
 
-## Licenza generale
+Concesso in licenza con la licenza Apache, versione 2.0 (la "Licenza");
+non è possibile utilizzare questo file se non in conformità con la licenza.
+È possibile ottenere una copia della licenza all'indirizzo
+http://www.apache.org/licenses/LICENSE-2.0
+A meno che non sia richiesto dalla legge applicabile o concordato per iscritto, il software
+distribuito con la Licenza è distribuito "COSÌ COM'È",
+SENZA GARANZIE O CONDIZIONI DI ALCUN TIPO, esplicite o implicite.
+Vedere la Licenza per la lingua specifica che regola le autorizzazioni e le limitazioni ai sensi della Licenza.
+
 
 ## Autori e Copyright
 
-## Licenze software dei componenti di terze parti
+Copyright (c) 2021.
+
+**Autori:** Ylenia Battistini, Enrico Gnagnarella, Matteo Scucchia
+

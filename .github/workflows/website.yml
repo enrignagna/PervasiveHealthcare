@@ -1,6 +1,6 @@
 name: Website
 
-on: push
+on: push #release
 
 jobs:
   publish:
