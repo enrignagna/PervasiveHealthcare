@@ -24,6 +24,7 @@ package domainmodel.generalpractitionerinfo
  * @param medicalCertificateId, id of medical certificate
  * @param medicalCertificate, pdf of medical certificate.
  */
+// TODO: Remove this class
 class MedicalCertificatesOld(private val medicalCertificateId: Int,
                              private var medicalCertificate: Set[Byte]) {
 

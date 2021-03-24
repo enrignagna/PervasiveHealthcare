@@ -28,6 +28,7 @@ import java.time.LocalDate
  * @param description, visit's description
  * @param visitTime, visit's date.
  */
+// TODO: Remove this class 
 class BookingVisitsOld(private val bookingId: Int,
                        private var visit: Visit,
                        private var description: String,
