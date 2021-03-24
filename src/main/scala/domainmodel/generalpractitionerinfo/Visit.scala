@@ -24,18 +24,19 @@ case class VisitDate(visitDate: LocalDate = LocalDate.now())
 
 /**
  * This class represents the visit.
- * @param visitDate, date of the visit.
+ *
+ * @param visitDate , date of the visit.
  */
 case class Visit(visitDate: VisitDate)
 
 /**
  * Factory to add a new visit to the visits's history.
  */
-object Visits {
+object VisitHistory {
 
-  case class Visits private(visits: Set[Visit] = Set.empty) {
-    def addNewVisit(visit: Visit): Visits = Visits(this.visits + visit)
+  case class VisitHistory private(history: Set[Visit] = Set.empty) {
+    def addNewVisit(visit: Visit): VisitHistory = VisitHistory(this.history + visit)
   }
 
-  def apply(): Visits = Visits()
+  def apply(): VisitHistory = VisitHistory()
 }

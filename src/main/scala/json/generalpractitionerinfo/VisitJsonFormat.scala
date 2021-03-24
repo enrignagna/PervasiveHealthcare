@@ -14,9 +14,19 @@
  *                              limitations under the License.
  */
 
-package domainmodel.medicalrecords.initialanalysis
-import domainmodel.Anamnesis
+package json.generalpractitionerinfo
 
-case class InitialAnalysis(anamensis: Anamnesis, physicalExamination: PhysicalExamination, stateEvaluation: StateEvaluation) {
+import domainmodel.generalpractitionerinfo.VisitHistory.VisitHistory
+import domainmodel.generalpractitionerinfo.{Visit, VisitDate}
+import json.LocalDateJsonFormat.DateFormat
+import spray.json.DefaultJsonProtocol.{immSetFormat, jsonFormat1}
+import spray.json.RootJsonFormat
 
+object VisitJsonFormat {
+
+  implicit val visitDateJsonFormat: RootJsonFormat[VisitDate] = jsonFormat1(VisitDate)
+
+  implicit val visitJsonFormat: RootJsonFormat[Visit] = jsonFormat1(Visit)
+
+  implicit val visitsJsonFormat: RootJsonFormat[VisitHistory] = jsonFormat1(VisitHistory)
 }

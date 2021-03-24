@@ -19,7 +19,7 @@
 package domainmodel.generalpractitionerinfo
 
 import java.time.LocalDate
-import domainmodel.generalpractitionerinfo.Therapies.Therapies
+import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
@@ -46,14 +46,14 @@ class TherapyTest extends AnyFreeSpec {
     therapy.therapyDate.therapyDate.isAfter(LocalDate.now())
   }
 
-  val therapies: Therapies = Therapies()
+  val therapies: TherapyHistory = TherapyHistory()
   "A therapies" - {
     "should be initially empty" in {
-      assert(therapies.therapies.isEmpty)
+      assert(therapies.history.isEmpty)
     }
 
     "can added" in {
-      assert(therapies.addNewTherapy(therapy).therapies.nonEmpty)
+      assert(therapies.addNewTherapy(therapy).history.nonEmpty)
     }
   }
 

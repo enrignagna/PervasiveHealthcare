@@ -14,9 +14,17 @@
  *                              limitations under the License.
  */
 
-package domainmodel.medicalrecords.initialanalysis
-import domainmodel.Anamnesis
+package json.utility
 
-case class InitialAnalysis(anamensis: Anamnesis, physicalExamination: PhysicalExamination, stateEvaluation: StateEvaluation) {
+import domainmodel.utility._
+import json.RequestJsonFormats.{StringJsonFormat, jsonFormat1}
+import spray.json.RootJsonFormat
+
+object InfoDescriptionJsonFormat {
+  implicit val infoJsonFormat: RootJsonFormat[Info] = jsonFormat1(Info)
+
+  implicit val descriptionJsonFormat: RootJsonFormat[Description] = jsonFormat1(Description)
+
+  implicit val noteJsonFormat: RootJsonFormat[Note] = jsonFormat1(Note)
 
 }

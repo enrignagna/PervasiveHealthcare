@@ -24,8 +24,8 @@ package domainmodel.generalpractitionerinfo
  * @param medicalCertificateId, id of medical certificate
  * @param medicalCertificate, pdf of medical certificate.
  */
-class MedicalCertificates(private val medicalCertificateId: Int,
-                          private var medicalCertificate: Set[Byte]) {
+class MedicalCertificatesOld(private val medicalCertificateId: Int,
+                             private var medicalCertificate: Set[Byte]) {
 
   private val id= medicalCertificateId
 
@@ -52,8 +52,8 @@ class MedicalCertificates(private val medicalCertificateId: Int,
 /**
  * Factory to create a medical certificates.
  */
-object MedicalCertificates {
-  def apply(medicalCertificateId: Int, medicalCertificate: Set[Byte]): MedicalCertificates =
-    new MedicalCertificates(medicalCertificateId, medicalCertificate)
+object MedicalCertificatesOld {
+  def apply(medicalCertificateId: Int, medicalCertificate: Set[Byte]): MedicalCertificatesOld =
+    new MedicalCertificatesOld(medicalCertificateId, medicalCertificate)
 }
 

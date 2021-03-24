@@ -16,6 +16,7 @@
 
 package domainmodel
 
+
 import domainmodel.Familiars.Familiars
 import domainmodel.Remotes.Remotes
 import org.junit.runner.RunWith
@@ -25,32 +26,34 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class AnamnesisTest extends AnyFreeSpec {
   val remote: Remote = Remote("first anamnesis")
-  val familiar: Familiar = Familiar("Rossi Mario", Father, PreviousPathologies() ,"3387514876")
-  val anamnesis: Anamensis = Anamensis(familiar, remote, Physiologic("self conscious"))
+  val remotes: Remotes = Remotes()
+  remotes.addNewRemote(remote)
+  val familiar: Familiar = Familiar("Rossi Mario", Father, PreviousPathologies(), "3387514876")
+  val familiars: Familiars = Familiars()
+  familiars.addNewFamiliar(familiar)
+
+  val anamnesis: Anamnesis = Anamnesis(familiars, remotes, Physiologic("self conscious"))
   "An anamnesis should have" - {
     "a familiar information" in {
-      assert(anamnesis.familiar != null)
+      assert(anamnesis.familiars != null)
     }
     "a remote information" in {
-      assert(anamnesis.remote != null)
+      assert(anamnesis.remotes != null)
     }
     "a physiologic information" in {
       assert(anamnesis.physiologic != null)
     }
   }
 
-  val remotes: Remotes = domainmodel.Remotes()
-    "A remotes" - {
-      "should be initially empty" in {
-        assert(remotes.remotes.isEmpty)
-      }
-
-      "can added" in {
-        assert(remotes.addNewRemote(remote).remotes.nonEmpty)
-      }
+  "A remotes" - {
+    "should be initially empty" in {
+      assert(remotes.history.isEmpty)
+    }
+    "can added" in {
+      assert(remotes.addNewRemote(remote).history.nonEmpty)
+    }
   }
 
-  val familiars: Familiars = domainmodel.Familiars()
   "A familiars" - {
     "should be initially empty" in {
       assert(familiars.familiars.isEmpty)

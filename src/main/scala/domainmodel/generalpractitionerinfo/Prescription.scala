@@ -32,10 +32,11 @@ case class Prescription(prescriptionInitialDate: PrescriptionInitialDate, descri
 /**
  * Factory to add a new remote prescription to the prescriptions's history.
  */
-object Prescriptions{
-  case class Prescriptions private (prescriptions: Set[Prescription] = Set.empty){
-    def addNewPrescription(prescription: Prescription): Prescriptions = Prescriptions(this.prescriptions + prescription)
+object PrescriptionHistory {
+
+  case class PrescriptionHistory private(history: Set[Prescription] = Set.empty) {
+    def addNewPrescription(prescription: Prescription): PrescriptionHistory = PrescriptionHistory(this.history + prescription)
   }
 
-  def apply(): Prescriptions = Prescriptions()
+  def apply(): PrescriptionHistory = PrescriptionHistory()
 }

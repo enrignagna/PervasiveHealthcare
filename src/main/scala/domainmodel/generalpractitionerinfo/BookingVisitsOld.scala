@@ -28,10 +28,10 @@ import java.time.LocalDate
  * @param description, visit's description
  * @param visitTime, visit's date.
  */
-class BookingVisits(private val bookingId: Int,
-                    private var visit: Visit,
-                    private var description: String,
-                    private var visitTime: LocalDate) {
+class BookingVisitsOld(private val bookingId: Int,
+                       private var visit: Visit,
+                       private var description: String,
+                       private var visitTime: LocalDate) {
 
   private val id = bookingId
 
@@ -84,8 +84,8 @@ class BookingVisits(private val bookingId: Int,
 /**
  * Factory to create a booking visits.
  */
-object BookingVisits {
-  def apply(bookingId: Int, visit: Visit, description: String, visitTime: LocalDate = java.time.LocalDate.now): BookingVisits =
-    new BookingVisits(bookingId, visit, description, visitTime)
+object BookingVisitsOld {
+  def apply(bookingId: Int, visit: Visit, description: String, visitTime: LocalDate = java.time.LocalDate.now): BookingVisitsOld =
+    new BookingVisitsOld(bookingId, visit, description, visitTime)
 }
 

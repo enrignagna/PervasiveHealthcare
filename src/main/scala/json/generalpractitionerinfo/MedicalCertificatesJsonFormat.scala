@@ -14,9 +14,17 @@
  *                              limitations under the License.
  */
 
-package domainmodel.medicalrecords.initialanalysis
-import domainmodel.Anamnesis
+package json.generalpractitionerinfo
 
-case class InitialAnalysis(anamensis: Anamnesis, physicalExamination: PhysicalExamination, stateEvaluation: StateEvaluation) {
+import domainmodel.generalpractitionerinfo.MedicalCertificateHistory.MedicalCertificateHistory
+import domainmodel.generalpractitionerinfo.MedicalCertificate
+import json.RequestJsonFormats.{ByteJsonFormat, IntJsonFormat, immSetFormat, jsonFormat2}
+import spray.json.DefaultJsonProtocol.jsonFormat1
+import spray.json.RootJsonFormat
 
+object MedicalCertificatesJsonFormat {
+
+  implicit val medicalCertificateJsonFormat: RootJsonFormat[MedicalCertificate] = jsonFormat2(MedicalCertificate)
+
+  implicit val medicalCertificateHistoryJsonFormat: RootJsonFormat[MedicalCertificateHistory] = jsonFormat1(MedicalCertificateHistory)
 }

@@ -19,7 +19,7 @@
 package domainmodel.generalpractitionerinfo
 
 import java.time.LocalDate
-import domainmodel.generalpractitionerinfo.Prescriptions.Prescriptions
+import domainmodel.generalpractitionerinfo.PrescriptionHistory.PrescriptionHistory
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
@@ -40,14 +40,14 @@ class PrescriptionTest extends AnyFreeSpec {
     prescription.prescriptionInitialDate.prescriptionInitialDate.isAfter(LocalDate.now())
   }
 
-  val prescriptions: Prescriptions = Prescriptions()
+  val prescriptions: PrescriptionHistory = PrescriptionHistory()
   "A prescriptions" - {
     "should be initially empty" in {
-      assert(prescriptions.prescriptions.isEmpty)
+      assert(prescriptions.history.isEmpty)
     }
 
     "can added" in {
-      assert(prescriptions.addNewPrescription(prescription).prescriptions.nonEmpty)
+      assert(prescriptions.addNewPrescription(prescription).history.nonEmpty)
     }
   }
 

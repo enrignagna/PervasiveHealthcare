@@ -23,9 +23,9 @@ import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class BookingVisitsTest extends AnyFreeSpec {
+class BookingVisitHistoryTest extends AnyFreeSpec {
   val visit: Visit = Visit(VisitDate())
-  val bookingVisits: BookingVisits = BookingVisits(1, visit, "visit for shoulder surgery")
+  val bookingVisits: BookingVisitsOld = BookingVisitsOld(1, visit, "visit for shoulder surgery")
   "A booking visits should have" - {
     "an id" in {
       assert(bookingVisits.getId == 1)
