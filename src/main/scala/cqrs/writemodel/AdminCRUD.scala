@@ -16,10 +16,11 @@
  *
  */
 
-package cqrs
+package cqrs.writemodel
 
+import java.util.concurrent.TimeUnit
 
-import cqrs.WriteModel.doctorsCollection
+import cqrs.writemodel.WriteModel.doctorsCollection
 import domainmodel.User
 import domainmodel.professionalfigure.{Anesthetist, DoctorID, Instrumentalist, Surgeon}
 import json.professionalfigure.ProfessionalFigureJsonFormat._
@@ -27,7 +28,6 @@ import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import spray.json.enrichAny
 
-import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 

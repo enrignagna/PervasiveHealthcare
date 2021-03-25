@@ -16,23 +16,9 @@
  *
  */
 
-package cqrs
+package cqrs.writemodel
 
-import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.{MongoClient, MongoCollection, MongoDatabase}
-
-object WriteModel {
-
-  val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
-
-  val authCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("credentials")
-
-  val doctorsCollection: MongoCollection[BsonDocument] =
-    database.getCollection[BsonDocument]("doctors")
-
-
-
+object Role extends Enumeration {
+  type Role = Value
+  val PATIENT, GENERAL_PRACTITIONER, SURGEON, ANESTHETIST, INSTRUMENTALIST, ADMIN = Value //TODO soccorritore
 }
-
-

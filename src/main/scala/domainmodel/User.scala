@@ -18,7 +18,7 @@
 
 package domainmodel
 
-import cqrs.Role.Role
+import cqrs.writemodel.Role.Role
 
 case class User(id: String, password: String)
 

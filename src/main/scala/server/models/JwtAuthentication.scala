@@ -18,7 +18,7 @@
 
 package server.models
 
-import cqrs.Role
+import cqrs.writemodel.Role
 import server.models.JwtAuthentication.Tokens.Tokens
 
 object JwtAuthentication {

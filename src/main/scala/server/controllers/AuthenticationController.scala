@@ -20,7 +20,7 @@ package server.controllers
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
-import cqrs.Repository
+import cqrs.writemodel.Repository
 import server.models.JwtAuthentication
 import server.models.JwtAuthentication.Token
 import server.models.Protocol.{Command, Login, LoginAccepted, Rejected}

@@ -16,7 +16,7 @@
  *
  */
 
-package cqrs
+package cqrs.writemodel
 
 object Repository {
 

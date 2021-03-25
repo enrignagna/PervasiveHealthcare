@@ -18,7 +18,7 @@
 
 package json.professionalfigure
 
-import cqrs.Role
+import cqrs.writemodel.Role
 import domainmodel.professionalfigure._
 import json.EnumerationJsonFormat.EnumJsonConverter
 import spray.json.DefaultJsonProtocol._

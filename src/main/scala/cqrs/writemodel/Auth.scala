@@ -16,17 +16,15 @@
  *
  */
 
-package cqrs
+package cqrs.writemodel
 
 import java.util.concurrent.TimeUnit
 
-import cqrs.Helpers.GenericObservable
-import cqrs.WriteModel.authCollection
+import cqrs.writemodel.Role.Role
+import cqrs.writemodel.WriteModel.authCollection
 import domainmodel.User
-import Role.Role
 import json.RequestJsonFormats.RootJsObjectFormat
 import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters
 import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.result.InsertOneResult
 import server.utils.Utils

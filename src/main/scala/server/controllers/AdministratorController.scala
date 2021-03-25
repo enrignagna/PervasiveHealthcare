@@ -19,8 +19,8 @@
 package server.controllers
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
-import cqrs.Repository
 import cqrs.readmodel.ReadModel
+import cqrs.writemodel.Repository
 import domainmodel.professionalfigure.{DoctorID, Surgeon, Surgeons}
 import server.models.Protocol._
 
