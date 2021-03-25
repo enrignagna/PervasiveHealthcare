@@ -23,7 +23,7 @@ import spray.json.DerivedJsonProtocol.jsonFormat
 import spray.json.{DefaultJsonProtocol, DerivedFormats, RootJsonFormat}
 
 object RequestJsonFormats extends DefaultJsonProtocol with DerivedFormats{
-  implicit val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
+  implicit lazy val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
 }
 
 

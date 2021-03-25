@@ -49,6 +49,7 @@ object ProfessionalFigureJsonFormat {
       "surname" -> JsString(obj.surname),
       "phoneNumber" -> JsString(obj.phoneNumber),
       "email" -> JsString(obj.email),
+      "medicalDegreeGrade" -> JsString(obj.medicalDegreeGrade),
       "specialization" -> JsNumber(obj.specialization.id),
       "role" -> JsNumber(Role.SURGEON.id)
     )
