@@ -18,12 +18,7 @@
 
 package json
 
-
-
-
-import domainmodel.professionalfigure.{DoctorID, Specialization, Surgeon, Surgeons}
-import server.models.Protocol.{Accepted, Confirmation}
-import spray.json.{DefaultJsonProtocol, DerivedFormats, DeserializationException, JsNumber, JsString, JsValue, RootJsonFormat}
+import spray.json.{DeserializationException, JsNumber, JsValue, RootJsonFormat}
 
 object EnumerationJsonFormat {
 

@@ -15,20 +15,19 @@
  *  *                              limitations under the License.
  *
  */
+package json.medicalrecords
 
-package json.generalinfo
-
-import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
-import json.PathologyJsonFormat.previousPathologiesJsonFormat
-import json.generalinfo.AllergyJsonFormat.allergiesJsonFormat
-import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
-import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
-import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
-import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
+import domainmodel.medicalrecords.PainreliefHistory.PainreliefHistory
+import domainmodel.medicalrecords.Painrelief
+import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
+import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
+import json.RequestJsonFormats.immSetFormat
+import json.LocalDateTimeJsonFormat.DateTimeFormat
 
-object GeneralInfoJsonFormat {
-  implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
-  implicit val heightJsonFormat: RootJsonFormat[Height] = jsonFormat1(Height)
-  implicit val generalInfoJsonFormat: RootJsonFormat[GeneralInfo] = jsonFormat7(GeneralInfo)
+object PainreliefJsonFormat {
+
+  implicit val painreliefJsonFormat: RootJsonFormat[Painrelief] = jsonFormat2(Painrelief)
+  implicit val painreliefHistoryJsonFormat: RootJsonFormat[PainreliefHistory] = jsonFormat1(PainreliefHistory)
+
 }

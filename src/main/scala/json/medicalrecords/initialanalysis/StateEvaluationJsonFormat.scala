@@ -16,19 +16,18 @@
  *
  */
 
-package json.generalinfo
+package json.medicalrecords.initialanalysis
 
-import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
-import json.PathologyJsonFormat.previousPathologiesJsonFormat
-import json.generalinfo.AllergyJsonFormat.allergiesJsonFormat
-import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
-import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
-import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
-import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
+import domainmodel.medicalrecords.initialanalysis._
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat4}
 import spray.json.RootJsonFormat
 
-object GeneralInfoJsonFormat {
-  implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
-  implicit val heightJsonFormat: RootJsonFormat[Height] = jsonFormat1(Height)
-  implicit val generalInfoJsonFormat: RootJsonFormat[GeneralInfo] = jsonFormat7(GeneralInfo)
+object StateEvaluationJsonFormat {
+
+  implicit val psychologicalJsonFormat: RootJsonFormat[Psychological] = jsonFormat1(Psychological)
+  implicit val nutritionalJsonFormat: RootJsonFormat[Nutritional] = jsonFormat1(Nutritional)
+  implicit val educationalJsonFormat: RootJsonFormat[Educational] = jsonFormat1(Educational)
+  implicit val socialJsonFormat: RootJsonFormat[Social] = jsonFormat1(Social)
+  implicit val stateEvaluationJsonFormat: RootJsonFormat[StateEvaluation] = jsonFormat4(StateEvaluation)
+
 }

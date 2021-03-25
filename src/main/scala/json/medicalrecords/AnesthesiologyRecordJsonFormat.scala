@@ -16,19 +16,20 @@
  *
  */
 
-package json.generalinfo
+package json.medicalrecords
 
-import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
-import json.PathologyJsonFormat.previousPathologiesJsonFormat
-import json.generalinfo.AllergyJsonFormat.allergiesJsonFormat
-import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
-import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
-import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
-import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
+import domainmodel.medicalrecords.{AnesthesiologyRecord, AnestheticCard, OperationEvaluation, PostOperationEvaluation}
+import spray.json.DefaultJsonProtocol.jsonFormat2
 import spray.json.RootJsonFormat
+import json.professionalfigure.ProfessionalFigureJsonFormat.AnesthetistJsonFormat
+import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
+import json.LocalDateTimeJsonFormat.DateTimeFormat
 
-object GeneralInfoJsonFormat {
-  implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
-  implicit val heightJsonFormat: RootJsonFormat[Height] = jsonFormat1(Height)
-  implicit val generalInfoJsonFormat: RootJsonFormat[GeneralInfo] = jsonFormat7(GeneralInfo)
+object AnesthesiologyRecordJsonFormat {
+
+  implicit val anesthesiologyRecordJsonFormat: RootJsonFormat[AnesthesiologyRecord] = jsonFormat2(AnesthesiologyRecord)
+  implicit val operationEvaluationJsonFormat: RootJsonFormat[OperationEvaluation] = jsonFormat2(OperationEvaluation)
+  implicit val postOperationEvaluationJsonFormat: RootJsonFormat[PostOperationEvaluation] = jsonFormat2(PostOperationEvaluation)
+  implicit val anestheticCardJsonFormat: RootJsonFormat[AnestheticCard] = jsonFormat2(AnestheticCard)
+
 }

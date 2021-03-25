@@ -15,20 +15,20 @@
  *  *                              limitations under the License.
  *
  */
+package json.medicalrecords
 
-package json.generalinfo
-
-import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
-import json.PathologyJsonFormat.previousPathologiesJsonFormat
-import json.generalinfo.AllergyJsonFormat.allergiesJsonFormat
-import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
-import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
-import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
-import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
+import domainmodel.medicalrecords.VitalSigns.VitalSigns
+import domainmodel.medicalrecords.{Graphic, VitalSign}
+import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
+import json.utility.InfoDescriptionJsonFormat.infoJsonFormat
+import json.RequestJsonFormats.immSetFormat
+import json.LocalDateTimeJsonFormat.DateTimeFormat
 
-object GeneralInfoJsonFormat {
-  implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
-  implicit val heightJsonFormat: RootJsonFormat[Height] = jsonFormat1(Height)
-  implicit val generalInfoJsonFormat: RootJsonFormat[GeneralInfo] = jsonFormat7(GeneralInfo)
+object GraphicJsonFormat {
+
+  implicit val vitalSignJsonFormat: RootJsonFormat[VitalSign] = jsonFormat2(VitalSign)
+  implicit val vitalSignsJsonFormat: RootJsonFormat[VitalSigns] = jsonFormat1(VitalSigns)
+  implicit val graphicJsonFormat: RootJsonFormat[Graphic] = jsonFormat1(Graphic)
+
 }

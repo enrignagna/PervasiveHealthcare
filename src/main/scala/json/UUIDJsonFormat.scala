@@ -16,19 +16,19 @@
  *
  */
 
-package json.generalinfo
+package json
 
-import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
-import json.PathologyJsonFormat.previousPathologiesJsonFormat
-import json.generalinfo.AllergyJsonFormat.allergiesJsonFormat
-import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
-import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
-import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
-import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
-import spray.json.RootJsonFormat
+import java.util.UUID
+import spray.json.{JsString, JsValue, RootJsonFormat, deserializationError}
 
-object GeneralInfoJsonFormat {
-  implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
-  implicit val heightJsonFormat: RootJsonFormat[Height] = jsonFormat1(Height)
-  implicit val generalInfoJsonFormat: RootJsonFormat[GeneralInfo] = jsonFormat7(GeneralInfo)
+object UUIDJsonFormat {
+  implicit object UUIDJsonFormat extends RootJsonFormat[UUID] {
+
+    override def write(uuid: UUID) = JsString(uuid.toString)
+
+    override def read(json: JsValue): UUID = json match {
+      case JsString(uuid) => UUID.fromString(uuid)
+      case error => deserializationError(s"Expected UUID, got $error")
+    }
+  }
 }

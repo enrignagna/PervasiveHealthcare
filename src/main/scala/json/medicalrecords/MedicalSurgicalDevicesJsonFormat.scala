@@ -15,20 +15,16 @@
  *  *                              limitations under the License.
  *
  */
+package json.medicalrecords
 
-package json.generalinfo
-
-import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
-import json.PathologyJsonFormat.previousPathologiesJsonFormat
-import json.generalinfo.AllergyJsonFormat.allergiesJsonFormat
-import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
-import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
-import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
-import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
+import domainmodel.medicalrecords.MedicalSurgicalDevices.MedicalSurgicalDevices
+import domainmodel.medicalrecords.MedicalSurgicalDevice
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
+import json.RequestJsonFormats.immSetFormat
 
-object GeneralInfoJsonFormat {
-  implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
-  implicit val heightJsonFormat: RootJsonFormat[Height] = jsonFormat1(Height)
-  implicit val generalInfoJsonFormat: RootJsonFormat[GeneralInfo] = jsonFormat7(GeneralInfo)
+object MedicalSurgicalDevicesJsonFormat {
+
+  implicit val medicalSurgicalDeviceJsonFormat: RootJsonFormat[MedicalSurgicalDevice] = jsonFormat2(MedicalSurgicalDevice)
+  implicit val medicalSurgicalDevicesJsonFormat: RootJsonFormat[MedicalSurgicalDevices] = jsonFormat1(MedicalSurgicalDevices)
 }
