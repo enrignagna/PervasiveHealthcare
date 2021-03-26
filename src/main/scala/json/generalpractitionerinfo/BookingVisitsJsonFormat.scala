@@ -25,8 +25,17 @@ import json.utility.InfoDescriptionJsonFormat._
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.RootJsonFormat
 
+/**
+ * Json marshalling for booking visit object.
+ */
 object BookingVisitsJsonFormat {
+  /**
+   * Implicit for booking visit object.
+   */
   implicit val bookingVisitJsonFormat: RootJsonFormat[BookingVisit] = jsonFormat4(BookingVisit)
 
+  /**
+   * Implicit for booking visit history object.
+   */
   implicit val bookingVisitHistoryJsonFormat: RootJsonFormat[BookingVisitHistory] = jsonFormat1(BookingVisitHistory)
 }
