@@ -22,8 +22,14 @@ import domainmodel.medicalrecords.ClinicalData
 import json.RequestJsonFormats.jsonFormat
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for clinical data object.
+ */
 object ClinicalDataJsonFormat {
 
+  /**
+   * Implicit for clinical data object.
+   */
   implicit val clinicalDataJsonFormat: RootJsonFormat[ClinicalData] = jsonFormat[ClinicalData]
 
 }

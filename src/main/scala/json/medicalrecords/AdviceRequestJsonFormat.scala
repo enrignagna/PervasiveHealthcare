@@ -23,8 +23,19 @@ import json.LocalDateTimeJsonFormat.DateTimeFormat
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for advice request object.
+ */
 object AdviceRequestJsonFormat {
+
+  /**
+   * Implicit for request object.
+   */
   implicit val requestJsonFormat: RootJsonFormat[Request] = jsonFormat1(Request)
+
+  /**
+   * Implicit for advice request object.
+   */
   implicit val adviceRequestJsonFormat: RootJsonFormat[AdviceRequest] = jsonFormat2(AdviceRequest)
 
 }

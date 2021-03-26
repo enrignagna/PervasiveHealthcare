@@ -27,9 +27,28 @@ import json.RequestJsonFormats.immSetFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 import json.professionalfigure.DoctorJsonFormat.DoctorJsonFormat
 
+/**
+ * Json format for single sheet therapy object.
+ */
 object SingleSheetTherapyJsonFormat {
+
+  /**
+   * Implicit for single sheet therapy object.
+   */
   implicit val singleSheetTherapyJsonFormat: RootJsonFormat[SingleSheetTherapy] = jsonFormat2(SingleSheetTherapy)
+
+  /**
+   * Implicit for drugs prescription object.
+   */
   implicit val drugsPrescriptionJsonFormat: RootJsonFormat[DrugsPrescription] = jsonFormat3(DrugsPrescription)
+
+  /**
+   * Implicit for drug somministration therapy object.
+   */
   implicit val drugsSomministrationTherapyJsonFormat: RootJsonFormat[DrugsSomministration] = jsonFormat3(DrugsSomministration)
+
+  /**
+   * Implicit for single sheet therapies object.
+   */
   implicit val singleSheetTherapiesJsonFormat: RootJsonFormat[SingleSheetTherapies] = jsonFormat2(SingleSheetTherapies)
 }

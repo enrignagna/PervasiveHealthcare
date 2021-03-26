@@ -26,11 +26,29 @@ import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat.doctorIDJsonFormat
 import json.RequestJsonFormats.immSetFormat
 
+/**
+ * Json format for diagnostic services request object.
+ */
 object DiagnosticServicesRequestJsonFormat {
 
+  /**
+   * Implicit for diagnostic services request ID object.
+   */
   implicit val diagnosticServicesRequestIDJsonFormat: RootJsonFormat[DiagnosticServicesRequestID] = jsonFormat1(DiagnosticServicesRequestID)
+
+  /**
+   * Implicit for form object.
+   */
   implicit val formJsonFormat: RootJsonFormat[Form] = jsonFormat1(Form)
+
+  /**
+   * Implicit for diagnostic services request object.
+   */
   implicit val diagnosticServicesRequestJsonFormat: RootJsonFormat[DiagnosticServicesRequest] = jsonFormat4(DiagnosticServicesRequest)
+
+  /**
+   * Implicit for diagnostic services requests object.
+   */
   implicit val diagnosticServicesRequestsJsonFormat: RootJsonFormat[DiagnosticServicesRequests] = jsonFormat1(DiagnosticServicesRequests)
 
 

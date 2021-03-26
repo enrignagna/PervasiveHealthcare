@@ -19,14 +19,17 @@
 package json.professionalfigure
 
 import domainmodel.professionalfigure._
-import spray.json.DefaultJsonProtocol._
 import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
+import json.professionalfigure.ProfessionalFigureJsonFormat.doctorIDJsonFormat
 
-
+/**
+ * Json format for doctor object.
+ */
 object DoctorJsonFormat {
 
-  implicit val doctorIDJsonFormat: RootJsonFormat[DoctorID] = jsonFormat1(DoctorID)
-
+  /**
+   * Implicit for doctor object.
+   */
   implicit object DoctorJsonFormat extends RootJsonFormat[Doctor] {
     override def read(json: JsValue): Doctor = {
       json.asJsObject.getFields(

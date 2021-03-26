@@ -20,10 +20,16 @@ package json
 
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 import spray.json.{JsString, JsValue, RootJsonFormat, deserializationError}
 
+/**
+ * Json format for local date time object
+ */
 object LocalDateTimeJsonFormat {
+
+  /**
+   * Implicit for local date time object.
+   */
   implicit object DateTimeFormat extends RootJsonFormat[LocalDateTime] {
 
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE

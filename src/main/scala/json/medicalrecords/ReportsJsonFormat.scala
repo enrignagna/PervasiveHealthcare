@@ -24,15 +24,53 @@ import spray.json.RootJsonFormat
 import json.RequestJsonFormats.immSetFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 
+/**
+ * Json format for reports object
+ */
 object ReportsJsonFormat {
 
+  /**
+   * Implicit for diagnostics object.
+   */
   implicit val diagnosticsJsonFormat: RootJsonFormat[Diagnostics] = jsonFormat1(Diagnostics)
+
+  /**
+   * Implicit for consulting object.
+   */
   implicit val consultingJsonFormat: RootJsonFormat[Consulting] = jsonFormat1(Consulting)
+
+  /**
+   * Implicit for therapeutic delivery object.
+   */
   implicit val therapeuticDeliveryJsonFormat: RootJsonFormat[TherapeuticDelivery] = jsonFormat1(TherapeuticDelivery)
+
+  /**
+   * Implicit for rehabilitation object.
+   */
   implicit val rehabilitationJsonFormat: RootJsonFormat[Rehabilitation] = jsonFormat1(Rehabilitation)
+
+  /**
+   * Implicit for assistance type object.
+   */
   implicit val assistanceTypeJsonFormat: RootJsonFormat[Assistance] = jsonFormat1(Assistance)
+
+  /**
+   * Implicit for activity object.
+   */
   implicit val activityJsonFormat: RootJsonFormat[Activity] = jsonFormat5(Activity)
+
+  /**
+   * Implicit for treatment type object.
+   */
   implicit val treatmentTypeJsonFormat: RootJsonFormat[TreatmentType] = jsonFormat1(TreatmentType)
+
+  /**
+   * Implicit for report object.
+   */
   implicit val reportJsonFormat: RootJsonFormat[Report] = jsonFormat3(Report)
+
+  /**
+   * Implicit for reports object.
+   */
   implicit val reportsJsonFormat: RootJsonFormat[Reports] = jsonFormat1(Reports)
 }

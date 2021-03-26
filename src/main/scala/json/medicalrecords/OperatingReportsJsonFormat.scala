@@ -26,13 +26,39 @@ import json.utility.InfoDescriptionJsonFormat.noteJsonFormat
 import json.RequestJsonFormats.immSetFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 
+/**
+ * Json format for operating reports object.
+ */
 object OperatingReportsJsonFormat {
 
+  /**
+   * Implicit for surgeon report object.
+   */
   implicit val surgeonReportJsonFormat: RootJsonFormat[SurgeonReport] = jsonFormat2(SurgeonReport)
+
+  /**
+   * Implicit for anesthetist report object.
+   */
   implicit val anesthetistReportJsonFormat: RootJsonFormat[AnesthetistReport] = jsonFormat2(AnesthetistReport)
+
+  /**
+   * Implicit for instrumental report object.
+   */
   implicit val instrumentalistReportJsonFormat: RootJsonFormat[InstrumentalistReport] = jsonFormat2(InstrumentalistReport)
+
+  /**
+   * Implicit for medical object.
+   */
   implicit val medicalJsonFormat: RootJsonFormat[Medical] = jsonFormat3(Medical)
+
+  /**
+   * Implicit for intervention type object.
+   */
   implicit val interventionTypeJsonFormat: RootJsonFormat[InterventionType] = jsonFormat1(InterventionType)
+
+  /**
+   * Implicit for operating reports object.
+   */
   implicit val operatingReportsJsonFormat: RootJsonFormat[OperatingReports] = jsonFormat3(OperatingReports)
 
 }

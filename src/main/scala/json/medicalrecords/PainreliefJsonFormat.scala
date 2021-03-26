@@ -25,9 +25,19 @@ import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import json.RequestJsonFormats.immSetFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 
+/**
+ * Json format for pain relief object.
+ */
 object PainreliefJsonFormat {
 
+  /**
+   * Implicit for pain relief object.
+   */
   implicit val painreliefJsonFormat: RootJsonFormat[Painrelief] = jsonFormat2(Painrelief)
+
+  /**
+   * Implicit for pain relief history object.
+   */
   implicit val painreliefHistoryJsonFormat: RootJsonFormat[PainreliefHistory] = jsonFormat1(PainreliefHistory)
 
 }

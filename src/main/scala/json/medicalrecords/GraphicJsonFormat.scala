@@ -25,10 +25,24 @@ import json.utility.InfoDescriptionJsonFormat.infoJsonFormat
 import json.RequestJsonFormats.immSetFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 
+/**
+ * Json format for graphic object.
+ */
 object GraphicJsonFormat {
 
+  /**
+   *  Implicit for vital sign object.
+   */
   implicit val vitalSignJsonFormat: RootJsonFormat[VitalSign] = jsonFormat2(VitalSign)
+
+  /**
+   *  Implicit for vista signs object.
+   */
   implicit val vitalSignsJsonFormat: RootJsonFormat[VitalSigns] = jsonFormat1(VitalSigns)
+
+  /**
+   *  Implicit for graphic object.
+   */
   implicit val graphicJsonFormat: RootJsonFormat[Graphic] = jsonFormat1(Graphic)
 
 }

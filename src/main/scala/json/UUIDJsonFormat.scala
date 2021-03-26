@@ -21,7 +21,14 @@ package json
 import java.util.UUID
 import spray.json.{JsString, JsValue, RootJsonFormat, deserializationError}
 
+/**
+ * Json format for UUID object
+ */
 object UUIDJsonFormat {
+
+  /**
+   * * Implicit for UUID object.
+   */
   implicit object UUIDJsonFormat extends RootJsonFormat[UUID] {
 
     override def write(uuid: UUID) = JsString(uuid.toString)

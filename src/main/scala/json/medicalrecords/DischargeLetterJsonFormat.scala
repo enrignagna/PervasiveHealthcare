@@ -28,17 +28,59 @@ import json.professionalfigure.ProfessionalFigureJsonFormat.doctorIDJsonFormat
 import json.RequestJsonFormats.immSetFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 
+/**
+ * Json format for discharge letter object.
+ */
 object DischargeLetterJsonFormat {
 
+  /**
+   * Implicit for admission reason object.
+   */
   implicit val admissionReasonJsonFormat: RootJsonFormat[AdmissionReason] = jsonFormat1(AdmissionReason)
+
+  /**
+   * Implicit for clinical problems encountered object.
+   */
   implicit val clinicalProblemsEncounteredJsonFormat: RootJsonFormat[ClinicalProblemsEncountered] = jsonFormat1(ClinicalProblemsEncountered)
+
+  /**
+   * Implicit for significant findings object.
+   */
   implicit val significantFindingsJsonFormat: RootJsonFormat[SignificantFindings] = jsonFormat1(SignificantFindings)
+
+  /**
+   * Implicit for discharge diagnosis object.
+   */
   implicit val dischargeDiagnosisJsonFormat: RootJsonFormat[DischargeDiagnosis] = jsonFormat1(DischargeDiagnosis)
+
+  /**
+   * Implicit for follow up instructions object.
+   */
   implicit val followUpInstructionsJsonFormat: RootJsonFormat[FollowUpInstructions] = jsonFormat1(FollowUpInstructions)
+
+  /**
+   * Implicit for post hospital care information object.
+   */
   implicit val postHospitalCareInformationJsonFormat: RootJsonFormat[PostHospitalCareInformation] = jsonFormat1(PostHospitalCareInformation)
+
+  /**
+   * Implicit for sdo compilation object.
+   */
   implicit val sdoCompilationJsonFormat: RootJsonFormat[SdoCompilation] = jsonFormat1(SdoCompilation)
+
+  /**
+   * Implicit for pharmacological therapy object.
+   */
   implicit val pharmacologicalTherapyJsonFormat: RootJsonFormat[PharmacologicalTherapy] = jsonFormat5(PharmacologicalTherapy)
+
+  /**
+   * Implicit for pharmacological therapies object.
+   */
   implicit val pharmacologicalTherapiesJsonFormat: RootJsonFormat[PharmacologicalTherapies] = jsonFormat1(PharmacologicalTherapies)
+
+  /**
+   * Implicit for discharge letter object.
+   */
   implicit val dischargeLetterJsonFormat: RootJsonFormat[DischargeLetter] = jsonFormat7(DischargeLetter)
 
 }

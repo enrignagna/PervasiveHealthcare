@@ -25,11 +25,29 @@ import json.professionalfigure.ProfessionalFigureJsonFormat.AnesthetistJsonForma
 import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 
+/**
+ * Json format for anesthesiology record object.
+ */
 object AnesthesiologyRecordJsonFormat {
 
+  /**
+   * Implicit for anesthesiology record object.
+   */
   implicit val anesthesiologyRecordJsonFormat: RootJsonFormat[AnesthesiologyRecord] = jsonFormat2(AnesthesiologyRecord)
+
+  /**
+   * Implicit for operation evaluation object.
+   */
   implicit val operationEvaluationJsonFormat: RootJsonFormat[OperationEvaluation] = jsonFormat2(OperationEvaluation)
+
+  /**
+   * Implicit for post operation object.
+   */
   implicit val postOperationEvaluationJsonFormat: RootJsonFormat[PostOperationEvaluation] = jsonFormat2(PostOperationEvaluation)
+
+  /**
+   * Implicit for anesthetic card object.
+   */
   implicit val anestheticCardJsonFormat: RootJsonFormat[AnestheticCard] = jsonFormat2(AnestheticCard)
 
 }

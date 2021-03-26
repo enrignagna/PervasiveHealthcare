@@ -25,12 +25,38 @@ import json.medicalrecords.ClinicalDataJsonFormat.clinicalDataJsonFormat
 import json.generalinfo.GeneralInfoJsonFormat.generalInfoJsonFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 
+/**
+ * Json format for nursing documentation object.
+ */
 object NursingDocumentationJsonFormat {
 
+  /**
+   * Implicit for nursing documentation object.
+   */
   implicit val nursingDocumentationJsonFormat: RootJsonFormat[NursingDocumentation] = jsonFormat5(NursingDocumentation)
+
+  /**
+   * Implicit for intervention evaluation object.
+   */
   implicit val interventionEvaluationJsonFormat: RootJsonFormat[InterventionEvaluation] = jsonFormat1(InterventionEvaluation)
+
+  /**
+   * Implicit for care diary object.
+   */
   implicit val careDiaryJsonFormat: RootJsonFormat[CareDiary] = jsonFormat1(CareDiary)
+
+  /**
+   * Implicit for nursing intervention planning object.
+   */
   implicit val nursingInterventionPlanningJsonFormat: RootJsonFormat[NursingInterventionPlanning] = jsonFormat2(NursingInterventionPlanning)
+
+  /**
+   * Implicit for needs identification object.
+   */
   implicit val needsIdentificationJsonFormat: RootJsonFormat[NeedsIdentification] = jsonFormat2(NeedsIdentification)
+
+  /**
+   * Implicit for registration object.
+   */
   implicit val registrationJsonFormat: RootJsonFormat[Registration] = jsonFormat2(Registration)
 }

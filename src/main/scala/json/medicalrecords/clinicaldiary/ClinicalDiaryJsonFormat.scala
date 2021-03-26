@@ -24,7 +24,13 @@ import json.medicalrecords.clinicaldiary.HealthEvolutionJsonFormat.healthEvoluti
 import json.medicalrecords.clinicaldiary.TreatmentsJsonFormat.{rehabilitationTreatmentsJsonFormat, therapeuticTreatmentsJsonFormat, diagnosticTreatmentsJsonFormat}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for clinical diary object.
+ */
 object ClinicalDiaryJsonFormat {
 
+ /**
+  * Implicit for clinical diary object.
+  */
  implicit val clinicalDiaryJsonFormat: RootJsonFormat[ClinicalDiary] = jsonFormat4(ClinicalDiary)
 }

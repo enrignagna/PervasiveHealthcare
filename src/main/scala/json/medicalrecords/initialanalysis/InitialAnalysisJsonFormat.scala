@@ -25,8 +25,14 @@ import json.medicalrecords.initialanalysis.StateEvaluationJsonFormat.stateEvalua
 import json.AnamnesisJsonFormat.anamnesisJsonFormat
 import json.medicalrecords.initialanalysis.PhysicalExaminationJsonFormat.physicalExaminationJsonFormat
 
+/**
+ * Json format for initial analysis object.
+ */
 object InitialAnalysisJsonFormat {
 
+  /**
+   * Implicit for initial analysis object.
+   */
   implicit val initialAnalysisJsonFormat: RootJsonFormat[InitialAnalysis] = jsonFormat3(InitialAnalysis)
 
 }

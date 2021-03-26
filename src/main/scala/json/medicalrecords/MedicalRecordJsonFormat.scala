@@ -37,10 +37,24 @@ import json.medicalrecords.OperatingReportsJsonFormat.operatingReportsJsonFormat
 import json.RequestJsonFormats.immSetFormat
 import json.UUIDJsonFormat.UUIDJsonFormat
 
+/**
+ * Json format for medical record object.
+ */
 object MedicalRecordJsonFormat {
 
+  /**
+   * Implicit for medical records ID object.
+   */
   implicit val medicalRecordsIDJsonFormat: RootJsonFormat[MedicalRecordsID] = jsonFormat1(MedicalRecordsID)
+
+  /**
+   * Implicit for medical record object.
+   */
   implicit val medicalRecordJsonFormat: RootJsonFormat[MedicalRecord] = jsonFormat14(MedicalRecord)
+
+  /**
+   * Implicit for medical records object.
+   */
   implicit val medicalRecordsJsonFormat: RootJsonFormat[MedicalRecords] = jsonFormat1(MedicalRecords)
 
 }

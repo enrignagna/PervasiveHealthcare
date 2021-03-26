@@ -22,9 +22,23 @@ import domainmodel.medicalrecords.initialanalysis._
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for physical examination object.
+ */
 object PhysicalExaminationJsonFormat {
 
+  /**
+   * Implicit for hospitalization motivation object.
+   */
   implicit val hospitalizationMotivationJsonFormat: RootJsonFormat[HospitalizationMotivation] = jsonFormat1(HospitalizationMotivation)
+
+  /**
+   * Implicit for systems investigation object.
+   */
   implicit val systemsInvestigationJsonFormat: RootJsonFormat[SystemsInvestigation] = jsonFormat1(SystemsInvestigation)
+
+  /**
+   * Implicit for physical examination object.
+   */
   implicit val physicalExaminationJsonFormat: RootJsonFormat[PhysicalExamination] = jsonFormat2(PhysicalExamination)
 }

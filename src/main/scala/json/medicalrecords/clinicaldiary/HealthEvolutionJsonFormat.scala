@@ -24,8 +24,14 @@ import spray.json.RootJsonFormat
 import json.utility.InfoDescriptionJsonFormat.infoJsonFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 
+/**
+ * Json format for health evolution object.
+ */
 object HealthEvolutionJsonFormat {
 
+  /**
+   * Implicit for health evolution object.
+   */
   implicit val healthEvolutionJsonFormat: RootJsonFormat[HealthEvolution] = jsonFormat2(HealthEvolution)
 
 }

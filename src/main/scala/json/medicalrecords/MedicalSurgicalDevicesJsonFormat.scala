@@ -23,8 +23,18 @@ import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat
 import spray.json.RootJsonFormat
 import json.RequestJsonFormats.immSetFormat
 
+/**
+ * Json format for medical surgical devices object.
+ */
 object MedicalSurgicalDevicesJsonFormat {
 
+  /**
+   * Implicit for medical surgical device object.
+   */
   implicit val medicalSurgicalDeviceJsonFormat: RootJsonFormat[MedicalSurgicalDevice] = jsonFormat2(MedicalSurgicalDevice)
+
+  /**
+   * Implicit for medical surgical devices object.
+   */
   implicit val medicalSurgicalDevicesJsonFormat: RootJsonFormat[MedicalSurgicalDevices] = jsonFormat1(MedicalSurgicalDevices)
 }

@@ -22,12 +22,34 @@ import domainmodel.medicalrecords.initialanalysis._
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat4}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for state evaluation object.
+ */
 object StateEvaluationJsonFormat {
 
+  /**
+   * Implicit for psychological object.
+   */
   implicit val psychologicalJsonFormat: RootJsonFormat[Psychological] = jsonFormat1(Psychological)
+
+  /**
+   * Implicit for nutritional object.
+   */
   implicit val nutritionalJsonFormat: RootJsonFormat[Nutritional] = jsonFormat1(Nutritional)
+
+  /**
+   * Implicit for educational object.
+   */
   implicit val educationalJsonFormat: RootJsonFormat[Educational] = jsonFormat1(Educational)
+
+  /**
+   * Implicit for social object.
+   */
   implicit val socialJsonFormat: RootJsonFormat[Social] = jsonFormat1(Social)
+
+  /**
+   * Implicit for state evaluation object.
+   */
   implicit val stateEvaluationJsonFormat: RootJsonFormat[StateEvaluation] = jsonFormat4(StateEvaluation)
 
 }
