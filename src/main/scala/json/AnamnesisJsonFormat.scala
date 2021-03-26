@@ -25,21 +25,44 @@ import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat, json
 import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for anamnesis object.
+ */
 object AnamnesisJsonFormat {
 
-
+  /**
+   * Implicit for kinship degree object.
+   */
   implicit val kinshipDegreeJsonFormat: RootJsonFormat[KinshipDegree] = jsonFormat[KinshipDegree]
 
+  /**
+   * Implicit for remote object.
+   */
   implicit val remoteJsonFormat: RootJsonFormat[Remote] = jsonFormat2(Remote)
 
+  /**
+   * Implicit for familiar object.
+   */
   implicit val familiarJsonFormat: RootJsonFormat[Familiar] = jsonFormat4(Familiar)
 
+  /**
+   * Implicit for physiologic object.
+   */
   implicit val physiologicJsonFormat: RootJsonFormat[Physiologic] = jsonFormat2(Physiologic)
 
+  /**
+   * Implicit for anamnesis object.
+   */
   implicit val anamnesisJsonFormat: RootJsonFormat[Anamnesis] = jsonFormat3(Anamnesis)
 
+  /**
+   * Implicit for remotes object.
+   */
   implicit val remotesJsonFormat: RootJsonFormat[Remotes] = jsonFormat1(Remotes)
 
+  /**
+   * Implicit for familiars object.
+   */
   implicit val familiarsJsonFormat: RootJsonFormat[Familiars] = jsonFormat1(Familiars)
 
 }

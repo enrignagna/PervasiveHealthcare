@@ -22,7 +22,13 @@ import domainmodel.User
 import json.RequestJsonFormats.{StringJsonFormat, jsonFormat2}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for user object.
+ */
 object UserJsonFormat {
 
+  /**
+   * Implicit for user object.
+   */
   implicit val userJsonFormat: RootJsonFormat[User] = jsonFormat2(User)
 }

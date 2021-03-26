@@ -20,11 +20,24 @@ import domainmodel.utility._
 import json.RequestJsonFormats.{StringJsonFormat, jsonFormat1}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for info description object.
+ */
 object InfoDescriptionJsonFormat {
+
+  /**
+   * Implicit for info object.
+   */
   implicit val infoJsonFormat: RootJsonFormat[Info] = jsonFormat1(Info)
 
+  /**
+   * Implicit for description object.
+   */
   implicit val descriptionJsonFormat: RootJsonFormat[Description] = jsonFormat1(Description)
 
+  /**
+   * Implicit for note object.
+   */
   implicit val noteJsonFormat: RootJsonFormat[Note] = jsonFormat1(Note)
 
 }

@@ -24,10 +24,33 @@ import json.LocalDateJsonFormat.DateFormat
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat3}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for exam object.
+ */
 object ExamJsonFormat {
+
+  /**
+   * Implicit for exam date object.
+   */
   implicit val examDateJsonFormat: RootJsonFormat[ExamDate] = jsonFormat1(ExamDate)
+
+  /**
+   * Implicit for exam report object.
+   */
   implicit val examReportJsonFormat: RootJsonFormat[ExamReport] = jsonFormat1(ExamReport)
+
+  /**
+   * Implicit for exam info object.
+   */
   implicit val examInfoJsonFormat: RootJsonFormat[ExamInfo] = jsonFormat1(ExamInfo)
+
+  /**
+   * Implicit for exam object.
+   */
   implicit val examJsonFormat: RootJsonFormat[Exam] = jsonFormat3(Exam)
+
+  /**
+   * Implicit for exam history object.
+   */
   implicit val examHistoryJsonFormat: RootJsonFormat[ExamHistory] = jsonFormat1(ExamHistory)
 }

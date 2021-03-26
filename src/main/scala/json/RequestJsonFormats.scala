@@ -18,12 +18,17 @@
 
 package json
 
-import domainmodel.professionalfigure.Doctor
 import server.models.Protocol.Confirmation
 import spray.json.{DefaultJsonProtocol, DerivedFormats, RootJsonFormat}
 
+/**
+ * Json format for request object.
+ */
 object RequestJsonFormats extends DefaultJsonProtocol with DerivedFormats{
 
+  /**
+   * Implicit for confirmation object.
+   */
   implicit val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
 
 }

@@ -24,13 +24,24 @@ import json.EnumerationJsonFormat.EnumJsonConverter
 import spray.json.DefaultJsonProtocol._
 import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
 
-
+/**
+ * Json format for professional figure object.
+ */
 object ProfessionalFigureJsonFormat {
 
+  /**
+   * Implicit for doctor ID object.
+   */
   implicit val doctorIDJsonFormat: RootJsonFormat[DoctorID] = jsonFormat1(DoctorID)
 
+  /**
+   * Implicit for specialization object.
+   */
   implicit val specializationJsonFormat: EnumJsonConverter[Specialization.type] = new EnumJsonConverter(Specialization)
 
+  /**
+   * Implicit for surgeon object.
+   */
   implicit object SurgeonJsonFormat extends RootJsonFormat[Surgeon] {
     override def read(json: JsValue): Surgeon = {
       json.asJsObject.getFields(
@@ -55,6 +66,9 @@ object ProfessionalFigureJsonFormat {
     )
   }
 
+  /**
+   * Implicit for anesthetist object.
+   */
   implicit object AnesthetistJsonFormat extends RootJsonFormat[Anesthetist] {
     override def read(json: JsValue): Anesthetist = {
       json.asJsObject.getFields(
@@ -76,6 +90,9 @@ object ProfessionalFigureJsonFormat {
     )
   }
 
+  /**
+   * Implicit for instrumentalist object.
+   */
   implicit object InstrumentalistJsonFormat extends RootJsonFormat[Instrumentalist] {
     override def read(json: JsValue): Instrumentalist = {
       json.asJsObject.getFields(
@@ -98,5 +115,8 @@ object ProfessionalFigureJsonFormat {
   }
 
   //TODO other professional figures
+  /**
+   * Implicit for surgeons object.
+   */
   implicit val surgeonsJsonFormat: RootJsonFormat[Surgeons] = jsonFormat1(Surgeons)
 }

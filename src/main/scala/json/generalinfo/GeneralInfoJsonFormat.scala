@@ -27,8 +27,23 @@ import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
 import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for general info object.
+ */
 object GeneralInfoJsonFormat {
+
+  /**
+   * Implicit for weight object.
+   */
   implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
+
+  /**
+   * Implicit for height object.
+   */
   implicit val heightJsonFormat: RootJsonFormat[Height] = jsonFormat1(Height)
+
+  /**
+   * Implicit for general info object.
+   */
   implicit val generalInfoJsonFormat: RootJsonFormat[GeneralInfo] = jsonFormat7(GeneralInfo)
 }

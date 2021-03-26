@@ -26,12 +26,39 @@ import json.LocalDateJsonFormat.DateFormat
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat2, jsonFormat3}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for pathology object.
+ */
 object PathologyJsonFormat {
+
+  /**
+   * Implicit for pathology severity level object.
+   */
   implicit val pathologySeverityLevelJsonFormat: EnumJsonConverter[PathologySeverityLevels.type] = new EnumJsonConverter(PathologySeverityLevels)
+
+  /**
+   * Implicit for pathology severity object.
+   */
   implicit val pathologySeverityJsonFormat: RootJsonFormat[PathologySeverity] = jsonFormat2(PathologySeverity)
+
+  /**
+   * Implicit for detection date object.
+   */
   implicit val detectionDateJsonFormat: RootJsonFormat[DetectionDate] = jsonFormat1(DetectionDate)
+
+  /**
+   * Implicit for pathology name object.
+   */
   implicit val pathologyNameJsonFormat: RootJsonFormat[PathologyName] = jsonFormat1(PathologyName)
+
+  /**
+   * Implicit for pathology object.
+   */
   implicit val pathologyJsonFormat: RootJsonFormat[Pathology] = jsonFormat3(Pathology)
+
+  /**
+   * Implicit for previous pathologies object.
+   */
   implicit val previousPathologiesJsonFormat: RootJsonFormat[PreviousPathologies] = jsonFormat1(PreviousPathologies)
 
 

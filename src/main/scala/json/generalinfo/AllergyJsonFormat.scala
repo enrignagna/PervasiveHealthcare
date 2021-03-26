@@ -24,11 +24,28 @@ import json.EnumerationJsonFormat.EnumJsonConverter
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for allergy object.
+ */
 object AllergyJsonFormat {
+
+  /**
+   * Implicit for allergy enumeration.
+   */
   implicit val allergyClassJsonFormat: EnumJsonConverter[AllergyClass.type] = new EnumJsonConverter(AllergyClass)
 
+  /**
+   * Implicit for allergy description object.
+   */
   implicit val allergyDescriptionJsonFormat: RootJsonFormat[AllergyDescription] = jsonFormat1(AllergyDescription)
+
+  /**
+   * Implicit for allergy object.
+   */
   implicit val allergyJsonFormat: RootJsonFormat[Allergy] = jsonFormat2(Allergy)
 
+  /**
+   * Implicit for allergies object.
+   */
   implicit val allergiesJsonFormat: RootJsonFormat[Allergies] = jsonFormat1(Allergies)
 }
