@@ -22,9 +22,18 @@ import json.RequestJsonFormats.{ByteJsonFormat, IntJsonFormat, immSetFormat, jso
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for medical certificates object.
+ */
 object MedicalCertificatesJsonFormat {
 
+  /**
+   * Implicit for medical certificate object.
+   */
   implicit val medicalCertificateJsonFormat: RootJsonFormat[MedicalCertificate] = jsonFormat2(MedicalCertificate)
 
+  /**
+   * Implicit for medical certificate history object.
+   */
   implicit val medicalCertificateHistoryJsonFormat: RootJsonFormat[MedicalCertificateHistory] = jsonFormat1(MedicalCertificateHistory)
 }

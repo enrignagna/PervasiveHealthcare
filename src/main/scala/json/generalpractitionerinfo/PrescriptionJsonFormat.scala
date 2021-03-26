@@ -23,13 +23,28 @@ import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat2}
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for prescriptions object.
+ */
 object PrescriptionJsonFormat {
 
+  /**
+   * Implicit for prescription initial date object.
+   */
   implicit val prescriptionInitialDateJsonFormat: RootJsonFormat[PrescriptionInitialDate] = jsonFormat1(PrescriptionInitialDate)
 
+  /**
+   * Implicit for prescription description object.
+   */
   implicit val prescriptionDescriptionJsonFormat: RootJsonFormat[PrescriptionDescription] = jsonFormat1(PrescriptionDescription)
 
+  /**
+   * Implicit for prescription object.
+   */
   implicit val prescriptionJsonFormat: RootJsonFormat[Prescription] = jsonFormat2(Prescription)
 
+  /**
+   * Implicit for prescriptions object.
+   */
   implicit val prescriptionsJsonFormat: RootJsonFormat[PrescriptionHistory] = jsonFormat1(PrescriptionHistory)
 }
