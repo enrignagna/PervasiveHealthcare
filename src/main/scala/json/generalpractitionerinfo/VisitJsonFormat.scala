@@ -22,11 +22,23 @@ import json.LocalDateJsonFormat.DateFormat
 import spray.json.DefaultJsonProtocol.{immSetFormat, jsonFormat1}
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for visit object.
+ */
 object VisitJsonFormat {
 
+  /**
+   * Implicit for visit date object.
+   */
   implicit val visitDateJsonFormat: RootJsonFormat[VisitDate] = jsonFormat1(VisitDate)
 
+  /**
+   * Implicit for visit object.
+   */
   implicit val visitJsonFormat: RootJsonFormat[Visit] = jsonFormat1(Visit)
 
+  /**
+   * Implicit for visits object.
+   */
   implicit val visitsJsonFormat: RootJsonFormat[VisitHistory] = jsonFormat1(VisitHistory)
 }

@@ -33,20 +33,44 @@ import json.generalpractitionerinfo.VisitJsonFormat.visitJsonFormat
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for general practitioner object.
+ */
 object GeneralPractitionerInfoJsonFormat {
 
+  /**
+   * Implicit for doctor id of general practitioner object.
+   */
   implicit val generalPractitionerInfoDoctorJsonFormat: RootJsonFormat[DoctorID] = jsonFormat1(DoctorID)
 
+  /**
+   * Implicit for visits object.
+   */
   implicit val generalPractitionerInfoVisitsJsonFormat: RootJsonFormat[VisitHistory] = jsonFormat1(VisitHistory)
 
+  /**
+   * Implicit for anamnesis object.
+   */
   implicit val generalPractitionerInfoAnamnesisJsonFormat: RootJsonFormat[Anamnesis] = jsonFormat3(Anamnesis)
 
+  /**
+   * Implicit for booking visits object.
+   */
   implicit val generalPractitionerInfoBookingVisitsJsonFormat: RootJsonFormat[BookingVisitHistory] = jsonFormat1(BookingVisitHistory)
 
+  /**
+   * Implicit for prescriptions object.
+   */
   implicit val generalPractitionerInfoPrescriptionsJsonFormat: RootJsonFormat[PrescriptionHistory] = jsonFormat1(PrescriptionHistory)
 
+  /**
+   * Implicit for therapies object.
+   */
   implicit val generalPractitionerInfoTherapiesJsonFormat: RootJsonFormat[TherapyHistory] = jsonFormat1(TherapyHistory)
 
+  /**
+   * Implicit for practitioner info object.
+   */
   implicit val generalPractitionerInfoJsonFormat: RootJsonFormat[GeneralPractitionerInfo] = jsonFormat7(GeneralPractitionerInfo)
 
 }
