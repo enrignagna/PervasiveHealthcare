@@ -18,29 +18,75 @@
 
 package domainmodel.generalpractitionerinfo
 
-import domainmodel.{Anamensis, Familiar, Father, Physiologic, Remote}
-
-import java.time.LocalDate
+import domainmodel.Familiars.Familiars
 import domainmodel.PreviousPathologies.PreviousPathologies
-import domainmodel.generalpractitionerinfo.Visits.Visits
+import domainmodel.Remotes.Remotes
+import domainmodel._
+import domainmodel.generalpractitionerinfo.BookingVisitHistory._
+import domainmodel.generalpractitionerinfo.MedicalCertificateHistory._
+import domainmodel.generalpractitionerinfo.PrescriptionHistory._
+import domainmodel.generalpractitionerinfo.TherapyHistory._
+import domainmodel.generalpractitionerinfo.VisitHistory._
+import domainmodel.professionalfigure.DoctorID
+import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
 
+import java.time.LocalDate
+
 @RunWith(classOf[JUnitRunner])
 class GeneralPractitionerInfoTest extends AnyFreeSpec {
   val visit: Visit = Visit(VisitDate())
-  val generalVisit: GeneralPractitionerInfoVisits = GeneralPractitionerInfoVisits(Visits().addNewVisit(visit))
-  val anamnesis: GeneralPractitionerInfoAnamnesis = GeneralPractitionerInfoAnamnesis(Anamensis(Familiar("Rossi Mario", Father, PreviousPathologies(), "3387514876"), Remote("first anamnesis"), Physiologic("self conscious")))
-  val prescription: GeneralPractitionerInfoPrescriptions = GeneralPractitionerInfoPrescriptions(Prescriptions().addNewPrescription(Prescription(PrescriptionInitialDate(), PrescriptionDescription("First prescription"))))
-  val therapy: GeneralPractitionerInfoTherapies = GeneralPractitionerInfoTherapies(Therapies().addNewTherapy(Therapy(TherapyDate(), TherapyDescription("Therapy for shoulder surgery"), TherapyInitialDate(LocalDate.of(2021, 5, 15)), TherapyFinalDate(LocalDate.of(2021, 6, 15)))))
-  val bookingVisits: GeneralPractitionerInfoBookingVisits = GeneralPractitionerInfoBookingVisits(BookingVisits(1, visit, "visit for shoulder surgery"))
-  val doctor: GeneralPractitionerInfoDoctor = GeneralPractitionerInfoDoctor(1, "Giorgio Verdi")
-  val generalPractitionerInfo: GeneralPractitionerInfo = GeneralPractitionerInfo(doctor, generalVisit, anamnesis, bookingVisits, prescription, therapy)
+  val generalVisits: VisitHistory = VisitHistory().addNewVisit(visit)
+  val anamnesis: Anamnesis =
+    Anamnesis(
+      Familiars().addNewFamiliar(
+        Familiar("Rossi Mario", Father, PreviousPathologies(), "3387514876")
+      ),
+      Remotes().addNewRemote(
+        Remote("first anamnesis")
+      ),
+      Physiologic("self conscious")
+    )
+  val prescriptions: PrescriptionHistory = PrescriptionHistory().addNewPrescription(
+    Prescription(PrescriptionInitialDate(),
+      PrescriptionDescription("First prescription")
+    )
+  )
+  val therapies: TherapyHistory = TherapyHistory().addNewTherapy(
+    Therapy(
+      TherapyDate(),
+      TherapyDescription("Therapy for shoulder surgery"),
+      TherapyInitialDate(LocalDate.of(2021, 5, 15)),
+      TherapyFinalDate(LocalDate.of(2021, 6, 15))
+    )
+  )
+  val bookingVisits: BookingVisitHistory = BookingVisitHistory().addNewBookingVisit(
+    BookingVisit(1, visit, Description("visit for shoulder surgery"), LocalDate.now())
+  )
+  val doctorID: DoctorID = DoctorID("432984632")
+  val medicalCertificates: MedicalCertificateHistory = MedicalCertificateHistory().addNewMedicalCertificate(
+    MedicalCertificate(
+      1233,
+      Set.empty[Byte]
+    )
+  )
+  val generalPractitionerInfo: GeneralPractitionerInfo =
+    GeneralPractitionerInfo(
+      doctorID,
+      generalVisits,
+      anamnesis,
+      bookingVisits,
+      prescriptions,
+      therapies,
+      medicalCertificates
+    )
+
 
   "A general practitioner info should have" - {
     "a practitioner info" in {
-      assert(generalPractitionerInfo.doctor != null)
+      assert(generalPractitionerInfo.doctorID != null)
     }
     "a visit information" in {
       assert(generalPractitionerInfo.visits != null)
@@ -55,7 +101,10 @@ class GeneralPractitionerInfoTest extends AnyFreeSpec {
       assert(generalPractitionerInfo.prescriptions != null)
     }
     "an therapy info" in {
-      assert(generalPractitionerInfo.generalPractitionerInfoTherapies != null)
+      assert(generalPractitionerInfo.therapies != null)
+    }
+    "a medical certificates info" in {
+      assert(generalPractitionerInfo.medicalCertificateHistory != null)
     }
   }
 }

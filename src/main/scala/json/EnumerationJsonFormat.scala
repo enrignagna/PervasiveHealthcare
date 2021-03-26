@@ -18,15 +18,19 @@
 
 package json
 
+import spray.json.{DeserializationException, JsNumber, JsValue, RootJsonFormat}
 
-
-
-import domainmodel.professionalfigure.{DoctorID, Specialization, Surgeon, Surgeons}
-import server.models.Protocol.{Accepted, Confirmation}
-import spray.json.{DefaultJsonProtocol, DerivedFormats, DeserializationException, JsNumber, JsString, JsValue, RootJsonFormat}
-
+/**
+ * Json format for enumeration.
+ */
 object EnumerationJsonFormat {
 
+  /**
+   * Implicit class for enumeration object.
+   *
+   * @param enu, generic enumeration
+   * @tparam T, generic type
+   */
   implicit class EnumJsonConverter[T <: scala.Enumeration](enu: T) extends RootJsonFormat[T#Value] {
     override def write(obj: T#Value): JsValue = JsNumber(obj.id)
 

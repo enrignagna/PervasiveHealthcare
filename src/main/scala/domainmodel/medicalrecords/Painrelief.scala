@@ -36,7 +36,7 @@ object PainreliefHistory {
     /**
      * Add new painreief .
      *
-     * @param drug painrelief to add.
+     * @param painrelief painrelief to add.
      * @return collection of painreliefs.
      */
     def addNewPainrelief(painrelief: Painrelief): PainreliefHistory = PainreliefHistory(this.painreliefs + painrelief)

@@ -25,7 +25,7 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class MedicalCertificatesTest extends AnyFreeSpec {
   val bytes: Set[Byte] = Set()
-  val medicalCertificate: MedicalCertificates = MedicalCertificates(1, bytes)
+  val medicalCertificate: MedicalCertificatesOld = MedicalCertificatesOld(1, bytes)
   "A medical certificate should have" - {
     "an id" in {
       assert(medicalCertificate.getId == 1)

@@ -19,11 +19,18 @@
 package json
 
 import server.models.Protocol.Confirmation
-import spray.json.DerivedJsonProtocol.jsonFormat
 import spray.json.{DefaultJsonProtocol, DerivedFormats, RootJsonFormat}
 
+/**
+ * Json format for request object.
+ */
 object RequestJsonFormats extends DefaultJsonProtocol with DerivedFormats{
+
+  /**
+   * Implicit for confirmation object.
+   */
   implicit lazy val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
+
 }
 
 

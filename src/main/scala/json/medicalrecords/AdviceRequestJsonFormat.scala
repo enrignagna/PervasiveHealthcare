@@ -16,25 +16,26 @@
  *
  */
 
-package domainmodel.generalpractitionerinfo
+package json.medicalrecords
 
-import org.junit.runner.RunWith
-import org.scalatest.freespec._
-import org.scalatestplus.junit.JUnitRunner
+import domainmodel.medicalrecords._
+import json.LocalDateTimeJsonFormat.DateTimeFormat
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2}
+import spray.json.RootJsonFormat
 
-@RunWith(classOf[JUnitRunner])
-class BookingVisitsTest extends AnyFreeSpec {
-  val visit: Visit = Visit(VisitDate())
-  val bookingVisits: BookingVisits = BookingVisits(1, visit, "visit for shoulder surgery")
-  "A booking visits should have" - {
-    "an id" in {
-      assert(bookingVisits.getId == 1)
-    }
-    "a visit information" in {
-      assert(bookingVisits.getVisit == visit)
-    }
-    "a description" in {
-      assert(bookingVisits.getDescription == "visit for shoulder surgery")
-    }
-  }
+/**
+ * Json format for advice request object.
+ */
+object AdviceRequestJsonFormat {
+
+  /**
+   * Implicit for request object.
+   */
+  implicit val requestJsonFormat: RootJsonFormat[Request] = jsonFormat1(Request)
+
+  /**
+   * Implicit for advice request object.
+   */
+  implicit val adviceRequestJsonFormat: RootJsonFormat[AdviceRequest] = jsonFormat2(AdviceRequest)
+
 }

@@ -15,8 +15,8 @@
  */
 
 package domainmodel.medicalrecords.initialanalysis
-import domainmodel.Anamensis
+import domainmodel.Anamnesis
 
-case class InitialAnalysis(anamensis: Anamensis, physicalExamination: PhysicalExamination, stateEvaluation: StateEvaluation) {
+case class InitialAnalysis(anamensis: Anamnesis, physicalExamination: PhysicalExamination, stateEvaluation: StateEvaluation) {
 
 }

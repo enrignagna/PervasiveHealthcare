@@ -23,10 +23,24 @@ import json.EnumerationJsonFormat.EnumJsonConverter
 import spray.json.DefaultJsonProtocol.jsonFormat2
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for blood group object.
+ */
 object BloodGroupJsonFormat {
+
+  /**
+   * Implicit for blood type object.
+   */
   implicit val bloodTypeJsonFormat: EnumJsonConverter[BloodType.type] = new EnumJsonConverter(BloodType)
+
+  /**
+   * Implicit for rh enumeration.
+   */
   implicit val rhJsonFormat: EnumJsonConverter[Rh.type] = new EnumJsonConverter(Rh)
 
+  /**
+   * Implicit for blood group object.
+   */
   implicit val bloodGroupJsonFormat: RootJsonFormat[BloodGroup] = jsonFormat2(BloodGroup)
 
 }

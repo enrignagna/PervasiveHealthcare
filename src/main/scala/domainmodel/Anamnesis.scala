@@ -16,14 +16,18 @@
 
 package domainmodel
 
+import domainmodel.Familiars.Familiars
 import domainmodel.PreviousPathologies.PreviousPathologies
+import domainmodel.Remotes.Remotes
 
 import java.time.LocalDate
 
 sealed trait KinshipDegree
 
 case object Mother extends KinshipDegree
+
 case object Father extends KinshipDegree
+
 case object LegalTutor extends KinshipDegree
 
 case class Familiar(name: String, kinshipDegree: KinshipDegree, previousPathologies: PreviousPathologies, phoneNumber: String)
@@ -36,22 +40,22 @@ case class Physiologic(info: String, date: LocalDate = java.time.LocalDate.now)
  * This class represents the anamnesis.
  * There are various steps that make up the anamnesis including family, remote and psychological anamnesis.
  */
-case class Anamensis(familiar: Familiar, remote: Remote, physiologic: Physiologic)
+case class Anamnesis(familiars: Familiars, remotes: Remotes, physiologic: Physiologic)
 
 /**
- * Factory to add a new remote anamnesi to the anamnesi's history.
+ * Factory to add a new remote anamnesis to the anamnesis's history.
  */
 object Remotes {
 
-  case class Remotes private(remotes: Set[Remote] = Set.empty) {
-    def addNewRemote(remote: Remote): Remotes = Remotes(this.remotes + remote)
+  case class Remotes private(history: Set[Remote] = Set.empty) {
+    def addNewRemote(remote: Remote): Remotes = Remotes(this.history + remote)
   }
 
   def apply(): Remotes = Remotes()
 }
 
 /**
- * Factory to add a new familiar anamnesi to the anamnesi's history.
+ * Factory to add a new familiar anamnesis to the anamnesis's history.
  */
 object Familiars {
 

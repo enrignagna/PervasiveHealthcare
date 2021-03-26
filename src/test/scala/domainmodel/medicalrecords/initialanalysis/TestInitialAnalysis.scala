@@ -16,6 +16,8 @@
 
 package domainmodel.medicalrecords.initialanalysis
 
+import domainmodel.Familiars.Familiars
+import domainmodel.Remotes.Remotes
 import domainmodel._
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
@@ -24,8 +26,10 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class TestInitialAnalysis extends AnyFreeSpec {
   val remote: Remote = Remote("first anamnesis")
+  val remotes: Remotes = Remotes().addNewRemote(remote)
   val familiar: Familiar = Familiar("Rossi Mario", Father, PreviousPathologies(), "3387514876")
-  val anamnesis: Anamensis = Anamensis(familiar, remote, Physiologic("self conscious"))
+  val familiars: Familiars = Familiars().addNewFamiliar(familiar)
+  val anamnesis: Anamnesis = Anamnesis(familiars, remotes, Physiologic("self conscious"))
 
   val initialAnalysis: InitialAnalysis = InitialAnalysis(
     anamnesis,
@@ -42,7 +46,7 @@ class TestInitialAnalysis extends AnyFreeSpec {
   "An initial analysis should have" - {
     "an anamnesis" in {
       assert(initialAnalysis.anamensis != null)
-      assert(initialAnalysis.anamensis.isInstanceOf[Anamensis])
+      assert(initialAnalysis.anamensis.isInstanceOf[Anamnesis])
     }
     "a physical exaimnation" in {
       assert(initialAnalysis.physicalExamination != null)

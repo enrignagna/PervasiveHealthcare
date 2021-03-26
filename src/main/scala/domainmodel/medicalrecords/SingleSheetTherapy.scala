@@ -50,9 +50,9 @@ case class DrugsSomministration(doctor: Doctor, description: Description, dateti
 /**
  * Collection of single sheet therapy.
  */
-object SingleSheetTherapy {
+object SingleSheetTherapies {
 
-  case class SingleSheetTherapy private(drugsPrescription: Set[DrugsPrescription] = Set.empty, drugsSomministration: Set[DrugsSomministration] = Set.empty) {
+  case class SingleSheetTherapies private(drugsPrescription: Set[DrugsPrescription] = Set.empty, drugsSomministration: Set[DrugsSomministration] = Set.empty) {
 
     /**
      * Add new drugs somministration.
@@ -60,7 +60,7 @@ object SingleSheetTherapy {
      * @param drug drug to add.
      * @return collection of single sheet therapy.
      */
-    def addNewDrugsSomministration(drug: DrugsSomministration): SingleSheetTherapy = SingleSheetTherapy(drugsPrescription, this.drugsSomministration + drug)
+    def addNewDrugsSomministration(drug: DrugsSomministration): SingleSheetTherapies = SingleSheetTherapies(drugsPrescription, this.drugsSomministration + drug)
 
     /**
      * Add new drugs prescription.
@@ -68,7 +68,7 @@ object SingleSheetTherapy {
      * @param drug drug to add.
      * @return collection of single sheet therapy.
      */
-    def addNewDrugsPrescription(drug: DrugsPrescription): SingleSheetTherapy = SingleSheetTherapy(this.drugsPrescription + drug, drugsSomministration)
+    def addNewDrugsPrescription(drug: DrugsPrescription): SingleSheetTherapies = SingleSheetTherapies(this.drugsPrescription + drug, drugsSomministration)
 
 
   }
@@ -78,5 +78,5 @@ object SingleSheetTherapy {
    *
    * @return collection of single sheet therapy.
    */
-  def apply(): SingleSheetTherapy = SingleSheetTherapy()
+  def apply(): SingleSheetTherapies = SingleSheetTherapies()
 }

@@ -18,7 +18,7 @@
 
 package domainmodel.generalpractitionerinfo
 
-import domainmodel.generalpractitionerinfo.Visits.Visits
+import domainmodel.generalpractitionerinfo.VisitHistory.VisitHistory
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
@@ -34,14 +34,14 @@ class VisitTest extends AnyFreeSpec {
     }
   }
 
-  val visits: Visits = Visits()
+  val visits: VisitHistory = VisitHistory()
   "A visits" - {
     "should be initially empty" in {
-      assert(visits.visits.isEmpty)
+      assert(visits.history.isEmpty)
     }
 
     "can added" in {
-      assert(visits.addNewVisit(visit).visits.nonEmpty)
+      assert(visits.addNewVisit(visit).history.nonEmpty)
     }
   }
 }

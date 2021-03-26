@@ -38,7 +38,7 @@ case class Form(value: String)
  *
  * @param id          id of diagnostic services request.
  * @param description description of diagnostic services request.
- * @param doctor      doctor that require of diagnostic services.
+ * @param doctorID      doctor that require of diagnostic services.
  * @param form        form to request.
  */
 case class DiagnosticServicesRequest(id: DiagnosticServicesRequestID, description: Description, doctorID: DoctorID, form: Form)
