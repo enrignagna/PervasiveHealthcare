@@ -86,7 +86,33 @@ object ProfessionalFigureJsonFormat {
       "surname" -> JsString(obj.surname),
       "phoneNumber" -> JsString(obj.phoneNumber),
       "email" -> JsString(obj.email),
+      "medicalDegreeGrade" -> JsString(obj.medicalDegreeGrade),
       "role" -> JsNumber(Role.ANESTHETIST.id)
+    )
+  }
+
+  /**
+   * Implicit for general practitioner object.
+   */
+  implicit object GeneralPractitionerJsonFormat extends RootJsonFormat[GeneralPractitioner] {
+    override def read(json: JsValue): GeneralPractitioner = {
+      json.asJsObject.getFields(
+        "doctorID", "name", "surname", "phoneNumber", "email", "medicalDegreeGrade", "role") match {
+        case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
+        JsString(email), JsString(medicalDegreeGrade), JsNumber(_)) =>
+          GeneralPractitioner(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, medicalDegreeGrade)
+        case _ => throw DeserializationException("General practitioner expected")
+      }
+    }
+
+    override def write(obj: GeneralPractitioner): JsValue = JsObject(
+      "doctorID" -> JsObject("value" -> JsString(obj.doctorID.value)),
+      "name" -> JsString(obj.name),
+      "surname" -> JsString(obj.surname),
+      "phoneNumber" -> JsString(obj.phoneNumber),
+      "email" -> JsString(obj.email),
+      "medicalDegreeGrade" -> JsString(obj.medicalDegreeGrade),
+      "role" -> JsNumber(Role.GENERAL_PRACTITIONER.id)
     )
   }
 
@@ -100,7 +126,7 @@ object ProfessionalFigureJsonFormat {
         case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
         JsString(email), JsString(nursingDegreeGrade), JsNumber(_)) =>
           Instrumentalist(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, nursingDegreeGrade)
-        case _ => throw DeserializationException("Anesthetist expected")
+        case _ => throw DeserializationException("Instrumentalist expected")
       }
     }
 
@@ -110,11 +136,61 @@ object ProfessionalFigureJsonFormat {
       "surname" -> JsString(obj.surname),
       "phoneNumber" -> JsString(obj.phoneNumber),
       "email" -> JsString(obj.email),
+      "nursingDegreeGrade" -> JsString(obj.nursingDegreeGrade),
       "role" -> JsNumber(Role.INSTRUMENTALIST.id)
     )
   }
 
-  //TODO other professional figures
+  /**
+   * Implicit for rescuer object.
+   */
+  implicit object RescuerJsonFormat extends RootJsonFormat[Rescuer] {
+    override def read(json: JsValue): Rescuer = {
+      json.asJsObject.getFields(
+        "doctorID", "name", "surname", "phoneNumber", "email", "medicalDegreeGrade", "role") match {
+        case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
+        JsString(email), JsString(medicalDegreeGrade), JsNumber(_)) =>
+          Rescuer(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, medicalDegreeGrade)
+        case _ => throw DeserializationException("Rescuer expected")
+      }
+    }
+
+    override def write(obj: Rescuer): JsValue = JsObject(
+      "doctorID" -> JsObject("value" -> JsString(obj.doctorID.value)),
+      "name" -> JsString(obj.name),
+      "surname" -> JsString(obj.surname),
+      "phoneNumber" -> JsString(obj.phoneNumber),
+      "email" -> JsString(obj.email),
+      "medicalDegreeGrade" -> JsString(obj.medicalDegreeGrade),
+      "role" -> JsNumber(Role.RESCUER.id)
+    )
+  }
+
+  /**
+   * Implicit for ward nurse object.
+   */
+  implicit object WardNurseJsonFormat extends RootJsonFormat[WardNurse] {
+    override def read(json: JsValue): WardNurse = {
+      json.asJsObject.getFields(
+        "doctorID", "name", "surname", "phoneNumber", "email", "nursingDegreeGrade", "role") match {
+        case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
+        JsString(email), JsString(nursingDegreeGrade), JsNumber(_)) =>
+          WardNurse(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, nursingDegreeGrade)
+        case _ => throw DeserializationException("Ward nurse expected")
+      }
+    }
+
+    override def write(obj: WardNurse): JsValue = JsObject(
+      "doctorID" -> JsObject("value" -> JsString(obj.doctorID.value)),
+      "name" -> JsString(obj.name),
+      "surname" -> JsString(obj.surname),
+      "phoneNumber" -> JsString(obj.phoneNumber),
+      "email" -> JsString(obj.email),
+      "nursingDegreeGrade" -> JsString(obj.nursingDegreeGrade),
+      "role" -> JsNumber(Role.WARD_NURSE.id)
+    )
+  }
+
   /**
    * Implicit for surgeons object.
    */

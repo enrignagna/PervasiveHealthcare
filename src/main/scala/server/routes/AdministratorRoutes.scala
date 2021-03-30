@@ -24,9 +24,9 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import domainmodel.professionalfigure.Surgeon
+import domainmodel.professionalfigure.{Anesthetist, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
 import json.RequestJsonFormats.acceptedJsonFormat
-import json.professionalfigure.ProfessionalFigureJsonFormat.SurgeonJsonFormat
+import json.professionalfigure.ProfessionalFigureJsonFormat._
 import server.models.JwtAuthentication.hasAdminPermissions
 import server.models.Protocol
 import server.models.Protocol._
@@ -49,6 +49,36 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
 
   def updateSurgeon(id: String, surgeon: Surgeon): Future[Confirmation] =
     administratorController.ask(UpdateSurgeon(id, surgeon, _))
+
+  def insertAnesthetist(anesthetist: Anesthetist): Future[Confirmation] =
+    administratorController.ask(InsertAnesthetist(anesthetist, _))
+
+  def updateAnesthetist(id: String, anesthetist: Anesthetist): Future[Confirmation] =
+    administratorController.ask(UpdateAnesthetist(id, anesthetist, _))
+
+  def insertGeneralPractitioner(generalPractitioner: GeneralPractitioner): Future[Confirmation] =
+    administratorController.ask(InsertGeneralPractitioner(generalPractitioner, _))
+
+  def updateGeneralPractitioner(id: String, generalPractitioner: GeneralPractitioner): Future[Confirmation] =
+    administratorController.ask(UpdateGeneralPractitioner(id, generalPractitioner, _))
+
+  def insertInstrumentalist(instrumentalist: Instrumentalist): Future[Confirmation] =
+    administratorController.ask(InsertInstrumentalist(instrumentalist, _))
+
+  def updateInstrumentalist(id: String, instrumentalist: Instrumentalist): Future[Confirmation] =
+    administratorController.ask(UpdateInstrumentalist(id, instrumentalist, _))
+
+  def insertRescuer(rescuer: Rescuer): Future[Confirmation] =
+    administratorController.ask(InsertRescuer(rescuer, _))
+
+  def updateRescuer(id: String, rescuer: Rescuer): Future[Confirmation] =
+    administratorController.ask(UpdateRescuer(id, rescuer, _))
+
+  def insertWardNurse(wardNurse: WardNurse): Future[Confirmation] =
+    administratorController.ask(InsertWardNurse(wardNurse, _))
+
+  def updateWardNurse(id: String, wardNurse: WardNurse): Future[Confirmation] =
+    administratorController.ask(UpdateWardNurse(id, wardNurse, _))
 
   val administratorRoutes: Route =
     pathPrefix("api") {
@@ -87,34 +117,15 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 }
               )
           }
-      }
-    }
-  //TODO add other routes
-  /*~
-      path("anesthetists"){
-        pathEnd {
-          post {
-            headerValueByName("x-access-token") { value =>
-              authorize(hasAdminPermissions(value)) {
-                entity(as[Anesthetist]) { anesthetist =>
-                  onSuccess(insertSurgeon(surgeon)) { response =>
-                    response match {
-                      case _: Accepted => complete(StatusCodes.Created, response)
-                      case _: Rejected => complete(StatusCodes.BadRequest, response)
-                    }
-                  }
-                }
-              }
-            }
-          }
       } ~
-        path(Segment) {
-          id =>
-            concat(
-              put {
-                headerValueByName("x-access-token") { value =>
-                  entity(as[Surgeon]) { surgeon =>
-                    onSuccess(updateSurgeon(id, surgeon)) { response =>
+        path("anesthetists") {
+          pathEnd {
+
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasAdminPermissions(value)) {
+                  entity(as[Anesthetist]) { anesthetist =>
+                    onSuccess(insertAnesthetist(anesthetist)) { response =>
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
@@ -123,10 +134,165 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                   }
                 }
               }
-            )
+            }
+          } ~
+            path(Segment) {
+              id =>
+                concat(
+                  put {
+                    headerValueByName("x-access-token") { value =>
+                      entity(as[Surgeon]) { surgeon =>
+                        onSuccess(updateSurgeon(id, surgeon)) { response =>
+                          response match {
+                            case _: Accepted => complete(StatusCodes.Created, response)
+                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          }
+                        }
+                      }
+                    }
+                  }
+                )
+            }
+        } ~
+        path("generalpractitioners") {
+          pathEnd {
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasAdminPermissions(value)) {
+                  entity(as[GeneralPractitioner]) { generalPractitioner =>
+                    onSuccess(insertGeneralPractitioner(generalPractitioner)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } ~
+            path(Segment) {
+              id =>
+                concat(
+                  put {
+                    headerValueByName("x-access-token") { value =>
+                      entity(as[GeneralPractitioner]) { generalPractitioner =>
+                        onSuccess(updateGeneralPractitioner(id, generalPractitioner)) { response =>
+                          response match {
+                            case _: Accepted => complete(StatusCodes.Created, response)
+                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          }
+                        }
+                      }
+                    }
+                  }
+                )
+            }
+        } ~
+        path("instrumentalists") {
+          pathEnd {
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasAdminPermissions(value)) {
+                  entity(as[Instrumentalist]) { instrumentalist =>
+                    onSuccess(insertInstrumentalist(instrumentalist)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } ~
+            path(Segment) {
+              id =>
+                concat(
+                  put {
+                    headerValueByName("x-access-token") { value =>
+                      entity(as[Instrumentalist]) { instrumentalist =>
+                        onSuccess(updateInstrumentalist(id, instrumentalist)) { response =>
+                          response match {
+                            case _: Accepted => complete(StatusCodes.Created, response)
+                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          }
+                        }
+                      }
+                    }
+                  }
+                )
+            }
+        } ~
+        path("rescuers") {
+          pathEnd {
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasAdminPermissions(value)) {
+                  entity(as[Rescuer]) { rescuer =>
+                    onSuccess(insertRescuer(rescuer)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } ~
+            path(Segment) {
+              id =>
+                concat(
+                  put {
+                    headerValueByName("x-access-token") { value =>
+                      entity(as[Rescuer]) { rescuer =>
+                        onSuccess(updateRescuer(id, rescuer)) { response =>
+                          response match {
+                            case _: Accepted => complete(StatusCodes.Created, response)
+                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          }
+                        }
+                      }
+                    }
+                  }
+                )
+            }
+        } ~
+        path("wardnurses") {
+          pathEnd {
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasAdminPermissions(value)) {
+                  entity(as[WardNurse]) { wardnurse =>
+                    onSuccess(insertWardNurse(wardnurse)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } ~
+            path(Segment) {
+              id =>
+                concat(
+                  put {
+                    headerValueByName("x-access-token") { value =>
+                      entity(as[WardNurse]) { wardnurse =>
+                        onSuccess(updateWardNurse(id, wardnurse)) { response =>
+                          response match {
+                            case _: Accepted => complete(StatusCodes.Created, response)
+                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          }
+                        }
+                      }
+                    }
+                  }
+                )
+            }
         }
-      }
-      */
-
-
+    }
 }

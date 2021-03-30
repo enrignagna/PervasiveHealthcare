@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit
 
 import cqrs.writemodel.WriteModel.doctorsCollection
 import domainmodel.User
-import domainmodel.professionalfigure.{Anesthetist, DoctorID, Instrumentalist, Surgeon}
+import domainmodel.professionalfigure.{Anesthetist, DoctorID, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
 import json.professionalfigure.ProfessionalFigureJsonFormat._
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
@@ -66,6 +66,7 @@ class AdminCRUD {
       Duration(1, TimeUnit.SECONDS))
     if (res.isEmpty) {
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(anesthetist.doctorID.value, "anesthetist"), Role.ANESTHETIST), Duration(1, TimeUnit.SECONDS))
       "Anesthetist created."
     } else {
       "Error! Anesthetist with the same doctorID already exists!"
@@ -89,6 +90,7 @@ class AdminCRUD {
       Duration(1, TimeUnit.SECONDS))
     if (res.isEmpty) {
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(instrumentalist.doctorID.value, "instrumentalist"), Role.INSTRUMENTALIST), Duration(1, TimeUnit.SECONDS))
       "Instrumentalist created."
     } else {
       "Error! Instrumentalist with the same doctorID already exists!"
@@ -104,5 +106,75 @@ class AdminCRUD {
     "Instrumentalist updated."
   }
 
+  def insertGeneralPractitioner(generalPractitioner: GeneralPractitioner): String = {
+    val document: BsonDocument = BsonDocument.apply(generalPractitioner.toJson.compactPrint)
 
+    val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
+      equal("doctorID", document.get("doctorID"))).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if (res.isEmpty) {
+      Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(generalPractitioner.doctorID.value, "general practitioner"), Role.GENERAL_PRACTITIONER), Duration(1, TimeUnit.SECONDS))
+      "General practitioner created."
+    } else {
+      "Error! General practitioner with the same doctorID already exists!"
+    }
+  }
+
+  def updateGeneralPractitioner(doctorID: DoctorID, generalPractitioner: GeneralPractitioner): String = {
+    val document: BsonDocument = BsonDocument.apply(generalPractitioner.toJson.compactPrint)
+    val id: BsonDocument = BsonDocument.apply(doctorID.toJson.compactPrint)
+    Await.result(doctorsCollection.findOneAndReplace(
+      equal("doctorID", id), document).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    "General practitioner updated."
+  }
+
+  def insertRescuer(rescuer: Rescuer): String = {
+    val document: BsonDocument = BsonDocument.apply(rescuer.toJson.compactPrint)
+
+    val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
+      equal("doctorID", document.get("doctorID"))).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if (res.isEmpty) {
+      Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(rescuer.doctorID.value, "rescuer"), Role.RESCUER), Duration(1, TimeUnit.SECONDS))
+      "Rescuer created."
+    } else {
+      "Error! Rescuer with the same doctorID already exists!"
+    }
+  }
+
+  def updateRescuer(doctorID: DoctorID, rescuer: Rescuer): String = {
+    val document: BsonDocument = BsonDocument.apply(rescuer.toJson.compactPrint)
+    val id: BsonDocument = BsonDocument.apply(doctorID.toJson.compactPrint)
+    Await.result(doctorsCollection.findOneAndReplace(
+      equal("doctorID", id), document).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    "Rescuer updated."
+  }
+
+  def insertWardNurse(wardNurse: WardNurse): String = {
+    val document: BsonDocument = BsonDocument.apply(wardNurse.toJson.compactPrint)
+
+    val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
+      equal("doctorID", document.get("doctorID"))).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if (res.isEmpty) {
+      Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(wardNurse.doctorID.value, "ward nurse"), Role.WARD_NURSE), Duration(1, TimeUnit.SECONDS))
+      "Ward nurse created."
+    } else {
+      "Error! Ward nurse with the same doctorID already exists!"
+    }
+  }
+
+  def updateWardNurse(doctorID: DoctorID, wardNurse: WardNurse): String = {
+    val document: BsonDocument = BsonDocument.apply(wardNurse.toJson.compactPrint)
+    val id: BsonDocument = BsonDocument.apply(doctorID.toJson.compactPrint)
+    Await.result(doctorsCollection.findOneAndReplace(
+      equal("doctorID", id), document).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    "Ward nurse updated."
+  }
 }

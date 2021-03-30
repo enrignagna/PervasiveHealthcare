@@ -21,7 +21,7 @@ import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 import cqrs.readmodel.ReadModel
 import cqrs.writemodel.Repository
-import domainmodel.professionalfigure.{DoctorID, Surgeon, Surgeons}
+import domainmodel.professionalfigure.{Anesthetist, DoctorID, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, Surgeons, WardNurse}
 import server.models.Protocol._
 
 object AdministratorController {
@@ -38,6 +38,41 @@ object AdministratorController {
     def removeSurgeon(surgeon: Surgeon): State = {
       ReadModel().removeSurgeon(surgeon)
       State(Surgeons((items.surgeons - items.surgeons.find(x => x.doctorID equals surgeon.doctorID).get)))
+    }
+    def insertAnesthetist(anesthetist: Anesthetist): State = {
+     // ReadModel().createSurgeon(anesthetist)
+      State(Surgeons(items.surgeons))
+    }
+    def updateAnesthetist(anesthetist: Anesthetist): State = {
+      State(Surgeons(items.surgeons))
+    }
+    def insertInstrumentalist(instrumentalist: Instrumentalist): State = {
+      // ReadModel().createSurgeon(anesthetist)
+      State(Surgeons(items.surgeons))
+    }
+    def updateInstrumentalist(instrumentalist: Instrumentalist): State = {
+      State(Surgeons(items.surgeons))
+    }
+    def insertGeneralPractitioner(generalPractitioner: GeneralPractitioner): State = {
+      // ReadModel().createSurgeon(anesthetist)
+      State(Surgeons(items.surgeons))
+    }
+    def updateGeneralPractitioner(generalPractitioner: GeneralPractitioner): State = {
+      State(Surgeons(items.surgeons))
+    }
+    def insertRescuer(rescuer: Rescuer): State = {
+      // ReadModel().createSurgeon(anesthetist)
+      State(Surgeons(items.surgeons))
+    }
+    def updateRescuer(rescuer: Rescuer): State = {
+      State(Surgeons(items.surgeons))
+    }
+    def insertWardNurse(wardNurse: WardNurse): State = {
+      // ReadModel().createSurgeon(anesthetist)
+      State(Surgeons(items.surgeons))
+    }
+    def updateWardNurse(wardNurse: WardNurse): State = {
+      State(Surgeons(items.surgeons))
     }
   }
   object State {
@@ -65,18 +100,95 @@ object AdministratorController {
           replyTo ! Rejected(res)
         }
         Behaviors.same
-
-        /*
-      case RemoveSurgeon(surgeon, replyTo) =>
-        val res = Repository.adminRepository.removeSurgeon(surgeon)
-        if (res == "Surgeon removed.") {
-          State.state = State.state.removeSurgeon(surgeon)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+      case InsertAnesthetist(anesthetist, replyTo) =>
+        val res = Repository.adminRepository.insertAnesthetist(anesthetist)
+        if (res == "Anesthetist created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+          State.state = State.state.insertAnesthetist(anesthetist)
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
-
-         */
+      case UpdateAnesthetist(id, anesthetist, replyTo) =>
+        val res = Repository.adminRepository.updateAnesthetist(DoctorID(id), anesthetist)
+        if (res == "Anesthetist updated.") {
+          State.state = State.state.updateAnesthetist(anesthetist)
+          replyTo ! Accepted(res)// actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case InsertInstrumentalist(instrumentalist, replyTo) =>
+        val res = Repository.adminRepository.insertInstrumentalist(instrumentalist)
+        if (res == "Instrumentalist created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+          State.state = State.state.insertInstrumentalist(instrumentalist)
+          replyTo ! Accepted(res)
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case UpdateInstrumentalist(id, instrumentalist, replyTo) =>
+        val res = Repository.adminRepository.updateInstrumentalist(DoctorID(id), instrumentalist)
+        if (res == "Instrumentalist updated.") {
+          State.state = State.state.updateInstrumentalist(instrumentalist)
+          replyTo ! Accepted(res)// actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case InsertGeneralPractitioner(generalPractitioner, replyTo) =>
+        val res = Repository.adminRepository.insertGeneralPractitioner(generalPractitioner)
+        if (res == "General practitioner created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+          State.state = State.state.insertGeneralPractitioner(generalPractitioner)
+          replyTo ! Accepted(res)
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case UpdateGeneralPractitioner(id, generalPractitioner, replyTo) =>
+        val res = Repository.adminRepository.updateGeneralPractitioner(DoctorID(id), generalPractitioner)
+        if (res == "General practitioner updated.") {
+          State.state = State.state.updateGeneralPractitioner(generalPractitioner)
+          replyTo ! Accepted(res)// actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case InsertRescuer(rescuer, replyTo) =>
+        val res = Repository.adminRepository.insertRescuer(rescuer)
+        if (res == "Rescuer created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+          State.state = State.state.insertRescuer(rescuer)
+          replyTo ! Accepted(res)
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case UpdateRescuer(id, rescuer, replyTo) =>
+        val res = Repository.adminRepository.updateRescuer(DoctorID(id), rescuer)
+        if (res == "Rescuer updated.") {
+          State.state = State.state.updateRescuer(rescuer)
+          replyTo ! Accepted(res)// actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case InsertWardNurse(wardnurse, replyTo) =>
+        val res = Repository.adminRepository.insertWardNurse(wardnurse)
+        if (res == "Ward nurse created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+          State.state = State.state.insertWardNurse(wardnurse)
+          replyTo ! Accepted(res)
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case UpdateWardNurse(id, wardNurse, replyTo) =>
+        val res = Repository.adminRepository.updateWardNurse(DoctorID(id), wardNurse)
+        if (res == "Ward nurse updated.") {
+          State.state = State.state.updateWardNurse(wardNurse)
+          replyTo ! Accepted(res)// actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
     }
 }

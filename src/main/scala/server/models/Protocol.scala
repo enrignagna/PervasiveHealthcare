@@ -19,7 +19,7 @@ package server.models
 
 import akka.actor.typed.ActorRef
 import domainmodel.User
-import domainmodel.professionalfigure.{DoctorID, Surgeon}
+import domainmodel.professionalfigure.{Anesthetist, DoctorID, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
 
 object Protocol {
 
@@ -50,5 +50,25 @@ object Protocol {
   final case class SurgeonUpdated(id: DoctorID, surgeon: Surgeon) extends Event
 
   final case class SurgeonRemoved(surgeon: Surgeon) extends Event
+
+  final case class InsertAnesthetist(anesthetist: Anesthetist, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateAnesthetist(id: String, anesthetist: Anesthetist, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class InsertGeneralPractitioner(generalPractitioner: GeneralPractitioner, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateGeneralPractitioner(id: String, generalPractitioner: GeneralPractitioner, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class InsertInstrumentalist(instrumentalist: Instrumentalist, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateInstrumentalist(id: String, instrumentalist: Instrumentalist, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class InsertRescuer(rescuer: Rescuer, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateRescuer(id: String, rescuer: Rescuer, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class InsertWardNurse(wardNurse: WardNurse, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateWardNurse(id: String, wardNurse: WardNurse, replyTo: ActorRef[Confirmation]) extends Command
 
 }
