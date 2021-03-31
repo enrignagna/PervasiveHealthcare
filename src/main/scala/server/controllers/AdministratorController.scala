@@ -40,40 +40,53 @@ object AdministratorController {
       State(Surgeons((items.surgeons - items.surgeons.find(x => x.doctorID equals surgeon.doctorID).get)))
     }
     def insertAnesthetist(anesthetist: Anesthetist): State = {
-     // ReadModel().createSurgeon(anesthetist)
+     // ReadModel().createAnesthetist(anesthetist)
       State(Surgeons(items.surgeons))
     }
     def updateAnesthetist(anesthetist: Anesthetist): State = {
+      //ReadModel().updateAnesthetist(anesthetist)
       State(Surgeons(items.surgeons))
     }
     def insertInstrumentalist(instrumentalist: Instrumentalist): State = {
-      // ReadModel().createSurgeon(anesthetist)
+      // ReadModel().createInstrumentalist(instrumentalist)
       State(Surgeons(items.surgeons))
     }
     def updateInstrumentalist(instrumentalist: Instrumentalist): State = {
+      //ReadModel().updateInstrumentalist(instrumentalist)
       State(Surgeons(items.surgeons))
     }
     def insertGeneralPractitioner(generalPractitioner: GeneralPractitioner): State = {
-      // ReadModel().createSurgeon(anesthetist)
+      // ReadModel().createGeneralPractitioner(generalPractitioner)
       State(Surgeons(items.surgeons))
     }
     def updateGeneralPractitioner(generalPractitioner: GeneralPractitioner): State = {
+      //ReadModel().updateGeneralPractitioner(generalPractitioner)
       State(Surgeons(items.surgeons))
     }
     def insertRescuer(rescuer: Rescuer): State = {
-      // ReadModel().createSurgeon(anesthetist)
+      // ReadModel().createRescuer(rescuer)
       State(Surgeons(items.surgeons))
     }
     def updateRescuer(rescuer: Rescuer): State = {
+      //ReadModel().updateRescuer(rescuer)
       State(Surgeons(items.surgeons))
     }
     def insertWardNurse(wardNurse: WardNurse): State = {
-      // ReadModel().createSurgeon(anesthetist)
+      // ReadModel().createWardNurse(wardNurse)
       State(Surgeons(items.surgeons))
     }
     def updateWardNurse(wardNurse: WardNurse): State = {
+      //ReadModel().updateWardNurse(wardNurse)
       State(Surgeons(items.surgeons))
     }
+   /* def insertPatient(patient: Patient): State = {
+      // ReadModel().createPatient(patient)
+      State(Surgeons(items.surgeons))
+    }
+    def updatePatient(patient: Patient): State = {
+      //ReadModel().updatePatient(patient)
+      State(Surgeons(items.surgeons))
+    }*/
   }
   object State {
     var state: State = State(Surgeons())
@@ -190,5 +203,23 @@ object AdministratorController {
           replyTo ! Rejected(res)
         }
         Behaviors.same
+     /* case InsertPatient(patient, replyTo) =>
+        val res = Repository.adminRepository.insertPatient(patient)
+        if (res == "Patient created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+          State.state = State.state.insertPatient(patient)
+          replyTo ! Accepted(res)
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case UpdatePatient(id, patient, replyTo) =>
+        val res = Repository.adminRepository.updatePatient(DoctorID(id), patient)
+        if (res == "Patient updated.") {
+          State.state = State.state.updatePatient(patient)
+          replyTo ! Accepted(res)// actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same*/
     }
 }

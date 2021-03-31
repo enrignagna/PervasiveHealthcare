@@ -80,6 +80,12 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
   def updateWardNurse(id: String, wardNurse: WardNurse): Future[Confirmation] =
     administratorController.ask(UpdateWardNurse(id, wardNurse, _))
 
+ /* def insertPatient(patient: Patient): Future[Confirmation] =
+    administratorController.ask(InsertPatient(patient, _))
+
+  def updatePatient(id: String, patient: Patient): Future[Confirmation] =
+    administratorController.ask(UpdatePatient(id, patient, _))*/
+
   val administratorRoutes: Route =
     pathPrefix("api") {
       path("surgeons") {
@@ -293,6 +299,41 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                   }
                 )
             }
-        }
+        } /*~
+        path("patients") {
+          pathEnd {
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasAdminPermissions(value)) {
+                  entity(as[Patient]) { patient =>
+                    onSuccess(insertPatient(patient)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } ~
+            path(Segment) {
+              id =>
+                concat(
+                  put {
+                    headerValueByName("x-access-token") { value =>
+                      entity(as[Patient]) { patient =>
+                        onSuccess(updatePatient(id, patient)) { response =>
+                          response match {
+                            case _: Accepted => complete(StatusCodes.Created, response)
+                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          }
+                        }
+                      }
+                    }
+                  }
+                )
+            }
+        }*/
     }
 }

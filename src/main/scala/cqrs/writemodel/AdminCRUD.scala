@@ -177,4 +177,28 @@ class AdminCRUD {
       Duration(1, TimeUnit.SECONDS))
     "Ward nurse updated."
   }
+
+ /* def insertPatient(patient: Patient): String = {
+    val document: BsonDocument = BsonDocument.apply(patient.toJson.compactPrint)
+
+    val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
+      equal("doctorID", document.get("doctorID"))).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if (res.isEmpty) {
+      Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(patient.doctorID.value, "patient"), Role.PATIENT), Duration(1, TimeUnit.SECONDS))
+      "Patient created."
+    } else {
+      "Error! Patient with the same doctorID already exists!"
+    }
+  }
+
+  def updatePatient(doctorID: DoctorID, patient: Patient): String = {
+    val document: BsonDocument = BsonDocument.apply(patient.toJson.compactPrint)
+    val id: BsonDocument = BsonDocument.apply(doctorID.toJson.compactPrint)
+    Await.result(doctorsCollection.findOneAndReplace(
+      equal("doctorID", id), document).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    "Patient updated."
+  }*/
 }

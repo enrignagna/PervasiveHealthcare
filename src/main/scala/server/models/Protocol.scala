@@ -71,4 +71,8 @@ object Protocol {
 
   final case class UpdateWardNurse(id: String, wardNurse: WardNurse, replyTo: ActorRef[Confirmation]) extends Command
 
+  /*final case class InsertPatient(patient: Patient, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdatePatient(id: String, patient: Patient, replyTo: ActorRef[Confirmation]) extends Command*/
+
 }
