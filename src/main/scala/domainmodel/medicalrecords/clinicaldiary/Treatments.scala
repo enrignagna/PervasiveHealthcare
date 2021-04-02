@@ -16,10 +16,10 @@
 
 package domainmodel.medicalrecords.clinicaldiary
 
-import domainmodel.professionalfigure.DoctorID
 import domainmodel.utility.Description
-
 import java.time.LocalDate
+
+import domainmodel.DoctorID
 
 /**
  * General treatment.

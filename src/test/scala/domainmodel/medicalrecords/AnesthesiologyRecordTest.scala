@@ -16,13 +16,14 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.professionalfigure.{Anesthetist, DoctorID}
+import domainmodel.professionalfigure.{Anesthetist}
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
-
 import java.time.LocalDateTime
+
+import domainmodel.DoctorID
 
 @RunWith(classOf[JUnitRunner])
 class AnesthesiologyRecordTest extends AnyFreeSpec {

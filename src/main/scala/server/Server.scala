@@ -22,8 +22,8 @@ import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
-import server.controllers.{AdministratorController, AuthenticationController}
-import server.routes.{AdministratorRoutes, AuthenticationRoutes, Routes}
+import server.controllers.{AdministratorController, AnesthetistController, AuthenticationController, GeneralPractitionerController, InstrumentalistController, RescuerController, SurgeonController, WardNurseController}
+import server.routes.{AdministratorRoutes, AnesthetistRoutes, AuthenticationRoutes, GeneralPractitionerRoutes, InstrumentalistRoutes, RescuerRoutes, Routes, SurgeonRoutes, WardNurseRoutes}
 
 import scala.util.{Failure, Success}
 
@@ -51,13 +51,37 @@ object Server {
       val administratorControllerActor = context.spawn(AdministratorController(), "AdministratorControllerActor")
       context.watch(administratorControllerActor)
 
+      val surgeonControllerActor = context.spawn(SurgeonController(), "SurgeonControllerActor")
+      context.watch(surgeonControllerActor)
+
+      val wardnurseControllerActor = context.spawn(WardNurseController(), "WardNurseControllerActor")
+     context.watch(wardnurseControllerActor)
+
+      val rescuerControllerActor = context.spawn(RescuerController(), "RescuerControllerActor")
+     context.watch(rescuerControllerActor)
+
+      val generalPractitionerControllerActor = context.spawn(GeneralPractitionerController(), "GeneralPractitionerControllerActor")
+     context.watch(generalPractitionerControllerActor)
+
+      val anesthetistControllerActor = context.spawn(AnesthetistController(), "AnesthetistControllerActor")
+     context.watch(anesthetistControllerActor)
+
+      val instrumentalistControllerActor = context.spawn(InstrumentalistController(), "InstrumentalistControllerActor")
+     context.watch(instrumentalistControllerActor)
+
       val authenticationControllerActor = context.spawn(AuthenticationController(), "AuthenticationControllerActor")
       context.watch(authenticationControllerActor)
 
       val administratorRoutes = new AdministratorRoutes(administratorControllerActor)(context.system)
+      val surgeonRoutes = new SurgeonRoutes(surgeonControllerActor)(context.system)
+      val wardNurseRoutes = new WardNurseRoutes(wardnurseControllerActor)(context.system)
+      val rescuerRoutes = new RescuerRoutes(rescuerControllerActor)(context.system)
+      val generalPractitionerRoutes = new GeneralPractitionerRoutes(generalPractitionerControllerActor)(context.system)
+      val anesthetistRoutes = new AnesthetistRoutes(anesthetistControllerActor)(context.system)
+      val instrumentalistRoutes = new InstrumentalistRoutes(instrumentalistControllerActor)(context.system)
       val authenticationRoutes = new AuthenticationRoutes(authenticationControllerActor)(context.system)
 
-      val mainRoutes = new Routes(administratorRoutes, authenticationRoutes)
+      val mainRoutes = new Routes(administratorRoutes, surgeonRoutes, wardNurseRoutes, rescuerRoutes, generalPractitionerRoutes, anesthetistRoutes, instrumentalistRoutes, authenticationRoutes)
       startHttpServer(mainRoutes.routes)(context.system)
 
       Behaviors.empty

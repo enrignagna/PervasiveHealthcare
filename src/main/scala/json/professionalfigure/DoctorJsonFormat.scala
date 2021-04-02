@@ -18,9 +18,10 @@
 
 package json.professionalfigure
 
+import domainmodel.DoctorID
 import domainmodel.professionalfigure._
 import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
-import json.professionalfigure.ProfessionalFigureJsonFormat.doctorIDJsonFormat
+import json.IDJsonFormat.doctorIDJsonFormat
 
 /**
  * Json format for doctor object.

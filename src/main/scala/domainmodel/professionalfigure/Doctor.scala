@@ -16,6 +16,7 @@
 
 package domainmodel.professionalfigure
 
+import domainmodel.DoctorID
 import domainmodel.professionalfigure.Specialization.Specialization
 
 

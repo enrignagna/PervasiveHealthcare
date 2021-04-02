@@ -24,13 +24,14 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
+import domainmodel.Patient.Patient
 import domainmodel.professionalfigure.{Anesthetist, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
 import json.RequestJsonFormats.acceptedJsonFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat._
 import server.models.JwtAuthentication.hasAdminPermissions
 import server.models.Protocol
 import server.models.Protocol._
-
+import json.PatientJsonFormat.PatientJsonFormat
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
@@ -80,11 +81,11 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
   def updateWardNurse(id: String, wardNurse: WardNurse): Future[Confirmation] =
     administratorController.ask(UpdateWardNurse(id, wardNurse, _))
 
- /* def insertPatient(patient: Patient): Future[Confirmation] =
+  def insertPatient(patient: Patient): Future[Confirmation] =
     administratorController.ask(InsertPatient(patient, _))
 
   def updatePatient(id: String, patient: Patient): Future[Confirmation] =
-    administratorController.ask(UpdatePatient(id, patient, _))*/
+    administratorController.ask(UpdatePatient(id, patient, _))
 
   val administratorRoutes: Route =
     pathPrefix("api") {
@@ -111,11 +112,13 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
               concat(
                 put {
                   headerValueByName("x-access-token") { value =>
-                    entity(as[Surgeon]) { surgeon =>
-                      onSuccess(updateSurgeon(id, surgeon)) { response =>
-                        response match {
-                          case _: Accepted => complete(StatusCodes.Created, response)
-                          case _: Rejected => complete(StatusCodes.BadRequest, response)
+                    authorize(hasAdminPermissions(value)) {
+                      entity(as[Surgeon]) { surgeon =>
+                        onSuccess(updateSurgeon(id, surgeon)) { response =>
+                          response match {
+                            case _: Accepted => complete(StatusCodes.Created, response)
+                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          }
                         }
                       }
                     }
@@ -147,11 +150,13 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 concat(
                   put {
                     headerValueByName("x-access-token") { value =>
-                      entity(as[Surgeon]) { surgeon =>
-                        onSuccess(updateSurgeon(id, surgeon)) { response =>
-                          response match {
-                            case _: Accepted => complete(StatusCodes.Created, response)
-                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      authorize(hasAdminPermissions(value)) {
+                        entity(as[Surgeon]) { surgeon =>
+                          onSuccess(updateSurgeon(id, surgeon)) { response =>
+                            response match {
+                              case _: Accepted => complete(StatusCodes.Created, response)
+                              case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            }
                           }
                         }
                       }
@@ -182,11 +187,13 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 concat(
                   put {
                     headerValueByName("x-access-token") { value =>
-                      entity(as[GeneralPractitioner]) { generalPractitioner =>
-                        onSuccess(updateGeneralPractitioner(id, generalPractitioner)) { response =>
-                          response match {
-                            case _: Accepted => complete(StatusCodes.Created, response)
-                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      authorize(hasAdminPermissions(value)) {
+                        entity(as[GeneralPractitioner]) { generalPractitioner =>
+                          onSuccess(updateGeneralPractitioner(id, generalPractitioner)) { response =>
+                            response match {
+                              case _: Accepted => complete(StatusCodes.Created, response)
+                              case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            }
                           }
                         }
                       }
@@ -217,11 +224,13 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 concat(
                   put {
                     headerValueByName("x-access-token") { value =>
-                      entity(as[Instrumentalist]) { instrumentalist =>
-                        onSuccess(updateInstrumentalist(id, instrumentalist)) { response =>
-                          response match {
-                            case _: Accepted => complete(StatusCodes.Created, response)
-                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      authorize(hasAdminPermissions(value)) {
+                        entity(as[Instrumentalist]) { instrumentalist =>
+                          onSuccess(updateInstrumentalist(id, instrumentalist)) { response =>
+                            response match {
+                              case _: Accepted => complete(StatusCodes.Created, response)
+                              case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            }
                           }
                         }
                       }
@@ -252,11 +261,13 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 concat(
                   put {
                     headerValueByName("x-access-token") { value =>
-                      entity(as[Rescuer]) { rescuer =>
-                        onSuccess(updateRescuer(id, rescuer)) { response =>
-                          response match {
-                            case _: Accepted => complete(StatusCodes.Created, response)
-                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      authorize(hasAdminPermissions(value)) {
+                        entity(as[Rescuer]) { rescuer =>
+                          onSuccess(updateRescuer(id, rescuer)) { response =>
+                            response match {
+                              case _: Accepted => complete(StatusCodes.Created, response)
+                              case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            }
                           }
                         }
                       }
@@ -287,11 +298,13 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 concat(
                   put {
                     headerValueByName("x-access-token") { value =>
-                      entity(as[WardNurse]) { wardnurse =>
-                        onSuccess(updateWardNurse(id, wardnurse)) { response =>
-                          response match {
-                            case _: Accepted => complete(StatusCodes.Created, response)
-                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      authorize(hasAdminPermissions(value)) {
+                        entity(as[WardNurse]) { wardnurse =>
+                          onSuccess(updateWardNurse(id, wardnurse)) { response =>
+                            response match {
+                              case _: Accepted => complete(StatusCodes.Created, response)
+                              case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            }
                           }
                         }
                       }
@@ -299,7 +312,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                   }
                 )
             }
-        } /*~
+        } ~
         path("patients") {
           pathEnd {
             post {
@@ -322,11 +335,13 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 concat(
                   put {
                     headerValueByName("x-access-token") { value =>
-                      entity(as[Patient]) { patient =>
-                        onSuccess(updatePatient(id, patient)) { response =>
-                          response match {
-                            case _: Accepted => complete(StatusCodes.Created, response)
-                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      authorize(hasAdminPermissions(value)) {
+                        entity(as[Patient]) { patient =>
+                          onSuccess(updatePatient(id, patient)) { response =>
+                            response match {
+                              case _: Accepted => complete(StatusCodes.Created, response)
+                              case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            }
                           }
                         }
                       }
@@ -334,6 +349,6 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                   }
                 )
             }
-        }*/
+        }
     }
 }

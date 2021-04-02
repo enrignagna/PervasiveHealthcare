@@ -16,15 +16,14 @@
 
 package json.generalpractitionerinfo
 
-import domainmodel.Anamnesis
+import domainmodel.{Anamnesis, DoctorID}
 import domainmodel.generalpractitionerinfo.BookingVisitHistory.BookingVisitHistory
 import domainmodel.generalpractitionerinfo.PrescriptionHistory.PrescriptionHistory
 import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
 import domainmodel.generalpractitionerinfo.VisitHistory.VisitHistory
 import domainmodel.generalpractitionerinfo._
-import domainmodel.professionalfigure.DoctorID
 import json.AnamnesisJsonFormat.{familiarsJsonFormat, physiologicJsonFormat, remotesJsonFormat}
-import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat3, jsonFormat7}
+import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat3, jsonFormat8}
 import json.generalpractitionerinfo.BookingVisitsJsonFormat.bookingVisitJsonFormat
 import json.generalpractitionerinfo.MedicalCertificatesJsonFormat.medicalCertificateHistoryJsonFormat
 import json.generalpractitionerinfo.PrescriptionJsonFormat.prescriptionJsonFormat
@@ -32,7 +31,7 @@ import json.generalpractitionerinfo.TherapyJsonFormat.therapyJsonFormat
 import json.generalpractitionerinfo.VisitJsonFormat.visitJsonFormat
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.RootJsonFormat
-
+import json.IDJsonFormat.patientIDJsonFormat
 /**
  * Json format for general practitioner object.
  */
@@ -71,6 +70,6 @@ object GeneralPractitionerInfoJsonFormat {
   /**
    * Implicit for practitioner info object.
    */
-  implicit val generalPractitionerInfoJsonFormat: RootJsonFormat[GeneralPractitionerInfo] = jsonFormat7(GeneralPractitionerInfo)
+  implicit val generalPractitionerInfoJsonFormat: RootJsonFormat[GeneralPractitionerInfo] = jsonFormat8(GeneralPractitionerInfo)
 
 }

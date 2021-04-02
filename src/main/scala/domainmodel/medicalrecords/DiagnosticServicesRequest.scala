@@ -16,7 +16,7 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.professionalfigure.DoctorID
+import domainmodel.DoctorID
 import domainmodel.utility.Description
 
 /**

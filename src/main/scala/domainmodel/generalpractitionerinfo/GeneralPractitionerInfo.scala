@@ -18,13 +18,12 @@
 
 package domainmodel.generalpractitionerinfo
 
-import domainmodel.Anamnesis
+import domainmodel.{Anamnesis, DoctorID, PatientID}
 import domainmodel.generalpractitionerinfo.BookingVisitHistory.BookingVisitHistory
 import domainmodel.generalpractitionerinfo.MedicalCertificateHistory.MedicalCertificateHistory
 import domainmodel.generalpractitionerinfo.PrescriptionHistory.PrescriptionHistory
 import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
 import domainmodel.generalpractitionerinfo.VisitHistory._
-import domainmodel.professionalfigure.DoctorID
 
 
 /**
@@ -39,6 +38,7 @@ import domainmodel.professionalfigure.DoctorID
  * @param medicalCertificateHistory, medical certificate's information.
  */
 case class GeneralPractitionerInfo(
+                                    patientID: PatientID,
                                     doctorID: DoctorID,
                                     visits: VisitHistory,
                                     anamnesis: Anamnesis,

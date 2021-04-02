@@ -27,7 +27,6 @@ import domainmodel.generalpractitionerinfo.MedicalCertificateHistory._
 import domainmodel.generalpractitionerinfo.PrescriptionHistory._
 import domainmodel.generalpractitionerinfo.TherapyHistory._
 import domainmodel.generalpractitionerinfo.VisitHistory._
-import domainmodel.professionalfigure.DoctorID
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
@@ -66,6 +65,7 @@ class GeneralPractitionerInfoTest extends AnyFreeSpec {
     BookingVisit(1, visit, Description("visit for shoulder surgery"), LocalDate.now())
   )
   val doctorID: DoctorID = DoctorID("432984632")
+  val patientID: PatientID = PatientID("1234")
   val medicalCertificates: MedicalCertificateHistory = MedicalCertificateHistory().addNewMedicalCertificate(
     MedicalCertificate(
       1233,
@@ -74,6 +74,7 @@ class GeneralPractitionerInfoTest extends AnyFreeSpec {
   )
   val generalPractitionerInfo: GeneralPractitionerInfo =
     GeneralPractitionerInfo(
+      patientID,
       doctorID,
       generalVisits,
       anamnesis,

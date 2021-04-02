@@ -24,7 +24,7 @@ import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat
 import spray.json.RootJsonFormat
 import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import json.LocalDateJsonFormat.DateFormat
-import json.professionalfigure.ProfessionalFigureJsonFormat.doctorIDJsonFormat
+import json.IDJsonFormat.doctorIDJsonFormat
 import json.RequestJsonFormats.immSetFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 

@@ -18,8 +18,12 @@
 package server.models
 
 import akka.actor.typed.ActorRef
-import domainmodel.User
-import domainmodel.professionalfigure.{Anesthetist, DoctorID, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
+import domainmodel.Patient.Patient
+import domainmodel.{DoctorID, PatientID, User}
+import domainmodel.generalpractitionerinfo.{GeneralPractitionerInfo, Visit}
+import domainmodel.medicalrecords.{DischargeLetter, DrugsSomministration, MedicalRecord, MedicalRecordsID}
+import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
+import domainmodel.professionalfigure.{Anesthetist, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
 
 object Protocol {
 
@@ -71,8 +75,28 @@ object Protocol {
 
   final case class UpdateWardNurse(id: String, wardNurse: WardNurse, replyTo: ActorRef[Confirmation]) extends Command
 
-  /*final case class InsertPatient(patient: Patient, replyTo: ActorRef[Confirmation]) extends Command
+  final case class InsertPatient(patient: Patient, replyTo: ActorRef[Confirmation]) extends Command
 
-  final case class UpdatePatient(id: String, patient: Patient, replyTo: ActorRef[Confirmation]) extends Command*/
+  final case class UpdatePatient(id: String, patient: Patient, replyTo: ActorRef[Confirmation]) extends Command
 
+
+  //Doctor protocol
+  final case class InsertMedicalRecord(medicalRecord: MedicalRecord, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateMedicalRecord(medicalRecordID: MedicalRecordsID, medicalRecord: MedicalRecord, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateClinicalDiary(medicalRecordID: MedicalRecordsID, clinicalDiary: ClinicalDiary, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class InsertVisit(patientId: String, visit: Visit, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateVisit(patientId: String, visit: Visit, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class InsertDrugSomministration(medicalRecordID: MedicalRecordsID, drugSomministration: DrugsSomministration, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateDrugSomministration(medicalRecordID: MedicalRecordsID, drugSomministration: DrugsSomministration, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class InsertGeneralPractitionerInfo(generalPractitionerInfo: GeneralPractitionerInfo,  replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateGeneralPractitionerInfo(patientID: PatientID,  generalPractitionerInfo: GeneralPractitionerInfo, replyTo: ActorRef[Confirmation]) extends Command
 }
+

@@ -17,9 +17,10 @@
  */
 package json.medicalrecords
 
-import domainmodel.medicalrecords.MedicalRecords.MedicalRecords
+
+import domainmodel.medicalrecords.MedicalRecordHistory.MedicalRecordHistory
 import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
-import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat14}
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat17, BooleanJsonFormat}
 import spray.json.RootJsonFormat
 import json.medicalrecords.DischargeLetterJsonFormat.dischargeLetterJsonFormat
 import json.medicalrecords.GraphicJsonFormat.graphicJsonFormat
@@ -29,13 +30,13 @@ import json.medicalrecords.initialanalysis.InitialAnalysisJsonFormat.initialAnal
 import json.medicalrecords.AdviceRequestJsonFormat.adviceRequestJsonFormat
 import json.medicalrecords.DiagnosticServicesRequestJsonFormat.diagnosticServicesRequestsJsonFormat
 import json.medicalrecords.PainreliefJsonFormat.painreliefHistoryJsonFormat
-import json.medicalrecords.SingleSheetTherapyJsonFormat.singleSheetTherapyJsonFormat
 import json.medicalrecords.ReportsJsonFormat.reportsJsonFormat
 import json.medicalrecords.NursingDocumentationJsonFormat.nursingDocumentationJsonFormat
 import json.medicalrecords.MedicalSurgicalDevicesJsonFormat.medicalSurgicalDevicesJsonFormat
 import json.medicalrecords.OperatingReportsJsonFormat.operatingReportsJsonFormat
 import json.RequestJsonFormats.immSetFormat
-import json.UUIDJsonFormat.UUIDJsonFormat
+import json.IDJsonFormat.{doctorIDJsonFormat, patientIDJsonFormat}
+import json.medicalrecords.SingleSheetTherapyJsonFormat.singleSheetTherapiesJsonFormat
 
 /**
  * Json format for medical record object.
@@ -50,11 +51,11 @@ object MedicalRecordJsonFormat {
   /**
    * Implicit for medical record object.
    */
-  implicit val medicalRecordJsonFormat: RootJsonFormat[MedicalRecord] = jsonFormat14(MedicalRecord)
+  implicit val medicalRecordJsonFormat: RootJsonFormat[MedicalRecord] = jsonFormat17(MedicalRecord)
 
   /**
    * Implicit for medical records object.
    */
-  implicit val medicalRecordsJsonFormat: RootJsonFormat[MedicalRecords] = jsonFormat1(MedicalRecords)
+  implicit val medicalRecordsJsonFormat: RootJsonFormat[MedicalRecordHistory] = jsonFormat1(MedicalRecordHistory)
 
 }

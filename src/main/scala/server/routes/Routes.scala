@@ -22,6 +22,10 @@ import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
 
 //TODO add all routes
-class Routes(administratorRoutes: AdministratorRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~ authenticationRoutes.authenticationRoutes
+class Routes(administratorRoutes: AdministratorRoutes, surgeonRoutes: SurgeonRoutes, wardNurseRoutes: WardNurseRoutes,
+             rescuerRoutes: RescuerRoutes, generalPractitionerRoutes: GeneralPractitionerRoutes,
+             anesthetistRoutes: AnesthetistRoutes, instrumentalistRoutes: InstrumentalistRoutes, authenticationRoutes: AuthenticationRoutes){
+  val routes: Route = administratorRoutes.administratorRoutes  ~  surgeonRoutes.surgeonRoutes ~ wardNurseRoutes.wardnurseRoutes ~
+                      rescuerRoutes.rescuerRoutes ~ generalPractitionerRoutes.generalPractitionerRoutes ~
+                      anesthetistRoutes.anesthetistRoutes ~ instrumentalistRoutes.instrumentalistRoutes ~ authenticationRoutes.authenticationRoutes
 }

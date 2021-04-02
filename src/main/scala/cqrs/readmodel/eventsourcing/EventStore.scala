@@ -16,9 +16,9 @@
 
 package cqrs.readmodel.eventsourcing
 
-import domainmodel.professionalfigure.DoctorID
-
 import java.util
+
+import domainmodel.DoctorID
 
 //TODO: conversion of hashmap in scala collection
 object EventStore {

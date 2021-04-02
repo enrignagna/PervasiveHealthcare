@@ -15,19 +15,15 @@
  *  *                              limitations under the License.
  *
  */
-package server.utils
 
-import java.math.BigInteger
-import java.security.MessageDigest
+package json
+import domainmodel.{DoctorID, PatientID}
+import spray.json.RootJsonFormat
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2}
 
-import domainmodel.DoctorID
-import domainmodel.professionalfigure.Surgeon
+object IDJsonFormat {
 
-object Utils {
-
-  final case class Summary(items: Map[DoctorID, Surgeon])
-
-  def getHashedPassword(password: String): String = String.format("%032x", new BigInteger(
-    1, MessageDigest.getInstance("SHA-256").digest(password.getBytes("UTF-8"))))
+  implicit lazy val patientIDJsonFormat: RootJsonFormat[PatientID] = jsonFormat1(PatientID)
+  implicit lazy val doctorIDJsonFormat: RootJsonFormat[DoctorID] = jsonFormat1(DoctorID)
 
 }

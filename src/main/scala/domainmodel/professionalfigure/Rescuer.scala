@@ -16,6 +16,7 @@
 
 package domainmodel.professionalfigure
 
+import domainmodel.DoctorID
 
 case class Rescuer(doctorID: DoctorID,
                    name: String,

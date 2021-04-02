@@ -14,6 +14,12 @@
  *                              limitations under the License.
  */
 
-package domainmodel.professionalfigure
+package domainmodel
 
-case class DoctorID(value: String)
+trait ID {
+ def value: String
+}
+
+case class PatientID(override val value: String) extends ID
+
+case class DoctorID(override val value: String) extends ID

@@ -23,7 +23,7 @@ import domainmodel.medicalrecords.{DiagnosticServicesRequest, DiagnosticServices
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat4}
 import spray.json.RootJsonFormat
 import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
-import json.professionalfigure.ProfessionalFigureJsonFormat.doctorIDJsonFormat
+import json.IDJsonFormat.doctorIDJsonFormat
 import json.RequestJsonFormats.immSetFormat
 
 /**

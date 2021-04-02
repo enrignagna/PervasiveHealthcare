@@ -22,4 +22,10 @@ object Repository {
 
   val auth: Auth = new Auth()
   val adminRepository: AdminCRUD = new AdminCRUD()
+  val surgeonRepository: SurgeonCRUD = new SurgeonCRUD()
+  val rescuerRepository: RescuerCRUD = new RescuerCRUD()
+  val wardNurseRepository: WardNurseCRUD = new WardNurseCRUD()
+  val generalPractitionerRepository: GeneralPractitionerCRUD = new GeneralPractitionerCRUD()
+  val instrumentalistRepository: InstrumentalistCRUD = new InstrumentalistCRUD()
+  val anesthetistRepository: AnesthetistCRUD = new AnesthetistCRUD()
 }

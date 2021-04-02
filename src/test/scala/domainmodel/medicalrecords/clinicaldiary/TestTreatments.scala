@@ -19,13 +19,13 @@ package domainmodel.medicalrecords.clinicaldiary
 import domainmodel.medicalrecords.clinicaldiary.DiagnosticTreatments.DiagnosticTreatments
 import domainmodel.medicalrecords.clinicaldiary.RehabilitationTreatments.RehabilitationTreatments
 import domainmodel.medicalrecords.clinicaldiary.TherapeuticTreatments.TherapeuticTreatments
-import domainmodel.professionalfigure.DoctorID
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner
-
 import java.time.LocalDate
+
+import domainmodel.DoctorID
 
 @RunWith(classOf[JUnitRunner])
 class TestTreatments extends AnyFreeSpec {

@@ -17,13 +17,13 @@
 package domainmodel.medicalrecords
 
 import domainmodel.medicalrecords.PharmacologicalTherapies.PharmacologicalTherapies
-import domainmodel.professionalfigure.DoctorID
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner
-
 import java.time.{LocalDate, LocalDateTime}
+
+import domainmodel.DoctorID
 
 @RunWith(classOf[JUnitRunner])
 class DischargeLetterTest extends AnyFreeSpec {

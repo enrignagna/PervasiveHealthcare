@@ -18,7 +18,7 @@ package json.utility
 
 import domainmodel.utility._
 import json.RequestJsonFormats.{StringJsonFormat, jsonFormat1}
-import spray.json.RootJsonFormat
+import spray.json.{JsonFormat, RootJsonFormat}
 
 /**
  * Json format for info description object.
@@ -39,5 +39,4 @@ object InfoDescriptionJsonFormat {
    * Implicit for note object.
    */
   implicit val noteJsonFormat: RootJsonFormat[Note] = jsonFormat1(Note)
-
 }

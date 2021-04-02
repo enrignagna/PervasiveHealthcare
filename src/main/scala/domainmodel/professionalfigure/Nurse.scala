@@ -16,6 +16,7 @@
 
 package domainmodel.professionalfigure
 
+import domainmodel.DoctorID
 
 abstract class Nurse() {
   val doctorID: DoctorID

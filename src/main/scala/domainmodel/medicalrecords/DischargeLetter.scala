@@ -17,10 +17,10 @@
 package domainmodel.medicalrecords
 
 import domainmodel.medicalrecords.PharmacologicalTherapies.PharmacologicalTherapies
-import domainmodel.professionalfigure.DoctorID
 import domainmodel.utility.Description
-
 import java.time.{LocalDate, LocalDateTime}
+
+import domainmodel.DoctorID
 
 /**
  * Admission reason.

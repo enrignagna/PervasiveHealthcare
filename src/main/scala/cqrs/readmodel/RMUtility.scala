@@ -17,7 +17,8 @@
 package cqrs.readmodel
 
 import cqrs.readmodel.eventsourcing.{EventStore, insertSurgeonEvent, removeSurgeonEvent, updateSurgeonEvent}
-import domainmodel.professionalfigure.{DoctorID, Surgeon}
+import domainmodel.DoctorID
+import domainmodel.professionalfigure.Surgeon
 
 object RMUtility {
   def recreateSurgeonState(doctorID: DoctorID): Option[Surgeon] = {

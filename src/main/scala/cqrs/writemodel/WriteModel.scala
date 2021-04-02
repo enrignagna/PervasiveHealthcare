@@ -31,5 +31,24 @@ object WriteModel {
   val doctorsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("doctors")
 
+  val medicalRecordsCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("medicalRecords")
 
+  val patientsCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("patients")
+
+  val clinicalDiariesCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("clinicalDiaries")
+
+  val dischargeLetterCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("dischargeLetters")
+
+  val visitsCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("visits")
+
+  val prescriptionsCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("prescriptions")
+
+  val generalpractitionerinfoCollection: MongoCollection[BsonDocument] =
+    database.getCollection[BsonDocument]("generalpractitionerinfo")
 }

@@ -19,20 +19,17 @@
 package json.professionalfigure
 
 import cqrs.writemodel.Role
+import domainmodel.DoctorID
 import domainmodel.professionalfigure._
 import json.EnumerationJsonFormat.EnumJsonConverter
 import spray.json.DefaultJsonProtocol._
 import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
+import json.IDJsonFormat.doctorIDJsonFormat
 
 /**
  * Json format for professional figure object.
  */
 object ProfessionalFigureJsonFormat {
-
-  /**
-   * Implicit for doctor ID object.
-   */
-  implicit val doctorIDJsonFormat: RootJsonFormat[DoctorID] = jsonFormat1(DoctorID)
 
   /**
    * Implicit for specialization object.

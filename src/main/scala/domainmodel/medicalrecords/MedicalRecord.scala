@@ -16,26 +16,29 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.medicalrecords.DiagnosticServicesRequests.DiagnosticServicesRequests
-import domainmodel.medicalrecords.MedicalSurgicalDevices.MedicalSurgicalDevices
-import domainmodel.medicalrecords.PainreliefHistory.PainreliefHistory
-import domainmodel.medicalrecords.Reports.Reports
+import domainmodel.medicalrecords.DiagnosticServicesRequests._
+import domainmodel.medicalrecords.MedicalSurgicalDevices._
+import domainmodel.medicalrecords.PainreliefHistory._
+import domainmodel.medicalrecords.Reports._
+import domainmodel.medicalrecords.SingleSheetTherapies.SingleSheetTherapies
 import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import domainmodel.medicalrecords.initialanalysis.InitialAnalysis
+import domainmodel.{DoctorID, PatientID}
 
-import java.util.UUID
-
-case class MedicalRecordsID(value: UUID)
+case class MedicalRecordsID(value: String)
 
 
 case class MedicalRecord(
+                          doctorID: DoctorID,
+                          patientID: PatientID,
                           medicalRecordID: MedicalRecordsID,
+                          isClosed: Boolean,
                           initialAnalysis: InitialAnalysis,
                           clinicalDiary: ClinicalDiary,
                           diagnosticServicesRequests: DiagnosticServicesRequests,
                           graphic: Graphic,
-                          painreliefHistory: PainreliefHistory,
-                          singleSheetTherapy: SingleSheetTherapy,
+                          painReliefHistory: PainreliefHistory,
+                          singleSheetTherapyHistory: SingleSheetTherapies,
                           adviceRequest: AdviceRequest,
                           reports: Reports,
                           operatingReports: OperatingReports,
@@ -48,9 +51,9 @@ case class MedicalRecord(
 /**
  * Collection of medical records.
  */
-object MedicalRecords {
+object MedicalRecordHistory {
 
-  case class MedicalRecords private(medicalRecords: Set[MedicalRecord] = Set.empty) {
+  case class MedicalRecordHistory private(history: Set[MedicalRecord] = Set.empty) {
 
     /**
      * Add new medical records.
@@ -58,7 +61,12 @@ object MedicalRecords {
      * @param medicalRecord medical record to add.
      * @return collection of medical records.
      */
-    def addNewMedicalRecord(medicalRecord: MedicalRecord): MedicalRecords = MedicalRecords(this.medicalRecords + medicalRecord)
+    def addNewMedicalRecord(medicalRecord: MedicalRecord): MedicalRecordHistory = {
+      if (this.history exists (x => x.medicalRecordID equals medicalRecord.medicalRecordID))
+        this.history drop this.history.toIndexedSeq.indexOf(this.history.find(x => x.medicalRecordID equals medicalRecord.medicalRecordID) get)
+      MedicalRecordHistory(this.history + medicalRecord)
+
+    }
   }
 
   /**
@@ -66,5 +74,5 @@ object MedicalRecords {
    *
    * @return collection of medical records.
    */
-  def apply(): MedicalRecords = MedicalRecords()
+  def apply(): MedicalRecordHistory = MedicalRecordHistory()
 }
