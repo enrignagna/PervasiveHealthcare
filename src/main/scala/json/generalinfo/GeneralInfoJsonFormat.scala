@@ -20,11 +20,12 @@ package json.generalinfo
 
 import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
 import json.PathologyJsonFormat.previousPathologiesJsonFormat
+import json.RequestJsonFormats.DoubleJsonFormat
 import json.generalinfo.AllergyJsonFormat.allergiesJsonFormat
 import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
 import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
 import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
-import spray.json.DefaultJsonProtocol.{DoubleJsonFormat, IntJsonFormat, jsonFormat1, jsonFormat7}
+import spray.json.DefaultJsonProtocol.{IntJsonFormat, jsonFormat1, jsonFormat7}
 import spray.json.RootJsonFormat
 
 /**
@@ -36,6 +37,29 @@ object GeneralInfoJsonFormat {
    * Implicit for weight object.
    */
   implicit val weightJsonFormat: RootJsonFormat[Weight] = jsonFormat1(Weight)
+
+  /**
+   * Implicit for optional weight object.
+   */
+  //  implicit object weightJsonFormat extends RootJsonFormat[Weight] {
+  //    override def read(json: JsValue): Weight =
+  //      json.asJsObject.getFields("value") match {
+  //        case Seq(JsNumber(value)) => Weight(
+  //          //value.doubleValue()
+  //          if (json.asJsObject.getFields("value").nonEmpty)
+  //            Some(json.asJsObject.getFields("value").head.convertTo[Double])
+  //          else
+  //            None
+  //
+  //        )
+  //        case _ => throw DeserializationException("Weight expected")
+  //
+  //      }
+  //
+  //    override def write(obj: Weight): JsValue = {
+  //      JsObject("value" -> JsNumber(obj.value))
+  //    }
+  //}
 
   /**
    * Implicit for height object.
