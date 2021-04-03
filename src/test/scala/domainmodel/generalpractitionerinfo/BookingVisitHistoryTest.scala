@@ -18,6 +18,9 @@
 
 package domainmodel.generalpractitionerinfo
 
+import java.time.{LocalDate, Year}
+
+import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
@@ -25,16 +28,21 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class BookingVisitHistoryTest extends AnyFreeSpec {
   val visit: Visit = Visit(VisitDate())
-  val bookingVisits: BookingVisitsOld = BookingVisitsOld(1, visit, "visit for shoulder surgery")
+  val description: Description = Description("visit for shoulder surgery")
+  val visitDate :LocalDate = LocalDate.of(2021, 10, 2)
+  val bookingVisits: BookingVisit = BookingVisit(1, visit, description, visitDate)
   "A booking visits should have" - {
     "an id" in {
-      assert(bookingVisits.getId == 1)
+      assert(bookingVisits.bookingId == 1)
     }
     "a visit information" in {
-      assert(bookingVisits.getVisit == visit)
+      assert(bookingVisits.visit == visit)
     }
     "a description" in {
-      assert(bookingVisits.getDescription == "visit for shoulder surgery")
+      assert(bookingVisits.description == description)
+    }
+    "a visit date" in {
+      assert(bookingVisits.visitDate == visitDate)
     }
   }
 }

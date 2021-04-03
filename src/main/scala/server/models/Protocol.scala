@@ -21,7 +21,7 @@ import akka.actor.typed.ActorRef
 import domainmodel.Patient.Patient
 import domainmodel.{DoctorID, PatientID, User}
 import domainmodel.generalpractitionerinfo.{GeneralPractitionerInfo, Visit}
-import domainmodel.medicalrecords.{DischargeLetter, DrugsSomministration, MedicalRecord, MedicalRecordsID}
+import domainmodel.medicalrecords.{DischargeLetter, DrugsAdministered, MedicalRecord, MedicalRecordsID}
 import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import domainmodel.professionalfigure.{Anesthetist, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
 
@@ -91,9 +91,9 @@ object Protocol {
 
   final case class UpdateVisit(patientId: String, visit: Visit, replyTo: ActorRef[Confirmation]) extends Command
 
-  final case class InsertDrugSomministration(medicalRecordID: MedicalRecordsID, drugSomministration: DrugsSomministration, replyTo: ActorRef[Confirmation]) extends Command
+  final case class InsertDrugAdministered(medicalRecordID: MedicalRecordsID, drugAdministered: DrugsAdministered, replyTo: ActorRef[Confirmation]) extends Command
 
-  final case class UpdateDrugSomministration(medicalRecordID: MedicalRecordsID, drugSomministration: DrugsSomministration, replyTo: ActorRef[Confirmation]) extends Command
+  final case class UpdateDrugAdministered(medicalRecordID: MedicalRecordsID, drugsAdministered: DrugsAdministered, replyTo: ActorRef[Confirmation]) extends Command
 
   final case class InsertGeneralPractitionerInfo(generalPractitionerInfo: GeneralPractitionerInfo,  replyTo: ActorRef[Confirmation]) extends Command
 

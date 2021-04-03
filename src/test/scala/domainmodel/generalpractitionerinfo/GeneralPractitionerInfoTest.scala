@@ -24,15 +24,16 @@ import domainmodel.Remotes.Remotes
 import domainmodel._
 import domainmodel.generalpractitionerinfo.BookingVisitHistory._
 import domainmodel.generalpractitionerinfo.MedicalCertificateHistory._
-import domainmodel.generalpractitionerinfo.PrescriptionHistory._
 import domainmodel.generalpractitionerinfo.TherapyHistory._
 import domainmodel.generalpractitionerinfo.VisitHistory._
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
-
 import java.time.LocalDate
+
+import domainmodel.generalinfo.{Prescription, PrescriptionDate, PrescriptionInfo}
+import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
 
 @RunWith(classOf[JUnitRunner])
 class GeneralPractitionerInfoTest extends AnyFreeSpec {
@@ -49,8 +50,8 @@ class GeneralPractitionerInfoTest extends AnyFreeSpec {
       Physiologic("self conscious")
     )
   val prescriptions: PrescriptionHistory = PrescriptionHistory().addNewPrescription(
-    Prescription(PrescriptionInitialDate(),
-      PrescriptionDescription("First prescription")
+    Prescription(PrescriptionDate(),
+      PrescriptionInfo("First prescription")
     )
   )
   val therapies: TherapyHistory = TherapyHistory().addNewTherapy(

@@ -16,9 +16,9 @@
 
 package json.generalpractitionerinfo
 
+import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
 import domainmodel.{Anamnesis, DoctorID}
 import domainmodel.generalpractitionerinfo.BookingVisitHistory.BookingVisitHistory
-import domainmodel.generalpractitionerinfo.PrescriptionHistory.PrescriptionHistory
 import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
 import domainmodel.generalpractitionerinfo.VisitHistory.VisitHistory
 import domainmodel.generalpractitionerinfo._
@@ -26,12 +26,12 @@ import json.AnamnesisJsonFormat.{familiarsJsonFormat, physiologicJsonFormat, rem
 import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat3, jsonFormat8}
 import json.generalpractitionerinfo.BookingVisitsJsonFormat.bookingVisitJsonFormat
 import json.generalpractitionerinfo.MedicalCertificatesJsonFormat.medicalCertificateHistoryJsonFormat
-import json.generalpractitionerinfo.PrescriptionJsonFormat.prescriptionJsonFormat
 import json.generalpractitionerinfo.TherapyJsonFormat.therapyJsonFormat
 import json.generalpractitionerinfo.VisitJsonFormat.visitJsonFormat
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.RootJsonFormat
 import json.IDJsonFormat.patientIDJsonFormat
+import json.generalinfo.PrescriptionJsonFormat.prescriptionJsonFormat
 /**
  * Json format for general practitioner object.
  */

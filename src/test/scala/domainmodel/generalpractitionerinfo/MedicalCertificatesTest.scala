@@ -18,6 +18,7 @@
 
 package domainmodel.generalpractitionerinfo
 
+import domainmodel.generalpractitionerinfo.MedicalCertificateHistory.MedicalCertificateHistory
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
@@ -25,13 +26,13 @@ import org.scalatestplus.junit.JUnitRunner
 @RunWith(classOf[JUnitRunner])
 class MedicalCertificatesTest extends AnyFreeSpec {
   val bytes: Set[Byte] = Set()
-  val medicalCertificate: MedicalCertificatesOld = MedicalCertificatesOld(1, bytes)
+  val medicalCertificate: MedicalCertificate = MedicalCertificate(1, bytes)
   "A medical certificate should have" - {
     "an id" in {
-      assert(medicalCertificate.getId == 1)
+      assert(medicalCertificate.medicalCertificateId == 1)
     }
     "a set of bytes" in {
-      assert(medicalCertificate.getMedicalCertificate != null)
+      assert(medicalCertificate.medicalCertificate != null)
     }
   }
 }

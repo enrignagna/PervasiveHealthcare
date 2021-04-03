@@ -18,10 +18,10 @@
 
 package domainmodel.generalpractitionerinfo
 
+import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
 import domainmodel.{Anamnesis, DoctorID, PatientID}
 import domainmodel.generalpractitionerinfo.BookingVisitHistory.BookingVisitHistory
 import domainmodel.generalpractitionerinfo.MedicalCertificateHistory.MedicalCertificateHistory
-import domainmodel.generalpractitionerinfo.PrescriptionHistory.PrescriptionHistory
 import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
 import domainmodel.generalpractitionerinfo.VisitHistory._
 
