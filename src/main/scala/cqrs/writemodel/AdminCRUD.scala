@@ -28,10 +28,12 @@ import json.professionalfigure.ProfessionalFigureJsonFormat._
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import spray.json.enrichAny
-import json.IDJsonFormat.{patientIDJsonFormat, doctorIDJsonFormat}
+import json.IDJsonFormat.{doctorIDJsonFormat, patientIDJsonFormat}
+import json.PatientJsonFormat.PatientJsonFormat
+
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-import json.PatientJsonFormat.PatientJsonFormat
+
 
 class AdminCRUD {
 

@@ -39,9 +39,9 @@ object Patient {
                      residenceAddress: String,
                      residenceCity: String,
                      province: String,
-                     generalInfo: GeneralInfo,
-                     generalPractitionerInfo: GeneralPractitionerInfo,
-                     medicalRecords: MedicalRecordHistory)
+                     generalInfo: Option[GeneralInfo],
+                     generalPractitionerInfo: Option[GeneralPractitionerInfo],
+                     medicalRecords: Option[MedicalRecordHistory])
 
   def updateMedicalRecords(patient: Patient, medicalRecord: MedicalRecord): Patient = {
     Patient(patient.patientID,
@@ -59,7 +59,8 @@ object Patient {
       patient.province,
       patient.generalInfo,
       patient.generalPractitionerInfo,
-      patient.medicalRecords.addNewMedicalRecord(medicalRecord))
+      if(patient.medicalRecords.nonEmpty) Some(patient.medicalRecords.get.addNewMedicalRecord(medicalRecord)) else Some(MedicalRecordHistory().addNewMedicalRecord(medicalRecord))
+      )
   }
 
   def updateGeneralInfo(patient: Patient, generalInfo: GeneralInfo): Patient = {
@@ -76,7 +77,7 @@ object Patient {
       patient.residenceAddress,
       patient.residenceCity,
       patient.province,
-      generalInfo,
+      Some(generalInfo),
       patient.generalPractitionerInfo,
       patient.medicalRecords)
   }
@@ -96,7 +97,7 @@ object Patient {
       patient.residenceCity,
       patient.province,
       patient.generalInfo,
-      generalPractitionerInfo,
+      Some(generalPractitionerInfo),
       patient.medicalRecords)
   }
 

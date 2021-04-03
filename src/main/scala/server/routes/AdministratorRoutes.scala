@@ -26,12 +26,13 @@ import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.Patient.Patient
 import domainmodel.professionalfigure.{Anesthetist, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
+import json.PatientJsonFormat.PatientJsonFormat
 import json.RequestJsonFormats.acceptedJsonFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat._
 import server.models.JwtAuthentication.hasAdminPermissions
 import server.models.Protocol
 import server.models.Protocol._
-import json.PatientJsonFormat.PatientJsonFormat
+
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
