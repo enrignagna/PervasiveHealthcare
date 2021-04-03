@@ -23,7 +23,7 @@ import domainmodel.medicalrecords.clinicaldiary.TherapeuticTreatments.Therapeuti
 /**
  * Clinical diary.
  *
- * @param healthEvolution          evolution of healt of patient.
+ * @param healthEvolution          evolution of health of patient.
  * @param diagnosticTreatments     diagnostic treatments made.
  * @param therapeuticTreatments    therapeutic treatments made.
  * @param rehabilitationTreatments rehabilitation treatments made.

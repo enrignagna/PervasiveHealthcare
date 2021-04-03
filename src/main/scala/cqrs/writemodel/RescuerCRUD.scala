@@ -26,7 +26,7 @@ import domainmodel.{PatientID, User}
 import domainmodel.medicalrecords.MedicalSurgicalDevices.MedicalSurgicalDevices
 import domainmodel.medicalrecords.PainreliefHistory.PainreliefHistory
 import domainmodel.medicalrecords.Reports.Reports
-import domainmodel.medicalrecords.{AdviceRequest, AnesthesiologyRecord, DischargeLetter, DrugsSomministration, Graphic, MedicalRecord, MedicalRecordsID, NursingDocumentation, OperatingReports, SingleSheetTherapy}
+import domainmodel.medicalrecords.{AdviceRequest, AnesthesiologyRecord, DischargeLetter, DrugsAdministered, Graphic, MedicalRecord, MedicalRecordsID, NursingDocumentation, OperatingReports, SingleSheetTherapy}
 import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import domainmodel.medicalrecords.initialanalysis.InitialAnalysis
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordsIDJsonFormat
@@ -34,9 +34,10 @@ import json.medicalrecords.clinicaldiary.ClinicalDiaryJsonFormat.clinicalDiaryJs
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import spray.json.enrichAny
-import json.medicalrecords.SingleSheetTherapyJsonFormat.drugsSomministrationTherapyJsonFormat
+import json.medicalrecords.SingleSheetTherapyJsonFormat.drugsAdministeredTherapyJsonFormat
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
 import json.IDJsonFormat.patientIDJsonFormat
+
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -87,7 +88,7 @@ class RescuerCRUD {
     }
   }
 
-  def updateDrugSomministration(medicalRecordID: MedicalRecordsID, drugSomministration: DrugsSomministration): String = {
+  def updateDrugAdministered(medicalRecordID: MedicalRecordsID, drugAdministered: DrugsAdministered): String = {
     val id: BsonDocument = BsonDocument.apply(medicalRecordID.toJson.compactPrint)
 
     val oldMedicalRecordDocument = Await.result(medicalRecordsCollection.find(
@@ -96,7 +97,7 @@ class RescuerCRUD {
     if(oldMedicalRecordDocument.nonEmpty && oldMedicalRecordDocument.size==1){
       val oldMedicalRecord = oldMedicalRecordDocument.head.asInstanceOf[MedicalRecord]
       val oldSheetTherapy = oldMedicalRecord.singleSheetTherapyHistory
-      val newSheetTherapy = oldSheetTherapy.addNewDrugsSomministration(drugSomministration)
+      val newSheetTherapy = oldSheetTherapy.addNewDrugsAdministered(drugAdministered)
       val newMedicalRecord = MedicalRecord(oldMedicalRecord.doctorID, oldMedicalRecord.patientID, oldMedicalRecord.medicalRecordID, oldMedicalRecord.isClosed,
         oldMedicalRecord.initialAnalysis, oldMedicalRecord.clinicalDiary, oldMedicalRecord.diagnosticServicesRequests, oldMedicalRecord.graphic,
         oldMedicalRecord.painReliefHistory, newSheetTherapy, oldMedicalRecord.adviceRequest, oldMedicalRecord.reports, oldMedicalRecord.operatingReports,
@@ -110,7 +111,7 @@ class RescuerCRUD {
       Await.result(patientsCollection.findOneAndUpdate(
         equal("patientID", newMedicalRecord.patientID), newMedicalRecordDocument).toFuture(),
         Duration(1, TimeUnit.SECONDS))
-      "Drug somministration updated."
+      "Drug administered updated."
     } else "Error! Medical record not exist"
   }
 
