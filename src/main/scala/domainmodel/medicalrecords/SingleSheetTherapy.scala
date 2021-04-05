@@ -22,14 +22,6 @@ import domainmodel.utility.Description
 import java.time.LocalDateTime
 
 /**
- * Single sheet therapy.
- *
- * @param drugsPrescription
- * @param drugsAdministered
- */
-case class SingleSheetTherapy(drugsPrescription: DrugsPrescription, drugsAdministered: DrugsAdministered)
-
-/**
  * Drugs prescription.
  *
  * @param doctor      doctor that made prescription.

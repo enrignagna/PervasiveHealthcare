@@ -33,11 +33,6 @@ import json.professionalfigure.DoctorJsonFormat.DoctorJsonFormat
 object SingleSheetTherapyJsonFormat {
 
   /**
-   * Implicit for single sheet therapy object.
-   */
-  implicit val singleSheetTherapyJsonFormat: RootJsonFormat[SingleSheetTherapy] = jsonFormat2(SingleSheetTherapy)
-
-  /**
    * Implicit for drugs prescription object.
    */
   implicit val drugsPrescriptionJsonFormat: RootJsonFormat[DrugsPrescription] = jsonFormat3(DrugsPrescription)

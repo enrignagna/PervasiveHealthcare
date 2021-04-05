@@ -30,7 +30,6 @@ import domainmodel.DoctorID
  */
 case class Treatment(date: LocalDate, description: Description, doctorID: DoctorID)
 
-//TODO: Pensavo all'ereditarietà, ma ho visto anche questa soluzione
 /**
  * Diagnostic Treatments
  *
