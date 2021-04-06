@@ -22,6 +22,7 @@ import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
+import cqrs.writemodel.{AllergyClassCollection, BloodTypeCollection, GenderCollection, Repository, RhCollection, RoleCollection}
 import server.controllers.{AdministratorController, AnesthetistController, AuthenticationController, GeneralPractitionerController, InstrumentalistController, RescuerController, SurgeonController, WardNurseController}
 import server.routes.{AdministratorRoutes, AnesthetistRoutes, AuthenticationRoutes, GeneralPractitionerRoutes, InstrumentalistRoutes, RescuerRoutes, Routes, SurgeonRoutes, WardNurseRoutes}
 
@@ -48,6 +49,8 @@ object Server {
   def main(args: Array[String]): Unit = {
 
     val rootBehavior = Behaviors.setup[Nothing] { context =>
+      Repository.initialize()
+
       val administratorControllerActor = context.spawn(AdministratorController(), "AdministratorControllerActor")
       context.watch(administratorControllerActor)
 

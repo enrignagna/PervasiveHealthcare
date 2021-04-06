@@ -18,7 +18,8 @@
 
 package json
 
-import spray.json.{DeserializationException, JsNumber, JsValue, RootJsonFormat}
+import json.RequestJsonFormats.IntJsonFormat
+import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
 
 /**
  * Json format for enumeration.
@@ -32,11 +33,15 @@ object EnumerationJsonFormat {
    * @tparam T, generic type
    */
   implicit class EnumJsonConverter[T <: scala.Enumeration](enu: T) extends RootJsonFormat[T#Value] {
-    override def write(obj: T#Value): JsValue = JsNumber(obj.id)
+    override def write(obj: T#Value): JsValue = JsObject("id" -> JsNumber(obj.id), "value" -> JsString(obj.toString.replace("_", " ")))
 
     override def read(json: JsValue): T#Value = {
       json match {
-        case JsNumber(txt) => enu.withName(enu.values.toList(txt.intValue()).toString)
+        case JsObject(obj) => {
+          print(enu(obj("id").convertTo[Int]))
+          enu(obj("id").convertTo[Int])
+
+        }
         case somethingElse => throw DeserializationException(s"Expected a value from enum $enu instead of $somethingElse")
       }
     }

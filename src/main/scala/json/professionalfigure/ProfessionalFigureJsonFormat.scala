@@ -36,6 +36,8 @@ object ProfessionalFigureJsonFormat {
    */
   implicit val specializationJsonFormat: EnumJsonConverter[Specialization.type] = new EnumJsonConverter(Specialization)
 
+  implicit val roleJsonFormat: EnumJsonConverter[Role.type] = new EnumJsonConverter(Role)
+
   /**
    * Implicit for surgeon object.
    */

@@ -20,9 +20,16 @@ import domainmodel.generalinfo.GeneralInfo
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
 import domainmodel.medicalrecords.MedicalRecord
 import domainmodel.medicalrecords.MedicalRecordHistory.MedicalRecordHistory
-
 import java.time.LocalDate
+
+import domainmodel.Gender.{Gender, Value}
+
 import scala.util.matching.Regex
+
+object Gender extends Enumeration {
+  type Gender = Value
+  val FEMALE, MALE, OTHER = Value
+}
 
 object Patient {
 
@@ -32,9 +39,9 @@ object Patient {
                      surname: String,
                      birthDate: LocalDate,
                      birthplace: String,
-                     gender: String,
+                     gender: Gender,
                      phone: String,
-                     mobilePhone: String,
+                     mobilePhone: Option[String],
                      address: String,
                      residenceAddress: String,
                      residenceCity: String,

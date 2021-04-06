@@ -46,10 +46,9 @@ class Auth {
     val userFound = Await.result(authCollection.find(equal("id", user.id)).toFuture(), Duration(1, TimeUnit.SECONDS))
 
     if(userFound.isEmpty) (None, "User not found.") else {
-      val res = Await.result(authCollection.find(equal("password", user.password)).toFuture(), Duration(1, TimeUnit.SECONDS))
-      if(res.isEmpty) (None, "Credentials error.") else (Some(Role(res.head.get("role").asInt32().getValue)), "Login done.")
+      println(userFound.head.get("password").asString().toString)
+      if(userFound.head.get("password").asString().getValue != user.password) (None, "Credentials error.")
+      else (Some(Role(userFound.head.get("role").asInt32().getValue)), "Login done.")
     }
-
-
   }
 }

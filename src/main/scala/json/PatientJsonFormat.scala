@@ -21,25 +21,29 @@ package json
 import java.time.LocalDate
 
 import cqrs.writemodel.Role
-import domainmodel.{CF, PatientID}
+import domainmodel.Gender.Gender
 import domainmodel.Patient.Patient
 import domainmodel.generalinfo.GeneralInfo
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
 import domainmodel.medicalrecords.MedicalRecordHistory.MedicalRecordHistory
-import json.AnamnesisJsonFormat.anamnesisJsonFormat
-import spray.json.{DeserializationException, JsNull, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
+import domainmodel.{CF, Gender, PatientID}
+import json.EnumerationJsonFormat.EnumJsonConverter
+import json.IDJsonFormat.patientIDJsonFormat
 import json.LocalDateJsonFormat.DateFormat
+import json.RequestJsonFormats.StringJsonFormat
+import json.generalinfo.GeneralInfoJsonFormat.generalInfoJsonFormat
 import json.generalpractitionerinfo.GeneralPractitionerInfoJsonFormat.generalPractitionerInfoJsonFormat
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordsJsonFormat
-import json.generalinfo.GeneralInfoJsonFormat.generalInfoJsonFormat
-import json.IDJsonFormat.patientIDJsonFormat
+import json.professionalfigure.ProfessionalFigureJsonFormat.roleJsonFormat
 import spray.json.DefaultJsonProtocol.jsonFormat1
-import json.RequestJsonFormats.{StringJsonFormat, jsonFormat16}
 import spray.json.ImplicitDerivedJsonProtocol.implicitJsonFormat
+import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat, enrichAny}
 /**
  * Json format for patient object.
  */
 object PatientJsonFormat {
+
+  implicit val genderJsonFormat: EnumJsonConverter[Gender.type] = new EnumJsonConverter(Gender)
 
   /**
    * Implicit for surgeon object.
@@ -48,40 +52,50 @@ object PatientJsonFormat {
   implicit object PatientJsonFormat extends RootJsonFormat[Patient] {
     override def read(json: JsValue): Patient = {
       json.asJsObject.getFields(
-        "patientID", "cf", "name", "surname", "birthDate", "birthplace", "gender", "phone", "mobilePhone",
-          "address", "residenceAddress", "residenceCity", "province", "role") match {
-        case Seq(patientID, cf, JsString(name), JsString(surname), birthDate, JsString(birthplace), JsString(gender),
-             JsString(phone), JsString(mobilePhone), JsString(address), JsString(residenceAddress), JsString(residenceCity),
-             JsString(province), JsNumber(_)) =>
-          Patient(patientID.convertTo[PatientID],cf.convertTo[CF], name, surname, birthDate.convertTo[LocalDate], birthplace, gender,
-            phone, mobilePhone, address, residenceAddress, residenceCity, province,
-            if(json.asJsObject.getFields("generalInfo").nonEmpty) Some(json.asJsObject.getFields("generalInfo").head.convertTo[GeneralInfo]) else None,
-            if(json.asJsObject.getFields("generalPractitionerInfo").nonEmpty) Some(json.asJsObject.getFields("generalPractitionerInfo").head.convertTo[GeneralPractitionerInfo]) else None,
-            if(json.asJsObject.getFields("medicalRecords").nonEmpty) Some(json.asJsObject.getFields("medicalRecords").head.convertTo[MedicalRecordHistory]) else None)
+        "patientID", "cf", "name", "surname", "birthDate", "birthplace", "gender", "phone",
+          "address", "residenceAddress", "residenceCity", "province", "generalInfo", "generalPractitionerInfo", "medicalRecords", "role") match {
+        case Seq(patientID, cf, JsString(name), JsString(surname), birthDate, JsString(birthplace), gender,
+             JsString(phone), JsString(address), JsString(residenceAddress), JsString(residenceCity),
+             JsString(province), generalInfo, generalPractitionerInfo, medicalRecords, JsObject(_)) =>
+          {
+
+            Patient(patientID.convertTo[PatientID], cf.convertTo[CF], name, surname, birthDate.convertTo[LocalDate], birthplace, gender.convertTo[Gender],
+              phone,
+              Option(json.asJsObject.fields("mobilePhone")).map(mobilePhone => mobilePhone.convertTo[String]),
+              address, residenceAddress, residenceCity, province,
+              if (generalInfo.asJsObject.fields.nonEmpty) Some(generalInfo.convertTo[GeneralInfo]) else None,
+              if (generalPractitionerInfo.asJsObject.fields.nonEmpty) Some(generalPractitionerInfo.convertTo[GeneralPractitionerInfo]) else None,
+              if (medicalRecords.asJsObject.fields.nonEmpty) Some(medicalRecords.convertTo[MedicalRecordHistory]) else None)
+          }
 
         case _ => throw DeserializationException("Patient expected")
       }
     }
 
-    override def write(obj: Patient): JsValue = JsObject(
-      "patientID" -> JsObject("value" -> JsString(obj.patientID.value)),
-      "cf" -> JsObject("value" -> JsString(obj.cf.value)),
-      "name" -> JsString(obj.name),
-      "surname" -> JsString(obj.surname),
-      "birthDate" -> JsObject("value" -> JsString(obj.birthDate.toString)),
-      "birthplace" -> JsString(obj.birthplace),
-      "gender" -> JsString(obj.gender),
-      "phone" -> JsString(obj.phone),
-      "mobilePhone" -> JsString(obj.mobilePhone),
-      "address" -> JsString(obj.address),
-      "residenceAddress" -> JsString(obj.residenceAddress),
-      "residenceCity" -> JsString(obj.residenceCity),
-      "province" -> JsString(obj.province),
-      "generalInfo" -> obj.generalInfo.map(o => JsObject("value" -> JsString(o.toString))).getOrElse(JsNull), //da cambiare
-      "generalPractitionerInfo" -> obj.generalPractitionerInfo.map(o => JsObject("value" -> JsString(o.toString))).getOrElse(JsNull),//da cambiare
-      "medicalRecords" -> obj.medicalRecords.map(o => JsObject("value" -> JsString(o.toString))).getOrElse(JsNull),//da cambiare
-      "role" -> JsNumber(Role.PATIENT.id)
-    )
+    override def write(obj: Patient): JsValue = {
+      var jsObj = JsObject(
+        "patientID" -> JsObject("value" -> JsString(obj.patientID.value)),
+        "cf" -> JsObject("value" -> JsString(obj.cf.value)),
+        "name" -> JsString(obj.name),
+        "surname" -> JsString(obj.surname),
+        "birthDate" -> JsObject("value" -> JsString(obj.birthDate.toString)),
+        "birthplace" -> JsString(obj.birthplace),
+        "gender" -> obj.gender.toJson,
+        "phone" -> JsString(obj.phone),
+        "address" -> JsString(obj.address),
+        "residenceAddress" -> JsString(obj.residenceAddress),
+        "residenceCity" -> JsString(obj.residenceCity),
+        "province" -> JsString(obj.province),
+        "generalInfo" -> obj.generalInfo.map(_.toJson).getOrElse(JsObject()),
+        "generalPractitionerInfo" -> obj.generalPractitionerInfo.map(_.toJson).getOrElse(JsObject()),
+        "medicalRecords" -> obj.medicalRecords.map(_.toJson).getOrElse(JsObject()),
+        "role" -> Role.PATIENT.toJson
+      )
+      if(obj.mobilePhone.nonEmpty){
+        jsObj = JsObject(jsObj.fields + ("mobilePhone" -> JsString(obj.mobilePhone.get)))
+      }
+      jsObj
+    }
   }
 
 

@@ -19,7 +19,6 @@
 package cqrs.writemodel
 
 object Repository {
-
   val auth: Auth = new Auth()
   val adminRepository: AdminCRUD = new AdminCRUD()
   val surgeonRepository: SurgeonCRUD = new SurgeonCRUD()
@@ -28,4 +27,12 @@ object Repository {
   val generalPractitionerRepository: GeneralPractitionerCRUD = new GeneralPractitionerCRUD()
   val instrumentalistRepository: InstrumentalistCRUD = new InstrumentalistCRUD()
   val anesthetistRepository: AnesthetistCRUD = new AnesthetistCRUD()
+
+  def initialize(): Unit = {
+    RoleCollection.initialize()
+    GenderCollection.initialize()
+    AllergyClassCollection.initialize()
+    BloodTypeCollection.initialize()
+    RhCollection.initialize()
+  }
 }
