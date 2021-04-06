@@ -36,7 +36,7 @@ case class TherapyFinalDate(therapyFinalDate: LocalDate)
  * @param therapyInitialDate , initial date of the therapy
  * @param therapyFinalDate   , final date of the therapy
  */
-case class Therapy(therapyDate: TherapyDate, therapyDescription: TherapyDescription, therapyInitialDate: TherapyInitialDate, therapyFinalDate: TherapyFinalDate)
+case class Therapy(therapyDate: TherapyDate, therapyDescription: TherapyDescription, therapyInitialDate: TherapyInitialDate, therapyFinalDate: Option[TherapyFinalDate])
 
 /**
  * Factory to add a new remote therapy to the therapies's history.

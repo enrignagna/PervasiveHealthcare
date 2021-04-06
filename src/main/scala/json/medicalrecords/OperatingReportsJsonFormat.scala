@@ -19,7 +19,7 @@ package json.medicalrecords
 
 import domainmodel.medicalrecords.Medical.Medical
 import domainmodel.medicalrecords.{AnesthetistReport, InstrumentalistReport, InterventionType, OperatingReports, SurgeonReport}
-import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2, jsonFormat3}
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2, jsonFormat3, optionFormat}
 import spray.json.RootJsonFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat._
 import json.utility.InfoDescriptionJsonFormat.noteJsonFormat

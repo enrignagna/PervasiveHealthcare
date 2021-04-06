@@ -19,7 +19,7 @@
 package json.medicalrecords.clinicaldiary
 
 import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
-import spray.json.DefaultJsonProtocol.jsonFormat4
+import spray.json.DefaultJsonProtocol.{jsonFormat4, optionFormat}
 import json.medicalrecords.clinicaldiary.HealthEvolutionJsonFormat.healthEvolutionJsonFormat
 import json.medicalrecords.clinicaldiary.TreatmentsJsonFormat.{rehabilitationTreatmentsJsonFormat, therapeuticTreatmentsJsonFormat, diagnosticTreatmentsJsonFormat}
 import spray.json.RootJsonFormat

@@ -57,5 +57,5 @@ object VitalSigns {
  *
  * @param vitalSigns vital signs in graphics.
  */
-case class Graphic(vitalSigns: Option[VitalSigns])
+case class Graphic(vitalSigns: VitalSigns)
 

@@ -19,7 +19,7 @@ package json.generalpractitionerinfo
 import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
 import domainmodel.generalpractitionerinfo._
 import json.LocalDateJsonFormat.DateFormat
-import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat4}
+import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat4, optionFormat}
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.RootJsonFormat
 
