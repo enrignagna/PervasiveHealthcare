@@ -20,7 +20,7 @@ package json.medicalrecords
 
 import domainmodel.medicalrecords.MedicalRecordHistory.MedicalRecordHistory
 import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
-import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat17, BooleanJsonFormat}
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat17, BooleanJsonFormat, optionFormat}
 import spray.json.RootJsonFormat
 import json.medicalrecords.DischargeLetterJsonFormat.dischargeLetterJsonFormat
 import json.medicalrecords.GraphicJsonFormat.graphicJsonFormat

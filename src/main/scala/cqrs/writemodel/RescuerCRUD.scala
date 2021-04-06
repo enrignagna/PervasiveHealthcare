@@ -26,11 +26,9 @@ import domainmodel.{PatientID, User}
 import domainmodel.medicalrecords.MedicalSurgicalDevices.MedicalSurgicalDevices
 import domainmodel.medicalrecords.PainreliefHistory.PainreliefHistory
 import domainmodel.medicalrecords.Reports.Reports
-import domainmodel.medicalrecords.{AdviceRequest, AnesthesiologyRecord, DischargeLetter, DrugsAdministered, Graphic, MedicalRecord, MedicalRecordsID, NursingDocumentation, OperatingReports, SingleSheetTherapy}
+import domainmodel.medicalrecords.{DrugsAdministered, MedicalRecord, MedicalRecordsID, NursingDocumentation, OperatingReports, SingleSheetTherapies}
 import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
-import domainmodel.medicalrecords.initialanalysis.InitialAnalysis
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordsIDJsonFormat
-import json.medicalrecords.clinicaldiary.ClinicalDiaryJsonFormat.clinicalDiaryJsonFormat
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import spray.json.enrichAny
@@ -49,15 +47,15 @@ class RescuerCRUD {
     val oldMedicalRecordDocument = Await.result(medicalRecordsCollection.find(
       equal("medicalRecordID", id)).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    if(oldMedicalRecordDocument.nonEmpty && oldMedicalRecordDocument.size==1){
+    if (oldMedicalRecordDocument.nonEmpty && oldMedicalRecordDocument.size == 1) {
       val oldMedicalRecord = oldMedicalRecordDocument.head.asInstanceOf[MedicalRecord]
       val newMedicalRecord = MedicalRecord(oldMedicalRecord.doctorID, oldMedicalRecord.patientID, oldMedicalRecord.medicalRecordID, oldMedicalRecord.isClosed,
-        oldMedicalRecord.initialAnalysis, clinicalDiary, oldMedicalRecord.diagnosticServicesRequests, oldMedicalRecord.graphic,
+        oldMedicalRecord.initialAnalysis, Some(clinicalDiary), oldMedicalRecord.diagnosticServicesRequests, oldMedicalRecord.graphic,
         oldMedicalRecord.painReliefHistory, oldMedicalRecord.singleSheetTherapyHistory, oldMedicalRecord.adviceRequest, oldMedicalRecord.reports, oldMedicalRecord.operatingReports,
         oldMedicalRecord.nursingDocumentation, oldMedicalRecord.anesthesiologyRecord, oldMedicalRecord.medicalSurgicalDevices, oldMedicalRecord.dischargeLetter)
 
 
-      val newMedicalRecordDocument : BsonDocument = BsonDocument.apply(newMedicalRecord.toJson.compactPrint)
+      val newMedicalRecordDocument: BsonDocument = BsonDocument.apply(newMedicalRecord.toJson.compactPrint)
       Await.result(medicalRecordsCollection.findOneAndReplace(
         equal("medicalRecordID", id), BsonDocument.apply(newMedicalRecord.toJson.compactPrint)).toFuture(),
         Duration(1, TimeUnit.SECONDS))
@@ -94,16 +92,16 @@ class RescuerCRUD {
     val oldMedicalRecordDocument = Await.result(medicalRecordsCollection.find(
       equal("medicalRecordID", id)).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    if(oldMedicalRecordDocument.nonEmpty && oldMedicalRecordDocument.size==1){
+    if (oldMedicalRecordDocument.nonEmpty && oldMedicalRecordDocument.size == 1) {
       val oldMedicalRecord = oldMedicalRecordDocument.head.asInstanceOf[MedicalRecord]
       val oldSheetTherapy = oldMedicalRecord.singleSheetTherapyHistory
-      val newSheetTherapy = oldSheetTherapy.addNewDrugsAdministered(drugAdministered)
+      val newSheetTherapy = if (oldSheetTherapy.isEmpty) Some(SingleSheetTherapies().addNewDrugsAdministered(drugAdministered)) else Some(oldSheetTherapy.get.addNewDrugsAdministered(drugAdministered))
       val newMedicalRecord = MedicalRecord(oldMedicalRecord.doctorID, oldMedicalRecord.patientID, oldMedicalRecord.medicalRecordID, oldMedicalRecord.isClosed,
         oldMedicalRecord.initialAnalysis, oldMedicalRecord.clinicalDiary, oldMedicalRecord.diagnosticServicesRequests, oldMedicalRecord.graphic,
         oldMedicalRecord.painReliefHistory, newSheetTherapy, oldMedicalRecord.adviceRequest, oldMedicalRecord.reports, oldMedicalRecord.operatingReports,
         oldMedicalRecord.nursingDocumentation, oldMedicalRecord.anesthesiologyRecord, oldMedicalRecord.medicalSurgicalDevices, oldMedicalRecord.dischargeLetter)
 
-      val newMedicalRecordDocument : BsonDocument = BsonDocument.apply(newMedicalRecord.toJson.compactPrint)
+      val newMedicalRecordDocument: BsonDocument = BsonDocument.apply(newMedicalRecord.toJson.compactPrint)
       Await.result(medicalRecordsCollection.findOneAndReplace(
         equal("medicalRecordID", id), BsonDocument.apply(newMedicalRecord.toJson.compactPrint)).toFuture(),
         Duration(1, TimeUnit.SECONDS))

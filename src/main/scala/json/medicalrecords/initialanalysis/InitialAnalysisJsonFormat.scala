@@ -19,7 +19,7 @@
 package json.medicalrecords.initialanalysis
 
 import domainmodel.medicalrecords.initialanalysis.InitialAnalysis
-import spray.json.DefaultJsonProtocol.jsonFormat3
+import spray.json.DefaultJsonProtocol.{jsonFormat3, optionFormat}
 import spray.json.RootJsonFormat
 import json.medicalrecords.initialanalysis.StateEvaluationJsonFormat.stateEvaluationJsonFormat
 import json.AnamnesisJsonFormat.anamnesisJsonFormat

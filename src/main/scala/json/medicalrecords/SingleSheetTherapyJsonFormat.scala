@@ -19,7 +19,7 @@
 package json.medicalrecords
 
 import domainmodel.medicalrecords.SingleSheetTherapies.SingleSheetTherapies
-import domainmodel.medicalrecords.{DrugsAdministered, DrugsPrescription, SingleSheetTherapy}
+import domainmodel.medicalrecords.{DrugsAdministered, DrugsPrescription}
 import spray.json.DefaultJsonProtocol.{jsonFormat2, jsonFormat3}
 import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import spray.json.RootJsonFormat

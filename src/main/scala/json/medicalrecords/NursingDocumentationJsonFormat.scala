@@ -18,7 +18,7 @@
 package json.medicalrecords
 
 import domainmodel.medicalrecords.{CareDiary, InterventionEvaluation, NeedsIdentification, NursingDocumentation, NursingInterventionPlanning, Registration}
-import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2, jsonFormat5}
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2, jsonFormat5, optionFormat}
 import spray.json.RootJsonFormat
 import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import json.medicalrecords.ClinicalDataJsonFormat.clinicalDataJsonFormat

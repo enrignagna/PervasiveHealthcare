@@ -26,26 +26,26 @@ class NursingDocumentationTest extends AnyFreeSpec {
   val nursingDocumentation: NursingDocumentation =
     NursingDocumentation(
       Registration(null, null),
-      NeedsIdentification(description = Description("Yes")),
-      NursingInterventionPlanning(description = Description("Group working")),
-      CareDiary("Ok"),
-      InterventionEvaluation("All right")
+      Some(NeedsIdentification(description = Description("Yes"))),
+      Some(NursingInterventionPlanning(description = Description("Group working"))),
+      Some(CareDiary("Ok")),
+      Some(InterventionEvaluation("All right"))
     )
   "A nursing documentation should have" - {
     "a needs identification" in {
-      assert(nursingDocumentation.needsIdentification.datetime != null)
-      assert(nursingDocumentation.needsIdentification.description.equals(Description("Yes")))
+      assert(nursingDocumentation.needsIdentification.get.datetime != null)
+      assert(nursingDocumentation.needsIdentification.get.description.equals(Description("Yes")))
     }
     "a nursing intervention plannig" in {
-      assert(nursingDocumentation.nursingInterventionPlanning.datetime != null)
+      assert(nursingDocumentation.nursingInterventionPlanning.get.datetime != null)
     }
     "a care diary" in {
       assert(nursingDocumentation.careDiary != null)
-      assert(nursingDocumentation.careDiary.value.equals("Ok"))
+      assert(nursingDocumentation.careDiary.get.value.equals("Ok"))
     }
     "a intervention evaluation" in {
       assert(nursingDocumentation.interventionEvaluation != null)
-      assert(nursingDocumentation.interventionEvaluation.value.equals("All right"))
+      assert(nursingDocumentation.interventionEvaluation.get.value.equals("All right"))
     }
   }
 }
