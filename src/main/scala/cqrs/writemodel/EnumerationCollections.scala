@@ -23,10 +23,11 @@ import java.util.concurrent.TimeUnit
 import cqrs.writemodel.WriteModel.database
 import domainmodel.Gender
 import domainmodel.generalinfo.{AllergyClass, BloodType, Rh}
+import domainmodel.professionalfigure.Specialization
 import json.PatientJsonFormat.genderJsonFormat
 import json.generalinfo.AllergyJsonFormat.allergyClassJsonFormat
 import json.generalinfo.BloodGroupJsonFormat.{bloodTypeJsonFormat, rhJsonFormat}
-import json.professionalfigure.ProfessionalFigureJsonFormat.roleJsonFormat
+import json.professionalfigure.ProfessionalFigureJsonFormat.{roleJsonFormat, specializationJsonFormat}
 import org.mongodb.scala.{Document, MongoCollection}
 import spray.json.enrichAny
 
@@ -86,6 +87,16 @@ object RhCollection {
     val numberRhDocs: Int = Await.result(rhCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
     if(numberRhDocs == 0){
       Await.result(rhCollection.insertMany(Rh.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
+    }
+  }
+}
+
+object SpecializationCollection {
+  def initialize(): Unit ={
+    val specializationCollection: MongoCollection[Document] = database.getCollection("specializations")
+    val numberSpecializationDocs: Int = Await.result(specializationCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if(numberSpecializationDocs == 0){
+      Await.result(specializationCollection.insertMany(Specialization.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
     }
   }
 }

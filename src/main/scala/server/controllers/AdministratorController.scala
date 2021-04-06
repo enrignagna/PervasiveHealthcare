@@ -132,6 +132,7 @@ object AdministratorController {
         Behaviors.same
       case UpdateWardNurse(id, wardNurse, replyTo) =>
         val res = Repository.adminRepository.updateWardNurse(DoctorID(id), wardNurse)
+        println("controller")
         if (res == "Ward nurse updated.") {
           //ReadModel().updateWardNurse(wardNurse)
           replyTo ! Accepted(res) // actions that are to be performed after successful.

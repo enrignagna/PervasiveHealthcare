@@ -90,9 +90,8 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
 
   val administratorRoutes: Route =
     pathPrefix("api") {
-      path("surgeons") {
+      pathPrefix("surgeons") {
         pathEnd {
-
           post {
             headerValueByName("x-access-token") { value =>
               authorize(hasAdminPermissions(value)) {
@@ -107,28 +106,24 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
               }
             }
           }
-        } ~
-          path(Segment) {
-            id =>
-              concat(
-                put {
-                  headerValueByName("x-access-token") { value =>
-                    authorize(hasAdminPermissions(value)) {
-                      entity(as[Surgeon]) { surgeon =>
-                        onSuccess(updateSurgeon(id, surgeon)) { response =>
-                          response match {
-                            case _: Accepted => complete(StatusCodes.Created, response)
-                            case _: Rejected => complete(StatusCodes.BadRequest, response)
-                          }
-                        }
+        } ~ path(Segment) { id =>
+            put {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasAdminPermissions(value)) {
+                  entity(as[Surgeon]) { surgeon =>
+                    onSuccess(updateSurgeon(id, surgeon)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
                 }
-              )
+              }
+            }
           }
       } ~
-        path("anesthetists") {
+        pathPrefix("anesthetists") {
           pathEnd {
 
             post {
@@ -152,8 +147,8 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                   put {
                     headerValueByName("x-access-token") { value =>
                       authorize(hasAdminPermissions(value)) {
-                        entity(as[Surgeon]) { surgeon =>
-                          onSuccess(updateSurgeon(id, surgeon)) { response =>
+                        entity(as[Anesthetist]) { anesthetist =>
+                          onSuccess(updateAnesthetist(id, anesthetist)) { response =>
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
@@ -166,7 +161,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 )
             }
         } ~
-        path("generalpractitioners") {
+        pathPrefix("generalpractitioners") {
           pathEnd {
             post {
               headerValueByName("x-access-token") { value =>
@@ -203,7 +198,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 )
             }
         } ~
-        path("instrumentalists") {
+        pathPrefix("instrumentalists") {
           pathEnd {
             post {
               headerValueByName("x-access-token") { value =>
@@ -240,7 +235,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 )
             }
         } ~
-        path("rescuers") {
+        pathPrefix("rescuers") {
           pathEnd {
             post {
               headerValueByName("x-access-token") { value =>
@@ -277,7 +272,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                 )
             }
         } ~
-        path("wardnurses") {
+        pathPrefix("wardnurses") {
           pathEnd {
             post {
               headerValueByName("x-access-token") { value =>
@@ -296,7 +291,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
           } ~
             path(Segment) {
               id =>
-                concat(
+
                   put {
                     headerValueByName("x-access-token") { value =>
                       authorize(hasAdminPermissions(value)) {
@@ -311,10 +306,10 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.Command])(i
                       }
                     }
                   }
-                )
+
             }
         } ~
-        path("patients") {
+        pathPrefix("patients") {
           pathEnd {
             post {
               headerValueByName("x-access-token") { value =>

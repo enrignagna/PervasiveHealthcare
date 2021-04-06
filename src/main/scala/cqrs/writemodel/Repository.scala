@@ -34,5 +34,6 @@ object Repository {
     AllergyClassCollection.initialize()
     BloodTypeCollection.initialize()
     RhCollection.initialize()
+    SpecializationCollection.initialize()
   }
 }

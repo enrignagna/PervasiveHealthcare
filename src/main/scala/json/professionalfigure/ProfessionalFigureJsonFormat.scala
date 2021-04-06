@@ -20,11 +20,13 @@ package json.professionalfigure
 
 import cqrs.writemodel.Role
 import domainmodel.DoctorID
+import domainmodel.professionalfigure.Specialization.Specialization
 import domainmodel.professionalfigure._
 import json.EnumerationJsonFormat.EnumJsonConverter
 import spray.json.DefaultJsonProtocol._
-import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat}
+import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat, enrichAny}
 import json.IDJsonFormat.doctorIDJsonFormat
+import spray.json.ImplicitDerivedJsonProtocol.implicitJsonFormat
 
 /**
  * Json format for professional figure object.
@@ -46,9 +48,9 @@ object ProfessionalFigureJsonFormat {
       json.asJsObject.getFields(
         "doctorID", "name", "surname", "phoneNumber", "email", "medicalDegreeGrade", "specialization", "role") match {
         case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber), JsString(email), JsString(medicalDegreeGrade),
-        JsNumber(specialization), JsNumber(_)) =>
+        specialization, _) =>
           Surgeon(doctorID.convertTo[DoctorID], name, surname, phoneNumber,
-            email, medicalDegreeGrade, Specialization(specialization.toInt))
+            email, medicalDegreeGrade, specialization.convertTo[Specialization])
         case _ => throw DeserializationException("Surgeon expected")
       }
     }
@@ -60,8 +62,8 @@ object ProfessionalFigureJsonFormat {
       "phoneNumber" -> JsString(obj.phoneNumber),
       "email" -> JsString(obj.email),
       "medicalDegreeGrade" -> JsString(obj.medicalDegreeGrade),
-      "specialization" -> JsNumber(obj.specialization.id),
-      "role" -> JsNumber(Role.SURGEON.id)
+      "specialization" -> obj.specialization.toJson,
+      "role" -> Role.SURGEON.toJson
     )
   }
 
@@ -73,7 +75,7 @@ object ProfessionalFigureJsonFormat {
       json.asJsObject.getFields(
         "doctorID", "name", "surname", "phoneNumber", "email", "medicalDegreeGrade", "role") match {
         case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
-        JsString(email), JsString(medicalDegreeGrade), JsNumber(_)) =>
+        JsString(email), JsString(medicalDegreeGrade), _) =>
           Anesthetist(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, medicalDegreeGrade)
         case _ => throw DeserializationException("Anesthetist expected")
       }
@@ -86,7 +88,7 @@ object ProfessionalFigureJsonFormat {
       "phoneNumber" -> JsString(obj.phoneNumber),
       "email" -> JsString(obj.email),
       "medicalDegreeGrade" -> JsString(obj.medicalDegreeGrade),
-      "role" -> JsNumber(Role.ANESTHETIST.id)
+      "role" -> Role.ANESTHETIST.toJson
     )
   }
 
@@ -98,7 +100,7 @@ object ProfessionalFigureJsonFormat {
       json.asJsObject.getFields(
         "doctorID", "name", "surname", "phoneNumber", "email", "medicalDegreeGrade", "role") match {
         case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
-        JsString(email), JsString(medicalDegreeGrade), JsNumber(_)) =>
+        JsString(email), JsString(medicalDegreeGrade), _) =>
           GeneralPractitioner(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, medicalDegreeGrade)
         case _ => throw DeserializationException("General practitioner expected")
       }
@@ -111,7 +113,7 @@ object ProfessionalFigureJsonFormat {
       "phoneNumber" -> JsString(obj.phoneNumber),
       "email" -> JsString(obj.email),
       "medicalDegreeGrade" -> JsString(obj.medicalDegreeGrade),
-      "role" -> JsNumber(Role.GENERAL_PRACTITIONER.id)
+      "role" -> Role.GENERAL_PRACTITIONER.toJson
     )
   }
 
@@ -123,7 +125,7 @@ object ProfessionalFigureJsonFormat {
       json.asJsObject.getFields(
         "doctorID", "name", "surname", "phoneNumber", "email", "nursingDegreeGrade", "role") match {
         case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
-        JsString(email), JsString(nursingDegreeGrade), JsNumber(_)) =>
+        JsString(email), JsString(nursingDegreeGrade), _) =>
           Instrumentalist(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, nursingDegreeGrade)
         case _ => throw DeserializationException("Instrumentalist expected")
       }
@@ -136,7 +138,7 @@ object ProfessionalFigureJsonFormat {
       "phoneNumber" -> JsString(obj.phoneNumber),
       "email" -> JsString(obj.email),
       "nursingDegreeGrade" -> JsString(obj.nursingDegreeGrade),
-      "role" -> JsNumber(Role.INSTRUMENTALIST.id)
+      "role" -> Role.INSTRUMENTALIST.toJson
     )
   }
 
@@ -148,7 +150,7 @@ object ProfessionalFigureJsonFormat {
       json.asJsObject.getFields(
         "doctorID", "name", "surname", "phoneNumber", "email", "medicalDegreeGrade", "role") match {
         case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
-        JsString(email), JsString(medicalDegreeGrade), JsNumber(_)) =>
+        JsString(email), JsString(medicalDegreeGrade), _) =>
           Rescuer(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, medicalDegreeGrade)
         case _ => throw DeserializationException("Rescuer expected")
       }
@@ -161,7 +163,7 @@ object ProfessionalFigureJsonFormat {
       "phoneNumber" -> JsString(obj.phoneNumber),
       "email" -> JsString(obj.email),
       "medicalDegreeGrade" -> JsString(obj.medicalDegreeGrade),
-      "role" -> JsNumber(Role.RESCUER.id)
+      "role" -> Role.RESCUER.toJson
     )
   }
 
@@ -173,7 +175,7 @@ object ProfessionalFigureJsonFormat {
       json.asJsObject.getFields(
         "doctorID", "name", "surname", "phoneNumber", "email", "nursingDegreeGrade", "role") match {
         case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
-        JsString(email), JsString(nursingDegreeGrade), JsNumber(_)) =>
+        JsString(email), JsString(nursingDegreeGrade), _) =>
           WardNurse(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, nursingDegreeGrade)
         case _ => throw DeserializationException("Ward nurse expected")
       }
@@ -186,7 +188,7 @@ object ProfessionalFigureJsonFormat {
       "phoneNumber" -> JsString(obj.phoneNumber),
       "email" -> JsString(obj.email),
       "nursingDegreeGrade" -> JsString(obj.nursingDegreeGrade),
-      "role" -> JsNumber(Role.WARD_NURSE.id)
+      "role" -> Role.WARD_NURSE.toJson
     )
   }
 
