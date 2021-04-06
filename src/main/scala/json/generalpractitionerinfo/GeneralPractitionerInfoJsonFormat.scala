@@ -23,7 +23,7 @@ import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
 import domainmodel.generalpractitionerinfo.VisitHistory.VisitHistory
 import domainmodel.generalpractitionerinfo._
 import json.AnamnesisJsonFormat.{familiarsJsonFormat, physiologicJsonFormat, remotesJsonFormat}
-import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat3, jsonFormat8}
+import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat3, jsonFormat8, optionFormat}
 import json.generalpractitionerinfo.BookingVisitsJsonFormat.bookingVisitJsonFormat
 import json.generalpractitionerinfo.MedicalCertificatesJsonFormat.medicalCertificateHistoryJsonFormat
 import json.generalpractitionerinfo.TherapyJsonFormat.therapyJsonFormat

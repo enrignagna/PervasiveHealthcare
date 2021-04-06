@@ -103,7 +103,6 @@ class RescuerCRUD {
         oldMedicalRecord.painReliefHistory, newSheetTherapy, oldMedicalRecord.adviceRequest, oldMedicalRecord.reports, oldMedicalRecord.operatingReports,
         oldMedicalRecord.nursingDocumentation, oldMedicalRecord.anesthesiologyRecord, oldMedicalRecord.medicalSurgicalDevices, oldMedicalRecord.dischargeLetter)
 
-
       val newMedicalRecordDocument : BsonDocument = BsonDocument.apply(newMedicalRecord.toJson.compactPrint)
       Await.result(medicalRecordsCollection.findOneAndReplace(
         equal("medicalRecordID", id), BsonDocument.apply(newMedicalRecord.toJson.compactPrint)).toFuture(),

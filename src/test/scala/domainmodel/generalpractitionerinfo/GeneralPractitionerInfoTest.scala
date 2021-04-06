@@ -59,7 +59,7 @@ class GeneralPractitionerInfoTest extends AnyFreeSpec {
       TherapyDate(),
       TherapyDescription("Therapy for shoulder surgery"),
       TherapyInitialDate(LocalDate.of(2021, 5, 15)),
-      TherapyFinalDate(LocalDate.of(2021, 6, 15))
+      Some(TherapyFinalDate(LocalDate.of(2021, 6, 15)))
     )
   )
   val bookingVisits: BookingVisitHistory = BookingVisitHistory().addNewBookingVisit(
@@ -77,12 +77,12 @@ class GeneralPractitionerInfoTest extends AnyFreeSpec {
     GeneralPractitionerInfo(
       patientID,
       doctorID,
-      generalVisits,
-      anamnesis,
-      bookingVisits,
-      prescriptions,
-      therapies,
-      medicalCertificates
+      if(generalVisits.history.nonEmpty) Some(generalVisits) else None,
+      if(anamnesis.familiars.familiars.nonEmpty && anamnesis.remotes.history.nonEmpty && anamnesis.physiologic!=null) Some(anamnesis) else None,
+      if(bookingVisits.history.nonEmpty) Some(bookingVisits) else None,
+      if(prescriptions.history.nonEmpty) Some(prescriptions) else None,
+      if(therapies.history.nonEmpty) Some(therapies) else None,
+      if(medicalCertificates.history.nonEmpty) Some(medicalCertificates) else None
     )
 
 

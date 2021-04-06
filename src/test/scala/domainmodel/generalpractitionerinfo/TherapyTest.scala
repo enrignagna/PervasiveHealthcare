@@ -26,7 +26,7 @@ import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
 class TherapyTest extends AnyFreeSpec {
-  val therapy: Therapy = Therapy(TherapyDate(), TherapyDescription("Therapy for shoulder surgery"), TherapyInitialDate(LocalDate.of(2021, 5, 15)), TherapyFinalDate(LocalDate.of(2021, 6, 15)))
+  val therapy: Therapy = Therapy(TherapyDate(), TherapyDescription("Therapy for shoulder surgery"), TherapyInitialDate(LocalDate.of(2021, 5, 15)), Some(TherapyFinalDate(LocalDate.of(2021, 6, 15))))
   "A therapy should have" - {
     "a date" in {
       assert(therapy.therapyDate != null)
