@@ -22,14 +22,6 @@ import domainmodel.utility.Description
 import java.time.LocalDateTime
 
 /**
- * Single sheet therapy.
- *
- * @param drugsPrescription
- * @param drugsSomministration
- */
-case class SingleSheetTherapy(drugsPrescription: DrugsPrescription, drugsSomministration: DrugsSomministration)
-
-/**
  * Drugs prescription.
  *
  * @param doctor      doctor that made prescription.
@@ -41,26 +33,26 @@ case class DrugsPrescription(doctor: Doctor, description: Description, datetime:
 /**
  * Drugs somministration.
  *
- * @param doctor      doctor that made somministration.
- * @param description description of somministration.
- * @param datetime    date and time of somministration.
+ * @param doctor      doctor that made administered.
+ * @param description description of administered.
+ * @param datetime    date and time of administered.
  */
-case class DrugsSomministration(doctor: Doctor, description: Description, datetime: LocalDateTime = LocalDateTime.now())
+case class DrugsAdministered(doctor: Doctor, description: Description, datetime: LocalDateTime = LocalDateTime.now())
 
 /**
  * Collection of single sheet therapy.
  */
 object SingleSheetTherapies {
 
-  case class SingleSheetTherapies private(drugsPrescription: Set[DrugsPrescription] = Set.empty, drugsSomministration: Set[DrugsSomministration] = Set.empty) {
+  case class SingleSheetTherapies private(drugsPrescription: Set[DrugsPrescription] = Set.empty, drugsAdministered: Set[DrugsAdministered] = Set.empty) {
 
     /**
-     * Add new drugs somministration.
+     * Add new drugs administered.
      *
      * @param drug drug to add.
      * @return collection of single sheet therapy.
      */
-    def addNewDrugsSomministration(drug: DrugsSomministration): SingleSheetTherapies = SingleSheetTherapies(drugsPrescription, this.drugsSomministration + drug)
+    def addNewDrugsAdministered(drug: DrugsAdministered): SingleSheetTherapies = SingleSheetTherapies(drugsPrescription, this.drugsAdministered + drug)
 
     /**
      * Add new drugs prescription.
@@ -68,7 +60,7 @@ object SingleSheetTherapies {
      * @param drug drug to add.
      * @return collection of single sheet therapy.
      */
-    def addNewDrugsPrescription(drug: DrugsPrescription): SingleSheetTherapies = SingleSheetTherapies(this.drugsPrescription + drug, drugsSomministration)
+    def addNewDrugsPrescription(drug: DrugsPrescription): SingleSheetTherapies = SingleSheetTherapies(this.drugsPrescription + drug, drugsAdministered)
 
 
   }

@@ -38,10 +38,10 @@ object RescuerController {
           replyTo ! Rejected(res)
         }
         Behaviors.same
-      case UpdateDrugSomministration(medicalRecordID, drugSomministration, replyTo) =>
-        val res = Repository.rescuerRepository.updateDrugSomministration(medicalRecordID, drugSomministration)
-        if (res == "Drug somministration updated.") {
-          // ReadModel().updateDrugSomministration(drugSomministration)
+      case UpdateDrugAdministered(medicalRecordID, drugAdministered, replyTo) =>
+        val res = Repository.rescuerRepository.updateDrugAdministered(medicalRecordID, drugAdministered)
+        if (res == "Drug administered updated.") {
+          // ReadModel().updateDrugAdministered(drugAdministered)
           replyTo ! Accepted(res)// actions that are to be performed after successful.
         } else {
           replyTo ! Rejected(res)

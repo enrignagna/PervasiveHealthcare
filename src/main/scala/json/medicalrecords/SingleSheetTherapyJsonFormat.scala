@@ -19,7 +19,7 @@
 package json.medicalrecords
 
 import domainmodel.medicalrecords.SingleSheetTherapies.SingleSheetTherapies
-import domainmodel.medicalrecords.{DrugsPrescription, DrugsSomministration, SingleSheetTherapy}
+import domainmodel.medicalrecords.{DrugsAdministered, DrugsPrescription}
 import spray.json.DefaultJsonProtocol.{jsonFormat2, jsonFormat3}
 import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import spray.json.RootJsonFormat
@@ -33,19 +33,14 @@ import json.professionalfigure.DoctorJsonFormat.DoctorJsonFormat
 object SingleSheetTherapyJsonFormat {
 
   /**
-   * Implicit for single sheet therapy object.
-   */
-  implicit val singleSheetTherapyJsonFormat: RootJsonFormat[SingleSheetTherapy] = jsonFormat2(SingleSheetTherapy)
-
-  /**
    * Implicit for drugs prescription object.
    */
   implicit val drugsPrescriptionJsonFormat: RootJsonFormat[DrugsPrescription] = jsonFormat3(DrugsPrescription)
 
   /**
-   * Implicit for drug somministration therapy object.
+   * Implicit for drug administered therapy object.
    */
-  implicit val drugsSomministrationTherapyJsonFormat: RootJsonFormat[DrugsSomministration] = jsonFormat3(DrugsSomministration)
+  implicit val drugsAdministeredTherapyJsonFormat: RootJsonFormat[DrugsAdministered] = jsonFormat3(DrugsAdministered)
 
   /**
    * Implicit for single sheet therapies object.

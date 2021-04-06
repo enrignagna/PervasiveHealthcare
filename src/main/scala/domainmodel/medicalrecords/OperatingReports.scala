@@ -22,16 +22,11 @@ import domainmodel.utility.Note
 
 import java.time.LocalDateTime
 
+case class SurgeonReport(surgeon: Surgeon, note: Option[Note])
 
-//TODO: Implement this.
-// chiedere parere su compound types o se tenere sempre delle case class
+case class AnesthetistReport(anesthetist: Anesthetist, note: Option[Note])
 
-case class SurgeonReport(surgeon: Surgeon, note: Note)
-
-//TODO Make implementation of doctor or of every single type of doctor.
-case class AnesthetistReport(anesthetist: Anesthetist, note: Note)
-
-case class InstrumentalistReport(instrumentalist: Instrumentalist, note: Note)
+case class InstrumentalistReport(instrumentalist: Instrumentalist, note: Option[Note])
 
 
 object Medical {

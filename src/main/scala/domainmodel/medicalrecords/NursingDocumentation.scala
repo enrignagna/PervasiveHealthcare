@@ -23,10 +23,10 @@ import java.time.LocalDateTime
 
 case class NursingDocumentation(
                                  registration: Registration,
-                                 needsIdentification: NeedsIdentification,
-                                 nursingInterventionPlanning: NursingInterventionPlanning,
-                                 careDiary: CareDiary,
-                                 interventionEvaluation: InterventionEvaluation
+                                 needsIdentification: Option[NeedsIdentification],
+                                 nursingInterventionPlanning: Option[NursingInterventionPlanning],
+                                 careDiary: Option[CareDiary],
+                                 interventionEvaluation: Option[InterventionEvaluation]
                                )
 
 case class InterventionEvaluation(value: String)

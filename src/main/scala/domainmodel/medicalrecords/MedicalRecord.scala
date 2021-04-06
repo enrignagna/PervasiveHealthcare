@@ -33,19 +33,20 @@ case class MedicalRecord(
                           patientID: PatientID,
                           medicalRecordID: MedicalRecordsID,
                           isClosed: Boolean,
-                          initialAnalysis: InitialAnalysis,
-                          clinicalDiary: ClinicalDiary,
-                          diagnosticServicesRequests: DiagnosticServicesRequests,
-                          graphic: Graphic,
-                          painReliefHistory: PainreliefHistory,
-                          singleSheetTherapyHistory: SingleSheetTherapies,
-                          adviceRequest: AdviceRequest,
-                          reports: Reports,
-                          operatingReports: OperatingReports,
-                          nursingDocumentation: NursingDocumentation,
-                          anesthesiologyRecord: AnesthesiologyRecord,
-                          medicalSurgicalDevices: MedicalSurgicalDevices,
-                          dischargeLetter: DischargeLetter) {}
+                          initialAnalysis: Option[InitialAnalysis],
+                          clinicalDiary: Option[ClinicalDiary],
+                          diagnosticServicesRequests: Option[DiagnosticServicesRequests],
+                          graphic: Option[Graphic],
+                          painReliefHistory: Option[PainreliefHistory],
+                          singleSheetTherapyHistory: Option[SingleSheetTherapies],
+                          adviceRequest: Option[AdviceRequest],
+                          reports: Option[Reports],
+                          operatingReports: Option[OperatingReports],
+                          nursingDocumentation: Option[NursingDocumentation],
+                          anesthesiologyRecord: Option[AnesthesiologyRecord],
+                          medicalSurgicalDevices: Option[MedicalSurgicalDevices],
+                          dischargeLetter: Option[DischargeLetter]
+                        ) {}
 
 
 /**

@@ -48,3 +48,4 @@ case class GeneralInfo(bloodGroup: BloodGroup, weight: Weight, height: Height, a
                        previousPathologies: Option[PreviousPathologies],
                        prescriptionHistory: Option[PrescriptionHistory],
                        examHistory: Option[ExamHistory])
+

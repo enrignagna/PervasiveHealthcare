@@ -19,7 +19,7 @@ package json.medicalrecords
 
 import domainmodel.medicalrecords.VitalSigns.VitalSigns
 import domainmodel.medicalrecords.{Graphic, VitalSign}
-import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat2}
+import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat2, optionFormat}
 import spray.json.RootJsonFormat
 import json.utility.InfoDescriptionJsonFormat.infoJsonFormat
 import json.RequestJsonFormats.immSetFormat
