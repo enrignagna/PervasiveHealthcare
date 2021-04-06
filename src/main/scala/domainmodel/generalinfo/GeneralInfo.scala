@@ -44,7 +44,7 @@ case class Height(value: Int)
  * @param prescriptionHistory the prescriptions history.
  * @param examHistory the exams history.
  */
-case class GeneralInfo(bloodGroup: BloodGroup, weight: Weight, height: Height, allergies: Allergies = Allergies(),
+case class GeneralInfo(bloodGroup: BloodGroup, weight: Option[Weight], height: Height, allergies: Allergies = Allergies(),
                        previousPathologies: PreviousPathologies = PreviousPathologies(),
                        prescriptionHistory: PrescriptionHistory = PrescriptionHistory(),
                        examHistory: ExamHistory = ExamHistory())

@@ -28,6 +28,9 @@ import domainmodel.medicalrecords.clinicaldiary.TherapeuticTreatments.Therapeuti
  * @param therapeuticTreatments    therapeutic treatments made.
  * @param rehabilitationTreatments rehabilitation treatments made.
  */
-case class ClinicalDiary(healthEvolution: HealthEvolution, diagnosticTreatments: DiagnosticTreatments, therapeuticTreatments: TherapeuticTreatments, rehabilitationTreatments: RehabilitationTreatments) {
-
-}
+case class ClinicalDiary(
+                          healthEvolution: Option[HealthEvolution],
+                          diagnosticTreatments: Option[DiagnosticTreatments],
+                          therapeuticTreatments: Option[TherapeuticTreatments],
+                          rehabilitationTreatments: Option[RehabilitationTreatments]
+                        )
