@@ -32,7 +32,7 @@ object LocalDateTimeJsonFormat {
    */
   implicit object DateTimeFormat extends RootJsonFormat[LocalDateTime] {
 
-    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE
+    private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
     override def write(date: LocalDateTime): JsValue = {
       JsString(date.format(formatter))

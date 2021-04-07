@@ -48,7 +48,7 @@ class SurgeonRoutes(surgeonController: ActorRef[Protocol.Command])(implicit val 
 
   val surgeonRoutes: Route =
     pathPrefix("api") {
-      path("medicalrecords") {
+      pathPrefix("medicalrecords") {
         pathEnd {
 
           post {
