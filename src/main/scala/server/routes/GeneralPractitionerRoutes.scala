@@ -45,7 +45,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
     generalPractitionerController.ask(InsertGeneralPractitionerInfo(generalPractitionerInfo, _))
 
   def updateGeneralPractitionerInfo(patientID: PatientID, generalPractitionerInfo: GeneralPractitionerInfo): Future[Confirmation] =
-    generalPractitionerController.ask(UpdateGeneralPractitionerInfo(???, generalPractitionerInfo, _))
+    generalPractitionerController.ask(UpdateGeneralPractitionerInfo(patientID, generalPractitionerInfo, _))
 
   val generalPractitionerRoutes: Route =
     pathPrefix("api") {
