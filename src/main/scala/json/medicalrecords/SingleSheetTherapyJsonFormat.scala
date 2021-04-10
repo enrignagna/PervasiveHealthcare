@@ -25,7 +25,7 @@ import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import spray.json.RootJsonFormat
 import json.RequestJsonFormats.immSetFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
-import json.professionalfigure.DoctorJsonFormat.DoctorJsonFormat
+import json.IDJsonFormat.doctorIDJsonFormat
 
 /**
  * Json format for single sheet therapy object.

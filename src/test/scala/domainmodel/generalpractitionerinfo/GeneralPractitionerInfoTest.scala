@@ -42,7 +42,7 @@ class GeneralPractitionerInfoTest extends AnyFreeSpec {
   val anamnesis: Anamnesis =
     Anamnesis(
       Familiars().addNewFamiliar(
-        Familiar("Rossi Mario", Father, PreviousPathologies(), "3387514876")
+        Familiar("Rossi Mario", KinshipDegree.FATHER, PreviousPathologies(), "3387514876")
       ),
       Remotes().addNewRemote(
         Remote("first anamnesis")
@@ -69,7 +69,7 @@ class GeneralPractitionerInfoTest extends AnyFreeSpec {
   val patientID: PatientID = PatientID("1234")
   val medicalCertificates: MedicalCertificateHistory = MedicalCertificateHistory().addNewMedicalCertificate(
     MedicalCertificate(
-      1233,
+      MedicalCertificateID("1233"),
       Set.empty[Byte]
     )
   )

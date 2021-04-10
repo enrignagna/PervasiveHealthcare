@@ -17,8 +17,8 @@
 package json.generalpractitionerinfo
 
 import domainmodel.generalpractitionerinfo.MedicalCertificateHistory.MedicalCertificateHistory
-import domainmodel.generalpractitionerinfo.MedicalCertificate
-import json.RequestJsonFormats.{ByteJsonFormat, IntJsonFormat, immSetFormat, jsonFormat2}
+import domainmodel.generalpractitionerinfo.{MedicalCertificate, MedicalCertificateID}
+import json.RequestJsonFormats.{ByteJsonFormat, immSetFormat, jsonFormat2,StringJsonFormat}
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.RootJsonFormat
 
@@ -26,6 +26,8 @@ import spray.json.RootJsonFormat
  * Json format for medical certificates object.
  */
 object MedicalCertificatesJsonFormat {
+
+  implicit lazy val medicalCertificateIDJsonFormat: RootJsonFormat[MedicalCertificateID] = jsonFormat1(MedicalCertificateID)
 
   /**
    * Implicit for medical certificate object.

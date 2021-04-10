@@ -27,7 +27,7 @@ import org.scalatestplus.junit.JUnitRunner
 class TestInitialAnalysis extends AnyFreeSpec {
   val remote: Remote = Remote("first anamnesis")
   val remotes: Remotes = Remotes().addNewRemote(remote)
-  val familiar: Familiar = Familiar("Rossi Mario", Father, PreviousPathologies(), "3387514876")
+  val familiar: Familiar = Familiar("Rossi Mario", KinshipDegree.FATHER, PreviousPathologies(), "3387514876")
   val familiars: Familiars = Familiars().addNewFamiliar(familiar)
   val anamnesis: Anamnesis = Anamnesis(familiars, remotes, Physiologic("self conscious"))
 

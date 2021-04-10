@@ -25,7 +25,7 @@ import org.scalatestplus.junit.JUnitRunner
 class NursingDocumentationTest extends AnyFreeSpec {
   val nursingDocumentation: NursingDocumentation =
     NursingDocumentation(
-      Registration(null, null),
+      Registration(null),
       Some(NeedsIdentification(description = Description("Yes"))),
       Some(NursingInterventionPlanning(description = Description("Group working"))),
       Some(CareDiary("Ok")),
