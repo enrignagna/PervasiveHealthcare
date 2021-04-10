@@ -70,7 +70,7 @@ class RescuerRoutes(rescuerController: ActorRef[Protocol.Command])(implicit val 
             )
         }
       } ~
-        pathPrefix("drugSomministrations") {
+        pathPrefix("drugAdministered") {
           path(Segment) {
             id =>
               concat(

@@ -134,21 +134,6 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.Command])(implicit 
         } ~
         pathPrefix("generalinfo") {
           pathEnd {
-            post {
-              headerValueByName("x-access-token") { value =>
-                authorize(hasDoctorPermissions(value)) {
-                  entity(as[GeneralInfo]) { generalInfo =>
-                    onSuccess(insertGeneralInfo(generalInfo)) { response =>
-                      response match {
-                        case _: Accepted => complete(StatusCodes.Created, response)
-                        case _: Rejected => complete(StatusCodes.BadRequest, response)
-                      }
-                    }
-                  }
-                }
-              }
-            }
-          } ~
             path(Segment) {
               id =>
                 concat(
@@ -168,6 +153,7 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.Command])(implicit 
                   }
                 )
             }
+          }
         }
     }
 }

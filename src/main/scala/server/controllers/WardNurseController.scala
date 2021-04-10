@@ -47,5 +47,14 @@ object WardNurseController {
           replyTo ! Rejected(res)
         }
         Behaviors.same
+      case UpdateGeneralInfo(patientID, generalInfo, replyTo) =>
+        val res = Repository.wardNurseRepository.updateGeneralInfo(patientID , generalInfo)
+        if (res == "General info updated.") {
+          // ReadModel().updateGeneralInfo(generalInfo)
+          replyTo ! Accepted(res)// actions that are to be performed after successful.
+        } else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
     }
 }
