@@ -18,26 +18,27 @@ package domainmodel.medicalrecords
 
 import domainmodel.professionalfigure.Doctor
 import domainmodel.utility.Description
-
 import java.time.LocalDateTime
+
+import domainmodel.DoctorID
 
 /**
  * Drugs prescription.
  *
- * @param doctor      doctor that made prescription.
+ * @param doctorID    doctorID of the doctor that made prescription.
  * @param description description of prescription.
  * @param datetime    date and time of prescription.
  */
-case class DrugsPrescription(doctor: Doctor, description: Description, datetime: LocalDateTime = LocalDateTime.now())
+case class DrugsPrescription(doctorID: DoctorID, description: Description, datetime: LocalDateTime = LocalDateTime.now())
 
 /**
  * Drugs somministration.
  *
- * @param doctor      doctor that made administered.
+ * @param doctorID    doctorID of the doctor that made administered.
  * @param description description of administered.
  * @param datetime    date and time of administered.
  */
-case class DrugsAdministered(doctor: Doctor, description: Description, datetime: LocalDateTime = LocalDateTime.now())
+case class DrugsAdministered(doctorID: DoctorID, description: Description, datetime: LocalDateTime = LocalDateTime.now())
 
 /**
  * Collection of single sheet therapy.

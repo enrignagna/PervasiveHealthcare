@@ -18,13 +18,17 @@
 
 package domainmodel.generalpractitionerinfo
 
+import domainmodel.ID
+
+case class MedicalCertificateID(override val value: String) extends ID
+
 /**
  * This class represents the set of the patient's medical certificates.
  *
- * @param medicalCertificateId , id of medical certificate
+ * @param medicalCertificateID , id of medical certificate
  * @param medicalCertificate   , pdf of medical certificate.
  */
-case class MedicalCertificate(medicalCertificateId: Int, medicalCertificate: Set[Byte])
+case class MedicalCertificate(medicalCertificateID: MedicalCertificateID, medicalCertificate: Set[Byte])
 
 
 /**
