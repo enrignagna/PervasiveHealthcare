@@ -63,10 +63,11 @@ object MedicalRecordHistory {
      * @return collection of medical records.
      */
     def addNewMedicalRecord(medicalRecord: MedicalRecord): MedicalRecordHistory = {
-      if (this.history exists (x => x.medicalRecordID equals medicalRecord.medicalRecordID))
-        this.history drop this.history.toIndexedSeq.indexOf(this.history.find(x => x.medicalRecordID equals medicalRecord.medicalRecordID) get)
-      MedicalRecordHistory(this.history + medicalRecord)
-
+      if (this.history exists (x => x.medicalRecordID.value == medicalRecord.medicalRecordID.value))
+        MedicalRecordHistory(this.history - (this.history.find(x => x.medicalRecordID equals medicalRecord.medicalRecordID).get)
+          + medicalRecord)
+      else
+        MedicalRecordHistory(this.history + medicalRecord)
     }
   }
 

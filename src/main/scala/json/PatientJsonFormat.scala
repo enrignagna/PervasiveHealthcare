@@ -78,7 +78,7 @@ object PatientJsonFormat {
         "cf" -> JsObject("value" -> JsString(obj.cf.value)),
         "name" -> JsString(obj.name),
         "surname" -> JsString(obj.surname),
-        "birthDate" -> JsObject("value" -> JsString(obj.birthDate.toString)),
+        "birthDate" -> JsString(obj.birthDate.toString),
         "birthplace" -> JsString(obj.birthplace),
         "gender" -> obj.gender.toJson,
         "phone" -> JsString(obj.phone),

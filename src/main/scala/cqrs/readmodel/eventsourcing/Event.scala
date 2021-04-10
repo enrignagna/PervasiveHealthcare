@@ -16,25 +16,339 @@
 
 package cqrs.readmodel.eventsourcing
 
-import domainmodel.professionalfigure.Surgeon
+import domainmodel.Patient.Patient
+import domainmodel.generalinfo.GeneralInfo
+import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
+import domainmodel.medicalrecords.MedicalRecord
+import domainmodel.professionalfigure._
+import domainmodel.{DoctorID, ID, PatientID}
 
-import java.util.{Date, UUID}
+import java.time.LocalDateTime
 
+/**
+ * Event's type enumeration.
+ */
+object EventType extends Enumeration {
 
-abstract class Event {
-  final val id = UUID.randomUUID
-  final val created = new Date
+  type EventType = Value
+  val INSERT_SURGEON, UPDATE_SURGEON,
+  INSERT_ANESTHETIST, UPDATE_ANESTHETIST,
+  INSERT_GENERAL_PRACTITIONER, UPDATE_GENERAL_PRACTITIONER,
+  INSERT_INSTRUMENTALIST, UPDATE_INSTRUMENTALIST,
+  INSERT_WARD_NURSE, UPDATE_WARD_NURSE,
+  INSERT_RESCUER, UPDATE_RESCUER,
+  INSERT_PATIENT_INFO, UPDATE_PATIENT_INFO,
+  INSERT_MEDICAL_RECORD, UPDATE_MEDICAL_RECORD,
+  INSERT_GENERAL_INFO, UPDATE_GENERAL_INFO,
+  INSERT_GENERAL_PRACTITIONER_INFO, UPDATE_GENERAL_PRACTITIONER_INFO = Value
 }
 
-
-class insertSurgeonEvent(s: Surgeon) extends Event {
-  final val surgeon: Surgeon = s
+/**
+ * Abstract class of general event.
+ *
+ * @param created , date
+ * @param userID
+ */
+abstract class Event(created: LocalDateTime, userID: ID) {
+  final val time = created
 }
 
-class updateSurgeonEvent(s: Surgeon) extends Event {
-  final val surgeon: Surgeon = s
-}
+/**
+ * Event of insert of surgeon.
+ *
+ * @param id        , id of the surgeon.
+ * @param s         , surgeon to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertSurgeonEvent(
+                               id: DoctorID,
+                               s: Surgeon,
+                               eventID: Int = EventType.INSERT_SURGEON.id,
+                               timestamp: LocalDateTime = LocalDateTime.now()
+                             ) extends Event(timestamp, id)
 
-class removeSurgeonEvent(s: Surgeon) extends Event {
-  final val surgeon: Surgeon = s
-}
+/**
+ * Event of update of surgeon.
+ *
+ * @param id        , id of the surgeon.
+ * @param s         , surgeon to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateSurgeonEvent(
+                               id: DoctorID,
+                               s: Surgeon,
+                               eventID: Int = EventType.UPDATE_SURGEON.id,
+                               timestamp: LocalDateTime = LocalDateTime.now()
+                             ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of anesthetist.
+ *
+ * @param id        , id of the anesthetist.
+ * @param a         , anesthetist to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertAnesthetistEvent(
+                                   id: DoctorID,
+                                   a: Anesthetist,
+                                   eventID: Int = EventType.INSERT_ANESTHETIST.id,
+                                   timestamp: LocalDateTime = LocalDateTime.now()
+                                 ) extends Event(timestamp, id)
+
+/**
+ * Event of update of anesthetist.
+ *
+ * @param id        , id of the anesthetist.
+ * @param a         , anesthetist to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateAnesthetistEvent(
+                                   id: DoctorID,
+                                   a: Anesthetist,
+                                   eventID: Int = EventType.INSERT_ANESTHETIST.id,
+                                   timestamp: LocalDateTime = LocalDateTime.now()
+                                 ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of general practitioner.
+ *
+ * @param id        , id of the general practitioner.
+ * @param g         , general practitioner to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertGeneralPractitionerEvent(
+                                           id: DoctorID,
+                                           g: GeneralPractitioner,
+                                           eventID: Int = EventType.INSERT_GENERAL_PRACTITIONER.id,
+                                           timestamp: LocalDateTime = LocalDateTime.now()
+                                         ) extends Event(timestamp, id)
+
+/**
+ * Event of update of general practitioner.
+ *
+ * @param id        , id of the general practitioner.
+ * @param g         , general practitioner to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateGeneralPractitionerEvent(
+                                           id: DoctorID,
+                                           g: GeneralPractitioner,
+                                           eventID: Int = EventType.UPDATE_GENERAL_PRACTITIONER.id,
+                                           timestamp: LocalDateTime = LocalDateTime.now()
+                                         ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of instrumentalist.
+ *
+ * @param id        , id of the instrumentalist.
+ * @param i         , instrumentalist to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertInstrumentalistEvent(
+                                       id: DoctorID,
+                                       i: Instrumentalist,
+                                       eventID: Int = EventType.INSERT_INSTRUMENTALIST.id,
+                                       timestamp: LocalDateTime = LocalDateTime.now()
+                                     ) extends Event(timestamp, id)
+
+/**
+ * Event of update of instrumentalist.
+ *
+ * @param id        , id of the instrumentalist.
+ * @param i         , instrumentalist to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateInstrumentalistEvent(
+                                       id: DoctorID,
+                                       i: Instrumentalist,
+                                       eventID: Int = EventType.UPDATE_INSTRUMENTALIST.id,
+                                       timestamp: LocalDateTime = LocalDateTime.now()
+                                     ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of ward nurse.
+ *
+ * @param id        , id of the ward nurse.
+ * @param w         , ward nurse to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertWardNurseEvent(
+                                 id: DoctorID,
+                                 w: WardNurse,
+                                 eventID: Int = EventType.INSERT_WARD_NURSE.id,
+                                 timestamp: LocalDateTime = LocalDateTime.now()
+                               ) extends Event(timestamp, id)
+
+/**
+ * Event of update of ward nurse.
+ *
+ * @param id        , id of the ward nurse.
+ * @param w         , ward nurse to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateWardNurseEvent(
+                                 id: DoctorID,
+                                 w: WardNurse,
+                                 eventID: Int = EventType.UPDATE_WARD_NURSE.id,
+                                 timestamp: LocalDateTime = LocalDateTime.now()
+                               ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of rescuer.
+ *
+ * @param id        , id of the rescuer.
+ * @param r         , rescuer to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertRescuerEvent(
+                               id: DoctorID,
+                               r: Rescuer,
+                               eventID: Int = EventType.INSERT_RESCUER.id,
+                               timestamp: LocalDateTime = LocalDateTime.now()
+                             ) extends Event(timestamp, id)
+
+/**
+ * Event of update of rescuer.
+ *
+ * @param id        , id of the rescuer.
+ * @param r         , rescuer to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateRescuerEvent(
+                               id: DoctorID,
+                               r: Rescuer,
+                               eventID: Int = EventType.UPDATE_RESCUER.id,
+                               timestamp: LocalDateTime = LocalDateTime.now()
+                             ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of patient info.
+ *
+ * @param id        , id of the patient.
+ * @param p         , patient info to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertPatientInfoEvent(
+                                   id: PatientID,
+                                   p: Patient,
+                                   eventID: Int = EventType.INSERT_PATIENT_INFO.id,
+                                   timestamp: LocalDateTime = LocalDateTime.now()
+                                 ) extends Event(timestamp, id)
+
+/**
+ * Event of update of patient info.
+ *
+ * @param id        , id of the patient.
+ * @param p         , patient info to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdatePatientInfoEvent(
+                                   id: PatientID,
+                                   p: Patient,
+                                   eventID: Int = EventType.UPDATE_PATIENT_INFO.id,
+                                   timestamp: LocalDateTime = LocalDateTime.now()
+                                 ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of medical record.
+ *
+ * @param id        , id of the patient.
+ * @param m         , medical record to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertMedicalRecordEvent(
+                                     id: PatientID,
+                                     m: MedicalRecord,
+                                     eventID: Int = EventType.INSERT_MEDICAL_RECORD.id,
+                                     timestamp: LocalDateTime = LocalDateTime.now()
+                                   ) extends Event(timestamp, id)
+
+/**
+ * Event of update of medical record.
+ *
+ * @param id        , id of the patient.
+ * @param m         , medical record to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateMedicalRecordEvent(
+                                     id: PatientID,
+                                     m: MedicalRecord,
+                                     eventID: Int = EventType.UPDATE_MEDICAL_RECORD.id,
+                                     timestamp: LocalDateTime = LocalDateTime.now()
+                                   ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of general info.
+ *
+ * @param id        , id of the patient.
+ * @param g         , general info to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertGeneralInfoEvent(
+                                   id: PatientID,
+                                   g: GeneralInfo,
+                                   eventID: Int = EventType.INSERT_GENERAL_INFO.id,
+                                   timestamp: LocalDateTime = LocalDateTime.now()
+                                 ) extends Event(timestamp, id)
+
+/**
+ * Event of update of general info.
+ *
+ * @param id        , id of the patient.
+ * @param g         , general info to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateGeneralInfoEvent(
+                                   id: PatientID,
+                                   g: GeneralInfo,
+                                   eventID: Int = EventType.UPDATE_GENERAL_INFO.id,
+                                   timestamp: LocalDateTime = LocalDateTime.now()
+                                 ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of general practitioner info.
+ *
+ * @param id        , id of the patient.
+ * @param g         , general practitioner info to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertGeneralPractitionerInfoEvent(
+                                               id: PatientID,
+                                               g: GeneralPractitionerInfo,
+                                               eventID: Int = EventType.INSERT_GENERAL_PRACTITIONER_INFO.id,
+                                               timestamp: LocalDateTime = LocalDateTime.now()
+                                             ) extends Event(timestamp, id)
+
+/**
+ * Event of update of general practitioner info.
+ *
+ * @param id        , id of the patient.
+ * @param g         , general practitioner info to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateGeneralPractitionerInfoEvent(
+                                               id: PatientID,
+                                               g: GeneralPractitionerInfo,
+                                               eventID: Int = EventType.UPDATE_GENERAL_PRACTITIONER_INFO.id,
+                                               timestamp: LocalDateTime = LocalDateTime.now()
+                                             ) extends Event(timestamp, id)
