@@ -19,6 +19,7 @@ package server.models
 
 import akka.actor.typed.ActorRef
 import domainmodel.Patient.Patient
+import domainmodel.generalinfo.GeneralInfo
 import domainmodel.{DoctorID, PatientID, User}
 import domainmodel.generalpractitionerinfo.{GeneralPractitionerInfo, Visit}
 import domainmodel.medicalrecords.{DischargeLetter, DrugsAdministered, MedicalRecord, MedicalRecordsID}
@@ -98,5 +99,10 @@ object Protocol {
   final case class InsertGeneralPractitionerInfo(generalPractitionerInfo: GeneralPractitionerInfo,  replyTo: ActorRef[Confirmation]) extends Command
 
   final case class UpdateGeneralPractitionerInfo(patientID: PatientID,  generalPractitionerInfo: GeneralPractitionerInfo, replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class InsertGeneralInfo(generalInfo: GeneralInfo,  replyTo: ActorRef[Confirmation]) extends Command
+
+  final case class UpdateGeneralInfo(patientID: PatientID,  generalInfo: GeneralInfo, replyTo: ActorRef[Confirmation]) extends Command
+
 }
 

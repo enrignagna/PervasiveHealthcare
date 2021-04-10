@@ -37,7 +37,6 @@ case class NursingInterventionPlanning(datetime: LocalDateTime = LocalDateTime.n
 
 case class NeedsIdentification(datetime: LocalDateTime = LocalDateTime.now(), description: Description)
 
-//TODO: referenza di clinical data e copia dei dati personali. Finish implementation.
-case class Registration(personalData: GeneralInfo, clinicalData: ClinicalData)
+case class Registration(personalData: GeneralInfo)
 
 

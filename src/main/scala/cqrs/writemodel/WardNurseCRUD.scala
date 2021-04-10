@@ -21,15 +21,17 @@ package cqrs.writemodel
 import java.util.concurrent.TimeUnit
 
 import cqrs.writemodel.WriteModel.{dischargeLetterCollection, doctorsCollection, medicalRecordsCollection, patientsCollection}
-import domainmodel.User
+import domainmodel.{PatientID, User}
+import domainmodel.generalinfo.GeneralInfo
 import domainmodel.medicalrecords.{DischargeLetter, MedicalRecord, MedicalRecordsID}
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
-import json.medicalrecords.clinicaldiary.ClinicalDiaryJsonFormat.clinicalDiaryJsonFormat
+import json.generalinfo.GeneralInfoJsonFormat.generalInfoJsonFormat
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import spray.json.enrichAny
 import json.IDJsonFormat.patientIDJsonFormat
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordsIDJsonFormat
+
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -65,6 +67,15 @@ class WardNurseCRUD {
       equal("patientID", medicalRecord.patientID), document).toFuture(),
       Duration(1, TimeUnit.SECONDS))
     "Medical record updated."
+  }
+
+  def updateGeneralInfo(patientID: PatientID, generalInfo: GeneralInfo): String = {
+    val document: BsonDocument = BsonDocument.apply(generalInfo.toJson.compactPrint)
+
+    Await.result(patientsCollection.findOneAndUpdate(
+      equal("patientID", patientID), document).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    "General info updated."
   }
 
 }

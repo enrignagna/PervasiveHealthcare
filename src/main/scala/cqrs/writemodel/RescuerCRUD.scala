@@ -37,7 +37,7 @@ class RescuerCRUD {
 
   def updateClinicalDiary(medicalRecordID: MedicalRecordsID, clinicalDiary: ClinicalDiary): String = {
     val id: BsonDocument = BsonDocument.apply(medicalRecordID.toJson.compactPrint)
-
+  println( "im here")
     val oldMedicalRecordDocument = Await.result(medicalRecordsCollection.find(
       equal("medicalRecordID", id)).toFuture(),
       Duration(1, TimeUnit.SECONDS))

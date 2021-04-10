@@ -24,11 +24,12 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import domainmodel.medicalrecords.{DischargeLetter, MedicalRecord, MedicalRecordsID}
-import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
+import domainmodel.PatientID
+import domainmodel.generalinfo.GeneralInfo
+import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
 import json.RequestJsonFormats.acceptedJsonFormat
+import json.generalinfo.GeneralInfoJsonFormat.generalInfoJsonFormat
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
-import json.medicalrecords.clinicaldiary.ClinicalDiaryJsonFormat.clinicalDiaryJsonFormat
 import server.models.JwtAuthentication.hasDoctorPermissions
 import server.models.Protocol
 import server.models.Protocol._
@@ -48,9 +49,15 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.Command])(implicit 
   def updateMedicalRecord(medicalRecordID: MedicalRecordsID, medicalRecord: MedicalRecord): Future[Confirmation] =
     wardnurseController.ask(UpdateMedicalRecord(medicalRecordID, medicalRecord, _))
 
+  def insertGeneralInfo(generalInfo: GeneralInfo): Future[Confirmation] =
+    wardnurseController.ask(InsertGeneralInfo(generalInfo, _))
+
+  def updateGeneralInfo(patientID: PatientID, generalInfo: GeneralInfo): Future[Confirmation] =
+    wardnurseController.ask(UpdateGeneralInfo(patientID, generalInfo, _))
+
   val wardnurseRoutes: Route =
     pathPrefix("api") {
-      path("medicalrecords") {
+      pathPrefix("medicalrecords") {
         pathEnd {
 
           post {
@@ -88,7 +95,7 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.Command])(implicit 
               )
           }
       } ~
-        path("clinicaldiary") {
+        pathPrefix("clinicaldiary") {
           pathEnd {
             post {
               headerValueByName("x-access-token") { value =>
@@ -113,6 +120,43 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.Command])(implicit 
                       authorize(hasDoctorPermissions(value)) {
                         entity(as[MedicalRecord]) { medicalRecord =>
                           onSuccess(updateMedicalRecord(MedicalRecordsID(id), medicalRecord)) { response =>
+                            response match {
+                              case _: Accepted => complete(StatusCodes.Created, response)
+                              case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                )
+            }
+        } ~
+        pathPrefix("generalinfo") {
+          pathEnd {
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasDoctorPermissions(value)) {
+                  entity(as[GeneralInfo]) { generalInfo =>
+                    onSuccess(insertGeneralInfo(generalInfo)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } ~
+            path(Segment) {
+              id =>
+                concat(
+                  put {
+                    headerValueByName("x-access-token") { value =>
+                      authorize(hasDoctorPermissions(value)) {
+                        entity(as[GeneralInfo]) { generalInfo =>
+                          onSuccess(updateGeneralInfo(PatientID(id), generalInfo)) { response =>
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)

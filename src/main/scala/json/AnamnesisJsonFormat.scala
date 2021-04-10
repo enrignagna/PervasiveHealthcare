@@ -18,12 +18,13 @@ package json
 
 import domainmodel.Familiars.Familiars
 import domainmodel.Remotes.Remotes
-import domainmodel._
+import domainmodel.{Anamnesis, _}
+import json.EnumerationJsonFormat.EnumJsonConverter
 import json.LocalDateJsonFormat.DateFormat
-import json.PathologyJsonFormat.previousPathologiesJsonFormat
-import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat, jsonFormat3, jsonFormat4}
+import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat3, jsonFormat4}
 import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
+import json.PathologyJsonFormat.previousPathologiesJsonFormat
 
 /**
  * Json format for anamnesis object.
@@ -33,7 +34,7 @@ object AnamnesisJsonFormat {
   /**
    * Implicit for kinship degree object.
    */
-  implicit val kinshipDegreeJsonFormat: RootJsonFormat[KinshipDegree] = jsonFormat[KinshipDegree]
+  implicit val kinshipDegreeJsonFormat: EnumJsonConverter[KinshipDegree.type] = new EnumJsonConverter(KinshipDegree)
 
   /**
    * Implicit for remote object.

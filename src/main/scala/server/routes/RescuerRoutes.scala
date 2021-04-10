@@ -33,7 +33,7 @@ import server.models.Protocol._
 import json.medicalrecords.SingleSheetTherapyJsonFormat.drugsAdministeredTherapyJsonFormat
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
-import server.models.JwtAuthentication.hasHospitalPermissions
+import server.models.JwtAuthentication.hasRescuerPermissions
 
 class RescuerRoutes(rescuerController: ActorRef[Protocol.Command])(implicit val system: ActorSystem[_]) {
 
@@ -49,33 +49,15 @@ class RescuerRoutes(rescuerController: ActorRef[Protocol.Command])(implicit val 
 
   val rescuerRoutes: Route =
     pathPrefix("api") {
-      path("clinicaldiary") {
+      pathPrefix("clinicaldiary") {
         path(Segment) {
           id =>
-            put {
-              headerValueByName("x-access-token") { (value) =>
-                authorize(hasHospitalPermissions(value)) {
-                  entity(as[ClinicalDiary]) { clinicalDiary =>
-                    onSuccess(updateClinicalDiary(MedicalRecordsID(id), clinicalDiary)) { response =>
-                      response match {
-                        case _: Accepted => complete(StatusCodes.Created, response)
-                        case _: Rejected => complete(StatusCodes.BadRequest, response)
-                      }
-                    }
-                  }
-                }
-              }
-            }
-        }
-      } ~
-        path("drugSomministrations") {
-          path(Segment) {
-            id =>
+            concat(
               put {
                 headerValueByName("x-access-token") { (value) =>
-                  authorize(hasHospitalPermissions(value)) {
-                    entity(as[DrugsAdministered]) { drugAdministered =>
-                      onSuccess(updateDrugAdministered(MedicalRecordsID(id), drugAdministered)) { response =>
+                  authorize(hasRescuerPermissions(value)) {
+                    entity(as[ClinicalDiary]) { clinicalDiary =>
+                      onSuccess(updateClinicalDiary(MedicalRecordsID(id), clinicalDiary)) { response =>
                         response match {
                           case _: Accepted => complete(StatusCodes.Created, response)
                           case _: Rejected => complete(StatusCodes.BadRequest, response)
@@ -85,6 +67,28 @@ class RescuerRoutes(rescuerController: ActorRef[Protocol.Command])(implicit val 
                   }
                 }
               }
+            )
+        }
+      } ~
+        pathPrefix("drugSomministrations") {
+          path(Segment) {
+            id =>
+              concat(
+                put {
+                  headerValueByName("x-access-token") { (value) =>
+                    authorize(hasRescuerPermissions(value)) {
+                      entity(as[DrugsAdministered]) { drugAdministered =>
+                        onSuccess(updateDrugAdministered(MedicalRecordsID(id), drugAdministered)) { response =>
+                          response match {
+                            case _: Accepted => complete(StatusCodes.Created, response)
+                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              )
           }
         }
     }

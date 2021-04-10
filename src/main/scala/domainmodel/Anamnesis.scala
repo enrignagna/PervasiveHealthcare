@@ -19,16 +19,14 @@ package domainmodel
 import domainmodel.Familiars.Familiars
 import domainmodel.PreviousPathologies.PreviousPathologies
 import domainmodel.Remotes.Remotes
-
 import java.time.LocalDate
 
-sealed trait KinshipDegree
+import domainmodel.KinshipDegree.KinshipDegree
 
-case object Mother extends KinshipDegree
-
-case object Father extends KinshipDegree
-
-case object LegalTutor extends KinshipDegree
+object KinshipDegree extends Enumeration{
+  type KinshipDegree = Value
+  val MOTHER, FATHER, LEGAL_TUTOR = Value
+}
 
 case class Familiar(name: String, kinshipDegree: KinshipDegree, previousPathologies: PreviousPathologies, phoneNumber: String)
 

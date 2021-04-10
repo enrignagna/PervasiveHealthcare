@@ -48,7 +48,7 @@ class AnesthetistRoutes(instrumentalistController: ActorRef[Protocol.Command])(i
 
   val anesthetistRoutes: Route =
     pathPrefix("api") {
-      path("medicalrecords") {
+      pathPrefix("medicalrecords") {
         pathEnd {
 
           post {
@@ -86,23 +86,25 @@ class AnesthetistRoutes(instrumentalistController: ActorRef[Protocol.Command])(i
               )
           }
       } ~
-        path("clinicaldiary") {
+        pathPrefix("clinicaldiary") {
           path(Segment) {
             id =>
-              put {
-                headerValueByName("x-access-token") { value =>
-                  authorize(hasHospitalPermissions(value)) {
-                    entity(as[MedicalRecord]) { medicalRecord =>
-                      onSuccess(updateMedicalRecord(MedicalRecordsID(id), medicalRecord)) { response =>
-                        response match {
-                          case _: Accepted => complete(StatusCodes.Created, response)
-                          case _: Rejected => complete(StatusCodes.BadRequest, response)
+              concat(
+                put {
+                  headerValueByName("x-access-token") { value =>
+                    authorize(hasHospitalPermissions(value)) {
+                      entity(as[MedicalRecord]) { medicalRecord =>
+                        onSuccess(updateMedicalRecord(MedicalRecordsID(id), medicalRecord)) { response =>
+                          response match {
+                            case _: Accepted => complete(StatusCodes.Created, response)
+                            case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          }
                         }
                       }
                     }
                   }
                 }
-              }
+              )
           }
         }
     }

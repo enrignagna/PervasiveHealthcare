@@ -117,7 +117,7 @@ class AdminCRUD {
       Duration(1, TimeUnit.SECONDS))
     if (res.isEmpty) {
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
-      Await.result(Repository.auth.signUp(User(generalPractitioner.doctorID.value, "general practitioner"), Role.GENERAL_PRACTITIONER), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(generalPractitioner.doctorID.value, "generalpractitioner"), Role.GENERAL_PRACTITIONER), Duration(1, TimeUnit.SECONDS))
       "General practitioner created."
     } else {
       "Error! General practitioner with the same doctorID already exists!"
@@ -165,7 +165,7 @@ class AdminCRUD {
       Duration(1, TimeUnit.SECONDS))
     if (res.isEmpty) {
       Await.result(doctorsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
-      Await.result(Repository.auth.signUp(User(wardNurse.doctorID.value, "ward nurse"), Role.WARD_NURSE), Duration(1, TimeUnit.SECONDS))
+      Await.result(Repository.auth.signUp(User(wardNurse.doctorID.value, "ward_nurse"), Role.WARD_NURSE), Duration(1, TimeUnit.SECONDS))
       "Ward nurse created."
     } else {
       "Error! Ward nurse with the same doctorID already exists!"

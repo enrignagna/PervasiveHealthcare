@@ -49,7 +49,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
 
   val generalPractitionerRoutes: Route =
     pathPrefix("api") {
-      path("generalpractitionerinfo") {
+      pathPrefix("generalpractitionerinfo") {
         pathEnd {
 
           post {
@@ -87,7 +87,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
               )
           }
       } ~
-        path("visits") {
+        pathPrefix("visits") {
           pathEnd {
 
             post {
@@ -125,7 +125,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                 )
             }
         } ~
-        path("anamnesis") {
+        pathPrefix("anamnesis") {
           pathEnd {
 
             post {
@@ -163,7 +163,83 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                 )
             }
         } ~
-        path("therapies") {
+        pathPrefix("therapies") {
+          pathEnd {
+
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasDoctorPermissions(value)) {
+                  entity(as[GeneralPractitionerInfo]) { generalPractitionerInfo =>
+                    onSuccess(insertGeneralPractitionerInfo(generalPractitionerInfo)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } ~
+            path(Segment) {
+              id =>
+                concat(
+                  put {
+                    headerValueByName("x-access-token") { value =>
+                      authorize(hasDoctorPermissions(value)) {
+                        entity(as[GeneralPractitionerInfo]) { generalPractitionerInfo =>
+                          onSuccess(updateGeneralPractitionerInfo(PatientID(id), generalPractitionerInfo)) { response =>
+                            response match {
+                              case _: Accepted => complete(StatusCodes.Created, response)
+                              case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                )
+            }
+        } ~
+        pathPrefix("prescriptions") {
+          pathEnd {
+
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(hasDoctorPermissions(value)) {
+                  entity(as[GeneralPractitionerInfo]) { generalPractitionerInfo =>
+                    onSuccess(insertGeneralPractitionerInfo(generalPractitionerInfo)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          } ~
+            path(Segment) {
+              id =>
+                concat(
+                  put {
+                    headerValueByName("x-access-token") { value =>
+                      authorize(hasDoctorPermissions(value)) {
+                        entity(as[GeneralPractitionerInfo]) { generalPractitionerInfo =>
+                          onSuccess(updateGeneralPractitionerInfo(PatientID(id), generalPractitionerInfo)) { response =>
+                            response match {
+                              case _: Accepted => complete(StatusCodes.Created, response)
+                              case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                )
+            }
+        } ~
+        pathPrefix("medicalcertificates") {
           pathEnd {
 
             post {

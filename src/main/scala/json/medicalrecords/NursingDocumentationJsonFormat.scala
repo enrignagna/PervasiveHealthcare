@@ -21,7 +21,6 @@ import domainmodel.medicalrecords.{CareDiary, InterventionEvaluation, NeedsIdent
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2, jsonFormat5, optionFormat}
 import spray.json.RootJsonFormat
 import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
-import json.medicalrecords.ClinicalDataJsonFormat.clinicalDataJsonFormat
 import json.generalinfo.GeneralInfoJsonFormat.generalInfoJsonFormat
 import json.LocalDateTimeJsonFormat.DateTimeFormat
 
@@ -58,5 +57,5 @@ object NursingDocumentationJsonFormat {
   /**
    * Implicit for registration object.
    */
-  implicit val registrationJsonFormat: RootJsonFormat[Registration] = jsonFormat2(Registration)
+  implicit val registrationJsonFormat: RootJsonFormat[Registration] = jsonFormat1(Registration)
 }

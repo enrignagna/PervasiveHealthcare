@@ -42,4 +42,6 @@ object JwtAuthentication {
   def hasDoctorPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) != Role.PATIENT.id
 
   def hasHospitalPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.SURGEON.id || tokens.tokens(token) == Role.WARD_NURSE.id || tokens.tokens(token) == Role.INSTRUMENTALIST.id || tokens.tokens(token) == Role.ANESTHETIST.id
+
+  def hasRescuerPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.RESCUER.id
 }

@@ -48,7 +48,7 @@ class InstrumentalistRoutes(instrumentalistController: ActorRef[Protocol.Command
 
   val instrumentalistRoutes: Route =
     pathPrefix("api") {
-      path("medicalrecords") {
+      pathPrefix("medicalrecords") {
         pathEnd {
 
           post {
@@ -86,7 +86,7 @@ class InstrumentalistRoutes(instrumentalistController: ActorRef[Protocol.Command
               )
           }
       } ~
-        path("clinicaldiary") {
+        pathPrefix("clinicaldiary") {
           path(Segment) {
             id =>
             put {
