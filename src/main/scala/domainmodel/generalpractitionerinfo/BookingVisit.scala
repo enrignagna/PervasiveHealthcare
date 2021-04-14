@@ -28,9 +28,9 @@ import java.time.LocalDate
  * @param bookingId   , booking id
  * @param visit       , visit's information
  * @param description , visit's description
- * @param visitDate   , visit's date.
+ * @param bookingData , booking's date.
  */
-case class BookingVisit(bookingId: Int, visit: Visit, description: Description, visitDate: LocalDate){
+case class BookingVisit(bookingId: Int, visit: Visit, description: Description, bookingData: LocalDate){
 
 }
 
