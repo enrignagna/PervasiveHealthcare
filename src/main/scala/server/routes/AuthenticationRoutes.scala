@@ -47,9 +47,6 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
 
   private implicit val timeout = Timeout(500.milliseconds)
 
-  //TODO: Understand how to get object from read model.
-  /*def getSurgeons(): Future[Surgeons] =
-    administratorController.ask(GetSurgeons)*/
   /**
    * Method for login
    *

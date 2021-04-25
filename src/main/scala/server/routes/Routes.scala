@@ -35,7 +35,6 @@ import akka.http.scaladsl.server.Route
  * @param authenticationRoutes      routes for authentication,
  * @param commonRoutes              common routes.
  */
-//TODO add all routes
 class Routes(administratorRoutes: AdministratorRoutes, surgeonRoutes: SurgeonRoutes, wardNurseRoutes: WardNurseRoutes,
              rescuerRoutes: RescuerRoutes, generalPractitionerRoutes: GeneralPractitionerRoutes,
              anesthetistRoutes: AnesthetistRoutes, instrumentalistRoutes: InstrumentalistRoutes,

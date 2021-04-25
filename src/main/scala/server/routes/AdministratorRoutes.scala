@@ -25,7 +25,7 @@ import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.Patient.Patient
-import domainmodel.professionalfigure.{Anesthetist, Cardiologist, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
+import domainmodel.professionalfigure._
 import json.PatientJsonFormat.PatientJsonFormat
 import json.RequestJsonFormats.acceptedJsonFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat._
@@ -47,10 +47,6 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
   private implicit val timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
-
-  //TODO: Understand how to get object from read model.
-  /*def getSurgeons(): Future[Surgeons] =
-    administratorController.ask(GetSurgeons)*/
 
   /**
    * Method to insert a surgeon in the db

@@ -116,7 +116,6 @@ class SurgeonRoutes(surgeonController: ActorRef[Protocol.CQRSAction])(implicit v
                   headerValueByName("x-access-token") { value =>
                     authorize(hasHospitalPermissions(value)) {
                       onSuccess(getAllMedicalRecordsForDoctor(DoctorID(id))) {
-                        //TODO: controllare che l'implict imporato sia corretto
                         response => complete(StatusCodes.OK, response)
                       }
                     }

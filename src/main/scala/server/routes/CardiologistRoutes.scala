@@ -54,7 +54,6 @@ class CardiologistRoutes(cardiologistController: ActorRef[Protocol.CQRSAction])(
   def insertCardiologyVisit(cardiologyVisit: CardiologyVisit): Future[Confirmation] =
     cardiologistController.ask(InsertCardiologyVisit(cardiologyVisit, _))
 
-  //TODO get da inserire
   val cardiologistRoutes: Route =
     pathPrefix("api") {
       pathPrefix("cardiologyvisits") {

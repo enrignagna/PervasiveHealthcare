@@ -63,7 +63,6 @@ class AdministratorTest extends AnyFreeSpec with Matchers with ScalaFutures with
 //
 //            contentType should ===(ContentTypes.`application/json`)
 //
-//            //TODO find better way
 //            entityAs[String] should ===("""{"doctorID":{"value":"12345"},"email":"marco@gmail.com","name":"Marco","phoneNumber":"333444555","specialization":0,"surname":"Rossi"}""")
 //          }
 //        }

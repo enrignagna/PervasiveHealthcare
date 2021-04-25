@@ -52,7 +52,6 @@ object WriteModel {
   val generalpractitionerinfoCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("generalpractitionerinfo")
 
-  //TODO checkare con gli altri per dominio visite
   val cardiologyVisitsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("cardiologyvisits")
 
