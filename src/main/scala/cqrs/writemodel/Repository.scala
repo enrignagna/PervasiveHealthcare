@@ -18,6 +18,8 @@
 
 package cqrs.writemodel
 
+import cqrs.readmodel.{AllergyClassCollection, BloodTypeCollection, GenderCollection, RhCollection, RoleCollection, SpecializationCollection}
+
 object Repository {
   val auth: Auth = new Auth()
   val adminRepository: AdminCRUD = new AdminCRUD()
@@ -27,13 +29,6 @@ object Repository {
   val generalPractitionerRepository: GeneralPractitionerCRUD = new GeneralPractitionerCRUD()
   val instrumentalistRepository: InstrumentalistCRUD = new InstrumentalistCRUD()
   val anesthetistRepository: AnesthetistCRUD = new AnesthetistCRUD()
-
-  def initialize(): Unit = {
-    RoleCollection.initialize()
-    GenderCollection.initialize()
-    AllergyClassCollection.initialize()
-    BloodTypeCollection.initialize()
-    RhCollection.initialize()
-    SpecializationCollection.initialize()
-  }
+  val cardiologyRepository: CardiologistCRUD = new CardiologistCRUD()
+  val patientRepository: PatientCRUD = new PatientCRUD()
 }

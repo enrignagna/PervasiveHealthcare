@@ -24,40 +24,48 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import domainmodel.medicalrecords.{DrugsAdministered, MedicalRecordsID}
-import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
+import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
 import json.RequestJsonFormats.acceptedJsonFormat
-import json.medicalrecords.clinicaldiary.ClinicalDiaryJsonFormat.clinicalDiaryJsonFormat
+import server.models.JwtAuthentication.hasRescuerPermissions
 import server.models.Protocol
 import server.models.Protocol._
-import json.medicalrecords.SingleSheetTherapyJsonFormat.drugsAdministeredTherapyJsonFormat
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
-import server.models.JwtAuthentication.hasRescuerPermissions
+import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
 
-class RescuerRoutes(rescuerController: ActorRef[Protocol.Command])(implicit val system: ActorSystem[_]) {
+/**
+ * This class contains the implementation of all the routes that the rescuer can call up to insert or update elements in the db.
+ *
+ * @param rescuerController rescuer controller
+ * @param system            represent the actor system
+ */
+class RescuerRoutes(rescuerController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
   private implicit val timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
-  def updateClinicalDiary(medicalRecordID: MedicalRecordsID, clinicalDiary: ClinicalDiary): Future[Confirmation] =
-    rescuerController.ask(UpdateClinicalDiary(medicalRecordID, clinicalDiary, _))
-
-  def updateDrugAdministered(medicalRecordID: MedicalRecordsID, drugsAdministered: DrugsAdministered): Future[Confirmation] =
-    rescuerController.ask(UpdateDrugAdministered(medicalRecordID, drugsAdministered, _))
+  /**
+   * Method to update an existing medical record in the db
+   *
+   * @param medicalRecordsID medical record's id
+   * @param medicalRecord    medical record updated
+   * @return confirmation
+   */
+  def updateMedicalRecord(medicalRecordsID: MedicalRecordsID, medicalRecord: MedicalRecord): Future[Confirmation] =
+    rescuerController.ask(UpdateMedicalRecord(medicalRecordsID, medicalRecord, _))
 
   val rescuerRoutes: Route =
     pathPrefix("api") {
-      pathPrefix("clinicaldiary") {
+      pathPrefix("medicalrecords") {
         path(Segment) {
           id =>
             concat(
               put {
                 headerValueByName("x-access-token") { (value) =>
                   authorize(hasRescuerPermissions(value)) {
-                    entity(as[ClinicalDiary]) { clinicalDiary =>
-                      onSuccess(updateClinicalDiary(MedicalRecordsID(id), clinicalDiary)) { response =>
+                    entity(as[MedicalRecord]) { medicalRecord =>
+                      onSuccess(updateMedicalRecord(MedicalRecordsID(id), medicalRecord)) { response =>
                         response match {
                           case _: Accepted => complete(StatusCodes.Created, response)
                           case _: Rejected => complete(StatusCodes.BadRequest, response)
@@ -69,27 +77,6 @@ class RescuerRoutes(rescuerController: ActorRef[Protocol.Command])(implicit val 
               }
             )
         }
-      } ~
-        pathPrefix("drugAdministered") {
-          path(Segment) {
-            id =>
-              concat(
-                put {
-                  headerValueByName("x-access-token") { (value) =>
-                    authorize(hasRescuerPermissions(value)) {
-                      entity(as[DrugsAdministered]) { drugAdministered =>
-                        onSuccess(updateDrugAdministered(MedicalRecordsID(id), drugAdministered)) { response =>
-                          response match {
-                            case _: Accepted => complete(StatusCodes.Created, response)
-                            case _: Rejected => complete(StatusCodes.BadRequest, response)
-                          }
-                        }
-                      }
-                    }
-                  }
-                }
-              )
-          }
-        }
+      }
     }
 }

@@ -16,12 +16,15 @@
 
 package cqrs.readmodel.eventsourcing
 
+import cqrs.readmodel.ReadModel.database
+import cqrs.readmodel.eventjsonformat.EventJsonFormat.{insertAnesthetistEventJsonFormat, insertCardiologistEventJsonFormat, insertCardiologyInfoEventJsonFormat, insertCardiologyPredictionsEventJsonFormat, insertGeneralInfoEventJsonFormat, insertGeneralPractitionerEventJsonFormat, insertGeneralPractitionerInfoEventJsonFormat, insertInstrumentalistEventJsonFormat, insertMedicalRecordEventJsonFormat, insertPatientInfoEventJsonFormat, insertRescuerEventJsonFormat, insertSurgeonEventJsonFormat, insertWardNurseEventJsonFormat, updateAnesthetistEventJsonFormat, updateCardiologistEventJsonFormat, updateCardiologyInfoEventJsonFormat, updateCardiologyPredictionsEventJsonFormat, updateGeneralInfoEventJsonFormat, updateGeneralPractitionerEventJsonFormat, updateGeneralPractitionerInfoEventJsonFormat, updateInstrumentalistEventJsonFormat, updateMedicalRecordEventJsonFormat, updatePatientInfoEventJsonFormat, updateRescuerEventJsonFormat, updateSurgeonEventJsonFormat, updateWardNurseEventJsonFormat}
 import cqrs.readmodel.eventsourcing.EventType.EventType
-import cqrs.readmodel.json.EventJsonFormat.{insertAnesthetistEventJsonFormat, insertGeneralInfoEventJsonFormat, insertGeneralPractitionerEventJsonFormat, insertGeneralPractitionerInfoEventJsonFormat, insertInstrumentalistEventJsonFormat, insertMedicalRecordEventJsonFormat, insertPatientInfoEventJsonFormat, insertRescuerEventJsonFormat, insertSurgeonEventJsonFormat, insertWardNurseEventJsonFormat, updateAnesthetistEventJsonFormat, updateGeneralInfoEventJsonFormat, updateGeneralPractitionerEventJsonFormat, updateGeneralPractitionerInfoEventJsonFormat, updateInstrumentalistEventJsonFormat, updateMedicalRecordEventJsonFormat, updatePatientInfoEventJsonFormat, updateRescuerEventJsonFormat, updateSurgeonEventJsonFormat, updateWardNurseEventJsonFormat}
 import domainmodel._
+import json.CardiologyPredictionJsonFormat.cardiologyPredictionJsonFormat
+import org.mongodb.scala.MongoCollection
 import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import org.mongodb.scala.{MongoClient, MongoCollection, MongoDatabase}
+import org.mongodb.scala.model.Filters
+import org.mongodb.scala.model.Filters.{and, equal}
 import spray.json.{JsValue, JsonParser, enrichAny}
 
 import java.time.LocalDateTime
@@ -33,8 +36,6 @@ import scala.concurrent.duration.Duration
  * Store of event for event sourcing.
  */
 object EventStore {
-
-  val database: MongoDatabase = MongoClient().getDatabase("ReadModel")
 
   val eventsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("events")
@@ -52,6 +53,8 @@ object EventStore {
     case event: UpdateWardNurseEvent => BsonDocument.apply(event.asInstanceOf[UpdateWardNurseEvent].toJson.compactPrint)
     case event: InsertRescuerEvent => BsonDocument.apply(event.asInstanceOf[InsertRescuerEvent].toJson.compactPrint)
     case event: UpdateRescuerEvent => BsonDocument.apply(event.asInstanceOf[UpdateRescuerEvent].toJson.compactPrint)
+    case event: InsertCardiologistEvent => BsonDocument.apply(event.asInstanceOf[InsertCardiologistEvent].toJson.compactPrint)
+    case event: UpdateCardiologistEvent => BsonDocument.apply(event.asInstanceOf[UpdateCardiologistEvent].toJson.compactPrint)
     case event: InsertPatientInfoEvent => BsonDocument.apply(event.asInstanceOf[InsertPatientInfoEvent].toJson.compactPrint)
     case event: UpdatePatientInfoEvent => BsonDocument.apply(event.asInstanceOf[UpdatePatientInfoEvent].toJson.compactPrint)
     case event: InsertMedicalRecordEvent => BsonDocument.apply(event.asInstanceOf[InsertMedicalRecordEvent].toJson.compactPrint)
@@ -60,9 +63,12 @@ object EventStore {
     case event: UpdateGeneralInfoEvent => BsonDocument.apply(event.asInstanceOf[UpdateGeneralInfoEvent].toJson.compactPrint)
     case event: InsertGeneralPractitionerInfoEvent => BsonDocument.apply(event.asInstanceOf[InsertGeneralPractitionerInfoEvent].toJson.compactPrint)
     case event: UpdateGeneralPractitionerInfoEvent => BsonDocument.apply(event.asInstanceOf[UpdateGeneralPractitionerInfoEvent].toJson.compactPrint)
+    case event: InsertCardiologyVisitEvent => BsonDocument.apply(event.asInstanceOf[InsertCardiologyVisitEvent].toJson.compactPrint)
+    case event: UpdateCardiologyVisitEvent => BsonDocument.apply(event.asInstanceOf[UpdateCardiologyVisitEvent].toJson.compactPrint)
+    case event: InsertCardiologyPredictionsEvent => BsonDocument.apply(event.asInstanceOf[InsertCardiologyPredictionsEvent].toJson.compactPrint)
+    case event: UpdateCardiologyPredictionsEvent => BsonDocument.apply(event.asInstanceOf[UpdateCardiologyPredictionsEvent].toJson.compactPrint)
   }
 
-  // TODO: Per come è strutturato il read model in teoria non dovrebbe servire il controllo
   /**
    * Add event at event store.
    *
@@ -86,6 +92,8 @@ object EventStore {
     case x if x == EventType.UPDATE_WARD_NURSE => json.convertTo[UpdateWardNurseEvent]
     case x if x == EventType.INSERT_RESCUER => json.convertTo[InsertRescuerEvent]
     case x if x == EventType.UPDATE_RESCUER => json.convertTo[UpdateRescuerEvent]
+    case x if x == EventType.INSERT_CARDIOLOGIST => json.convertTo[InsertCardiologistEvent]
+    case x if x == EventType.UPDATE_CARDIOLOGIST => json.convertTo[UpdateCardiologistEvent]
     case x if x == EventType.INSERT_PATIENT_INFO => json.convertTo[InsertPatientInfoEvent]
     case x if x == EventType.UPDATE_PATIENT_INFO => json.convertTo[UpdatePatientInfoEvent]
     case x if x == EventType.INSERT_MEDICAL_RECORD => json.convertTo[InsertMedicalRecordEvent]
@@ -94,6 +102,10 @@ object EventStore {
     case x if x == EventType.UPDATE_GENERAL_INFO => json.convertTo[UpdateGeneralInfoEvent]
     case x if x == EventType.INSERT_GENERAL_PRACTITIONER_INFO => json.convertTo[InsertGeneralPractitionerInfoEvent]
     case x if x == EventType.UPDATE_GENERAL_PRACTITIONER_INFO => json.convertTo[UpdateGeneralPractitionerInfoEvent]
+    case x if x == EventType.INSERT_CARDIOLOGY_VISIT => json.convertTo[InsertCardiologyVisitEvent]
+    case x if x == EventType.UPDATE_CARDIOLOGY_VISIT => json.convertTo[UpdateCardiologyVisitEvent]
+    case x if x == EventType.INSERT_CARDIOLOGY_PREDICTION => json.convertTo[InsertCardiologyPredictionsEvent]
+    case x if x == EventType.UPDATE_CARDIOLOGY_PREDICTION => json.convertTo[UpdateCardiologyPredictionsEvent]
   }
 
 
@@ -111,8 +123,89 @@ object EventStore {
       Duration(1, TimeUnit.SECONDS))
     if (res.nonEmpty) {
       res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
-        .sortBy(_.time)(Ordering[LocalDateTime])
         .toSet
+    }
+    else Set.empty
+  }
+
+
+  /**
+   * Get all patient from events.
+   *
+   * @return all patient saved.
+   */
+  def getAllInsertPatientEvents: Set[PatientID] = {
+    val res: Seq[BsonDocument] = Await.result(eventsCollection.find(equal("eventID", EventType.INSERT_PATIENT_INFO.id))
+      .toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if (res.nonEmpty) {
+      res.map(bson => bson.getDocument("id").get("value").asString().getValue).map(id => PatientID(id)).toSet
+    }
+    else Set.empty
+  }
+
+  /**
+   * Get all medical record for a doctor.
+   *
+   * @param doctorID , doctor ID.
+   * @return all medical records for a doctor.
+   */
+  def getAllMedicalRecordsForDoctorEvents(doctorID: DoctorID): Set[Event] = {
+    val res: Seq[BsonDocument] = Await.result(eventsCollection.find(
+      and(
+        Filters.or(
+          equal("eventID", EventType.INSERT_MEDICAL_RECORD.id),
+          equal("eventID", EventType.UPDATE_MEDICAL_RECORD.id)),
+        equal("m.doctorID.value", doctorID.value)))
+      .toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if (res.nonEmpty) {
+      res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
+        .toSet
+    }
+    else Set.empty
+  }
+
+  /**
+   * Get all general practitioner info for a doctor.
+   *
+   * @param doctorID , doctor ID.
+   * @return all general practitioner info for a doctor.
+   */
+  def getAllGeneralPractitionerInfoForDoctorEvents(doctorID: DoctorID): Set[Event] = {
+    val res: Seq[BsonDocument] = Await.result(eventsCollection.find(
+      and(
+        Filters.or(
+          equal("eventID", EventType.INSERT_GENERAL_PRACTITIONER_INFO.id),
+          equal("eventID", EventType.UPDATE_GENERAL_PRACTITIONER_INFO.id)),
+        equal("m.doctorID.value", doctorID.value)))
+      .toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if (res.nonEmpty) {
+      res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
+        .toSet
+    }
+    else Set.empty
+  }
+
+  /**
+   * Get all new predictions for a doctor.
+   *
+   * @param doctorID , doctor ID.
+   * @return all new predictions for a doctor.
+   */
+  def getNewPredictionsEvents(doctorID: DoctorID): Set[CardiologyPrediction] = {
+    val res = Await.result(eventsCollection.find(
+      and(
+        and(
+          equal("doctorID", doctorID),
+          equal("seen", false)
+        ),
+        equal("eventID", EventType.INSERT_CARDIOLOGY_PREDICTION.id)
+      )
+    ).toFuture(), Duration(1, TimeUnit.SECONDS))
+    if (res.isEmpty) {
+      res.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction]).toSet
     }
     else Set.empty
   }

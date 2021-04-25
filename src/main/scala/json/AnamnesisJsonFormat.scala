@@ -25,6 +25,7 @@ import json.RequestJsonFormats.{StringJsonFormat, immSetFormat, jsonFormat3, jso
 import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
 import json.PathologyJsonFormat.previousPathologiesJsonFormat
+import spray.json.ImplicitDerivedJsonProtocol.implicitJsonFormat
 
 /**
  * Json format for anamnesis object.

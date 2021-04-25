@@ -34,15 +34,34 @@ import server.models.Protocol._
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
-class InstrumentalistRoutes(instrumentalistController: ActorRef[Protocol.Command])(implicit val system: ActorSystem[_]) {
+/**
+ * This class contains the implementation of all the routes that the instrumentalist can call up to insert or update elements in the db.
+ *
+ * @param instrumentalistController instrumentalist controller
+ * @param system                    represent the actor system
+ */
+class InstrumentalistRoutes(instrumentalistController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
   private implicit val timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
+  /**
+   * Method to insert medical record in the db
+   *
+   * @param medicalRecord medical record to insert
+   * @return confirmation
+   */
   def insertMedicalRecord(medicalRecord: MedicalRecord): Future[Confirmation] =
     instrumentalistController.ask(InsertMedicalRecord(medicalRecord, _))
 
+  /**
+   * Method to update an existing medical record in the db
+   *
+   * @param medicalRecordsID medical record's id
+   * @param medicalRecord    medical record updated
+   * @return confirmation
+   */
   def updateMedicalRecord(medicalRecordsID: MedicalRecordsID, medicalRecord: MedicalRecord): Future[Confirmation] =
     instrumentalistController.ask(UpdateMedicalRecord(medicalRecordsID, medicalRecord, _))
 
@@ -89,18 +108,18 @@ class InstrumentalistRoutes(instrumentalistController: ActorRef[Protocol.Command
         pathPrefix("clinicaldiary") {
           path(Segment) {
             id =>
-            put {
-              headerValueByName("x-access-token") { value =>
-                entity(as[MedicalRecord]) { medicalRecord =>
-                  onSuccess(updateMedicalRecord(MedicalRecordsID(id), medicalRecord)) { response =>
-                    response match {
-                      case _: Accepted => complete(StatusCodes.Created, response)
-                      case _: Rejected => complete(StatusCodes.BadRequest, response)
+              put {
+                headerValueByName("x-access-token") { value =>
+                  entity(as[MedicalRecord]) { medicalRecord =>
+                    onSuccess(updateMedicalRecord(MedicalRecordsID(id), medicalRecord)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.Created, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
                     }
                   }
                 }
               }
-            }
           }
         }
     }

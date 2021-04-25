@@ -1,5 +1,6 @@
 plugins {
     application
+    java
     scala
     jacoco
     id("org.danilopianini.git-sensitive-semantic-versioning")
@@ -27,7 +28,10 @@ dependencies {
     implementation("com.typesafe.akka:akka-persistence-typed_$scalaVersion:_")
     implementation("xyz.driver:spray-json-derivation_$scalaVersion:_")
     implementation("com.typesafe.akka:akka-actor-typed_$scalaVersion:_")
-
+    implementation("org.scala-lang.modules:scala-swing_$scalaVersion:2.1.1")
+    implementation("org.apache.spark:spark-core_$scalaVersion:3.1.1")
+    implementation("org.apache.spark:spark-sql_$scalaVersion:3.1.1")
+    implementation("org.apache.spark:spark-mllib_$scalaVersion:3.1.1")
 
 
     testImplementation("junit:junit:_")
@@ -38,7 +42,6 @@ dependencies {
 
     testRuntimeOnly("org.scala-lang.modules:scala-xml_$scalaVersion:_")
 }
-
 
 tasks.jacocoTestReport {
     reports {

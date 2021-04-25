@@ -17,11 +17,11 @@
 package cqrs.readmodel.eventsourcing
 
 import domainmodel.Patient.Patient
+import domainmodel._
 import domainmodel.generalinfo.GeneralInfo
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
 import domainmodel.medicalrecords.MedicalRecord
 import domainmodel.professionalfigure._
-import domainmodel.{DoctorID, ID, PatientID}
 
 import java.time.LocalDateTime
 
@@ -37,10 +37,13 @@ object EventType extends Enumeration {
   INSERT_INSTRUMENTALIST, UPDATE_INSTRUMENTALIST,
   INSERT_WARD_NURSE, UPDATE_WARD_NURSE,
   INSERT_RESCUER, UPDATE_RESCUER,
+  INSERT_CARDIOLOGIST, UPDATE_CARDIOLOGIST,
   INSERT_PATIENT_INFO, UPDATE_PATIENT_INFO,
   INSERT_MEDICAL_RECORD, UPDATE_MEDICAL_RECORD,
   INSERT_GENERAL_INFO, UPDATE_GENERAL_INFO,
-  INSERT_GENERAL_PRACTITIONER_INFO, UPDATE_GENERAL_PRACTITIONER_INFO = Value
+  INSERT_GENERAL_PRACTITIONER_INFO, UPDATE_GENERAL_PRACTITIONER_INFO,
+  INSERT_CARDIOLOGY_VISIT, UPDATE_CARDIOLOGY_VISIT,
+  INSERT_CARDIOLOGY_PREDICTION, UPDATE_CARDIOLOGY_PREDICTION = Value
 }
 
 /**
@@ -233,6 +236,37 @@ case class UpdateRescuerEvent(
                                timestamp: LocalDateTime = LocalDateTime.now()
                              ) extends Event(timestamp, id)
 
+
+/**
+ * Event of insert of cardiologist.
+ *
+ * @param id        , id of the rescuer.
+ * @param c         , cardiologist to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertCardiologistEvent(
+                                    id: DoctorID,
+                                    c: Cardiologist,
+                                    eventID: Int = EventType.INSERT_CARDIOLOGIST.id,
+                                    timestamp: LocalDateTime = LocalDateTime.now()
+                                  ) extends Event(timestamp, id)
+
+/**
+ * Event of update of cardiologist.
+ *
+ * @param id        , id of the rescuer.
+ * @param c         , cardiologist to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateCardiologistEvent(
+                                    id: DoctorID,
+                                    c: Cardiologist,
+                                    eventID: Int = EventType.UPDATE_CARDIOLOGIST.id,
+                                    timestamp: LocalDateTime = LocalDateTime.now()
+                                  ) extends Event(timestamp, id)
+
 /**
  * Event of insert of patient info.
  *
@@ -352,3 +386,64 @@ case class UpdateGeneralPractitionerInfoEvent(
                                                eventID: Int = EventType.UPDATE_GENERAL_PRACTITIONER_INFO.id,
                                                timestamp: LocalDateTime = LocalDateTime.now()
                                              ) extends Event(timestamp, id)
+
+/**
+ * Event of insert of cardiology prediction.
+ *
+ * @param id        , id of the doctor.
+ * @param c         , cardiology prediction to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertCardiologyPredictionsEvent(
+                                             id: DoctorID,
+                                             c: CardiologyPrediction,
+                                             eventID: Int = EventType.INSERT_CARDIOLOGY_PREDICTION.id,
+                                             timestamp: LocalDateTime = LocalDateTime.now()
+                                           ) extends Event(timestamp, id)
+
+/**
+ * Event of update of cardiology prediction.
+ *
+ * @param id        , id of the doctor.
+ * @param c         , cardiology prediction to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateCardiologyPredictionsEvent(
+                                             id: DoctorID,
+                                             c: CardiologyPrediction,
+                                             eventID: Int = EventType.UPDATE_CARDIOLOGY_PREDICTION.id,
+                                             timestamp: LocalDateTime = LocalDateTime.now()
+                                           ) extends Event(timestamp, id)
+
+
+/**
+ * Event of insert of cardiology visit.
+ *
+ * @param id        , id of the doctor.
+ * @param c         , cardiology visit to insert.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class InsertCardiologyVisitEvent(
+                                       id: PatientID,
+                                       c: CardiologyVisit,
+                                       eventID: Int = EventType.INSERT_CARDIOLOGY_VISIT.id,
+                                       timestamp: LocalDateTime = LocalDateTime.now()
+                                     ) extends Event(timestamp, id)
+
+/**
+ * Event of update of cardiology visit.
+ *
+ * @param id        , id of the doctor.
+ * @param c         , cardiology visit to update.
+ * @param eventID   , id of the event.
+ * @param timestamp , timestamp of the event.
+ */
+case class UpdateCardiologyVisitEvent(
+                                       id: PatientID,
+                                       c: CardiologyVisit,
+                                       eventID: Int = EventType.UPDATE_CARDIOLOGY_VISIT.id,
+                                       timestamp: LocalDateTime = LocalDateTime.now()
+                                     ) extends Event(timestamp, id)

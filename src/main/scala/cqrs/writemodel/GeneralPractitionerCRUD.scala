@@ -18,86 +18,116 @@
 
 package cqrs.writemodel
 
-import java.util.concurrent.TimeUnit
-
-import cqrs.writemodel.WriteModel.{doctorsCollection, generalpractitionerinfoCollection, patientsCollection}
-import domainmodel.{PatientID, User}
+import cqrs.writemodel.WriteModel.{cardiologyPredictionsCollection, doctorsCollection, generalpractitionerinfoCollection, patientsCollection}
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
+import domainmodel.{DoctorID, PatientID}
+import json.IDJsonFormat.{doctorIDJsonFormat, patientIDJsonFormat}
 import json.generalpractitionerinfo.GeneralPractitionerInfoJsonFormat.generalPractitionerInfoJsonFormat
 import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
+import org.mongodb.scala.model.Filters.{and, equal}
+import org.mongodb.scala.model.Updates.set
 import spray.json.enrichAny
-import json.IDJsonFormat.{patientIDJsonFormat, doctorIDJsonFormat}
-import org.mongodb.scala.model.Updates.{push, set}
+
+import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
+/**
+ * This class represent the implementation of CRUD (Create, Read, Update, Delete) for general practitioner.
+ */
 class GeneralPractitionerCRUD {
 
+  /**
+   * This method is used to insert a new general practitioner info in the database.
+   *
+   * @param generalpractitionerinfo general practitioner info to insert
+   * @return string representing the result
+   */
   def insertGeneralPractitionerInfo(generalpractitionerinfo: GeneralPractitionerInfo): String = {
     val document: BsonDocument = BsonDocument.apply(generalpractitionerinfo.toJson.compactPrint)
+    val patientID: BsonDocument = BsonDocument.apply(generalpractitionerinfo.patientID.toJson.compactPrint)
 
     val doctor: Seq[BsonDocument] = Await.result(doctorsCollection.find(
       equal("doctorID", document.get("doctorID"))).toFuture(),
       Duration(1, TimeUnit.SECONDS))
 
-    val patient = Await.result(patientsCollection.find(equal("patientID",
-      BsonDocument.apply(generalpractitionerinfo.patientID.toJson.compactPrint))).toFuture(),
+    val patient = Await.result(patientsCollection.find(equal("patientID", patientID)).toFuture(),
       Duration(1, TimeUnit.SECONDS))
 
-    println("doctor", doctor)
-    println("patient", patient)
-    println("patientIDGEN", generalpractitionerinfo.patientID)
+    if (doctor.nonEmpty) {
+      if (patient.nonEmpty) {
+        Await.result(generalpractitionerinfoCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+        Await.result(patientsCollection.findOneAndUpdate(equal("patientID",
+          patientID), set("generalPractitionerInfo", document)).toFuture(),
+          Duration(1, TimeUnit.SECONDS))
 
-    if (doctor.nonEmpty && patient.nonEmpty) {
-      Await.result(generalpractitionerinfoCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
-      Await.result(patientsCollection.findOneAndUpdate(equal("patientID",
-        BsonDocument.apply(generalpractitionerinfo.patientID.toJson.compactPrint)),
-        set("generalPractitionerInfo", document))
-        .toFuture(),
-        Duration(1, TimeUnit.SECONDS))
-
-      "General practitioner info created."
-    } else {
-      "Error! This General practitioner info already exists!"
-    }
+        "General practitioner info created."
+      } else {
+        "Error! Patient not exist!"
+      }
+    } else "Error! Doctor not exist!"
   }
 
+  /**
+   * This method is used to update an existing general practitioner info in the database.
+   *
+   * @param patientID               patient's id
+   * @param generalpractitionerinfo medical practitioner info updated
+   * @return string representing the result
+   */
   def updateGeneralPractitionerInfo(patientID: PatientID, generalpractitionerinfo: GeneralPractitionerInfo): String = {
     val document: BsonDocument = BsonDocument.apply(generalpractitionerinfo.toJson.compactPrint)
     val id: BsonDocument = BsonDocument.apply(patientID.toJson.compactPrint)
+    val doctorID: BsonDocument = BsonDocument.apply(generalpractitionerinfo.doctorID.toJson.compactPrint)
 
     val patient = Await.result(patientsCollection.find(
       equal("patientID", id)).toFuture(),
       Duration(1, TimeUnit.SECONDS))
 
-    //TODO: if we want save the medical history
-    val generalPractitionerFinding = Await.result(generalpractitionerinfoCollection.find(equal("doctorID",
-      BsonDocument.apply(generalpractitionerinfo.doctorID.toJson.compactPrint)))
+    val doctor = Await.result(doctorsCollection.find(equal("doctorID",
+      doctorID))
       .toFuture(),
       Duration(1, TimeUnit.SECONDS))
 
+    if (patient.nonEmpty) {
+      if (doctor.nonEmpty) {
+        val generalPractitionerInfoFinding = Await.result(generalpractitionerinfoCollection.find(and(
+          equal("patientID", id), equal("doctorID", doctorID))).toFuture(),
+          Duration(1, TimeUnit.SECONDS))
 
-    if (patient.nonEmpty && generalPractitionerFinding.nonEmpty) {
+        if (generalPractitionerInfoFinding.nonEmpty) {
 
-      //TODO: if we don't want save the medical history
-      Await.result(generalpractitionerinfoCollection.findOneAndUpdate(equal("doctorID",
-        BsonDocument.apply(generalpractitionerinfo.doctorID.toJson.compactPrint)),
-        set("generalPractitionerInfo", document))
-        .toFuture(),
-        Duration(1, TimeUnit.SECONDS))
+          Await.result(generalpractitionerinfoCollection.findOneAndUpdate(and(
+            equal("patientID", id), equal("doctorID", doctorID)), set("generalPractitionerInfo",
+            document)).toFuture(),
+            Duration(1, TimeUnit.SECONDS))
 
-      Await.result(patientsCollection.findOneAndUpdate(equal("patientID",
-        BsonDocument.apply(generalpractitionerinfo.patientID.toJson.compactPrint)),
-        set("generalPractitionerInfo", document))
-        .toFuture(),
-        Duration(1, TimeUnit.SECONDS))
+          Await.result(patientsCollection.findOneAndUpdate(equal("patientID", id),
+            set("generalPractitionerInfo", document))
+            .toFuture(),
+            Duration(1, TimeUnit.SECONDS))
 
-      "General practitioner info updated."
+          "General practitioner info updated."
+
+        } else "Error in update"
+      } else "Error Doctor not exist!."
+    } else "Error! Patient not exist!"
+  }
+
+  /**
+   * This method is used to update an existing predictions in the database.
+   *
+   * @param doctorID doctor's id
+   * @return string representing the result
+   */
+  def updatePredictions(doctorID: DoctorID): String = {
+    val count = Await.result(cardiologyPredictionsCollection.countDocuments(and(equal("doctorID", doctorID),
+      equal("seen", false))).toFuture(), Duration(1, TimeUnit.SECONDS))
+    val res = Await.result(cardiologyPredictionsCollection.updateMany(and(equal("doctorID", doctorID),
+      equal("seen", false)), set("seen", true)).toFuture(), Duration(1, TimeUnit.SECONDS))
+    if (res.getModifiedCount == count) {
+      return "Previsions updated."
     }
-    else {
-      "Error in the update."
-    }
+    "Error in the previsions update."
   }
 }
-

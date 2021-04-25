@@ -18,41 +18,62 @@
 
 package server.routes
 
-import java.math.BigInteger
-import java.security.MessageDigest
-
 import akka.actor.typed.scaladsl.AskPattern.{Askable, schedulerFromActorSystem}
 import akka.actor.typed.{ActorRef, ActorSystem}
 import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.server.Directives.{as, complete, concat, entity, onSuccess, path, pathEnd, pathPrefix, post, put}
+import akka.http.scaladsl.server.Directives.{as, authorize, complete, entity, headerValueByName, onSuccess, pathEnd, pathPrefix, post, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.User
-import domainmodel.professionalfigure.Surgeon
 import json.RequestJsonFormats.acceptedJsonFormat
 import json.UserJsonFormat.userJsonFormat
+import server.models.JwtAuthentication.isLogged
 import server.models.Protocol
-import server.models.Protocol.{Accepted, Confirmation, InsertSurgeon, Login, LoginAccepted, Rejected, UpdateSurgeon}
+import server.models.Protocol._
 import server.utils.Utils
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
 
-class AuthenticationRoutes(authenticationController: ActorRef[Protocol.Command])(implicit val system: ActorSystem[_]) {
+/**
+ * This class contains the implementation of all the authentication routes.
+ *
+ * @param authenticationController authentication controller
+ * @param system                   represent the actor system
+ */
+class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
   private implicit val timeout = Timeout(500.milliseconds)
+
   //TODO: Understand how to get object from read model.
   /*def getSurgeons(): Future[Surgeons] =
     administratorController.ask(GetSurgeons)*/
-  def login(user: User): Future[Confirmation] =
-  authenticationController.ask(Login(user, _))
+  /**
+   * Method for login
+   *
+   * @param user user who needs to login
+   * @return confirmation
+   */
+  def login(user: User): Future[Confirmation] = {
+    authenticationController.ask(Login(user, _))
+  }
 
+  /**
+   * Method for logout
+   *
+   * @param tokenId user's token
+   * @return confirmation
+   */
+  def logout(tokenId: String): Future[Confirmation] = {
+    authenticationController.ask(Logout(tokenId, _))
+
+  }
 
   val authenticationRoutes: Route =
     pathPrefix("api") {
-      path("login") {
+      pathPrefix("login") {
         pathEnd {
           post {
 
@@ -69,6 +90,22 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.Command])
             }
           }
         }
-      }
+      } ~
+        pathPrefix("logout") {
+          pathEnd {
+            post {
+              headerValueByName("x-access-token") { value =>
+                authorize(isLogged(value)) {
+                  onSuccess(logout(value)) { response =>
+                    response match {
+                      case _: Accepted => complete(StatusCodes.OK, response)
+                      case _: Rejected => complete(StatusCodes.BadRequest, response)
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
     }
 }

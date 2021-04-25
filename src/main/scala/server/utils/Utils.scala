@@ -17,16 +17,22 @@
  */
 package server.utils
 
-import java.math.BigInteger
-import java.security.MessageDigest
-
 import domainmodel.DoctorID
 import domainmodel.professionalfigure.Surgeon
+
+import java.math.BigInteger
+import java.security.MessageDigest
 
 object Utils {
 
   final case class Summary(items: Map[DoctorID, Surgeon])
 
+  /**
+   * Get hash password.
+   *
+   * @param password , password to hash.
+   * @return hashed password.
+   */
   def getHashedPassword(password: String): String = String.format("%032x", new BigInteger(
     1, MessageDigest.getInstance("SHA-256").digest(password.getBytes("UTF-8"))))
 

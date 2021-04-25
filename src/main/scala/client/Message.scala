@@ -16,21 +16,4 @@
 
 package client
 
-import domainmodel.PatientID
-import domainmodel.medicalrecords.MedicalRecordsID
-
-object Message {
-
-  sealed trait Message;
-
-  //TODO: da aggiustare lo userID
-  case class SpecificMedicalRecordMessage(patientID: PatientID, medicalRecordsID: MedicalRecordsID) extends Message
-
-  case class AllMedicalRecordMessage(patientID: PatientID) extends Message
-
-  case class GeneralInfoMessage(patientID: PatientID) extends Message
-
-  case class GeneralPractitionerInfoMessage(patientID: PatientID) extends Message
-
-
-}
+trait Message

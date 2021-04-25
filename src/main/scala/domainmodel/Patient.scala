@@ -16,14 +16,14 @@
 
 package domainmodel
 
+import domainmodel.CardiologyVisitHistory.CardiologyVisitHistory
+import domainmodel.Gender.Gender
 import domainmodel.generalinfo.GeneralInfo
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
 import domainmodel.medicalrecords.MedicalRecord
 import domainmodel.medicalrecords.MedicalRecordHistory.MedicalRecordHistory
+
 import java.time.LocalDate
-
-import domainmodel.Gender.{Gender, Value}
-
 import scala.util.matching.Regex
 
 object Gender extends Enumeration {
@@ -33,6 +33,27 @@ object Gender extends Enumeration {
 
 object Patient {
 
+  /**
+   * Patient constructor.
+   *
+   * @param patientID               , id of patient.
+   * @param cf                      , fiscal code.
+   * @param name                    , name.
+   * @param surname                 , surname.
+   * @param birthDate               , birthday date.
+   * @param birthplace              , birthday place.
+   * @param gender                  , gender.
+   * @param phone                   , phone.
+   * @param mobilePhone             , mobil phone.
+   * @param address                 , address.
+   * @param residenceAddress        , residence address.
+   * @param residenceCity           , residence city.
+   * @param province                , province.
+   * @param generalInfo             , general info of patient.
+   * @param generalPractitionerInfo , general practitioner info of patient.
+   * @param medicalRecords          , medical records of patient.
+   * @param cardiologyVisitHistory  , cardiology visits of patient.
+   */
   case class Patient(patientID: PatientID,
                      cf: CF,
                      name: String,
@@ -48,8 +69,16 @@ object Patient {
                      province: String,
                      generalInfo: Option[GeneralInfo],
                      generalPractitionerInfo: Option[GeneralPractitionerInfo],
-                     medicalRecords: Option[MedicalRecordHistory])
+                     medicalRecords: Option[MedicalRecordHistory],
+                     cardiologyVisitHistory: Option[CardiologyVisitHistory])
 
+  /**
+   * Update medical records.
+   *
+   * @param patient       , patient to update.
+   * @param medicalRecord , new medical record.
+   * @return patient updated.
+   */
   def updateMedicalRecords(patient: Patient, medicalRecord: MedicalRecord): Patient = {
     Patient(patient.patientID,
       patient.cf,
@@ -66,10 +95,19 @@ object Patient {
       patient.province,
       patient.generalInfo,
       patient.generalPractitionerInfo,
-      if(patient.medicalRecords.nonEmpty) Some(patient.medicalRecords.get.addNewMedicalRecord(medicalRecord)) else Some(MedicalRecordHistory().addNewMedicalRecord(medicalRecord))
-      )
+      if (patient.medicalRecords.nonEmpty) Some(patient.medicalRecords.get.addNewMedicalRecord(medicalRecord)) else Some(MedicalRecordHistory().addNewMedicalRecord(medicalRecord)),
+      patient.cardiologyVisitHistory
+    )
   }
 
+
+  /**
+   * Update general info.
+   *
+   * @param patient     , patient to update.
+   * @param generalInfo , new general info.
+   * @return patient updated.
+   */
   def updateGeneralInfo(patient: Patient, generalInfo: GeneralInfo): Patient = {
     Patient(patient.patientID,
       patient.cf,
@@ -86,9 +124,17 @@ object Patient {
       patient.province,
       Some(generalInfo),
       patient.generalPractitionerInfo,
-      patient.medicalRecords)
+      patient.medicalRecords,
+      patient.cardiologyVisitHistory)
   }
 
+  /**
+   * Update general practitioner info.
+   *
+   * @param patient                 , patient to update.
+   * @param generalPractitionerInfo , new general practitioner info.
+   * @return patient updated.
+   */
   def updateGeneralPractitionerInfo(patient: Patient, generalPractitionerInfo: GeneralPractitionerInfo): Patient = {
     Patient(patient.patientID,
       patient.cf,
@@ -105,13 +151,48 @@ object Patient {
       patient.province,
       patient.generalInfo,
       Some(generalPractitionerInfo),
-      patient.medicalRecords)
+      patient.medicalRecords,
+      patient.cardiologyVisitHistory)
+  }
+
+  /**
+   * Update cardiology visit.
+   *
+   * @param patient         , patient to update.
+   * @param cardiologyVisit , new cardiology visit.
+   * @return patient updated.
+   */
+  def updateCardiologyVisit(patient: Patient, cardiologyVisit: CardiologyVisit): Patient = {
+    Patient(patient.patientID,
+      patient.cf,
+      patient.name,
+      patient.surname,
+      patient.birthDate,
+      patient.birthplace,
+      patient.gender,
+      patient.phone,
+      patient.mobilePhone,
+      patient.address,
+      patient.residenceAddress,
+      patient.residenceCity,
+      patient.province,
+      patient.generalInfo,
+      patient.generalPractitionerInfo,
+      patient.medicalRecords,
+      if (patient.cardiologyVisitHistory.nonEmpty) Some(patient.cardiologyVisitHistory.get.addNewVisit(cardiologyVisit))
+      else Some(CardiologyVisitHistory().addNewVisit(cardiologyVisit)))
+
   }
 
 }
 
 
 case class CF(value: String) {
+  /**
+   * Verify correctness of CF.
+   *
+   * @return
+   */
   def verifyCorrectness: Boolean = {
     value matches (
       """/^(?:[A-Z][AEIOU][AEIOUX]|[B-DF-HJ-NP-TV-Z]{2}[A-Z]){2}(?:[\dLMNP-V]{2}(?:[A-EHLMPR-T](?:
@@ -123,6 +204,11 @@ case class CF(value: String) {
 
 object RegexUtils {
 
+  /**
+   * Verify correctness of regex.
+   *
+   * @param underlying , regex to verify.
+   */
   implicit class RichRegex(val underlying: Regex) extends AnyVal {
     def matches(s: String): Boolean = underlying.pattern.matcher(s).matches
   }

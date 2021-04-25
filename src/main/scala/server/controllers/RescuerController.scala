@@ -17,32 +17,36 @@
  */
 
 package server.controllers
+
 import akka.actor.typed.Behavior
-import akka.actor.typed.scaladsl.Behaviors
+import akka.actor.typed.scaladsl._
 import cqrs.writemodel.Repository
-import domainmodel.medicalrecords.MedicalRecord
-import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import server.models.Protocol._
 
+/**
+ * This object represents the set of actions that are carried out following a resource's request by rescuer.
+ */
 object RescuerController {
 
-  def apply(): Behavior[Command] = handleCommand()
-  def handleCommand(): Behavior[Command] =
+  /**
+   * Create a new handleAction.
+   *
+   * @return an instance of a Behavior[CQRSAction]
+   */
+  def apply(): Behavior[CQRSAction] = handleAction()
+
+  /**
+   * Behaviors for received messages.
+   *
+   * @return behaviour confirmation
+   */
+  def handleAction(): Behavior[CQRSAction] =
     Behaviors.receiveMessage {
-      case UpdateClinicalDiary(medicalRecordsID, clinicalDiary, replyTo) =>
-        val res = Repository.rescuerRepository.updateClinicalDiary(medicalRecordsID , clinicalDiary)
-        if (res == "Clinical diary updated.") {
-          // ReadModel().updateClinicalDiary(clinicalDiary)
-          replyTo ! Accepted(res)// actions that are to be performed after successful.
-        } else {
-          replyTo ! Rejected(res)
-        }
-        Behaviors.same
-      case UpdateDrugAdministered(medicalRecordID, drugAdministered, replyTo) =>
-        val res = Repository.rescuerRepository.updateDrugAdministered(medicalRecordID, drugAdministered)
-        if (res == "Drug administered updated.") {
-          // ReadModel().updateDrugAdministered(drugAdministered)
-          replyTo ! Accepted(res)// actions that are to be performed after successful.
+      case UpdateMedicalRecord(medicalRecordID, medicalRecord, replyTo) =>
+        val res = Repository.rescuerRepository.updateMedicalRecord(medicalRecordID, medicalRecord)
+        if (res == "Medical record updated.") {
+          // ReadModel().updateMedicalRecord(medicalRecordID, medicalRecord)
+          replyTo ! Accepted(res) // actions that are to be performed after successful.
         } else {
           replyTo ! Rejected(res)
         }

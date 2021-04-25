@@ -29,8 +29,8 @@ import org.scalatestplus.junit.JUnitRunner
 class BookingVisitHistoryTest extends AnyFreeSpec {
   val visit: Visit = Visit(VisitDate())
   val description: Description = Description("visit for shoulder surgery")
-  val visitDate :LocalDate = LocalDate.of(2021, 10, 2)
-  val bookingVisits: BookingVisit = BookingVisit(1, visit, description, visitDate)
+  val bookingDate :LocalDate = LocalDate.of(2021, 10, 2)
+  val bookingVisits: BookingVisit = BookingVisit(1, visit, description, bookingDate)
   "A booking visits should have" - {
     "an id" in {
       assert(bookingVisits.bookingId == 1)
@@ -42,7 +42,7 @@ class BookingVisitHistoryTest extends AnyFreeSpec {
       assert(bookingVisits.description == description)
     }
     "a visit date" in {
-      assert(bookingVisits.visitDate == visitDate)
+      assert(bookingVisits.bookingData == bookingDate)
     }
   }
 }

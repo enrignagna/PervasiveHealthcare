@@ -17,32 +17,46 @@
  */
 
 package server.controllers
+
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 import cqrs.readmodel.ReadModel
 import cqrs.writemodel.Repository
-import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
 import server.models.Protocol._
 
+/**
+ * This object represents the set of actions that are carried out following a resource's request by anesthetist.
+ */
 object AnesthetistController {
 
-  def apply(): Behavior[Command] = handleCommand()
-  def handleCommand(): Behavior[Command] =
+  /**
+   * Create a new handleAction.
+   *
+   * @return an instance of a Behavior[CQRSAction]
+   */
+  def apply(): Behavior[CQRSAction] = handleAction()
+
+  /**
+   * Behaviors for received messages.
+   *
+   * @return behaviour confirmation
+   */
+  def handleAction(): Behavior[CQRSAction] =
     Behaviors.receiveMessage {
       case InsertMedicalRecord(medicalRecord, replyTo) =>
         val res = Repository.anesthetistRepository.insertMedicalRecord(medicalRecord)
         if (res == "Medical record created.") { //if there is an error the events are not stored, otherwise the events will be stored.
-          //ReadModel().createMedicalRecord(medicalRecord)
+          ReadModel.insertMedicalRecord(medicalRecord.patientID, medicalRecord)
           replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case UpdateMedicalRecord(medicalRecordID, medicalRecord, replyTo) =>
-        val res = Repository.anesthetistRepository.updateMedicalRecord(medicalRecordID , medicalRecord)
+        val res = Repository.anesthetistRepository.updateMedicalRecord(medicalRecordID, medicalRecord)
         if (res == "Medical record updated.") {
-          // ReadModel().updateMedicalRecord(medicalRecordID, medicalRecord)
-          replyTo ! Accepted(res)// actions that are to be performed after successful.
+          ReadModel.updateMedicalRecord(medicalRecord.patientID, medicalRecord)
+          replyTo ! Accepted(res) // actions that are to be performed after successful.
         } else {
           replyTo ! Rejected(res)
         }

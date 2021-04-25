@@ -18,5 +18,11 @@
 
 package domainmodel
 
+/**
+ * User class.
+ *
+ * @param id       , id of user.
+ * @param password , password of user.
+ */
 case class User(id: String, password: String)
 

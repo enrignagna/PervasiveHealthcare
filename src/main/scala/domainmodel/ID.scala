@@ -16,10 +16,23 @@
 
 package domainmodel
 
+/**
+ * ID
+ */
 trait ID {
- def value: String
+  def value: String
 }
 
+/**
+ * Patient ID
+ *
+ * @param value , value of ID.
+ */
 case class PatientID(override val value: String) extends ID
 
+/**
+ * Doctor ID
+ *
+ * @param value , value of ID.
+ */
 case class DoctorID(override val value: String) extends ID

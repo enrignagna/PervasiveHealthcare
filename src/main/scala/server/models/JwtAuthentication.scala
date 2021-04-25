@@ -29,19 +29,71 @@ object JwtAuthentication {
 
   object Tokens {
 
-    case class Tokens private(tokens: Map[String, Int] = Map.empty){
+    case class Tokens private(tokens: Map[String, Int] = Map.empty) {
       def addNewToken(token: Token): Tokens = Tokens(tokens + token.token)
+
+      def removeToken(tokenId: String): Tokens = Tokens(tokens.filter(t => t._1 != tokenId))
     }
+
 
     def apply(): Tokens = Tokens()
 
   }
 
+  /**
+   * Has Admin Permissions.
+   *
+   * @param token , token to authentication.
+   * @return if have specific permission.
+   */
   def hasAdminPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.ADMIN.id
 
+  /**
+   * Has Doctor Permissions.
+   *
+   * @param token , token to authentication.
+   * @return if have specific permission.
+   */
   def hasDoctorPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) != Role.PATIENT.id
 
+  /**
+   * Has Hospital Permissions.
+   *
+   * @param token , token to authentication.
+   * @return if have specific permission.
+   */
   def hasHospitalPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.SURGEON.id || tokens.tokens(token) == Role.WARD_NURSE.id || tokens.tokens(token) == Role.INSTRUMENTALIST.id || tokens.tokens(token) == Role.ANESTHETIST.id
 
+  /**
+   * Has Rescuer Permissions.
+   *
+   * @param token , token to authentication.
+   * @return if have specific permission.
+   */
   def hasRescuerPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.RESCUER.id
+
+  /**
+   * Has Cardiologist Permissions.
+   *
+   * @param token , token to authentication.
+   * @return if have specific permission.
+   */
+  def hasCardiologistPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.CARDIOLOGIST.id
+
+  /**
+   * Is Logged.
+   *
+   * @param token , token to authentication.
+   * @return if have specific permission.
+   */
+  def isLogged(token: String): Boolean = tokens.tokens.contains(token)
+
+  /**
+   * Has Common Permissions.
+   *
+   * @param token , token to authentication.
+   * @return if have specific permission.
+   */
+  def hasCommonPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.SURGEON.id || tokens.tokens(token) == Role.WARD_NURSE.id || tokens.tokens(token) == Role.INSTRUMENTALIST.id || tokens.tokens(token) == Role.ANESTHETIST.id || tokens.tokens(token) == Role.RESCUER.id || tokens.tokens(token) == Role.PATIENT.id
+
 }

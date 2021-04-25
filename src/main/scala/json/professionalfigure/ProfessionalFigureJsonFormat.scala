@@ -23,10 +23,8 @@ import domainmodel.DoctorID
 import domainmodel.professionalfigure.Specialization.Specialization
 import domainmodel.professionalfigure._
 import json.EnumerationJsonFormat.EnumJsonConverter
-import spray.json.DefaultJsonProtocol._
-import spray.json.{DeserializationException, JsNumber, JsObject, JsString, JsValue, RootJsonFormat, enrichAny}
 import json.IDJsonFormat.doctorIDJsonFormat
-import spray.json.ImplicitDerivedJsonProtocol.implicitJsonFormat
+import spray.json.{DeserializationException, JsObject, JsString, JsValue, RootJsonFormat, enrichAny}
 
 /**
  * Json format for professional figure object.
@@ -143,6 +141,31 @@ object ProfessionalFigureJsonFormat {
   }
 
   /**
+   * Implicit for cardiologist object.
+   */
+  implicit object CardiologistJsonFormat extends RootJsonFormat[Cardiologist] {
+    override def read(json: JsValue): Cardiologist = {
+      json.asJsObject.getFields(
+        "doctorID", "name", "surname", "phoneNumber", "email", "medicalDegreeGrade", "role") match {
+        case Seq(doctorID, JsString(name), JsString(surname), JsString(phoneNumber),
+        JsString(email), JsString(medicalDegreeGrade), _) =>
+          Cardiologist(doctorID.convertTo[DoctorID], name, surname, phoneNumber, email, medicalDegreeGrade)
+        case _ => throw DeserializationException("Instrumentalist expected")
+      }
+    }
+
+    override def write(obj: Cardiologist): JsValue = JsObject(
+      "doctorID" -> JsObject("value" -> JsString(obj.doctorID.value)),
+      "name" -> JsString(obj.name),
+      "surname" -> JsString(obj.surname),
+      "phoneNumber" -> JsString(obj.phoneNumber),
+      "email" -> JsString(obj.email),
+      "nursingDegreeGrade" -> JsString(obj.medicalDegreeGrade),
+      "role" -> Role.CARDIOLOGIST.toJson
+    )
+  }
+
+  /**
    * Implicit for rescuer object.
    */
   implicit object RescuerJsonFormat extends RootJsonFormat[Rescuer] {
@@ -192,8 +215,4 @@ object ProfessionalFigureJsonFormat {
     )
   }
 
-  /**
-   * Implicit for surgeons object.
-   */
-  implicit val surgeonsJsonFormat: RootJsonFormat[Surgeons] = jsonFormat1(Surgeons)
 }

@@ -20,62 +20,123 @@ package cqrs.writemodel
 
 import java.util.concurrent.TimeUnit
 
-import cqrs.writemodel.WriteModel.{dischargeLetterCollection, doctorsCollection, medicalRecordsCollection, patientsCollection}
-import domainmodel.{PatientID, User}
+import cqrs.writemodel.WriteModel.{doctorsCollection, medicalRecordsCollection, patientsCollection}
+import domainmodel.{PatientID}
 import domainmodel.generalinfo.GeneralInfo
-import domainmodel.medicalrecords.{DischargeLetter, MedicalRecord, MedicalRecordsID}
+import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
 import json.generalinfo.GeneralInfoJsonFormat.generalInfoJsonFormat
 import org.mongodb.scala.bson.BsonDocument
-import org.mongodb.scala.model.Filters.equal
-import spray.json.enrichAny
+import org.mongodb.scala.model.Filters.{and, equal}
+import spray.json.{JsArray, JsObject, enrichAny}
 import json.IDJsonFormat.patientIDJsonFormat
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordsIDJsonFormat
-
+import org.mongodb.scala.model.Updates.{push, set}
+import json.RequestJsonFormats.RootJsObjectFormat
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
+/**
+ * This class represent the implementation of CRUD (Create, Read, Update, Delete) for ward nurse.
+ */
 class WardNurseCRUD {
 
+  /**
+   * This method is used to insert a new medical record in the database.
+   *
+   * @param medicalRecord medical record to insert
+   * @return string representing the result
+   */
   def insertMedicalRecord(medicalRecord: MedicalRecord): String = {
+
     val document: BsonDocument = BsonDocument.apply(medicalRecord.toJson.compactPrint)
 
-    val res: Seq[BsonDocument] = Await.result(doctorsCollection.find(
+    val doctor: Seq[BsonDocument] = Await.result(doctorsCollection.find(
       equal("doctorID", document.get("doctorID"))).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    val patient = Await.result(patientsCollection.find(equal("patientID", medicalRecord.patientID)).toFuture(),
+
+    val patient = Await.result(patientsCollection.find(equal("patientID",
+      BsonDocument.apply(medicalRecord.patientID.toJson.compactPrint))).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    if (res.isEmpty && patient.nonEmpty) {
+
+    val record = Await.result(medicalRecordsCollection.find(equal("medicalRecordID",
+      BsonDocument.apply(medicalRecord.medicalRecordID.toJson.compactPrint))).toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+
+    if (doctor.nonEmpty && patient.nonEmpty && record.isEmpty) {
+      if (!patient.head.get("medicalRecords").asDocument().containsKey("history")) {
+        val newHistory = BsonDocument.apply(JsObject("history" -> JsArray(medicalRecord.toJson)).toJson.compactPrint)
+        Await.result(patientsCollection.findOneAndUpdate(equal("patientID",
+          BsonDocument.apply(medicalRecord.patientID.toJson.compactPrint)), set("medicalRecords", newHistory))
+          .toFuture(),
+          Duration(1, TimeUnit.SECONDS))
+      }
+      else {
+        Await.result(patientsCollection.findOneAndUpdate(equal("patientID",
+          BsonDocument.apply(medicalRecord.patientID.toJson.compactPrint)), push("medicalRecords.history", document)).toFuture(),
+          Duration(1, TimeUnit.SECONDS))
+
+      }
       Await.result(medicalRecordsCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
-      Await.result(patientsCollection.findOneAndUpdate(equal("patientID", BsonDocument.apply(medicalRecord.patientID.toJson.compactPrint)), document)
-        .toFuture(),
-        Duration(1, TimeUnit.SECONDS))
-      Await.result(Repository.auth.signUp(User(medicalRecord.doctorID.value, "doctor"), Role.SURGEON), Duration(1, TimeUnit.SECONDS))
       "Medical record created."
     } else {
       "Error! This medical record already exists!"
     }
   }
 
+  /**
+   * This method is used to update an existing medical record in the database.
+   *
+   * @param medicalRecordID medical record's id
+   * @param medicalRecord   medical record updated
+   * @return string representing the result
+   */
   def updateMedicalRecord(medicalRecordID: MedicalRecordsID, medicalRecord: MedicalRecord): String = {
     val document: BsonDocument = BsonDocument.apply(medicalRecord.toJson.compactPrint)
     val id: BsonDocument = BsonDocument.apply(medicalRecordID.toJson.compactPrint)
     Await.result(medicalRecordsCollection.findOneAndReplace(
       equal("medicalRecordID", id), document).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    Await.result(patientsCollection.findOneAndUpdate(
-      equal("patientID", medicalRecord.patientID), document).toFuture(),
+
+    val patient = Await.result(patientsCollection.find(
+      equal("patientID", BsonDocument.apply(medicalRecord.patientID.toJson.compactPrint))).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    "Medical record updated."
+
+    if (patient.nonEmpty && patient.head.get("medicalRecords").asDocument().containsKey("history")) {
+
+      Await.result(patientsCollection.findOneAndUpdate(and(
+        equal("patientID", BsonDocument.apply(medicalRecord.patientID.toJson.compactPrint)),
+        equal("medicalRecords.history.medicalRecordID", id)), set("medicalRecords.history.$", document)).toFuture(),
+        Duration(1, TimeUnit.SECONDS))
+
+      "Medical record updated."
+    }
+    else {
+      "Error in the update."
+    }
   }
 
+  /**
+   * This method is used to update an existing general info in the database.
+   *
+   * @param patientID   patient's id
+   * @param generalInfo general info updated
+   * @return string representing the result
+   */
   def updateGeneralInfo(patientID: PatientID, generalInfo: GeneralInfo): String = {
     val document: BsonDocument = BsonDocument.apply(generalInfo.toJson.compactPrint)
+    val id: BsonDocument = BsonDocument.apply(patientID.toJson.compactPrint)
 
-    Await.result(patientsCollection.findOneAndUpdate(
-      equal("patientID", patientID), document).toFuture(),
+    val patient = Await.result(patientsCollection.find(
+      equal("patientID", id)).toFuture(),
       Duration(1, TimeUnit.SECONDS))
-    "General info updated."
+
+    if (patient.nonEmpty) {
+      Await.result(patientsCollection.findOneAndUpdate(
+        equal("patientID", id), set("generalInfo", document)).toFuture(),
+        Duration(1, TimeUnit.SECONDS))
+      "General info updated."
+    } else "Error!! Patient not exist"
   }
 
 }

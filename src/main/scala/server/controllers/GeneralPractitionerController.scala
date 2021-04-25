@@ -17,36 +17,65 @@
  */
 
 package server.controllers
+
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
+import cqrs.readmodel.{RMUtility, ReadModel}
 import cqrs.writemodel.Repository
-import domainmodel.generalpractitionerinfo.Visit
-import domainmodel.medicalrecords.MedicalRecord
-import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import server.models.Protocol._
 
+/**
+ * This object represents the set of actions that are carried out following a resource's request by general practitioner.
+ */
 object GeneralPractitionerController {
 
-  def apply(): Behavior[Command] = handleCommand()
-  def handleCommand(): Behavior[Command] =
+  /**
+   * Create a new handleAction.
+   *
+   * @return an instance of a Behavior[CQRSAction]
+   */
+  def apply(): Behavior[CQRSAction] = handleAction()
+
+  /**
+   * Behaviors for received messages.
+   *
+   * @return behaviour confirmation
+   */
+  def handleAction(): Behavior[CQRSAction] = {
     Behaviors.receiveMessage {
-      case InsertGeneralPractitionerInfo(generalPractitonerInfo, replyTo) =>
-        val res = Repository.generalPractitionerRepository.insertGeneralPractitionerInfo(generalPractitonerInfo)
+      case InsertGeneralPractitionerInfo(generalPractitionerInfo, replyTo) =>
+        val res = Repository.generalPractitionerRepository.insertGeneralPractitionerInfo(generalPractitionerInfo)
         if (res == "General practitioner info created.") {
-          // ReadModel().insertGeneralPractitionerInfo(generalPractitonerInfo)
-          replyTo ! Accepted(res)// actions that are to be performed after successful.
+          ReadModel.insertGeneralPractitionerInfo(generalPractitionerInfo.patientID, generalPractitionerInfo)
+          replyTo ! Accepted(res) // actions that are to be performed after successful.
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case UpdateGeneralPractitionerInfo(patientID, generalPractitionerInfo, replyTo) =>
-        val res = Repository.generalPractitionerRepository.updateGeneralPractitionerInfo(patientID , generalPractitionerInfo)
+        val res = Repository.generalPractitionerRepository.updateGeneralPractitionerInfo(patientID, generalPractitionerInfo)
         if (res == "General practitioner info updated.") {
-          // ReadModel().updateGeneralPractitionerInfo(generalPractitonerInfo)
-          replyTo ! Accepted(res)// actions that are to be performed after successful.
+          ReadModel.updateGeneralPractitionerInfo(patientID, generalPractitionerInfo)
+          replyTo ! Accepted(res) // actions that are to be performed after successful.
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
+      case UpdateCardiologyPredictions(doctorID, replyTo) =>
+        val res = Repository.generalPractitionerRepository.updatePredictions(doctorID)
+        if (res == "Previsions updated.") {
+          replyTo ! Accepted(res)
+        }
+        else {
+          replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case GetCardiologyPredictions(doctorID, replyTo) =>
+        val res = RMUtility.getNewPredictions(doctorID)
+        if(res.nonEmpty){
+          replyTo ! res
+        }
+        Behaviors.same
     }
+  }
 }

@@ -17,21 +17,44 @@
 package domainmodel
 
 import domainmodel.Familiars.Familiars
+import domainmodel.KinshipDegree.KinshipDegree
 import domainmodel.PreviousPathologies.PreviousPathologies
 import domainmodel.Remotes.Remotes
+
 import java.time.LocalDate
 
-import domainmodel.KinshipDegree.KinshipDegree
-
-object KinshipDegree extends Enumeration{
+/**
+ * Kinship Degree.
+ */
+object KinshipDegree extends Enumeration {
   type KinshipDegree = Value
   val MOTHER, FATHER, LEGAL_TUTOR = Value
 }
 
+/**
+ * Familiar.
+ *
+ * @param name                , name.
+ * @param kinshipDegree       , kinship degree.
+ * @param previousPathologies , previous pathologies.
+ * @param phoneNumber         , phone number.
+ */
 case class Familiar(name: String, kinshipDegree: KinshipDegree, previousPathologies: PreviousPathologies, phoneNumber: String)
 
+/**
+ * Remote.
+ *
+ * @param info , information.
+ * @param date , date.
+ */
 case class Remote(info: String, date: LocalDate = java.time.LocalDate.now)
 
+/**
+ * Physiologic.
+ *
+ * @param info , information.
+ * @param date , date.
+ */
 case class Physiologic(info: String, date: LocalDate = java.time.LocalDate.now)
 
 /**

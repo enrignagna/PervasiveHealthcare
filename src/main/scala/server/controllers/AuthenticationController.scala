@@ -23,25 +23,48 @@ import akka.actor.typed.scaladsl.Behaviors
 import cqrs.writemodel.Repository
 import server.models.JwtAuthentication
 import server.models.JwtAuthentication.Token
-import server.models.Protocol.{Command, Login, LoginAccepted, Rejected}
+import server.models.Protocol._
 
 import scala.util.Random
 
+/**
+ * This object represents the set of actions that are carried out following a authentication's request.
+ */
 object AuthenticationController {
 
-  def apply(): Behavior[Command] = handleCommand()
+  /**
+   * Create a new handleAction.
+   *
+   * @return an instance of a Behavior[CQRSAction]
+   */
+  def apply(): Behavior[CQRSAction] = handleAction()
 
-  private def handleCommand(): Behavior[Command] =
+  /**
+   * Behaviors for received messages.
+   *
+   * @return behaviour confirmation
+   */
+  def handleAction(): Behavior[CQRSAction] =
     Behaviors.receiveMessage {
       case Login(user, replyTo) =>
         val res = Repository.auth.login(user)
         if (res._1.nonEmpty) {
           val token: String = Random.alphanumeric take 64 mkString ""
           JwtAuthentication.tokens = JwtAuthentication.tokens.addNewToken(Token((token, res._1.get.id)))
-          replyTo ! LoginAccepted(res._2, token)// actions that are to be performed after successful.
+          replyTo ! LoginAccepted(res._1.get, res._2, token) // actions that are to be performed after successful.
         } else {
           replyTo ! Rejected(res._2)
         }
+        Behaviors.same
+      case Logout(tokenId, replyTo) =>
+        if (JwtAuthentication.tokens.tokens.contains(tokenId)) {
+          JwtAuthentication.tokens = JwtAuthentication.tokens.removeToken(tokenId)
+          replyTo ! Accepted("Logout avvenuto.") // actions that are to be performed after successful.
+        }
+        else {
+          replyTo ! Accepted("Non puoi effettuare il logout senza aver fatto il login.") // actions that are to be performed after successful.
+        }
+
         Behaviors.same
       case _ => throw new IllegalArgumentException()
     }

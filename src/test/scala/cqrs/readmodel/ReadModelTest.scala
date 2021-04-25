@@ -64,6 +64,7 @@ class ReadModelTest extends AnyFreeSpec with Matchers with ScalaFutures with Sca
       "FC",
       None,
       None,
+      None,
       None
     )
   )
@@ -82,8 +83,8 @@ class ReadModelTest extends AnyFreeSpec with Matchers with ScalaFutures with Sca
 
   ReadModel.updateMedicalRecord(PatientID("000006"),
     MedicalRecord(
-      DoctorID("1csachsd"),
-      PatientID("000006"),
+      DoctorID(doctorID),
+      PatientID(patientID),
       MedicalRecordsID("1"),
       isClosed = true,
       None, None, None,
@@ -102,5 +103,10 @@ class ReadModelTest extends AnyFreeSpec with Matchers with ScalaFutures with Sca
     "and a medical record inside the patient" in {
       assert(RMUtility.recreatePatientState(PatientID(patientID)).get.medicalRecords.nonEmpty)
     }
+    "and all medical records for a doctor" in {
+      println(RMUtility.getAllMedicalRecordsForDoctor(DoctorID(doctorID)))
+      assert(RMUtility.getAllMedicalRecordsForDoctor(DoctorID(doctorID)).nonEmpty)
+    }
+
   }
 }

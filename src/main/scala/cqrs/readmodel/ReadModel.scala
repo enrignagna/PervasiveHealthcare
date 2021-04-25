@@ -17,15 +17,102 @@
 package cqrs.readmodel
 
 import cqrs.readmodel.eventsourcing._
+import cqrs.writemodel.Role.Role
+import domainmodel.Gender.Gender
+import domainmodel.KinshipDegree.KinshipDegree
 import domainmodel.Patient.Patient
-import domainmodel.PatientID
+import domainmodel.generalinfo.AllergyClass.AllergyClass
+import domainmodel.generalinfo.BloodType.BloodType
 import domainmodel.generalinfo.GeneralInfo
+import domainmodel.generalinfo.Rh.Rh
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
 import domainmodel.medicalrecords.MedicalRecord
+import domainmodel.professionalfigure.Specialization.Specialization
 import domainmodel.professionalfigure._
+import domainmodel.{CardiologyPrediction, CardiologyVisit, DoctorID, PatientID}
+import org.mongodb.scala.{MongoClient, MongoDatabase}
 
 
 object ReadModel {
+
+  val database: MongoDatabase = MongoClient().getDatabase("ReadModel")
+
+  /**
+   * Method to initialize read model.
+   */
+  def initialize(): Unit = {
+    RoleCollection.initialize()
+    GenderCollection.initialize()
+    AllergyClassCollection.initialize()
+    BloodTypeCollection.initialize()
+    RhCollection.initialize()
+    SpecializationCollection.initialize()
+    KinshipDegreeCollection.initialize()
+  }
+
+
+  /**
+   * Get all role in system.
+   *
+   * @return all role.
+   */
+  def getRole: Set[Role] = {
+    RoleCollection.get()
+  }
+
+  /**
+   * Get all gender in system.
+   *
+   * @return all gender.
+   */
+  def getGender: Set[Gender] = {
+    GenderCollection.get()
+  }
+
+  /**
+   * Get all allergy in system.
+   *
+   * @return all allergy.
+   */
+  def getAllergy: Set[AllergyClass] = {
+    AllergyClassCollection.get()
+  }
+
+  /**
+   * Get all blood type in system.
+   *
+   * @return all blood type.
+   */
+  def getBloodType: Set[BloodType] = {
+    BloodTypeCollection.get()
+  }
+
+  /**
+   * Get all rh in system.
+   *
+   * @return all rh.
+   */
+  def getRh: Set[Rh] = {
+    RhCollection.get()
+  }
+
+  /**
+   * Get all specialization in system.
+   *
+   * @return all specialization.
+   */
+  def getSpecialization: Set[Specialization] = {
+    SpecializationCollection.get()
+  }
+
+  /**
+   * Get all kinship degree in system.
+   *
+   * @return all kinship degree.
+   */
+  def getKinshipDegree: Set[KinshipDegree] = {
+    KinshipDegreeCollection.get()
+  }
 
   /**
    * Create surgeon in read model with event sourcing.
@@ -135,7 +222,27 @@ object ReadModel {
     EventStore.addEvent(UpdateRescuerEvent(rescuer.doctorID, rescuer))
   }
 
+
+  /**
+   * Create cardiologist in read model with event sourcing.
+   *
+   * @param cardiologist , cardiologist to save.
+   */
+  def createCardiologist(cardiologist: Cardiologist): Unit = {
+    EventStore.addEvent(InsertCardiologistEvent(cardiologist.doctorID, cardiologist))
+  }
+
+  /**
+   * Update cardiologist in read model with event sourcing.
+   *
+   * @param cardiologist , cardiologist to save.
+   */
+  def updateCardiologist(cardiologist: Cardiologist): Unit = {
+    EventStore.addEvent(UpdateCardiologistEvent(cardiologist.doctorID, cardiologist))
+  }
+
   //PATIENT
+
   /**
    * Insert patient in read model with event sourcing.
    *
@@ -213,5 +320,46 @@ object ReadModel {
   def updateGeneralPractitionerInfo(patientID: PatientID, generalPractitionerInfo: GeneralPractitionerInfo): Unit = {
     EventStore.addEvent(UpdateGeneralPractitionerInfoEvent(patientID, generalPractitionerInfo))
   }
+
+  /**
+   * Insert cardiology visit in read model with event sourcing.
+   *
+   * @param patientID       , id of the patient.
+   * @param cardiologyVisit , cardiology visit to add.
+   */
+  def insertCardiologyVisit(patientID: PatientID, cardiologyVisit: CardiologyVisit): Unit = {
+    EventStore.addEvent(InsertCardiologyVisitEvent(patientID, cardiologyVisit))
+  }
+
+  /**
+   * Update cardiology visit in read model with event sourcing.
+   *
+   * @param patientID       , id of the patient.
+   * @param cardiologyVisit , cardiology visit to add.
+   */
+  def updateCardiologyVisit(patientID: PatientID, cardiologyVisit: CardiologyVisit): Unit = {
+    EventStore.addEvent(UpdateCardiologyVisitEvent(patientID, cardiologyVisit))
+  }
+
+  /**
+   * Insert cardiology prediction in read model with event sourcing.
+   *
+   * @param doctorID             , id of the doctor.
+   * @param cardiologyPrediction , cardiology prediction to add.
+   */
+  def insertCardiologyPrediction(doctorID: DoctorID, cardiologyPrediction: CardiologyPrediction): Unit = {
+    EventStore.addEvent(InsertCardiologyPredictionsEvent(doctorID, cardiologyPrediction))
+  }
+
+  /**
+   * Update cardiology prediction in read model with event sourcing.
+   *
+   * @param doctorID             , id of the doctor.
+   * @param cardiologyPrediction , cardiology prediction to add.
+   */
+  def updateCardiologyPrediction(doctorID: DoctorID, cardiologyPrediction: CardiologyPrediction): Unit = {
+    EventStore.addEvent(UpdateCardiologyPredictionsEvent(doctorID, cardiologyPrediction))
+  }
+
 
 }

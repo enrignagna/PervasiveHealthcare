@@ -22,9 +22,11 @@ import akka.actor.typed.ActorSystem
 import akka.actor.typed.scaladsl.Behaviors
 import akka.http.scaladsl.Http
 import akka.http.scaladsl.server.Route
-import cqrs.writemodel.{AllergyClassCollection, BloodTypeCollection, GenderCollection, Repository, RhCollection, RoleCollection}
-import server.controllers.{AdministratorController, AnesthetistController, AuthenticationController, GeneralPractitionerController, InstrumentalistController, RescuerController, SurgeonController, WardNurseController}
-import server.routes.{AdministratorRoutes, AnesthetistRoutes, AuthenticationRoutes, GeneralPractitionerRoutes, InstrumentalistRoutes, RescuerRoutes, Routes, SurgeonRoutes, WardNurseRoutes}
+import behaviours.CardiologyDiseasesPredictor
+import cqrs.readmodel.ReadModel
+import digitaltwins.PatientDigitalTwin
+import server.controllers._
+import server.routes._
 
 import scala.util.{Failure, Success}
 
@@ -49,7 +51,7 @@ object Server {
   def main(args: Array[String]): Unit = {
 
     val rootBehavior = Behaviors.setup[Nothing] { context =>
-      Repository.initialize()
+
 
       val administratorControllerActor = context.spawn(AdministratorController(), "AdministratorControllerActor")
       context.watch(administratorControllerActor)
@@ -58,22 +60,28 @@ object Server {
       context.watch(surgeonControllerActor)
 
       val wardnurseControllerActor = context.spawn(WardNurseController(), "WardNurseControllerActor")
-     context.watch(wardnurseControllerActor)
+      context.watch(wardnurseControllerActor)
 
       val rescuerControllerActor = context.spawn(RescuerController(), "RescuerControllerActor")
-     context.watch(rescuerControllerActor)
+      context.watch(rescuerControllerActor)
 
       val generalPractitionerControllerActor = context.spawn(GeneralPractitionerController(), "GeneralPractitionerControllerActor")
-     context.watch(generalPractitionerControllerActor)
+      context.watch(generalPractitionerControllerActor)
 
       val anesthetistControllerActor = context.spawn(AnesthetistController(), "AnesthetistControllerActor")
-     context.watch(anesthetistControllerActor)
+      context.watch(anesthetistControllerActor)
 
       val instrumentalistControllerActor = context.spawn(InstrumentalistController(), "InstrumentalistControllerActor")
-     context.watch(instrumentalistControllerActor)
+      context.watch(instrumentalistControllerActor)
+
+      val cardiologistControllerActor = context.spawn(CardiologistController(), "CardiologistControllerActor")
+      context.watch(cardiologistControllerActor)
 
       val authenticationControllerActor = context.spawn(AuthenticationController(), "AuthenticationControllerActor")
       context.watch(authenticationControllerActor)
+
+      val commonControllerActor = context.spawn(CommonController(), "CommonControllerActor")
+      context.watch(commonControllerActor)
 
       val administratorRoutes = new AdministratorRoutes(administratorControllerActor)(context.system)
       val surgeonRoutes = new SurgeonRoutes(surgeonControllerActor)(context.system)
@@ -82,13 +90,30 @@ object Server {
       val generalPractitionerRoutes = new GeneralPractitionerRoutes(generalPractitionerControllerActor)(context.system)
       val anesthetistRoutes = new AnesthetistRoutes(anesthetistControllerActor)(context.system)
       val instrumentalistRoutes = new InstrumentalistRoutes(instrumentalistControllerActor)(context.system)
+      val cardiologistRoutes = new CardiologistRoutes(cardiologistControllerActor)(context.system)
       val authenticationRoutes = new AuthenticationRoutes(authenticationControllerActor)(context.system)
+      val commonRoutes = new CommonRoutes(commonControllerActor)(context.system)
 
-      val mainRoutes = new Routes(administratorRoutes, surgeonRoutes, wardNurseRoutes, rescuerRoutes, generalPractitionerRoutes, anesthetistRoutes, instrumentalistRoutes, authenticationRoutes)
+
+      val mainRoutes = new Routes(administratorRoutes,
+        surgeonRoutes,
+        wardNurseRoutes,
+        rescuerRoutes,
+        generalPractitionerRoutes,
+        anesthetistRoutes,
+        instrumentalistRoutes,
+        cardiologistRoutes,
+        authenticationRoutes,
+        commonRoutes)
+
       startHttpServer(mainRoutes.routes)(context.system)
 
       Behaviors.empty
     }
+
+    ReadModel.initialize()
+    CardiologyDiseasesPredictor.train()
+    PatientDigitalTwin.initialize()
     val system = ActorSystem[Nothing](rootBehavior, "PervasiveHealthcare")
   }
 }

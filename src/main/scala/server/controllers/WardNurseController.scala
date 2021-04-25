@@ -17,17 +17,30 @@
  */
 
 package server.controllers
+
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 import cqrs.writemodel.Repository
-import domainmodel.medicalrecords.{DischargeLetter, MedicalRecord}
-import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import server.models.Protocol._
 
+/**
+ * This object represents the set of actions that are carried out following a resource's request by ward nurse.
+ */
 object WardNurseController {
 
-  def apply(): Behavior[Command] = handleCommand()
-  def handleCommand(): Behavior[Command] =
+  /**
+   * Create a new handleAction.
+   *
+   * @return an instance of a Behavior[CQRSAction]
+   */
+  def apply(): Behavior[CQRSAction] = handleAction()
+
+  /**
+   * Behaviors for received messages.
+   *
+   * @return behaviour confirmation
+   */
+  def handleAction(): Behavior[CQRSAction] =
     Behaviors.receiveMessage {
       case InsertMedicalRecord(medicalRecord, replyTo) =>
         val res = Repository.wardNurseRepository.insertMedicalRecord(medicalRecord)
@@ -39,19 +52,19 @@ object WardNurseController {
         }
         Behaviors.same
       case UpdateMedicalRecord(medicalRecordID, medicalRecord, replyTo) =>
-        val res = Repository.wardNurseRepository.updateMedicalRecord(medicalRecordID , medicalRecord)
+        val res = Repository.wardNurseRepository.updateMedicalRecord(medicalRecordID, medicalRecord)
         if (res == "Medical record updated.") {
           // ReadModel().updateMedicalRecord(medicalRecord)
-          replyTo ! Accepted(res)// actions that are to be performed after successful.
+          replyTo ! Accepted(res) // actions that are to be performed after successful.
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case UpdateGeneralInfo(patientID, generalInfo, replyTo) =>
-        val res = Repository.wardNurseRepository.updateGeneralInfo(patientID , generalInfo)
+        val res = Repository.wardNurseRepository.updateGeneralInfo(patientID, generalInfo)
         if (res == "General info updated.") {
           // ReadModel().updateGeneralInfo(generalInfo)
-          replyTo ! Accepted(res)// actions that are to be performed after successful.
+          replyTo ! Accepted(res) // actions that are to be performed after successful.
         } else {
           replyTo ! Rejected(res)
         }

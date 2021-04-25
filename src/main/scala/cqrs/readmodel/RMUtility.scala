@@ -17,9 +17,11 @@
 package cqrs.readmodel
 
 import cqrs.readmodel.eventsourcing._
-import domainmodel.Patient.{Patient, updateGeneralInfo, updateGeneralPractitionerInfo, updateMedicalRecords}
+import domainmodel.Patient._
+import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
+import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
 import domainmodel.professionalfigure._
-import domainmodel.{DoctorID, PatientID}
+import domainmodel.{CardiologyPrediction, DoctorID, PatientID}
 
 object RMUtility {
   /**
@@ -119,6 +121,22 @@ object RMUtility {
   }
 
   /**
+   * Method to get cardiologist from events.
+   *
+   * @param doctorID , id of the cardiologist.
+   * @return required cardiologist.
+   */
+  def recreateCardiologistState(doctorID: DoctorID): Option[Cardiologist] = {
+    val events = EventStore.getEvents(doctorID)
+    var user: Cardiologist = null
+    events.foreach {
+      case x: InsertCardiologistEvent => user = x.c
+      case x: UpdateCardiologistEvent => user = x.c
+    }
+    Option(user)
+  }
+
+  /**
    * Method to get patient from events.
    *
    * @param patientID , id of the patient.
@@ -136,7 +154,61 @@ object RMUtility {
       case x: UpdateGeneralInfoEvent => user = updateGeneralInfo(user, x.g)
       case x: InsertGeneralPractitionerInfoEvent => user = updateGeneralPractitionerInfo(user, x.g)
       case x: UpdateGeneralPractitionerInfoEvent => user = updateGeneralPractitionerInfo(user, x.g)
+      case x: InsertCardiologyVisitEvent => user = updateCardiologyVisit(user, x.c)
+      case x: UpdateCardiologyVisitEvent => user = updateCardiologyVisit(user, x.c)
     }
     Option(user)
   }
+
+  /**
+   * Get all medical record for a doctor.
+   *
+   * @param doctorID , doctor ID.
+   * @return all medical records for a doctor.
+   */
+  def getAllMedicalRecordsForDoctor(doctorID: DoctorID): Set[MedicalRecord] = {
+    val events = EventStore.getAllMedicalRecordsForDoctorEvents(doctorID)
+    var medicalRecordSet = Map.empty[MedicalRecordsID, MedicalRecord]
+    events.foreach {
+      case x: InsertMedicalRecordEvent => medicalRecordSet = medicalRecordSet + (x.m.medicalRecordID -> x.m)
+      case x: UpdateMedicalRecordEvent => medicalRecordSet = medicalRecordSet + (x.m.medicalRecordID -> x.m)
+    }
+    medicalRecordSet.values.toSet
+  }
+
+  /**
+   * Get all general practitioner info for a doctor.
+   *
+   * @param doctorID , doctor ID.
+   * @return all general practitioner info for a doctor.
+   */
+  def getAllGeneralPractitionerInfoForDoctor(doctorID: DoctorID): Set[GeneralPractitionerInfo] = {
+    EventStore.getAllGeneralPractitionerInfoForDoctorEvents(doctorID)
+    val events = EventStore.getAllGeneralPractitionerInfoForDoctorEvents(doctorID)
+    var generalPractitionerInfoSet = Map.empty[PatientID, GeneralPractitionerInfo]
+    events.foreach {
+      case x: InsertGeneralPractitionerInfoEvent => generalPractitionerInfoSet =
+        generalPractitionerInfoSet + (x.g.patientID -> x.g)
+      case x: UpdateGeneralPractitionerInfoEvent => generalPractitionerInfoSet =
+        generalPractitionerInfoSet + (x.g.patientID -> x.g)
+    }
+    generalPractitionerInfoSet.values.toSet
+  }
+
+  /**
+   * Get all patient from events.
+   *
+   * @return all patient saved.
+   */
+  def getAllPatientID: Set[PatientID] = EventStore.getAllInsertPatientEvents
+
+  /**
+   * Get all new predictions for a doctor.
+   *
+   * @param doctorID , doctor ID.
+   * @return all new predictions for a doctor.
+   */
+  def getNewPredictions(doctorID: DoctorID): Set[CardiologyPrediction] = EventStore.getNewPredictionsEvents(doctorID)
+
+
 }

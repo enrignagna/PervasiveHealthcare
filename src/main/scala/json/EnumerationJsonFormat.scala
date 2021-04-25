@@ -38,7 +38,6 @@ object EnumerationJsonFormat {
     override def read(json: JsValue): T#Value = {
       json match {
         case JsObject(obj) => {
-          print(enu(obj("id").convertTo[Int]))
           enu(obj("id").convertTo[Int])
 
         }

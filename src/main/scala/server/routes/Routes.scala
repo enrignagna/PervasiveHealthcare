@@ -18,14 +18,34 @@
 
 package server.routes
 
-import akka.http.scaladsl.server.Route
 import akka.http.scaladsl.server.Directives._
+import akka.http.scaladsl.server.Route
 
+/**
+ * This class contains all routes.
+ *
+ * @param administratorRoutes       routes for administrator,
+ * @param surgeonRoutes             routes for surgeon,
+ * @param wardNurseRoutes           routes for ward nurse,
+ * @param rescuerRoutes             routes for rescuer,
+ * @param generalPractitionerRoutes routes for general pactitioner,
+ * @param anesthetistRoutes         routes for anesthetist,
+ * @param instrumentalistRoutes     routes for instruemntalist,
+ * @param cardiologistRoutes        routes for cardiologist,
+ * @param authenticationRoutes      routes for authentication,
+ * @param commonRoutes              common routes.
+ */
 //TODO add all routes
 class Routes(administratorRoutes: AdministratorRoutes, surgeonRoutes: SurgeonRoutes, wardNurseRoutes: WardNurseRoutes,
              rescuerRoutes: RescuerRoutes, generalPractitionerRoutes: GeneralPractitionerRoutes,
-             anesthetistRoutes: AnesthetistRoutes, instrumentalistRoutes: InstrumentalistRoutes, authenticationRoutes: AuthenticationRoutes){
-  val routes: Route = administratorRoutes.administratorRoutes  ~  surgeonRoutes.surgeonRoutes ~ wardNurseRoutes.wardnurseRoutes ~
-                      rescuerRoutes.rescuerRoutes ~ generalPractitionerRoutes.generalPractitionerRoutes ~
-                      anesthetistRoutes.anesthetistRoutes ~ instrumentalistRoutes.instrumentalistRoutes ~ authenticationRoutes.authenticationRoutes
+             anesthetistRoutes: AnesthetistRoutes, instrumentalistRoutes: InstrumentalistRoutes,
+             cardiologistRoutes: CardiologistRoutes, authenticationRoutes: AuthenticationRoutes, commonRoutes: CommonRoutes) {
+
+  val routes: Route = administratorRoutes.administratorRoutes ~ surgeonRoutes.surgeonRoutes ~ wardNurseRoutes.wardnurseRoutes ~
+    rescuerRoutes.rescuerRoutes ~ generalPractitionerRoutes.generalPractitionerRoutes ~
+    anesthetistRoutes.anesthetistRoutes ~ instrumentalistRoutes.instrumentalistRoutes ~
+    cardiologistRoutes.cardiologistRoutes ~ authenticationRoutes.authenticationRoutes ~
+    commonRoutes.commonRoutes
+
+
 }

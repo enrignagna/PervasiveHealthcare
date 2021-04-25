@@ -18,6 +18,8 @@
 
 package json
 
+import cqrs.writemodel.Role
+import json.EnumerationJsonFormat.EnumJsonConverter
 import server.models.Protocol.Confirmation
 import spray.json.{DefaultJsonProtocol, DerivedFormats, RootJsonFormat}
 
@@ -30,6 +32,10 @@ object RequestJsonFormats extends DefaultJsonProtocol with DerivedFormats{
    * Implicit for confirmation object.
    */
   implicit lazy val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
+
+  implicit lazy val loginJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
+
+  implicit val roleJsonFormat: EnumJsonConverter[Role.type] = new EnumJsonConverter(Role)
 }
 
 
