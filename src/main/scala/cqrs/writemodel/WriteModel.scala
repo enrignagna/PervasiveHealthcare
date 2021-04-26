@@ -49,7 +49,7 @@ object WriteModel {
   val prescriptionsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("prescriptions")
 
-  val generalpractitionerinfoCollection: MongoCollection[BsonDocument] =
+  val generalPractitionerInfoCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("generalpractitionerinfo")
 
   val cardiologyVisitsCollection: MongoCollection[BsonDocument] =

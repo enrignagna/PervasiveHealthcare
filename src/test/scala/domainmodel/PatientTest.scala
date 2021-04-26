@@ -14,25 +14,63 @@
  *                              limitations under the License.
  */
 
-package domainmodel.medicalrecords.clinicaldiary
+package domainmodel
 
-import domainmodel.utility.Info
+import domainmodel.Patient._
 import org.junit.runner.RunWith
-import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
 
-import java.time.LocalDateTime
+import java.time.LocalDate
 
 @RunWith(classOf[JUnitRunner])
-class TestHealthEvolution extends AnyFreeSpec {
-  val health: HealthEvolution = HealthEvolution(Info("The patient defecated"), LocalDateTime.now())
-  "An health evolution should have" - {
-    "an information field" in {
-      assert(health.info != null && health.info.equals(Info("The patient defecated")))
+class PatientTest extends AnyFreeSpec {
+  val patient: Patient = Patient.Patient(
+    PatientID("1234"),
+    CF("aaa"),
+    "Luca",
+    "Verdi",
+    LocalDate.of(1990, 11, 22),
+    "Cesena",
+    Gender.MALE,
+    "054488888",
+    Some("33355548"),
+    "Via Cerchia 20",
+    "...",
+    "Cesena",
+    "FC",
+    None,
+    None,
+    None,
+    None
+  )
+
+  "A patient should have" - {
+    "a name" in {
+      assert(patient.name.nonEmpty)
     }
-    "a date of registration" in {
-      assert(health.dateTime != null)
-      assert(health.dateTime.isInstanceOf[LocalDateTime])
+    "a surname" in {
+      assert(patient.surname.nonEmpty)
+    }
+    "a fiscal code" in {
+      assert(patient.cf.value.nonEmpty)
+    }
+    "a birthday date" in {
+      assert(patient.birthDate != null)
+    }
+    "a gender type" in {
+      assert(patient.gender != null)
+    }
+    "an address" in {
+      assert(patient.address.nonEmpty)
+    }
+    "a city" in {
+      assert(patient.residenceCity.nonEmpty)
+    }
+    "a province" in {
+      assert(patient.province.nonEmpty)
     }
   }
+
+
 }

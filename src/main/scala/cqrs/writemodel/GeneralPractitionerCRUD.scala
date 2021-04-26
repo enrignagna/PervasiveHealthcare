@@ -18,7 +18,7 @@
 
 package cqrs.writemodel
 
-import cqrs.writemodel.WriteModel.{cardiologyPredictionsCollection, doctorsCollection, generalpractitionerinfoCollection, patientsCollection}
+import cqrs.writemodel.WriteModel.{cardiologyPredictionsCollection, doctorsCollection, generalPractitionerInfoCollection, patientsCollection}
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
 import domainmodel.{DoctorID, PatientID}
 import json.IDJsonFormat.{doctorIDJsonFormat, patientIDJsonFormat}
@@ -56,7 +56,7 @@ class GeneralPractitionerCRUD {
 
     if (doctor.nonEmpty) {
       if (patient.nonEmpty) {
-        Await.result(generalpractitionerinfoCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
+        Await.result(generalPractitionerInfoCollection.insertOne(document).toFuture(), Duration(1, TimeUnit.SECONDS))
         Await.result(patientsCollection.findOneAndUpdate(equal("patientID",
           patientID), set("generalPractitionerInfo", document)).toFuture(),
           Duration(1, TimeUnit.SECONDS))
@@ -91,13 +91,13 @@ class GeneralPractitionerCRUD {
 
     if (patient.nonEmpty) {
       if (doctor.nonEmpty) {
-        val generalPractitionerInfoFinding = Await.result(generalpractitionerinfoCollection.find(and(
+        val generalPractitionerInfoFinding = Await.result(generalPractitionerInfoCollection.find(and(
           equal("patientID", id), equal("doctorID", doctorID))).toFuture(),
           Duration(1, TimeUnit.SECONDS))
 
         if (generalPractitionerInfoFinding.nonEmpty) {
 
-          Await.result(generalpractitionerinfoCollection.findOneAndUpdate(and(
+          Await.result(generalPractitionerInfoCollection.findOneAndUpdate(and(
             equal("patientID", id), equal("doctorID", doctorID)), set("generalPractitionerInfo",
             document)).toFuture(),
             Duration(1, TimeUnit.SECONDS))

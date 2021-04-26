@@ -14,25 +14,22 @@
  *                              limitations under the License.
  */
 
-package domainmodel.medicalrecords.clinicaldiary
+package domainmodel
 
-import domainmodel.utility.Info
 import org.junit.runner.RunWith
-import org.scalatest.freespec.AnyFreeSpec
+import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner
 
-import java.time.LocalDateTime
-
 @RunWith(classOf[JUnitRunner])
-class TestHealthEvolution extends AnyFreeSpec {
-  val health: HealthEvolution = HealthEvolution(Info("The patient defecated"), LocalDateTime.now())
-  "An health evolution should have" - {
-    "an information field" in {
-      assert(health.info != null && health.info.equals(Info("The patient defecated")))
+class UserTest extends AnyFreeSpec {
+
+  val user: User = User("admin", "admin")
+  "An user should have" - {
+    "an identifier" in {
+      assert(user.id != null)
     }
-    "a date of registration" in {
-      assert(health.dateTime != null)
-      assert(health.dateTime.isInstanceOf[LocalDateTime])
+    "a password" in {
+      assert(user.password != null)
     }
   }
 }
