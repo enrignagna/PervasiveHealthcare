@@ -17,18 +17,18 @@
  */
 package gui
 
-import java.awt.{Color => _, Dimension => _, TextArea => _, _}
+import java.awt.{CardLayout, GridLayout, Toolkit}
 
 import akka.actor.ActorRef
 import domainmodel.medicalrecords.MedicalRecord
-import domainmodel.{ID, PatientID}
+import domainmodel.{ID, Pathology, PatientID}
 import javax.swing._
 
 import scala.swing.BorderPanel.Position._
 import scala.swing.ListView._
 import scala.swing.TabbedPane._
 import scala.swing.event._
-import scala.swing.{BorderPanel, BoxPanel, Button, Dimension, Label, ListView, MainFrame, Orientation, RadioButton, Slider, SplitPane, TabbedPane, TextArea}
+import scala.swing.{BorderPanel, BoxPanel, Button, Dimension, Label, ListView, MainFrame, Orientation, RadioButton, Slider, SplitPane, TabbedPane, TextArea, _}
 
 class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) extends MainFrame {
 
@@ -150,7 +150,7 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
       selection.intervalMode = ListView.IntervalMode.Single
       renderer = ListView.Renderer(_.title)
     }
-    val center: SplitPane = new SplitPane(Orientation.Vertical, ???/*new ScrollPane(list)*/, tabs) {
+    val center: SplitPane = new SplitPane(Orientation.Vertical, new ScrollPane(list) , tabs) {
       oneTouchExpandable = true
       continuousLayout = true
     }
@@ -223,13 +223,15 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
     val kinshipDegree = new JComboBox(Array("MOTHER", "FATHER", "LEGAL TUTOR"))
     kinshipDegree.setEnabled(checkId())
 
+    val previousPathologies = new JList[Pathology]()
+
     val panel = new JPanel
     panel.setBorder(BorderFactory.createTitledBorder("Familiare"))
     panel.setLayout(new GridLayout(4, 1))
     panel.add(nameSurname, SwingConstants.TOP)
     panel.add(txtUserName, SwingConstants.CENTER)
     panel.add(kinshipDegree, SwingConstants.RIGHT)
-    //TODO MANCA LA LISTA DI previousPathologies
+    panel.add(previousPathologies, SwingConstants.BOTTOM)
     panel
   }
 
@@ -245,10 +247,11 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
     }
     val year = new JComboBox(Array("MOTHER", "FATHER", "LEGAL TUTOR"))
     year.setEnabled(checkId())
-    /*val dayNumber = String.va1 to 10 toArray)
-    val day = new JComboBox(dayNumber)
+    val dayNumber = (1 to 10 toArray)
+    val day = new JComboBox[Int]()
+    dayNumber.foreach{ x => day.addItem(x)}
     day.setEnabled(checkId())
-    val monthNumber = 1 to 10 toArray
+    /*val monthNumber = 1 to 10 toArray
     val month = new JComboBox(monthNumber)
     month.setEnabled(checkId())*/
 
