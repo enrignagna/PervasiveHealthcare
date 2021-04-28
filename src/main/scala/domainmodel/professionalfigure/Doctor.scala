@@ -67,13 +67,11 @@ case class GeneralPractitioner(
                               ) extends Doctor
 
 case class Cardiologist(
-                                override val doctorID: DoctorID,
-                                override val name: String,
-                                override val surname: String,
-                                override val phoneNumber: String,
-                                override val email: String,
-                                override val medicalDegreeGrade: String
-                              ) extends Doctor
-
-final case class Surgeons(surgeons: Set[Surgeon] = Set.empty)
+                         override val doctorID: DoctorID,
+                         override val name: String,
+                         override val surname: String,
+                         override val phoneNumber: String,
+                         override val email: String,
+                         override val medicalDegreeGrade: String
+                       ) extends Doctor
 

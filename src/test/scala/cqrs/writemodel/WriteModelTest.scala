@@ -17,96 +17,89 @@
 package cqrs.writemodel
 
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import domainmodel._
-import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
-import domainmodel.professionalfigure.Specialization._
-import domainmodel.professionalfigure.Surgeon
 import org.junit.runner.RunWith
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.junit.JUnitRunner
 
-import java.time.LocalDate
-import java.util.UUID
-
 @RunWith(classOf[JUnitRunner])
 class WriteModelTest extends AnyFreeSpec with Matchers with ScalaFutures with ScalatestRouteTest {
 
-  val doctorID = UUID.randomUUID().toString
-  val patientID = UUID.randomUUID().toString
+  /* val doctorID = UUID.randomUUID().toString
+   val patientID = UUID.randomUUID().toString
 
-  val patientResponse = Repository.adminRepository.insertPatient(Patient.Patient(
-    PatientID(patientID),
-    CF("aaa"),
-    "Luca",
-    "Verdi",
-    LocalDate.of(1990, 11, 22),
-    "Cesena",
-    Gender.MALE,
-    "054488888",
-    Some("33355548"),
-    "Via Cerchia 20",
-    "...",
-    "Cesena",
-    "FC",
-    None,
-    None,
-    None,
-    None
-  ))
+   val patientResponse = Repository.adminRepository.insertPatient(Patient.Patient(
+     PatientID(patientID),
+     CF("aaa"),
+     "Luca",
+     "Verdi",
+     LocalDate.of(1990, 11, 22),
+     "Cesena",
+     Gender.MALE,
+     "054488888",
+     Some("33355548"),
+     "Via Cerchia 20",
+     "...",
+     "Cesena",
+     "FC",
+     None,
+     None,
+     None,
+     None
+   ))
 
-  val surgeonResponse = Repository.adminRepository.insertSurgeon(Surgeon(
-    DoctorID(doctorID),
-    "Luca",
-    "Manfredi",
-    "123546",
-    "email",
-    "medicalDegreeGrade",
-    GENERAL_SURGERY
-  ))
+   val surgeonResponse = Repository.adminRepository.insertSurgeon(Surgeon(
+     DoctorID(doctorID),
+     "Luca",
+     "Manfredi",
+     "123546",
+     "email",
+     "medicalDegreeGrade",
+     GENERAL_SURGERY
+   ))
 
 
-  val medicalRecordResponse = Repository.surgeonRepository.insertMedicalRecord(
-    MedicalRecord(
-      DoctorID(doctorID),
-      PatientID(patientID),
-      MedicalRecordsID("1"),
-      isClosed = false,
-      None, None, None,
-      None, None, None,
-      None, None, None,
-      None, None, None, None
-    )
-  )
-  val updateMedicalRecordResponse = Repository.surgeonRepository.updateMedicalRecord(
-    MedicalRecordsID("1"),
-    MedicalRecord(
-      DoctorID(doctorID),
-      PatientID(patientID),
-      MedicalRecordsID("1"),
-      isClosed = true,
-      None, None, None,
-      None, None, None,
-      None, None, None,
-      None, None, None, None
-    )
+   val medicalRecordResponse = Repository.surgeonRepository.insertMedicalRecord(
+     MedicalRecord(
+       DoctorID(doctorID),
+       PatientID(patientID),
+       MedicalRecordsID("1"),
+       isClosed = false,
+       None, None, None,
+       None, None, None,
+       None, None, None,
+       None, None, None, None
+     )
+   )
+   val updateMedicalRecordResponse = Repository.surgeonRepository.updateMedicalRecord(
+     MedicalRecordsID("1"),
+     MedicalRecord(
+       DoctorID(doctorID),
+       PatientID(patientID),
+       MedicalRecordsID("1"),
+       isClosed = true,
+       None, None, None,
+       None, None, None,
+       None, None, None,
+       None, None, None, None
+     )
 
-  )
+   )
 
-  "Write model should ensure that all all update or insert operations are completed successfully" - {
-    "a surgeon response must be successful" in {
-      assert(surgeonResponse == "Surgeon created.")
-    }
-    "a patient response must be successful" in {
-      assert(patientResponse == "Patient created.")
-    }
-    " a medical record response must be successful" in {
-      assert(medicalRecordResponse == "Medical record created.")
-    }
-    "and all medical records for a doctor" in {
-      assert(updateMedicalRecordResponse == "Medical record updated.")
-    }
+   "Write model should ensure that all all update or insert operations are completed successfully" - {
+     "a surgeon response must be successful" in {
+       assert(surgeonResponse == "Surgeon created.")
+     }
+     "a patient response must be successful" in {
+       assert(patientResponse == "Patient created.")
+     }
+     " a medical record response must be successful" in {
+       assert(medicalRecordResponse == "Medical record created.")
+     }
+     "and all medical records for a doctor" in {
+       assert(updateMedicalRecordResponse == "Medical record updated.")
+     }
 
-  }
+   }*/
 }

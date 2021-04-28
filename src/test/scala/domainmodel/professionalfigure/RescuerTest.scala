@@ -16,43 +16,40 @@
  *
  */
 
-package domainmodel.generalinfo
+package domainmodel.professionalfigure
 
-import domainmodel.generalinfo.ExamHistory._
+import domainmodel.DoctorID
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner
 
 @RunWith(classOf[JUnitRunner])
-class ExamTest extends AnyFreeSpec {
+class RescuerTest extends AnyFreeSpec {
 
-  val exam: Exam = Exam(ExamDate(), ExamReport("Hearth disease"), ExamInfo("Checked the hearth rhythm"))
+  val rescuer: Rescuer = Rescuer(
+    DoctorID("123"),
+    "Luca",
+    "Manfredi",
+    "3214569876",
+    "surgeon@gmail.com",
+    "102"
+  )
 
-  "An exam should have" - {
-    "a date" in {
-      assert(exam.examDate != null)
+  "A rescuer should have" - {
+    "a doctor ID" in {
+      assert(rescuer.doctorID != null)
     }
-    "a report of the exam" in {
-      assert(exam.examReport.value.nonEmpty)
+    "a name and surname" in {
+      assert(rescuer.name != null && rescuer.surname != null)
     }
-    "a brief information description" in {
-      assert(exam.examInfo.value.nonEmpty)
+    "a phone number" in {
+      assert(rescuer.phoneNumber != null)
     }
-  }
-
-  val examHistory: ExamHistory = ExamHistory()
-
-  "Exams history" - {
-    "should be" - {
-      "a set" in {
-        assert(examHistory.history.isInstanceOf[Set[Exam]])
-      }
-      "initially empty" in {
-        assert(examHistory.history.isEmpty)
-      }
+    "a mail" in {
+      assert(rescuer.email != null)
     }
-    "can be updated" in {
-      assert(examHistory.addNewExam(exam).history.nonEmpty)
+    "a medical degree grade" in {
+      assert(rescuer.medicalDegreeGrade != null)
     }
   }
 }

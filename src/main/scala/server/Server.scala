@@ -48,8 +48,8 @@ object Server {
     }
   }
 
-  def main(args: Array[String]): Unit = {
 
+  def start(): Unit = {
     val rootBehavior = Behaviors.setup[Nothing] { context =>
 
 
@@ -116,4 +116,10 @@ object Server {
     PatientDigitalTwin.initialize()
     val system = ActorSystem[Nothing](rootBehavior, "PervasiveHealthcare")
   }
+
+
+  def main(args: Array[String]): Unit = {
+    start()
+  }
+
 }

@@ -28,10 +28,13 @@ dependencies {
     implementation("com.typesafe.akka:akka-persistence-typed_$scalaVersion:_")
     implementation("xyz.driver:spray-json-derivation_$scalaVersion:_")
     implementation("com.typesafe.akka:akka-actor-typed_$scalaVersion:_")
-    implementation("org.scala-lang.modules:scala-swing_$scalaVersion:2.1.1")
-    implementation("org.apache.spark:spark-core_$scalaVersion:3.1.1")
-    implementation("org.apache.spark:spark-sql_$scalaVersion:3.1.1")
-    implementation("org.apache.spark:spark-mllib_$scalaVersion:3.1.1")
+    implementation("org.scala-lang.modules:scala-swing_$scalaVersion:_")
+    implementation("org.apache.spark:spark-core_$scalaVersion:_")
+    implementation("org.apache.spark:spark-sql_$scalaVersion:_")
+    implementation("org.apache.spark:spark-mllib_$scalaVersion:_")
+    implementation("com.typesafe.akka:akka-http-bom_$scalaVersion:_")
+    implementation("com.typesafe.akka:akka-stream-testkit_$scalaVersion:_")
+    implementation("com.typesafe.akka:akka-http-testkit_$scalaVersion:_")
 
 
     testImplementation("junit:junit:_")

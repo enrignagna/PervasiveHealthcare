@@ -17,23 +17,16 @@
 package cqrs.readmodel
 
 import akka.http.scaladsl.testkit.ScalatestRouteTest
-import domainmodel._
-import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
-import domainmodel.professionalfigure.Specialization._
-import domainmodel.professionalfigure.Surgeon
 import org.junit.runner.RunWith
 import org.scalatest.concurrent.ScalaFutures
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatest.matchers.should.Matchers
 import org.scalatestplus.junit.JUnitRunner
 
-import java.time.LocalDate
-import java.util.UUID
-
 @RunWith(classOf[JUnitRunner])
 class ReadModelTest extends AnyFreeSpec with Matchers with ScalaFutures with ScalatestRouteTest {
 
-  val doctorID = UUID.randomUUID().toString
+  /*val doctorID = UUID.randomUUID().toString
   val patientID = UUID.randomUUID().toString
 
   ReadModel.createSurgeon(
@@ -108,5 +101,5 @@ class ReadModelTest extends AnyFreeSpec with Matchers with ScalaFutures with Sca
       assert(RMUtility.getAllMedicalRecordsForDoctor(DoctorID(doctorID)).nonEmpty)
     }
 
-  }
+  }*/
 }
