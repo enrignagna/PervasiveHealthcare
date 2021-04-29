@@ -21,6 +21,15 @@ import domainmodel.utility.Description
 
 import java.time.LocalDateTime
 
+/**
+ * Nursing Documentation.
+ *
+ * @param registration                , registration.
+ * @param needsIdentification         , needs identification.
+ * @param nursingInterventionPlanning , nursing intervention planning.
+ * @param careDiary                   , care diary.
+ * @param interventionEvaluation      , intervention evaluation.
+ */
 case class NursingDocumentation(
                                  registration: Registration,
                                  needsIdentification: Option[NeedsIdentification],
@@ -29,14 +38,41 @@ case class NursingDocumentation(
                                  interventionEvaluation: Option[InterventionEvaluation]
                                )
 
+/**
+ * Intervention Evaluation.
+ *
+ * @param value , value of intervention evaluation.
+ */
 case class InterventionEvaluation(value: String)
 
+/**
+ * Care Diary.
+ *
+ * @param value , value of care diary.
+ */
 case class CareDiary(value: String)
 
+/**
+ * Nursing Intervention Planning.
+ *
+ * @param datetime    , date and time.
+ * @param description , description.
+ */
 case class NursingInterventionPlanning(datetime: LocalDateTime = LocalDateTime.now(), description: Description)
 
+/**
+ * Needs Identification.
+ *
+ * @param datetime    , date and time.
+ * @param description , description.
+ */
 case class NeedsIdentification(datetime: LocalDateTime = LocalDateTime.now(), description: Description)
 
+/**
+ * Registration.
+ *
+ * @param personalData , personal data.
+ */
 case class Registration(personalData: GeneralInfo)
 
 

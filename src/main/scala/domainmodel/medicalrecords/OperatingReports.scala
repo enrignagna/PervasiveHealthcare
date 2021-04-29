@@ -22,13 +22,34 @@ import domainmodel.utility.Note
 
 import java.time.LocalDateTime
 
+/**
+ * Surgeon Report.
+ *
+ * @param surgeon , surgeon.
+ * @param note    , note.
+ */
 case class SurgeonReport(surgeon: Surgeon, note: Option[Note])
 
+/**
+ * Anesthetist Report.
+ *
+ * @param anesthetist , anesthetist.
+ * @param note        , note.
+ */
 case class AnesthetistReport(anesthetist: Anesthetist, note: Option[Note])
 
+/**
+ * Instrumentalist Report.
+ *
+ * @param instrumentalist , instrumentalist.
+ * @param note            , note.
+ */
 case class InstrumentalistReport(instrumentalist: Instrumentalist, note: Option[Note])
 
 
+/**
+ * Medical.
+ */
 object Medical {
 
   case class Medical private(surgeons: Set[SurgeonReport] = Set.empty,

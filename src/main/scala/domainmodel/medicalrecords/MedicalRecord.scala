@@ -32,7 +32,27 @@ import domainmodel.{DoctorID, PatientID}
  */
 case class MedicalRecordsID(value: String)
 
-
+/**
+ * Medical Record.
+ *
+ * @param doctorID                   , doctor ID.
+ * @param patientID                  , patient ID.
+ * @param medicalRecordID            ,medical record ID.
+ * @param isClosed                   ,is closed.
+ * @param initialAnalysis            ,initial analysis.
+ * @param clinicalDiary              ,clinical diary.
+ * @param diagnosticServicesRequests ,diagnostic services requests.
+ * @param graphic                    ,graphic.
+ * @param painReliefHistory          ,pain relief history.
+ * @param singleSheetTherapyHistory  ,single sheet therapy history.
+ * @param adviceRequest              ,advice request.
+ * @param reports                    ,reports.
+ * @param operatingReports           ,operating reports.
+ * @param nursingDocumentation       ,nursing documentation.
+ * @param anesthesiologyRecord       ,anesthesiology record.
+ * @param medicalSurgicalDevices     ,medical surgical devices.
+ * @param dischargeLetter            ,discharge letter.
+ */
 case class MedicalRecord(
                           doctorID: DoctorID,
                           patientID: PatientID,
