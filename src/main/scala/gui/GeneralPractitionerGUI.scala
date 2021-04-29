@@ -21,11 +21,9 @@ import java.awt.{Dimension, Toolkit}
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.generalpractitioner.GeneralPractitionerActor
-import client.patient.Message.AllMedicalRecordMessage
-import client.surgeon.SurgeonActor
 import domainmodel.DoctorID
-import domainmodel.medicalrecords.MedicalRecord
-import javax.swing.JOptionPane
+import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
+import javax.swing.{JList, JOptionPane, JPanel}
 
 import scala.swing.BorderPanel.Position._
 import scala.swing.ListView._
@@ -33,8 +31,8 @@ import scala.swing.TabbedPane._
 import scala.swing._
 import scala.swing.event._
 
-class GeneralPractitionerGUI(generalPractitionerID: String) extends MainFrame {
-/*
+class GeneralPractitionerGUI(generalPractitionerID: String, actorSystem: ActorSystem) extends MainFrame {
+
   val heightRatio = 1.5
   val widthRatio = 2
   val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height / heightRatio
@@ -45,13 +43,15 @@ class GeneralPractitionerGUI(generalPractitionerID: String) extends MainFrame {
   title = "Scala Swing General Practitioner Demo"
 
   val id : DoctorID = DoctorID(generalPractitionerID)
-  val system: ActorSystem = ActorSystem("GeneralPractitionerSystem")
-  val generalPractitionerActor: ActorRef = system.actorOf(Props(
+  var listGeneralPractitionerInformations: List[GeneralPractitionerInfo] = List()
+  val generalPractitionerActor: ActorRef = actorSystem.actorOf(Props(
     new GeneralPractitionerActor(id)
   ), name = "generalPractitioner")
 
-  var generalPractitionerInformations: ListView[String] = new ListView[String]()
-  var listGeneralPractitionerInformations: List[MedicalRecord] = List()
+  var generalPractitionerInformations: JList[JPanel] = new JList[JPanel]()
+  var newGeneralPractitionerInformation: JPanel= new JPanel
+  //generalPractitionerActor ! //TODO: manca mesaggio
+
   /*
    * The root component in this frame is a panel with a border layout.
    */
@@ -64,11 +64,12 @@ class GeneralPractitionerGUI(generalPractitionerID: String) extends MainFrame {
         editable = false
       }
 
-      pages += new Page("Cartelle cliniche", generalPractitionerInformations)
+      pages += new Page("Informazioni medice di base", new Panel{generalPractitionerInformations})
+      pages += new Page("Nuova informazione medica di base", new Panel{newGeneralPractitionerInformation})
       pages += new Page("Logout", logout)
     }
 
-    val list = new ListView(tabs.pages) {
+    val list: ListView[Page] = new ListView(tabs.pages) {
       selectIndices(0)
       selection.intervalMode = ListView.IntervalMode.Single
       renderer = ListView.Renderer(_.title)
@@ -101,8 +102,8 @@ class GeneralPractitionerGUI(generalPractitionerID: String) extends MainFrame {
       case ValueChanged(`slider`) =>
         if (!slider.adjusting || reactLive) tabs.selection.index = slider.value
         slider.value match {
-          case 0 => surgeonActor ! AllMedicalRecordMessage
-          case 1 => showDialog()
+          case 0 => _//generalPractitionerActor ! //todo:manca messaggio
+          case 2 => showDialog()
         }
       case SelectionChanged(`tabs`) =>
         slider.value = tabs.selection.index
@@ -111,33 +112,22 @@ class GeneralPractitionerGUI(generalPractitionerID: String) extends MainFrame {
         if (list.selection.items.length == 1)
           tabs.selection.page = list.selection.items(0)
       case ListSelectionChanged(list, _, _) =>
-        val medicalRecordsGUI = MedicalRecordsGUI()(listMedicalRecords.filter(id => id.medicalRecordID.value.equals(list.selection.items.head.toString)).head, id, surgeonActor)
-        medicalRecordsGUI.visible = true
+        val generalPractitionerInfoGUI = ??? //new GeneralPractitionerInfoGUI(listGeneralPractitionerInformations.filter(genParc => genParc..value.equals(list.selection.items.head.toString)).head, id, generalPractitionerActor)
+        //generalPractitionerInfoGUI.visible = true
         println("Selection item", list.selection.items.head)
     }
   }
 
-  def updateMedicalRecord(medicalRecordJson: List[MedicalRecord]): Unit = {
-    listMedicalRecords = medicalRecordJson
-    medicalRecords.listData = Seq(medicalRecordJson.foreach(x => Seq(x.medicalRecordID.value, String.valueOf(x.isClosed))).toString)
+  def updateGeneralPractitionerInfoRecord(generalPractitionerInformationJson: List[GeneralPractitionerInfo]): Unit = {
+    listGeneralPractitionerInformations = generalPractitionerInformationJson
+    //listGeneralPractitionerInformations = Seq(listGeneralPractitionerInformations.foreach(x => Seq(x.medicalRecordID.value, String.valueOf(x.isClosed))).toString)
   }
 
   private def showDialog(): Unit = {
     val dialogResult: Int = JOptionPane.showConfirmDialog(null, "Sei sicuro di voler uscire???", "Logout", JOptionPane.YES_NO_OPTION)
     if (dialogResult == JOptionPane.YES_OPTION) {
-      val login = new LoginGUI()
+      val login = new LoginGUI(???)
       login.visible = true
     }
   }
-}
-
-
-object SurgeonGUI {
-
-  def main(args: Array[String]): Unit = {
-    val gui = SurgeonGUI("prova")
-    gui.visible = true
-  }
-
-  def apply(surgeonID: String): SurgeonGUI = new SurgeonGUI(surgeonID)*/
 }
