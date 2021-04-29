@@ -23,10 +23,13 @@ import java.awt.{Dimension, Toolkit}
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.login.LoginActor
 import client.login.Message.LoginMessage
+
 import scala.swing.event.ButtonClicked
 import scala.swing.{BoxPanel, Button, Label, MainFrame, Orientation, PasswordField, TextField}
+import scala.sys.props
 
-class LoginGUI extends MainFrame {
+class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
+
   title = "Login Demo"
   visible = true
   val heightRatio = 1.5
@@ -82,13 +85,12 @@ class LoginGUI extends MainFrame {
       } else dialogGUI.showErrorDialog("Credenziali errate!!")
   }
 
-  val system: ActorSystem = ActorSystem("System")
-  val loginActor: ActorRef = system.actorOf(Props(
+  val loginActor: ActorRef = actorSystem.actorOf(Props(
     new LoginActor(this)), name = "loginActor")
 
 
   private def checkLogin(userID: String, password: String): Unit = {
-    loginActor.tell(LoginMessage(userID, password), null)
+    loginActor ! LoginMessage(userID, password)
   }
 
   def responseLogin(responseRole: Option[String], responseToken: Option[String]): Unit = {
@@ -108,8 +110,9 @@ class LoginGUI extends MainFrame {
   def showAlert(message: String): Unit = dialogGUI.alertDialog(message)
 }
 
-
+/*
 object LoginGUI {
+
 
   def main(args: Array[String]): Unit = {
     val gui = new LoginGUI
@@ -118,3 +121,5 @@ object LoginGUI {
 
   def apply: LoginGUI = new LoginGUI
 }
+
+ */

@@ -17,12 +17,17 @@
 package client
 
 import akka.actor.ActorSystem
+import gui.LoginGUI
 
 /**
  * System for launching all client actor.
  */
 object Client extends App {
   val system = ActorSystem("PatientSystem")
+
+  val loginGUI: LoginGUI = new LoginGUI(system)
+
+
   //val patient = system.actorOf(Props(new PatientActor(PatientID("111"))), name = "patient")
 
   //patient ! PatientLoginMessage("admin", "admin")

@@ -25,7 +25,8 @@ import client.Client
 import client.login.Requests._
 import client.login.Message._
 import gui.{DialogGUI, LoginGUI}
-import spray.json.JsonParser
+import json.RequestJsonFormats.{JsValueFormat, StringJsonFormat}
+import spray.json.{JsonParser, enrichAny}
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -41,7 +42,6 @@ class LoginActor(gui: LoginGUI) extends Actor with ActorLogging {
 
   private lazy val onInteractionBehaviour: Receive = {
     case LoginMessage(id, password) =>
-      println("here")
       loginRequest(id, password).pipeTo(self)
       this.context become onAttendResponseLoginMessageBehaviour
   }
@@ -49,6 +49,7 @@ class LoginActor(gui: LoginGUI) extends Actor with ActorLogging {
   private lazy val onAttendResponseLoginMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
+        println(body.utf8String)
         token = Some(
           JsonParser(body.utf8String).asJsObject.getFields("token").mkString replaceAll("[\"]", "")
         )
