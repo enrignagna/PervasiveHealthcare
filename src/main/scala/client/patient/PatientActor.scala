@@ -104,6 +104,7 @@ class PatientActor(patientID: PatientID) extends Actor with ActorLogging {
 
   private lazy val onAttendResponseGeneralInfoMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
+      println("generalinfo")
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
         val pat: Patient = JsonParser(body.utf8String).convertTo[Patient]
         if (pat.generalInfo.nonEmpty)

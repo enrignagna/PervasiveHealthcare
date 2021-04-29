@@ -83,12 +83,13 @@ object Requests {
    * @return http response of patient
    */
   def allMedicalRecordsRequest(token: String, doctorID: DoctorID)(implicit system: ClassicActorSystemProvider): Future[HttpResponse] = {
+    println(doctorID, token)
     Http().singleRequest(
       HttpRequest(
-        method = HttpMethods.PUT,
-        uri = s"http://127.0.0.1:8080/api/generalpractitioner",
+        method = HttpMethods.GET,
+        uri = s"http://127.0.0.1:8080/api/medicalrecords/${doctorID.value}",
         headers = List(APITokenHeader(token)),
-        entity = HttpEntity(ContentTypes.`application/json`, s"""$doctorID"""),
+        entity = HttpEntity(ContentTypes.`application/json`, ""),
       )
     )
   }

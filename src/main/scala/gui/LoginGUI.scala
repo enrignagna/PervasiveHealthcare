@@ -39,8 +39,6 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
   preferredSize = new Dimension(windowWidth.toInt, windowHeight.toInt)
   resizable = false
   val dialogGUI = new DialogGUI()
-  var role: String = _
-  var token: String = _
   var userID: String =_
 
   private val loginLabel = new Label {
@@ -94,17 +92,21 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
   }
 
   def responseLogin(responseRole: Option[String], responseToken: Option[String]): Unit = {
-    println("role", role, "token", token)
-    role = responseRole.getOrElse("")
-    token = responseToken.getOrElse("")
+
+    val role = responseRole.getOrElse("")
+    val token = responseToken.getOrElse("")
+
+    println(role, token)
 
     role match {
-      case "0"=> new PatientGUI(userID);
+      case "0"=> new PatientGUI(userID, token, actorSystem);
       case "1" => new GeneralPractitionerGUI(userID)
-      case "2" => new SurgeonGUI(userID)
+      case "2" => new SurgeonGUI(userID, token, actorSystem)
       case "8" => new CardiologistGUI(userID)
       case _ => dialogGUI.showErrorDialog("Errore!")
     }
+
+    close()
   }
 
   def showAlert(message: String): Unit = dialogGUI.alertDialog(message)

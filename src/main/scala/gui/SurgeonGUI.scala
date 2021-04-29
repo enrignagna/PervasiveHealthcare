@@ -20,8 +20,8 @@ package gui
 import java.awt.{Dimension, Toolkit}
 
 import akka.actor.{ActorRef, ActorSystem, Props}
-import client.patient.Message.AllMedicalRecordMessage
 import client.surgeon.SurgeonActor
+import client.surgeon.SurgeonMessage.AllMedicalRecordsMessage
 import domainmodel.DoctorID
 import domainmodel.medicalrecords.MedicalRecord
 
@@ -31,7 +31,7 @@ import scala.swing.TabbedPane._
 import scala.swing._
 import scala.swing.event._
 
-class SurgeonGUI(surgeonID: String, actorSystem: ActorSystem) extends MainFrame {
+class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) extends MainFrame {
 
   val heightRatio = 1.5
   val widthRatio = 2
@@ -39,11 +39,15 @@ class SurgeonGUI(surgeonID: String, actorSystem: ActorSystem) extends MainFrame 
   val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / widthRatio
   preferredSize = new Dimension(windowWidth.toInt, windowHeight.toInt)
   resizable = false
+  visible = true
 
   title = "Scala Swing Surgeon Demo"
 
   val id : DoctorID = DoctorID(surgeonID)
-  val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id)), name = "surgeon")
+  val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id, token,this)), name = "surgeon")
+
+  surgeonActor ! AllMedicalRecordsMessage()
+
 
   var medicalRecords: ListView[String] = new ListView[String]()
   var listMedicalRecords: List[MedicalRecord] = List()
@@ -97,7 +101,7 @@ class SurgeonGUI(surgeonID: String, actorSystem: ActorSystem) extends MainFrame 
       case ValueChanged(`slider`) =>
         if (!slider.adjusting || reactLive) tabs.selection.index = slider.value
         slider.value match {
-          case 0 => surgeonActor ! AllMedicalRecordMessage
+          case 0 => surgeonActor ! AllMedicalRecordsMessage()
           case 1 => dialogGui.showDialog()
         }
       case SelectionChanged(`tabs`) =>
@@ -119,7 +123,7 @@ class SurgeonGUI(surgeonID: String, actorSystem: ActorSystem) extends MainFrame 
   }
 }
 
-
+/*
 object SurgeonGUI {
 
   def main(args: Array[String]): Unit = {
@@ -131,3 +135,5 @@ object SurgeonGUI {
 
 
 }
+
+ */

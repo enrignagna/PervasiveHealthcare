@@ -22,37 +22,41 @@ import akka.http.scaladsl.{Http, HttpExt}
 import akka.pattern.pipe
 import akka.util.ByteString
 import client.Client
-import client.surgeon.SurgeonMessage._
 import client.surgeon.Requests._
+import client.surgeon.SurgeonMessage._
 import domainmodel.DoctorID
 import domainmodel.medicalrecords.MedicalRecord
-import json.RequestJsonFormats.immSetFormat
+import gui.SurgeonGUI
+import json.RequestJsonFormats.{StringJsonFormat, seqFormat}
 import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
-import spray.json.JsonParser
+import shapeless.syntax.std.tuple.unitTupleOps
+import spray.json.{JsonParser, enrichAny}
 
 import scala.concurrent.ExecutionContextExecutor
 
 
-class SurgeonActor(doctorID: DoctorID) extends Actor with ActorLogging {
+class SurgeonActor(doctorID: DoctorID, token: String, surgeonGUI: SurgeonGUI) extends Actor with ActorLogging {
 
   val http: HttpExt = Http(Client.system)
   implicit val system: ClassicActorSystemProvider = Client.system
   implicit val executionContext: ExecutionContextExecutor = Client.system.classicSystem.dispatcher
-  var token: Option[String] = None
 
 
   private lazy val onInteractionBehaviour: Receive = {
+
     //    case SurgeonLoginMessage(id, password) =>
     //      surgeonLoginRequest(id, password).pipeTo(self)
     //      this.context become onAttendResponseSurgeonLoginMessageBehaviour
     case InsertMedicalRecordMessage(medicalRecord) =>
-      insertMedicalRecordRequest(token.getOrElse(""), medicalRecord).pipeTo(self)
+      println("a")
+      insertMedicalRecordRequest(token, medicalRecord).pipeTo(self)
       this.context become onAttendResponseInsertMedicalRecordMessageBehaviour
     case UpdateMedicalRecordMessage(medicalRecord) =>
-      updateMedicalRecordRequest(token.getOrElse(""), medicalRecord).pipeTo(self)
+      println("a")
+      updateMedicalRecordRequest(token, medicalRecord).pipeTo(self)
       this.context become onAttendResponseUpdateMedicalRecordMessageBehaviour
-    case AllMedicalRecordsMessage =>
-      allMedicalRecordsRequest(token.getOrElse(""), doctorID).pipeTo(self)
+    case AllMedicalRecordsMessage() =>
+      allMedicalRecordsRequest(token, doctorID).pipeTo(self)
       this.context become onAttendResponseAllMedicalRecordsMessageBehaviour
   }
 
@@ -101,12 +105,13 @@ class SurgeonActor(doctorID: DoctorID) extends Actor with ActorLogging {
   private lazy val onAttendResponseAllMedicalRecordsMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-        //TODO: checkare questa conversione
-        val medicalRecords: Set[MedicalRecord] = JsonParser(body.utf8String).convertTo[Set[MedicalRecord]]
+        val medicalRecords: Seq[MedicalRecord] = JsonParser(body.utf8String).convertTo[Seq[MedicalRecord]]
         if (medicalRecords.nonEmpty)
-          println(medicalRecords)
+          surgeonGUI.updateMedicalRecord(medicalRecords.toList)
         else
           println("No medical records available.")
+
+
       }
       this.context become onInteractionBehaviour
     case resp@HttpResponse(code, _, _, _) =>
