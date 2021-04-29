@@ -17,11 +17,14 @@
  */
 package gui
 
-import java.awt.{CardLayout, GridLayout, Toolkit}
+import java.awt.{GridLayout, Toolkit}
 
 import akka.actor.ActorRef
-import domainmodel.medicalrecords.MedicalRecord
-import domainmodel.{ID, Pathology, PatientID}
+import client.surgeon.SurgeonMessage.UpdateMedicalRecordMessage
+import domainmodel.medicalrecords.clinicaldiary.Treatment
+import domainmodel.medicalrecords.{AnesthetistReport, InstrumentalistReport, MedicalRecord, SurgeonReport}
+import domainmodel._
+import domainmodel.medicalrecords.initialanalysis.InitialAnalysis
 import javax.swing._
 
 import scala.swing.BorderPanel.Position._
@@ -32,6 +35,8 @@ import scala.swing.{BorderPanel, BoxPanel, Button, Dimension, Label, ListView, M
 
 class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) extends MainFrame {
 
+  val utility: UtilsGUI = new UtilsGUI
+  val previousPathologies = new JList[JPanel]()
   val heightRatio = 1.5
   val widthRatio = 2
   val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height / heightRatio
@@ -47,7 +52,7 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
   }
   private val updateButton = new Button {
     text = "Aggiorna"
-    enabled = checkId()
+    enabled = utility.checkId(id)
   }
   private val patientIDtxt = new TextArea {
     editable = false
@@ -63,12 +68,12 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
     name = "Cartella clinica:"
     text = "Aperta"
     text = "Chiusa"
-    visible = checkId()
+    visible = utility.checkId(id)
   }
 
-  val initialAnalysis: TextArea = createTextArea(medicalRecord.initialAnalysis)
-  val clinicalDiary: TextArea = createTextArea(medicalRecord.clinicalDiary)
-  val operatingReports: TextArea = createTextArea(medicalRecord.operatingReports)
+  val initialAnalysis: JTextArea = createTextArea(medicalRecord.initialAnalysis)
+  val clinicalDiary: JTextArea = createTextArea(medicalRecord.clinicalDiary)
+  val operatingReports: JTextArea = createTextArea(medicalRecord.operatingReports)
   /*
  * The root component in this frame is a panel with a border layout.
  */
@@ -76,50 +81,55 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
 
     var reactLive = false
 
-    val familiarPanel: JPanel = createFamiliarPanel()
-    val remotePanel: JPanel = createRemotePhysiologicPanel("Remota")
-    val physiologicPanel: JPanel = createRemotePhysiologicPanel("Fisiologica")
+    var familiarPanel: JList[JPanel] = new JList[JPanel]
+    medicalRecord.initialAnalysis.get.anamensis.get.familiars.familiars.foreach { f => createFamiliarPanel(f, familiarPanel) }
+    var remotePanel: JList[JPanel] = new JList[JPanel]
+    medicalRecord.initialAnalysis.get.anamensis.get.remotes.history.foreach { r => createRemotePanel(r, remotePanel) }
+    val physiologicPanel: JPanel = createPhysiologicPanel(medicalRecord.initialAnalysis.get.anamensis.get.physiologic)
 
-    val anamnesiPanel: JPanel = new JPanel
-    anamnesiPanel.setBorder(BorderFactory.createTitledBorder("Anamnesi"))
-    anamnesiPanel.setLayout(new GridLayout(1, 3))
-    anamnesiPanel.add(familiarPanel, SwingConstants.LEFT)
-    anamnesiPanel.add(remotePanel, SwingConstants.CENTER)
-    anamnesiPanel.add(physiologicPanel, SwingConstants.RIGHT)
+    val anamnesiPanel: JPanel = createAnamnesiPanel(familiarPanel, remotePanel, physiologicPanel)
 
-    val hospitalizationMotivation: JLabel = new JLabel {
-      setText("Motivazione ricovero ospedaliero")
-    }
+    val physicalExaminationPanel: JPanel = createPhysicalExaminationPanel()
 
-    val systemsInvestigation: JLabel = new JLabel {
-      setText("Investigazione")
-    }
+    val stateEvaluationPanel: JPanel = createStateEvaluationPanel()
 
-    val hospitalizationMotivationtxt: JTextArea = new JTextArea {
-      setEditable(checkId())
-      setPreferredSize(new Dimension(5, 3))
-    }
+    initialAnalysis.add(anamnesiPanel)
+    initialAnalysis.add(physicalExaminationPanel)
+    initialAnalysis.add(stateEvaluationPanel)
 
-    val systemsInvestigationtxt: JTextArea = new JTextArea {
-      setEditable(checkId())
-      setPreferredSize(new Dimension(5, 3))
-    }
+    val healthEvolutionPanel: JPanel = createHealthEvolutionPanel()
+    var diagnosticTreatments: JList[JPanel] = new JList[JPanel]
+    medicalRecord.clinicalDiary.get.diagnosticTreatments.get.diagnosticTreatments.foreach { dt => createTreatmentPanel(dt.treatment, diagnosticTreatments) }
+    var therapeuticTreatments: JList[JPanel] = new JList[JPanel]
+    medicalRecord.clinicalDiary.get.therapeuticTreatments.get.therapeuticTreatments.foreach { tt => createTreatmentPanel(tt.treatment, therapeuticTreatments) }
+    var rehabilitationTreatments: JList[JPanel] = new JList[JPanel]
+    medicalRecord.clinicalDiary.get.rehabilitationTreatments.get.rehabilitationTreatments.foreach { rt => createTreatmentPanel(rt.treatment, diagnosticTreatments) }
 
-    val physicalExaminationPanel: JPanel = new JPanel
-    physicalExaminationPanel.setBorder(BorderFactory.createTitledBorder("Esaminazione fisica"))
-    physicalExaminationPanel.add(hospitalizationMotivation)
-    physicalExaminationPanel.add(hospitalizationMotivationtxt)
-    physicalExaminationPanel.add(systemsInvestigation)
-    physicalExaminationPanel.add(systemsInvestigationtxt)
+    clinicalDiary.add(healthEvolutionPanel)
+    clinicalDiary.add(diagnosticTreatments)
+    clinicalDiary.add(therapeuticTreatments)
+    clinicalDiary.add(rehabilitationTreatments)
 
+    val medical: JPanel = createHealthEvolutionPanel()
+    var surgeonReports: JList[JPanel] = new JList[JPanel]
+    medicalRecord.operatingReports.get.medical.surgeons.foreach { sr => createSurgeonReport(sr, surgeonReports) }
+    var anesthetistReports: JList[JPanel] = new JList[JPanel]
+    medicalRecord.operatingReports.get.medical.anesthetists.foreach { ar => createAnesthetistReport(ar, anesthetistReports) }
+    var instrumentalistReports: JList[JPanel] = new JList[JPanel]
+    medicalRecord.operatingReports.get.medical.instrumentalists.foreach { ir => createInstrumentalistReport(ir, instrumentalistReports) }
+    var operatingReportsDate: JPanel = utility.createDatePanel(id, medicalRecord.operatingReports.get.datetime.toLocalDate)
+    operatingReportsDate.setBorder(BorderFactory.createTitledBorder("Data"))
+    var interventionTypePanel = new JPanel
+    utility.createLabelTextField("Tipologia di Intervento", medicalRecord.operatingReports.get.interventionType.value, interventionTypePanel, id)
 
-    val stateEvaluationPanel: JPanel = new JPanel {
-      title = "Valutazione dello stato"
+    medical.add(surgeonReports)
+    medical.add(anesthetistReports)
+    medical.add(instrumentalistReports)
 
-    }
-    stateEvaluationPanel.add(familiarPanel)
-    stateEvaluationPanel.add(remotePanel)
-    stateEvaluationPanel.add(physiologicPanel)
+    operatingReports.add(medical)
+    operatingReports.add(operatingReportsDate)
+    operatingReports.add(interventionTypePanel)
+
     val tabs: TabbedPane = new TabbedPane {
 
       val home: BoxPanel = new BoxPanel(Orientation.Vertical) {
@@ -138,11 +148,15 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
       }
 
       pages += new Page("Home", home)
-      pages += new Page("Analisi iniziale", initialAnalysis)
-      pages += new Page("Diario clinico", clinicalDiary)
-      //TODO-- ClinicalDiary(HealthEvolution(Info(value), dateTime), DiagnosticTreatments(Set(DiagnosticTreatment(date,description(value)))), TherapeuticTreatments(Set(TherapeuticTreatment(date, description(value)))),
-      //RehabilitationTreatments(Set(RehabilitationTreatment(date, description(value)))))
-      pages += new Page("Report delle operazioni", operatingReports) //TODO:---OperatingReports(Medical(Set(surgeon), Set(anesthetist), Set(instrumentalist)), data, interventionType(value))
+      pages += new Page("Analisi iniziale", new Panel {
+        initialAnalysis
+      })
+      pages += new Page("Diario clinico", new Panel {
+        clinicalDiary
+      })
+      pages += new Page("Report delle operazioni", new Panel {
+        operatingReports
+      })
     }
 
     val list: ListView[Page] = new ListView(tabs.pages) {
@@ -150,7 +164,7 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
       selection.intervalMode = ListView.IntervalMode.Single
       renderer = ListView.Renderer(_.title)
     }
-    val center: SplitPane = new SplitPane(Orientation.Vertical, new ScrollPane(list) , tabs) {
+    val center: SplitPane = new SplitPane(Orientation.Vertical, new ScrollPane(list), tabs) {
       oneTouchExpandable = true
       continuousLayout = true
     }
@@ -190,85 +204,183 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
     }
   }
 
-  private def checkId(): Boolean = {
-    if (id.equals(PatientID(id.value))) {
-      false
-    } else true
-  }
 
-  private def createTextArea(value: Option[_]): TextArea = {
-    new TextArea(5, 25) {
-      text = value.get.toString
-      editable = checkId()
-    }
+  private def createTextArea(value: Option[_]): JTextArea = new JTextArea(5, 25) {
+    setText(value.get.toString)
+    setEditable(utility.checkId(id))
   }
 
   private def recreateMedicalRecord(): Unit = {
     val closed = if (isClosedButton.text.equals("Chiusa")) true else false
-    /*val newMedicalRecord = MedicalRecord(medicalRecord.doctorID, medicalRecord.patientID, medicalRecord.medicalRecordID, closed,
-      if(initialAnalysis.text.nonEmpty) Some() else None, if())*/
+   /* val recreateInitialAnalysis = InitialAnalysis(Anamnesis(initialAnalysis.getComponent(1).))
+    val newMedicalRecord = MedicalRecord(medicalRecord.doctorID, medicalRecord.patientID, medicalRecord.medicalRecordID, closed,
+      INITIALANALYSIS, CLINICALDIARY, medicalRecord.diagnosticServicesRequests, medicalRecord.graphic, medicalRecord.painReliefHistory,
+      medicalRecord.singleSheetTherapyHistory, medicalRecord.adviceRequest, medicalRecord.reports, OPERATINGREPORTS,
+      medicalRecord.nursingDocumentation, medicalRecord.anesthesiologyRecord, medicalRecord.medicalSurgicalDevices, medicalRecord.dischargeLetter)
+*/
+   // actor ! UpdateMedicalRecordMessage(newMedicalRecord)
   }
 
-  private def createFamiliarPanel(): JPanel = {
-    val nameSurname = new JLabel {
-      title = "Nome Cognome"
-    }
-    val txtUserName: JTextField = new JTextField() {
-      val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height / 1000
-      val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / 500
-      setPreferredSize(new Dimension(windowWidth.toInt, windowHeight.toInt))
-      setEditable(checkId())
-    }
-
-    val kinshipDegree = new JComboBox(Array("MOTHER", "FATHER", "LEGAL TUTOR"))
-    kinshipDegree.setEnabled(checkId())
-
-    val previousPathologies = new JList[Pathology]()
-
+  private def createFamiliarPanel(familiar: Familiar, famPanel: JList[JPanel]): Unit = {
     val panel = new JPanel
+
     panel.setBorder(BorderFactory.createTitledBorder("Familiare"))
     panel.setLayout(new GridLayout(4, 1))
-    panel.add(nameSurname, SwingConstants.TOP)
-    panel.add(txtUserName, SwingConstants.CENTER)
+    utility.createLabelTextField("Nome Cognome", familiar.name, panel, id)
+
+    val kinshipDegree = new JComboBox(Array("MOTHER", "FATHER", "LEGAL TUTOR"))
+    kinshipDegree.setEnabled(utility.checkId(id))
+    kinshipDegree.setSelectedIndex(familiar.kinshipDegree.id)
+
+
     panel.add(kinshipDegree, SwingConstants.RIGHT)
+    familiar.previousPathologies.pathologies.foreach { pp => createPathologyPanel(pp) }
     panel.add(previousPathologies, SwingConstants.BOTTOM)
-    panel
+
+    famPanel.add(panel)
   }
 
-  private def createRemotePhysiologicPanel(titleGui: String): JPanel = {
-    val info = new JLabel {
-      title = "Informazioni"
-    }
-    val txtInfo: JTextField = new JTextField() {
-      val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height / 1000
-      val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / 500
-      setPreferredSize(new Dimension(windowWidth.toInt, windowHeight.toInt))
-      setEditable(checkId())
-    }
-    val year = new JComboBox(Array("MOTHER", "FATHER", "LEGAL TUTOR"))
-    year.setEnabled(checkId())
-    val dayNumber = (1 to 10 toArray)
-    val day = new JComboBox[Int]()
-    dayNumber.foreach{ x => day.addItem(x)}
-    day.setEnabled(checkId())
-    /*val monthNumber = 1 to 10 toArray
-    val month = new JComboBox(monthNumber)
-    month.setEnabled(checkId())*/
-
-    val date = new JPanel(new CardLayout())
-    date.setBorder(BorderFactory.createTitledBorder("Data AAAA-MM-GG"))
-    date.add(year)
-    //date.add(month)
-    //date.add(day)
-
+  private def createRemotePanel(remote: Remote, remotePanel: JList[JPanel]): Unit = {
     val panel = new JPanel
-    date.setBorder(BorderFactory.createTitledBorder(titleGui))
-    panel.add(info)
-    panel.add(txtInfo)
+    utility.createLabelTextField("Informazioni", remote.info, panel, id)
+
+    val date = utility.createDatePanel(id, remote.date)
+    date.setBorder(BorderFactory.createTitledBorder("Remota"))
+    panel.add(date)
+
+    remotePanel.add(panel)
+  }
+
+  private def createPhysiologicPanel(physiologic: Physiologic): JPanel = {
+    val panel = new JPanel
+    utility.createLabelTextField("Informazioni", physiologic.info, panel, id)
+
+    val date = utility.createDatePanel(id, physiologic.date)
+
+    date.setBorder(BorderFactory.createTitledBorder("Fisiologica"))
     panel.add(date)
 
     panel
   }
+
+  private def createPathologyPanel(pathology: Pathology): Unit = {
+    val pathologyPanel = new JPanel()
+    pathologyPanel.setBorder(BorderFactory.createTitledBorder("Patologie"))
+
+    utility.createLabelTextField("Nome patologia", pathology.pathologyName.toString, pathologyPanel, id)
+
+    val pathologyDate = utility.createDatePanel(id, pathology.detectionDate.value)
+    val pathologySeverity = new JComboBox(Array("ONE - Low desease", "TWO - Changes life quality", "THREE - Causes disability", "FOUR - Threatens life"))
+    pathologySeverity.setEnabled(utility.checkId(id))
+    pathologySeverity.setSelectedIndex(pathology.pathologySeverity.severity.id)
+
+    pathologyPanel.setLayout(new GridLayout(4, 1))
+    pathologyPanel.add(pathologyDate, SwingConstants.RIGHT)
+    pathologyPanel.add(pathologySeverity, SwingConstants.LEFT)
+    previousPathologies.add(pathologyPanel)
+  }
+
+  private def createAnamnesiPanel(familiar: JList[JPanel], remote: JList[JPanel], physiologic: JPanel): JPanel = {
+    val panel = new JPanel
+    panel.setBorder(BorderFactory.createTitledBorder("Anamnesi"))
+    panel.setLayout(new GridLayout(1, 3))
+    panel.add(familiar, SwingConstants.LEFT)
+    panel.add(remote, SwingConstants.CENTER)
+    panel.add(physiologic, SwingConstants.RIGHT)
+
+    panel
+  }
+
+  private def createPhysicalExaminationPanel(): JPanel = {
+    val panel: JPanel = new JPanel()
+    panel.setBorder(BorderFactory.createTitledBorder("Esaminazione fisica"))
+
+    utility.createLabelTextField("Motivazione ricovero ospedaliero", medicalRecord.initialAnalysis.get.physicalExamination.hospitalizationMotivation.value, panel, id)
+    utility.createLabelTextField("Investigazione", medicalRecord.initialAnalysis.get.physicalExamination.systemsInvestigation.value, panel, id)
+
+    panel
+  }
+
+  private def createStateEvaluationPanel(): JPanel = {
+    val panel = new JPanel {
+      title = "Valutazione dello stato"
+    }
+
+    utility.createLabelTextField("Psicologica", medicalRecord.initialAnalysis.get.stateEvaluation.psychological.value, panel, id)
+    utility.createLabelTextField("Nutrizionale", medicalRecord.initialAnalysis.get.stateEvaluation.nutritional.value, panel, id)
+    utility.createLabelTextField("Educativa", medicalRecord.initialAnalysis.get.stateEvaluation.educational.value, panel, id)
+    utility.createLabelTextField("Sociale", medicalRecord.initialAnalysis.get.stateEvaluation.social.value, panel, id)
+
+    panel
+  }
+
+  private def createHealthEvolutionPanel(): JPanel = {
+
+    if (medicalRecord.clinicalDiary.get.healthEvolution.isDefined) {
+      val panel = new JPanel
+      val healthEvolution = medicalRecord.clinicalDiary.get.healthEvolution.get
+      utility.createLabelTextField("Informazioni", healthEvolution.info.value, panel, id)
+
+      val date = utility.createDatePanel(id, healthEvolution.dateTime.toLocalDate)
+
+      date.setBorder(BorderFactory.createTitledBorder("Evoluzione sanitaria"))
+      panel.add(date)
+
+      panel
+    } else null
+  }
+
+
+  private def createTreatmentPanel(treatment: Treatment, treatmentsPanel: JList[JPanel]): Unit = {
+    val panel = new JPanel
+    utility.createLabelTextField("Descrizione", treatment.description.value, panel, id)
+
+    val date = utility.createDatePanel(id, treatment.date)
+    utility.createLabelTextField("Medico", treatment.doctorID.value, panel, id)
+
+    date.setBorder(BorderFactory.createTitledBorder("Trattamento"))
+    panel.add(date)
+
+    treatmentsPanel.add(panel)
+  }
+
+  private def createSurgeonReport(report: SurgeonReport, panel: JList[JPanel]): Unit = {
+    val subPanel = new JPanel()
+    utility.createLabelTextField("Note", report.note.getOrElse("").toString, subPanel, id)
+    val surgeon: JPanel = new JPanel()
+    utility.createLabelTextField("Informazioni generali", report.surgeon.name.concat("").concat(report.surgeon.surname), surgeon, id)
+    utility.createLabelTextField("Email", report.surgeon.email.toString, surgeon, id)
+    utility.createLabelTextField("Laurea e specializzazione", report.surgeon.medicalDegreeGrade.concat(report.surgeon.specialization.id.toString), surgeon, id)
+
+    subPanel.add(surgeon)
+    panel.add(subPanel)
+  }
+
+  private def createInstrumentalistReport(report: InstrumentalistReport, panel: JList[JPanel]): Unit = {
+    val subPanel = new JPanel()
+    utility.createLabelTextField("Note", report.note.getOrElse("").toString, subPanel, id)
+    val instrumentalist: JPanel = new JPanel()
+    utility.createLabelTextField("Informazioni generali", report.instrumentalist.name.concat("").concat(report.instrumentalist.surname), instrumentalist, id)
+    utility.createLabelTextField("Email", report.instrumentalist.email.toString, instrumentalist, id)
+    utility.createLabelTextField("Laurea", report.instrumentalist.nursingDegreeGrade, instrumentalist, id)
+
+    subPanel.add(instrumentalist)
+    panel.add(subPanel)
+  }
+
+  private def createAnesthetistReport(report: AnesthetistReport, panel: JList[JPanel]): Unit = {
+    val subPanel = new JPanel()
+    utility.createLabelTextField("Note", report.note.getOrElse("").toString, subPanel, id)
+    val anesthetist: JPanel = new JPanel()
+    utility.createLabelTextField("Informazioni generali", report.anesthetist.name.concat("").concat(report.anesthetist.surname), anesthetist, id)
+    utility.createLabelTextField("Email", report.anesthetist.email.toString, anesthetist, id)
+    utility.createLabelTextField("Laurea", report.anesthetist.medicalDegreeGrade, anesthetist, id)
+
+    subPanel.add(anesthetist)
+    panel.add(subPanel)
+  }
+
+
 }
 
 
