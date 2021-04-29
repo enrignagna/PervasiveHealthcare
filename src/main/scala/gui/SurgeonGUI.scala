@@ -31,7 +31,7 @@ import scala.swing.TabbedPane._
 import scala.swing._
 import scala.swing.event._
 
-class SurgeonGUI(surgeonID: String) extends MainFrame {
+class SurgeonGUI(surgeonID: String, actorSystem: ActorSystem) extends MainFrame {
 
   val heightRatio = 1.5
   val widthRatio = 2
@@ -43,8 +43,7 @@ class SurgeonGUI(surgeonID: String) extends MainFrame {
   title = "Scala Swing Surgeon Demo"
 
   val id : DoctorID = DoctorID(surgeonID)
-  val system: ActorSystem = ActorSystem("SurgeonSystem")
-  val surgeonActor: ActorRef = system.actorOf(Props(new SurgeonActor(id)), name = "surgeon")
+  val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id)), name = "surgeon")
 
   var medicalRecords: ListView[String] = new ListView[String]()
   var listMedicalRecords: List[MedicalRecord] = List()
