@@ -31,7 +31,7 @@ import scala.swing.TabbedPane._
 import scala.swing._
 import scala.swing.event._
 
-class PatientGUI(val patientID: String, actorSystem: ActorSystem) extends MainFrame {
+class PatientGUI(val patientID: String, token: String, actorSystem: ActorSystem) extends MainFrame {
 
   val heightRatio = 1.5
   val widthRatio = 2
@@ -54,8 +54,10 @@ class PatientGUI(val patientID: String, actorSystem: ActorSystem) extends MainFr
     new PatientActor(PatientID(patientID))
   ), name = "patient")
 
+  patientActor ! GeneralInfoMessage
+
   val generalInfo: TextArea = new TextArea(5, 25) {
-    patientActor ! GeneralInfoMessage
+
     editable = false
   }
 
@@ -159,6 +161,7 @@ class PatientGUI(val patientID: String, actorSystem: ActorSystem) extends MainFr
   }
 }
 
+/*
 object PatientGUI {
 
   def main(args: Array[String]): Unit = {
@@ -168,3 +171,5 @@ object PatientGUI {
 
   def apply(patientID: String): PatientGUI = new PatientGUI(patientID)
 }
+
+ */

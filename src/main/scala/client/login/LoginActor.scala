@@ -49,15 +49,15 @@ class LoginActor(gui: LoginGUI) extends Actor with ActorLogging {
   private lazy val onAttendResponseLoginMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-        println(body.utf8String)
         token = Some(
           JsonParser(body.utf8String).asJsObject.getFields("token").mkString replaceAll("[\"]", "")
         )
         role = Some(
-          JsonParser(body.utf8String).asJsObject.getFields("role.id").mkString
+          JsonParser(body.utf8String).asJsObject.getFields("role").
+            head.asJsObject().getFields("id").mkString
         )
         gui.responseLogin(role, token)
-        println("bodyLogin", body)
+
       }
       this.context become onInteractionBehaviour
     case resp@HttpResponse(code, _, _, _) =>
