@@ -18,7 +18,7 @@
 
 package client.generalpractitioner
 
-import client.Message
+import client._
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
 import domainmodel.{DoctorID, PatientID}
 

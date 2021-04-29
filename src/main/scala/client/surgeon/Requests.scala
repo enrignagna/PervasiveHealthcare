@@ -28,7 +28,6 @@ import scala.concurrent.Future
 object Requests {
 
 
-
   /**
    *
    * @param token         , token for authentication.
@@ -64,8 +63,6 @@ object Requests {
       )
     )
   }
-
-  //TODO: Da aggiornare le rotte
 
   /**
    *
