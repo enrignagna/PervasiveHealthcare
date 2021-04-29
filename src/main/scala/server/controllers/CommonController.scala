@@ -24,6 +24,9 @@ import cqrs.readmodel.RMUtility
 import domainmodel.{DoctorID, PatientID}
 import server.models.Protocol._
 
+/**
+ * Controller object for common CQRS actions.
+ */
 object CommonController {
 
   def apply(): Behavior[CQRSAction] = handleAction()

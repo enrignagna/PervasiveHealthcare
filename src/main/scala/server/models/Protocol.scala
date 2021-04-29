@@ -27,6 +27,9 @@ import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import domainmodel.medicalrecords.{DrugsAdministered, MedicalRecord, MedicalRecordsID}
 import domainmodel.professionalfigure._
 
+/**
+ * This object contains all query and all commands that can be executed.
+ */
 object Protocol {
 
   sealed trait CQRSAction

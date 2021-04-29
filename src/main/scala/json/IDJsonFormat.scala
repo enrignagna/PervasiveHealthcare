@@ -21,9 +21,19 @@ import domainmodel.{DoctorID, PatientID}
 import spray.json.RootJsonFormat
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2}
 
+/**
+ * Json format for id's object.
+ */
 object IDJsonFormat {
 
+  /**
+   * Implicit for patient id object.
+   */
   implicit lazy val patientIDJsonFormat: RootJsonFormat[PatientID] = jsonFormat1(PatientID)
+
+  /**
+   * Implicit for doctor id object.
+   */
   implicit lazy val doctorIDJsonFormat: RootJsonFormat[DoctorID] = jsonFormat1(DoctorID)
 
 }
