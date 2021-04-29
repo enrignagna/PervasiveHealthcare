@@ -25,8 +25,14 @@ import json.RequestJsonFormats.{BooleanJsonFormat, jsonFormat4}
 import spray.json.ImplicitDerivedJsonProtocol.implicitJsonFormat
 import spray.json.RootJsonFormat
 
+/**
+ * Json format for the cardiology prediction.
+ */
 object CardiologyPredictionJsonFormat {
 
+  /**
+   * Implicit for the cardiology prediction object.
+   */
   implicit val cardiologyPredictionJsonFormat: RootJsonFormat[CardiologyPrediction] = jsonFormat4(CardiologyPrediction)
 
 }
