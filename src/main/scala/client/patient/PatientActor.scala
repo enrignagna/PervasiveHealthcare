@@ -41,9 +41,6 @@ class PatientActor(patientID: PatientID) extends Actor with ActorLogging {
 
 
   private lazy val onInteractionBehaviour: Receive = {
-    //    case PatientLoginMessage(id, password) =>
-    //      patientLoginRequest(id, password).pipeTo(self)
-    //      this.context become onAttendResponsePatientLoginMessageBehaviour
     case AllMedicalRecordMessage =>
       patientRequest(token.getOrElse(""), patientID).pipeTo(self)
       this.context become onAttendResponseAllMedicalRecordMessageBehaviour
@@ -54,20 +51,6 @@ class PatientActor(patientID: PatientID) extends Actor with ActorLogging {
       patientRequest(token.getOrElse(""), patientID).pipeTo(self)
       this.context become onAttendResponseGeneralPractitionerInfoMessageBehaviour
   }
-
-  //  private lazy val onAttendResponsePatientLoginMessageBehaviour: Receive = {
-  //    case HttpResponse(StatusCodes.OK, _, entity, _) =>
-  //      entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-  //        token = Some(
-  //          JsonParser(body.utf8String).asJsObject.getFields("token").mkString replaceAll("[\"]", "")
-  //        )
-  //      }
-  //      this.context become onInteractionBehaviour
-  //    case resp@HttpResponse(code, _, _, _) =>
-  //      println("Error: " + code.value)
-  //      resp.discardEntityBytes()
-  //      this.context become onInteractionBehaviour
-  //  }
 
   private lazy val onAttendResponseAllMedicalRecordMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
@@ -84,22 +67,6 @@ class PatientActor(patientID: PatientID) extends Actor with ActorLogging {
       resp.discardEntityBytes()
       this.context become onInteractionBehaviour
   }
-
-  //  private lazy val onAttendResponseSpecificMedicalRecordMessageBehaviour: Receive = {
-  //    case HttpResponse(StatusCodes.OK, _, entity, _) =>
-  //      entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-  //        val pat: Patient = JsonParser(body.utf8String).convertTo[Patient]
-  //        pat.medicalRecords.get.history.find(x => x.medicalRecordID)
-  //          println(pat.medicalRecords.get)
-  //        else
-  //          println("No medical records available.")
-  //      }
-  //      this.context become onInteractionBehaviour
-  //    case resp@HttpResponse(code, _, _, _) =>
-  //      println("Error: " + code.value)
-  //      resp.discardEntityBytes()
-  //      this.context become onInteractionBehaviour
-  //  }
 
 
   private lazy val onAttendResponseGeneralInfoMessageBehaviour: Receive = {

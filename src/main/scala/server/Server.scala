@@ -41,9 +41,9 @@ object Server {
     futureBinding.onComplete {
       case Success(binding) =>
         val address = binding.localAddress
-        system.log.info("Server online at http://{}:{}/", address.getHostString, address.getPort)
+        println(s"Server online at http://${address.getHostString}:${address.getPort}/")
       case Failure(ex) =>
-        system.log.error("Failed to bind HTTP endpoint, terminating system", ex)
+        println("Failed to bind HTTP endpoint, terminating system", ex)
         system.terminate()
     }
   }

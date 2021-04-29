@@ -21,7 +21,7 @@ package domainmodel.generalinfo
 /**
  * Different blood types.
  */
-object BloodType extends Enumeration{
+object BloodType extends Enumeration {
   type BloodType = Value
   val A, B, AB, ZERO = Value
 }
@@ -29,7 +29,7 @@ object BloodType extends Enumeration{
 /**
  * Different RH bloods.
  */
-object Rh extends Enumeration{
+object Rh extends Enumeration {
   type Rh = Value
   val POSITIVE, NEGATIVE = Value
 }
@@ -39,7 +39,8 @@ import domainmodel.generalinfo.Rh.Rh
 
 /**
  * Class that models the blood group.
+ *
  * @param bloodType the type of the blood.
- * @param rh the RH of the blood.
+ * @param rh        the RH of the blood.
  */
 case class BloodGroup(bloodType: BloodType, rh: Rh)

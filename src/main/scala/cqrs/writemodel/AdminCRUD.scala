@@ -18,19 +18,18 @@
 
 package cqrs.writemodel
 
-import java.util.concurrent.TimeUnit
-
 import cqrs.writemodel.WriteModel.{doctorsCollection, patientsCollection}
 import domainmodel.Patient.Patient
+import domainmodel.professionalfigure._
 import domainmodel.{DoctorID, PatientID, User}
-import domainmodel.professionalfigure.{Anesthetist, Cardiologist, GeneralPractitioner, Instrumentalist, Rescuer, Surgeon, WardNurse}
+import json.IDJsonFormat.{doctorIDJsonFormat, patientIDJsonFormat}
+import json.PatientJsonFormat.PatientJsonFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat._
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import spray.json.enrichAny
-import json.IDJsonFormat.{doctorIDJsonFormat, patientIDJsonFormat}
-import json.PatientJsonFormat.PatientJsonFormat
 
+import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 

@@ -25,6 +25,11 @@ import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import domainmodel.medicalrecords.initialanalysis.InitialAnalysis
 import domainmodel.{DoctorID, PatientID}
 
+/**
+ * Medical record ID
+ *
+ * @param value , value of ID.
+ */
 case class MedicalRecordsID(value: String)
 
 

@@ -29,16 +29,6 @@ import scala.concurrent.Future
 
 object Requests {
 
-  //  def generalPractitionerLoginRequest(id: String, password: String)(implicit system: ClassicActorSystemProvider): Future[HttpResponse] = {
-  //    Http().singleRequest(
-  //      HttpRequest(
-  //        method = HttpMethods.POST,
-  //        uri = "http://127.0.0.1:8080/api/login",
-  //        entity = HttpEntity(ContentTypes.`application/json`, s"""{ "id": "$id", "password" : "$password" }""")
-  //      )
-  //    )
-  //  }
-
   /**
    *
    * @param token                   , token for authentication.

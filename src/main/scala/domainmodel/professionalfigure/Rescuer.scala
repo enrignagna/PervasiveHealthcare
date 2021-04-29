@@ -18,6 +18,16 @@ package domainmodel.professionalfigure
 
 import domainmodel.DoctorID
 
+/**
+ * Rescuer.
+ *
+ * @param doctorID           , doctorID.
+ * @param name               , name.
+ * @param surname            , surname.
+ * @param phoneNumber        , phone number.
+ * @param email              , mail.
+ * @param medicalDegreeGrade , medical degree grade.
+ */
 case class Rescuer(doctorID: DoctorID,
                    name: String,
                    surname: String,

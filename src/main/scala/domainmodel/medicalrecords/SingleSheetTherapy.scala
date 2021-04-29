@@ -16,11 +16,10 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.professionalfigure.Doctor
-import domainmodel.utility.Description
-import java.time.LocalDateTime
-
 import domainmodel.DoctorID
+import domainmodel.utility.Description
+
+import java.time.LocalDateTime
 
 /**
  * Drugs prescription.

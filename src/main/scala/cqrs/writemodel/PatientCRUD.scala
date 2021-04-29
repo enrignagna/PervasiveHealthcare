@@ -18,8 +18,6 @@
 
 package cqrs.writemodel
 
-import java.util.concurrent.TimeUnit
-
 import cqrs.writemodel.WriteModel.{cardiologyPredictionsCollection, doctorsCollection, patientsCollection}
 import domainmodel.CardiologyPrediction
 import json.CardiologyPredictionJsonFormat.cardiologyPredictionJsonFormat
@@ -28,6 +26,7 @@ import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.equal
 import spray.json.enrichAny
 
+import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 

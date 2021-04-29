@@ -30,7 +30,7 @@ import java.time.LocalDate
  * @param description , visit's description
  * @param bookingData , booking's date.
  */
-case class BookingVisit(bookingId: Int, visit: Visit, description: Description, bookingData: LocalDate){
+case class BookingVisit(bookingId: Int, visit: Visit, description: Description, bookingData: LocalDate) {
 
 }
 

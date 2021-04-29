@@ -21,14 +21,37 @@ import domainmodel.utility.Description
 
 import java.time.LocalDateTime
 
-
+/**
+ * Anesthesiology Record.
+ *
+ * @param anesthetist         , anesthetist.
+ * @param operationEvaluation , operation evaluation.
+ */
 case class AnesthesiologyRecord(anesthetist: Anesthetist, operationEvaluation: OperationEvaluation) {
 
 }
 
+/**
+ * Operation Evaluation.
+ *
+ * @param anestheticCard          , anesthetic card.
+ * @param postOperationEvaluation ,postOperation evaluation.
+ */
 case class OperationEvaluation(anestheticCard: AnestheticCard,
                                postOperationEvaluation: PostOperationEvaluation)
 
+/**
+ * Post Operation Evaluation.
+ *
+ * @param datetime    , date and time.
+ * @param description , description.
+ */
 case class PostOperationEvaluation(datetime: LocalDateTime = LocalDateTime.now(), description: Description)
 
+/**
+ * Anesthetic Card.
+ *
+ * @param datetime    , date and time.
+ * @param description , description.
+ */
 case class AnestheticCard(datetime: LocalDateTime = LocalDateTime.now(), description: Description)

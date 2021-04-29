@@ -21,8 +21,6 @@ import domainmodel.medicalrecords.MedicalRecord
 
 object SurgeonMessage {
 
-  //case class SurgeonLoginMessage(id: String, password: String) extends Message
-
   /**
    * Insert Medical Record Message.
    *

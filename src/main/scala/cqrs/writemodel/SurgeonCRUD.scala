@@ -18,8 +18,6 @@
 
 package cqrs.writemodel
 
-import java.util.concurrent.TimeUnit
-
 import cqrs.writemodel.WriteModel.{doctorsCollection, medicalRecordsCollection, patientsCollection}
 import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
 import json.IDJsonFormat.patientIDJsonFormat
@@ -30,6 +28,7 @@ import org.mongodb.scala.model.Filters.{and, equal}
 import org.mongodb.scala.model.Updates.{push, set}
 import spray.json.{JsArray, JsObject, enrichAny}
 
+import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 

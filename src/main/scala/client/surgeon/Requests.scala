@@ -27,15 +27,7 @@ import scala.concurrent.Future
 
 object Requests {
 
-  //  def surgeonLoginRequest(id: String, password: String)(implicit system: ClassicActorSystemProvider): Future[HttpResponse] = {
-  //    Http().singleRequest(
-  //      HttpRequest(
-  //        method = HttpMethods.POST,
-  //        uri = "http://127.0.0.1:8080/api/login",
-  //        entity = HttpEntity(ContentTypes.`application/json`, s"""{ "id": "$id", "password" : "$password" }""")
-  //      )
-  //    )
-  //  }
+
 
   /**
    *
@@ -85,8 +77,8 @@ object Requests {
   def allMedicalRecordsRequest(token: String, doctorID: DoctorID)(implicit system: ClassicActorSystemProvider): Future[HttpResponse] = {
     Http().singleRequest(
       HttpRequest(
-        method = HttpMethods.PUT,
-        uri = s"http://127.0.0.1:8080/api/generalpractitioner",
+        method = HttpMethods.GET,
+        uri = s"http://127.0.0.1:8080/api/medicalrecords",
         headers = List(APITokenHeader(token)),
         entity = HttpEntity(ContentTypes.`application/json`, s"""$doctorID"""),
       )

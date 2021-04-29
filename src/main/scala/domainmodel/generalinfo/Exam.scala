@@ -22,43 +22,49 @@ import java.time.LocalDate
 
 /**
  * Class that models the date of an exam.
+ *
  * @param value the exam data.
  */
 case class ExamDate(value: LocalDate = LocalDate.now())
 
 /**
  * Class that models the report of an exam.
+ *
  * @param value a brief report about the exam.
  */
 case class ExamReport(value: String)
 
 /**
  * Class that models the information of an exam.
+ *
  * @param value a brief description about the exam.
  */
 case class ExamInfo(value: String)
 
 /**
  * Class that models a medical exam.
- * @param examDate the date of the exam.
+ *
+ * @param examDate   the date of the exam.
  * @param examReport the report of the exam.
- * @param examInfo the description of the exam.
+ * @param examInfo   the description of the exam.
  */
 case class Exam(examDate: ExamDate, examReport: ExamReport, examInfo: ExamInfo)
 
 /**
  * The set of exams done by a patient.
  */
-object ExamHistory{
+object ExamHistory {
 
   /**
    * Class that models the history of a patient's exams.
+   *
    * @param history the set of exams.
    */
-  case class ExamHistory private(history: Set[Exam] = Set.empty){
+  case class ExamHistory private(history: Set[Exam] = Set.empty) {
 
     /**
      * Add a new exams to the history.
+     *
      * @param exam the exam to add.
      * @return the updated history.
      */
@@ -67,6 +73,7 @@ object ExamHistory{
 
   /**
    * Factory method for ExamHistory.
+   *
    * @return an empty set of exams.
    */
   def apply(): ExamHistory = ExamHistory()

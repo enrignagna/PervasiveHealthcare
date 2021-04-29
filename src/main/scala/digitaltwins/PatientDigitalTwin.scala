@@ -18,8 +18,6 @@
 
 package digitaltwins
 
-import java.time.{LocalDate, Period}
-
 import akka.actor
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import behaviours.CardiologyDiseasesPredictor
@@ -28,11 +26,13 @@ import cqrs.writemodel.Repository.patientRepository
 import domainmodel.Patient.Patient
 import domainmodel.{CardiologyDiseasePrediction, CardiologyDiseasesPresence, CardiologyPrediction, PatientID}
 
+import java.time.{LocalDate, Period}
+
 trait Message
 
 case class CardiologyVisitInserted() extends Message
 
-object PatientDigitalTwin{
+object PatientDigitalTwin {
 
   val digitalTwins: actor.ActorSystem = akka.actor.ActorSystem.create("PervasiveHealthcare")
   var patientsDigitalTwins: Map[PatientID, ActorRef] = Map[PatientID, ActorRef]()
@@ -41,7 +41,7 @@ object PatientDigitalTwin{
     Props(PatientDigitalTwin(patientID))
   }
 
-  def initialize(): Unit ={
+  def initialize(): Unit = {
     RMUtility.getAllPatientID.foreach(id => patientsDigitalTwins = patientsDigitalTwins + (id -> digitalTwins.actorOf(props(id), id.value)))
   }
 
@@ -53,20 +53,18 @@ object PatientDigitalTwin{
       CardiologyDiseasesPredictor.predict(age.toInt, patient.gender, cardiologyVisits.head)
     }
 
-    //TODO add more check and temporal order the predictions
     private lazy val onInteractionBehaviour: Receive = {
       case CardiologyVisitInserted =>
         val patientOp = RMUtility.recreatePatientState(patientID)
-        if(patientOp.nonEmpty){
+        if (patientOp.nonEmpty) {
           val patient = patientOp.get
           val prediction = this.makeCardiologyPrediction(patient)
-          if(prediction.isInstanceOf[CardiologyDiseasesPresence] && patient.generalPractitionerInfo.nonEmpty){
-            println("ok")
-              patientRepository.insertCardiologyPrediction(CardiologyPrediction(
-                patientID,
-                patient.generalPractitionerInfo.get.doctorID,
-                patient.cardiologyVisitHistory.get.history.head
-              ))
+          if (prediction.isInstanceOf[CardiologyDiseasesPresence] && patient.generalPractitionerInfo.nonEmpty) {
+            patientRepository.insertCardiologyPrediction(CardiologyPrediction(
+              patientID,
+              patient.generalPractitionerInfo.get.doctorID,
+              patient.cardiologyVisitHistory.get.history.head
+            ))
           }
         }
     }

@@ -18,8 +18,6 @@
 
 package cqrs.writemodel
 
-import java.util.concurrent.TimeUnit
-
 import cqrs.writemodel.WriteModel.{cardiologyVisitsCollection, doctorsCollection, patientsCollection}
 import domainmodel.CardiologyVisit
 import json.CardiologyVisitJsonFormat.{cardiologyVisitIDJsonFormat, cardiologyVisitJsonFormat}
@@ -30,8 +28,9 @@ import org.mongodb.scala.model.Filters.equal
 import org.mongodb.scala.model.Updates._
 import spray.json.{JsArray, JsObject, enrichAny}
 
-import scala.concurrent.duration.Duration
+import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
+import scala.concurrent.duration.Duration
 
 /**
  * This class represent the implementation of CRUD (Create, Read, Update, Delete) for cardiologist.

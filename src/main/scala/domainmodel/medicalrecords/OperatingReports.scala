@@ -55,8 +55,20 @@ object Medical {
   def apply(): Medical = Medical()
 }
 
+/**
+ * Intervention.
+ *
+ * @param value , value of intervention.
+ */
 case class InterventionType(value: String)
 
+/**
+ * Operating Reports.
+ *
+ * @param medical          , medical.
+ * @param datetime         , date and time.
+ * @param interventionType , intervention type.
+ */
 case class OperatingReports(medical: Medical,
                             datetime: LocalDateTime = LocalDateTime.now(),
                             interventionType: InterventionType) {

@@ -16,10 +16,25 @@
 
 package domainmodel.medicalrecords.initialanalysis
 
-
+/**
+ * Hospitalization motivation.
+ *
+ * @param value , value of hospitalization motivation.
+ */
 case class HospitalizationMotivation(value: String)
 
+
+/**
+ * Systems Investigation.
+ *
+ * @param value , value of system investigation.
+ */
 case class SystemsInvestigation(value: String)
 
-
+/**
+ * Physical Examination.
+ *
+ * @param hospitalizationMotivation , hospitalization motivation.
+ * @param systemsInvestigation      , systems investigation.
+ */
 case class PhysicalExamination(hospitalizationMotivation: HospitalizationMotivation, systemsInvestigation: SystemsInvestigation)

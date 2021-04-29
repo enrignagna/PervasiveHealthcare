@@ -18,7 +18,7 @@
 
 package behaviours
 
-import behaviours.CardiologyVisitData.CardiologyVisitData
+import behaviours.CardiologyVisitData._
 import domainmodel.Gender.Gender
 import domainmodel._
 import org.apache.log4j.{Level, Logger}
@@ -31,22 +31,22 @@ import org.apache.spark.sql.SparkSession
 /**
  * Cardiology Visit Data.
  */
-object CardiologyVisitData{
+object CardiologyVisitData {
 
   case class CardiologyVisitData(
-                                age: Int,
-                                gender: Int,
-                                chestPainType: Int,
-                                restingBloodPressure: Int,
-                                cholesterol: Int,
-                                fastingBloodSugar: Boolean,
-                                restingElectrocardiographic: Int,
-                                maxHeartRate: Int,
-                                isAnginaInducted: Boolean,
-                                oldPeakST: Double,
-                                slopeST: Int,
-                                numberVesselColoured: Int,
-                                thal: Int
+                                  age: Int,
+                                  gender: Int,
+                                  chestPainType: Int,
+                                  restingBloodPressure: Int,
+                                  cholesterol: Int,
+                                  fastingBloodSugar: Boolean,
+                                  restingElectrocardiographic: Int,
+                                  maxHeartRate: Int,
+                                  isAnginaInducted: Boolean,
+                                  oldPeakST: Double,
+                                  slopeST: Int,
+                                  numberVesselColoured: Int,
+                                  thal: Int
                                 )
 
   def apply(age: Int, gender: Gender, cardiologyVisit: CardiologyVisit): CardiologyVisitData = CardiologyVisitData(
@@ -109,21 +109,13 @@ object CardiologyDiseasesPredictor {
 
     model = pipeline.fit(trainingData)
 
-    //val model = PipelineModel.load("src/main/resources/decisiontree")
-
-    // model.save("src/main/resources/decisiontree")
-
     val predictions = model.transform(testData)
-
-    predictions.select("predictedLabel", "label", "features").show(5)
 
     val evaluator = new MulticlassClassificationEvaluator()
       .setLabelCol("indexedLabel")
       .setPredictionCol("prediction")
       .setMetricName("accuracy")
     val accuracy = evaluator.evaluate(predictions)
-    println(s"Test Error = ${1.0 - accuracy}")
-
   }
 
   def predict(age: Int, gender: Gender, cardiologyVisit: CardiologyVisit): CardiologyDiseasePrediction = {
@@ -139,7 +131,7 @@ object CardiologyDiseasesPredictor {
 
     val predictions = model.transform(features)
 
-    if(predictions.select("predictedLabel").head().getString(0).toInt == 0) CardiologyDiseasesAbsence() else CardiologyDiseasesPresence()
+    if (predictions.select("predictedLabel").head().getString(0).toInt == 0) CardiologyDiseasesAbsence() else CardiologyDiseasesPresence()
 
 
   }

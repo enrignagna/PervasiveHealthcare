@@ -16,10 +16,40 @@
 
 package domainmodel.medicalrecords.initialanalysis
 
+/**
+ * Psychological.
+ *
+ * @param value , value of psychological.
+ */
 case class Psychological(value: String)
+
+/**
+ * Nutritional.
+ *
+ * @param value , value of nutritional.
+ */
 case class Nutritional(value: String)
+
+/**
+ * Educational.
+ *
+ * @param value , value of educational.
+ */
 case class Educational(value: String)
+
+/**
+ * Social.
+ *
+ * @param value , value of social.
+ */
 case class Social(value: String)
 
-
+/**
+ * State Evaluation.
+ *
+ * @param psychological , psychological.
+ * @param nutritional   , nutritional.
+ * @param educational   , educational.
+ * @param social        , social.
+ */
 case class StateEvaluation(psychological: Psychological, nutritional: Nutritional, educational: Educational, social: Social)

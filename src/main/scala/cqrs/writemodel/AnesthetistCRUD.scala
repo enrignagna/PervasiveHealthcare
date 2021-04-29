@@ -18,20 +18,19 @@
 
 package cqrs.writemodel
 
-import java.util.concurrent.TimeUnit
 import cqrs.writemodel.WriteModel.{doctorsCollection, medicalRecordsCollection, patientsCollection}
 import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
-import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
+import json.IDJsonFormat.patientIDJsonFormat
+import json.RequestJsonFormats.RootJsObjectFormat
+import json.medicalrecords.MedicalRecordJsonFormat.{medicalRecordJsonFormat, medicalRecordsIDJsonFormat}
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters.{and, equal}
+import org.mongodb.scala.model.Updates.{push, set}
 import spray.json.{JsArray, JsObject, enrichAny}
-import json.IDJsonFormat.patientIDJsonFormat
 
-import json.RequestJsonFormats.RootJsObjectFormat
+import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
-import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordsIDJsonFormat
-import org.mongodb.scala.model.Updates.{push, set}
 
 /**
  * This class represent the implementation of CRUD (Create, Read, Update, Delete) for anesthetist.

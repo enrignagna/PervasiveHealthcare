@@ -21,7 +21,7 @@ package domainmodel.generalinfo
 /**
  * Different kinds of allergies.
  */
-object AllergyClass extends Enumeration{
+object AllergyClass extends Enumeration {
   type AllergyClass = Value
   val RESPIRATORY_ALLERGY, FOOD_ALLERGY, DRUG_ALLERGY, HYMENOPTERA_VENOM_ALLERGY, ATOPIC_DERMATITIS,
   ALLERGIC_CONTACT_DERMATITIS, FOOD_INTOLERANCE, CELIAC_DISEASE = Value
@@ -31,30 +31,34 @@ import domainmodel.generalinfo.AllergyClass.AllergyClass
 
 /**
  * A brief allergy description.
+ *
  * @param value the allergy description.
  */
 case class AllergyDescription(value: String)
 
 /**
  * Class that models an allergy.
+ *
  * @param allergyClass the kind of allergy.
- * @param description a brief allergy description.
+ * @param description  a brief allergy description.
  */
 case class Allergy(allergyClass: AllergyClass, description: AllergyDescription)
 
 /**
  * Companion object for a set of allergies.
  */
-object Allergies{
+object Allergies {
 
   /**
    * Class that models a set o allergies.
+   *
    * @param allergies the set of allergies.
    */
-  case class Allergies private(allergies: Set[Allergy] = Set.empty){
+  case class Allergies private(allergies: Set[Allergy] = Set.empty) {
 
     /**
      * Add new allergy in the set of allergies.
+     *
      * @param allergy the allergy to add.
      * @return the updated set of allergies.
      */
@@ -63,6 +67,7 @@ object Allergies{
 
   /**
    * Factory method for Allergies.
+   *
    * @return an empty set of allergies.
    */
   def apply(): Allergies = Allergies()

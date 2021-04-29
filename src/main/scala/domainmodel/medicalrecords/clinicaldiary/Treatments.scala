@@ -16,17 +16,17 @@
 
 package domainmodel.medicalrecords.clinicaldiary
 
-import domainmodel.utility.Description
-import java.time.LocalDate
-
 import domainmodel.DoctorID
+import domainmodel.utility.Description
+
+import java.time.LocalDate
 
 /**
  * General treatment.
  *
  * @param date        date of treatment.
  * @param description description of treatment.
- * @param doctorID      doctorID that has made treatment.
+ * @param doctorID    doctorID that has made treatment.
  */
 case class Treatment(date: LocalDate, description: Description, doctorID: DoctorID)
 

@@ -37,6 +37,16 @@ object Specialization extends Enumeration {
 }
 
 
+/**
+ * Surgeon.
+ *
+ * @param doctorID           , doctorID.
+ * @param name               , name.
+ * @param surname            , surname.
+ * @param phoneNumber        , phone number.
+ * @param email              , mail.
+ * @param medicalDegreeGrade , medical degree grade.
+ */
 case class Surgeon(
                     override val doctorID: DoctorID,
                     override val name: String,
@@ -47,6 +57,16 @@ case class Surgeon(
                     specialization: Specialization) extends Doctor
 
 
+/**
+ * Anesthetist.
+ *
+ * @param doctorID           , doctorID.
+ * @param name               , name.
+ * @param surname            , surname.
+ * @param phoneNumber        , phone number.
+ * @param email              , mail.
+ * @param medicalDegreeGrade , medical degree grade.
+ */
 case class Anesthetist(
                         override val doctorID: DoctorID,
                         override val name: String,
@@ -57,6 +77,16 @@ case class Anesthetist(
                       ) extends Doctor
 
 
+/**
+ * General Practitioner.
+ *
+ * @param doctorID           , doctorID.
+ * @param name               , name.
+ * @param surname            , surname.
+ * @param phoneNumber        , phone number.
+ * @param email              , mail.
+ * @param medicalDegreeGrade , medical degree grade.
+ */
 case class GeneralPractitioner(
                                 override val doctorID: DoctorID,
                                 override val name: String,
@@ -66,6 +96,16 @@ case class GeneralPractitioner(
                                 override val medicalDegreeGrade: String
                               ) extends Doctor
 
+/**
+ * Cardiologist.
+ *
+ * @param doctorID           , doctorID.
+ * @param name               , name.
+ * @param surname            , surname.
+ * @param phoneNumber        , phone number.
+ * @param email              , mail.
+ * @param medicalDegreeGrade , medical degree grade.
+ */
 case class Cardiologist(
                          override val doctorID: DoctorID,
                          override val name: String,

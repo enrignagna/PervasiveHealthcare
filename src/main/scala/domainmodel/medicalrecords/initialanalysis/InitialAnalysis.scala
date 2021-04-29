@@ -18,6 +18,13 @@ package domainmodel.medicalrecords.initialanalysis
 
 import domainmodel.Anamnesis
 
+/**
+ * Initial Analysis.
+ *
+ * @param anamensis           , anamensis.
+ * @param physicalExamination , physical examination.
+ * @param stateEvaluation     , state evaluation.
+ */
 case class InitialAnalysis(
                             anamensis: Option[Anamnesis],
                             physicalExamination: PhysicalExamination,

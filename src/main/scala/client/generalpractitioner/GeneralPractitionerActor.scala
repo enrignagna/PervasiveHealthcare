@@ -26,9 +26,7 @@ import akka.util.ByteString
 import client.Client
 import client.generalpractitioner.Message._
 import client.generalpractitioner.Requests._
-import domainmodel.{CardiologyPrediction, DoctorID}
-import json.CardiologyPredictionJsonFormat.cardiologyPredictionJsonFormat
-import spray.json.JsonParser
+import domainmodel.DoctorID
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -39,9 +37,6 @@ class GeneralPractitionerActor(doctorID: DoctorID) extends Actor with ActorLoggi
   var token: Option[String] = None
 
   private lazy val onInteractionBehaviour: Receive = {
-    //    case GeneralPractitionerLoginMessage(id, password) =>
-    //      generalPractitionerLoginRequest(id, password).pipeTo(self)
-    //      this.context become onAttendResponseGeneralPractitionerLoginMessageBehaviour
     case InsertGeneralPractitionerInfoMessage(generalPractitionerInfo) =>
       insertGeneralPractitionerInfoRequest(token.get, generalPractitionerInfo).pipeTo(self)
       this.context become onAttendResponseInsertGeneralPractitionerInfoMessageBehaviour
@@ -50,32 +45,16 @@ class GeneralPractitionerActor(doctorID: DoctorID) extends Actor with ActorLoggi
       this.context become onAttendResponseUpdateGeneralPractitionerInfoMessageBehaviour
     case UpdateCardiologyPredictionMessage() =>
       updateCardiologyPredictionsRequest(token.get, doctorID).pipeTo(self)
-    //Qui non c'è bisogno di nulla
     case GetCardiologyPredictionMessage() =>
       getCardiologyPredictionsRequest(token.get).pipeTo(self)
       this.context become onAttendResponseCardiologyPredictionMessageBehaviour
 
   }
 
-  //  private lazy val onAttendResponseGeneralPractitionerLoginMessageBehaviour: Receive = {
-  //    case HttpResponse(StatusCodes.OK, _, entity, _) =>
-  //      entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-  //        token = Some(
-  //          JsonParser(body.utf8String).asJsObject.getFields("token").mkString replaceAll("[\"]", "")
-  //        )
-  //      }
-  //      this.context become onInteractionBehaviour
-  //    case resp@HttpResponse(code, _, _, _) =>
-  //      println("Error: " + code.value)
-  //      resp.discardEntityBytes()
-  //      this.context become onInteractionBehaviour
-  //  }
-
   private lazy val onAttendResponseInsertGeneralPractitionerInfoMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-        //val generalPractitionerInfo: GeneralPractitionerInfo = JsonParser(body.utf8String).convertTo[CardiologyPrediction]
-        //TODO qui ritorna solo ok o meno
+        println("Response: " + body.utf8String)
       }
       this.context become onInteractionBehaviour
     case resp@HttpResponse(code, _, _, _) =>
@@ -87,8 +66,7 @@ class GeneralPractitionerActor(doctorID: DoctorID) extends Actor with ActorLoggi
   private lazy val onAttendResponseUpdateGeneralPractitionerInfoMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-        // val cardiologyPrediction: CardiologyPrediction = JsonParser(body.utf8String).convertTo[CardiologyPrediction]
-        //TODO
+        println("Response: " + body.utf8String)
       }
       this.context become onInteractionBehaviour
     case resp@HttpResponse(code, _, _, _) =>
@@ -100,8 +78,7 @@ class GeneralPractitionerActor(doctorID: DoctorID) extends Actor with ActorLoggi
   private lazy val onAttendResponseCardiologyPredictionMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-        val cardiologyPrediction: CardiologyPrediction = JsonParser(body.utf8String).convertTo[CardiologyPrediction]
-        //TODO
+        println("Response: " + body.utf8String)
       }
       this.context become onInteractionBehaviour
     case resp@HttpResponse(code, _, _, _) =>

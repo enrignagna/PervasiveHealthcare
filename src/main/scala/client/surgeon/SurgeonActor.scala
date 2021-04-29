@@ -42,9 +42,6 @@ class SurgeonActor(doctorID: DoctorID) extends Actor with ActorLogging {
 
 
   private lazy val onInteractionBehaviour: Receive = {
-    //    case SurgeonLoginMessage(id, password) =>
-    //      surgeonLoginRequest(id, password).pipeTo(self)
-    //      this.context become onAttendResponseSurgeonLoginMessageBehaviour
     case InsertMedicalRecordMessage(medicalRecord) =>
       insertMedicalRecordRequest(token.getOrElse(""), medicalRecord).pipeTo(self)
       this.context become onAttendResponseInsertMedicalRecordMessageBehaviour
@@ -101,7 +98,6 @@ class SurgeonActor(doctorID: DoctorID) extends Actor with ActorLogging {
   private lazy val onAttendResponseAllMedicalRecordsMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-        //TODO: checkare questa conversione
         val medicalRecords: Set[MedicalRecord] = JsonParser(body.utf8String).convertTo[Set[MedicalRecord]]
         if (medicalRecords.nonEmpty)
           println(medicalRecords)

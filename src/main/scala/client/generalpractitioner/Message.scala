@@ -24,8 +24,6 @@ import domainmodel.{DoctorID, PatientID}
 
 object Message {
 
-  //case class GeneralPractitionerLoginMessage(id: String, password: String) extends Message
-
   /**
    * Insert General Practitioner Info Message.
    *

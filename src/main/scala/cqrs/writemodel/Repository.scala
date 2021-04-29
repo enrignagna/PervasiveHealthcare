@@ -18,8 +18,6 @@
 
 package cqrs.writemodel
 
-import cqrs.readmodel.{AllergyClassCollection, BloodTypeCollection, GenderCollection, RhCollection, RoleCollection, SpecializationCollection}
-
 object Repository {
   val auth: Auth = new Auth()
   val adminRepository: AdminCRUD = new AdminCRUD()

@@ -57,13 +57,14 @@ class GeneralInfoTest extends AnyFreeSpec {
   "A general info should have" - {
     "a blood group" in {
       assert(generalInfo.bloodGroup != null)
-      "with a blood type" in {
-        assert(generalInfo.bloodGroup.bloodType != null)
-      }
-      "and with a rh" in {
-        assert(generalInfo.bloodGroup.rh != null)
-      }
     }
+    "a blood type in blood group" in {
+      assert(generalInfo.bloodGroup.bloodType != null)
+    }
+    "a rh in blood group" in {
+      assert(generalInfo.bloodGroup.rh != null)
+    }
+
     "a weight" in {
       assert(generalInfo.weight != null)
     }

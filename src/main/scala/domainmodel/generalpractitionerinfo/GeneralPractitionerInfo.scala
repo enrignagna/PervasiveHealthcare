@@ -19,23 +19,23 @@
 package domainmodel.generalpractitionerinfo
 
 import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
-import domainmodel.{Anamnesis, DoctorID, PatientID}
 import domainmodel.generalpractitionerinfo.BookingVisitHistory.BookingVisitHistory
 import domainmodel.generalpractitionerinfo.MedicalCertificateHistory.MedicalCertificateHistory
 import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
 import domainmodel.generalpractitionerinfo.VisitHistory._
+import domainmodel.{Anamnesis, DoctorID, PatientID}
 
 
 /**
  * This class represents the information entered by the general practitioner for each patient.
  *
- * @param doctorID      , doctor's information
- * @param visits        , visit's information
- * @param anamnesis     , anamnesis information
- * @param bookingVisits , booking visits information
- * @param prescriptions , prescriptions's information
- * @param therapies     , therapies's information.
- * @param medicalCertificateHistory, medical certificate's information.
+ * @param doctorID                  , doctor's information
+ * @param visits                    , visit's information
+ * @param anamnesis                 , anamnesis information
+ * @param bookingVisits             , booking visits information
+ * @param prescriptions             , prescriptions's information
+ * @param therapies                 , therapies's information.
+ * @param medicalCertificateHistory , medical certificate's information.
  */
 case class GeneralPractitionerInfo(
                                     patientID: PatientID,
