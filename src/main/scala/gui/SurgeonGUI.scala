@@ -21,9 +21,10 @@ import java.awt.{Dimension, Toolkit}
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.surgeon.SurgeonActor
-import client.surgeon.SurgeonMessage.AllMedicalRecordsMessage
-import domainmodel.DoctorID
-import domainmodel.medicalrecords.MedicalRecord
+import client.surgeon.SurgeonMessage.{AllMedicalRecordsMessage, InsertMedicalRecordMessage, UpdateMedicalRecordMessage}
+import domainmodel.medicalrecords.initialanalysis.{Educational, HospitalizationMotivation, InitialAnalysis, Nutritional, PhysicalExamination, Psychological, Social, StateEvaluation, SystemsInvestigation}
+import domainmodel.{DoctorID, PatientID}
+import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
 
 import scala.swing.BorderPanel.Position._
 import scala.swing.ListView._
@@ -47,6 +48,11 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
   val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id, token,this)), name = "surgeon")
 
   surgeonActor ! AllMedicalRecordsMessage()
+  Thread.sleep(1000)
+  surgeonActor ! UpdateMedicalRecordMessage(MedicalRecord(DoctorID("000000"), PatientID("000006"),
+    MedicalRecordsID("MR000001"), isClosed = true, initialAnalysis = Some(InitialAnalysis(
+      physicalExamination = PhysicalExamination(HospitalizationMotivation("Rottura dell'omero"), SystemsInvestigation("Nessuna")),
+      stateEvaluation = StateEvaluation(Psychological("OK"), Nutritional("OK"), Educational("OK"), Social("OK"))))))
 
 
   var medicalRecords: ListView[String] = new ListView[String]()

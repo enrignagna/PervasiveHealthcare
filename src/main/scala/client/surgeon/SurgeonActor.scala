@@ -48,11 +48,11 @@ class SurgeonActor(doctorID: DoctorID, token: String, surgeonGUI: SurgeonGUI) ex
     //      surgeonLoginRequest(id, password).pipeTo(self)
     //      this.context become onAttendResponseSurgeonLoginMessageBehaviour
     case InsertMedicalRecordMessage(medicalRecord) =>
-      println("a")
+      println("insertion")
       insertMedicalRecordRequest(token, medicalRecord).pipeTo(self)
       this.context become onAttendResponseInsertMedicalRecordMessageBehaviour
     case UpdateMedicalRecordMessage(medicalRecord) =>
-      println("a")
+
       updateMedicalRecordRequest(token, medicalRecord).pipeTo(self)
       this.context become onAttendResponseUpdateMedicalRecordMessageBehaviour
     case AllMedicalRecordsMessage() =>
@@ -110,8 +110,6 @@ class SurgeonActor(doctorID: DoctorID, token: String, surgeonGUI: SurgeonGUI) ex
           surgeonGUI.updateMedicalRecord(medicalRecords.toList)
         else
           println("No medical records available.")
-
-
       }
       this.context become onInteractionBehaviour
     case resp@HttpResponse(code, _, _, _) =>
