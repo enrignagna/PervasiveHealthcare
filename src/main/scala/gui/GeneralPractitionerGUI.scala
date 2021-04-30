@@ -102,7 +102,7 @@ class GeneralPractitionerGUI(generalPractitionerID: String, actorSystem: ActorSy
       case ValueChanged(`slider`) =>
         if (!slider.adjusting || reactLive) tabs.selection.index = slider.value
         slider.value match {
-          case 0 => _//generalPractitionerActor ! //todo:manca messaggio
+         // case 0 => _//generalPractitionerActor ! //todo:manca messaggio
           case 2 => showDialog()
         }
       case SelectionChanged(`tabs`) =>
@@ -110,7 +110,7 @@ class GeneralPractitionerGUI(generalPractitionerID: String, actorSystem: ActorSy
         list.selectIndices(tabs.selection.index)
       case SelectionChanged(`list`) =>
         if (list.selection.items.length == 1)
-          tabs.selection.page = list.selection.items(0)
+          tabs.selection.page = list.selection.items.head
       case ListSelectionChanged(list, _, _) =>
         val generalPractitionerInfoGUI = ??? //new GeneralPractitionerInfoGUI(listGeneralPractitionerInformations.filter(genParc => genParc..value.equals(list.selection.items.head.toString)).head, id, generalPractitionerActor)
         //generalPractitionerInfoGUI.visible = true

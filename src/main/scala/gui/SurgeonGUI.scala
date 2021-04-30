@@ -17,19 +17,21 @@
  */
 package gui
 
-import java.awt.{Dimension, Toolkit}
+import java.awt.{Graphics, Toolkit}
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.surgeon.SurgeonActor
 import client.surgeon.SurgeonMessage.AllMedicalRecordsMessage
-import domainmodel.DoctorID
+import domainmodel._
 import domainmodel.medicalrecords.MedicalRecord
-
+import javax.swing._
+import javax.swing.DefaultListModel
 import scala.swing.BorderPanel.Position._
 import scala.swing.ListView._
 import scala.swing.TabbedPane._
-import scala.swing._
 import scala.swing.event._
+import scala.swing.{BorderPanel, Dimension, ListView, MainFrame, Orientation, Slider, SplitPane, TabbedPane, TextArea, _}
+
 
 class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) extends MainFrame {
 
@@ -48,10 +50,14 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
 
   surgeonActor ! AllMedicalRecordsMessage()
 
+  val listModel = new DefaultListModel[String]
+  //var medicalRecords: JPanel = new JPanel{listModel}
 
-  var medicalRecords: ListView[String] = new ListView[String]()
   var listMedicalRecords: List[MedicalRecord] = List()
   val dialogGui = new DialogGUI()
+  val prova = new ListView[String]{
+    listModel
+  }
   /*
    * The root component in this frame is a panel with a border layout.
    */
@@ -64,11 +70,11 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
         editable = false
       }
 
-      pages += new Page("Cartelle cliniche", medicalRecords)
+      pages += new Page("Cartelle cliniche", prova)
       pages += new Page("Logout", logout)
     }
 
-    val list = new ListView(tabs.pages) {
+    val list: ListView[Page] = new ListView(tabs.pages) {
       selectIndices(0)
       selection.intervalMode = ListView.IntervalMode.Single
       renderer = ListView.Renderer(_.title)
@@ -119,7 +125,15 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
 
   def updateMedicalRecord(medicalRecordJson: List[MedicalRecord]): Unit = {
     listMedicalRecords = medicalRecordJson
-    medicalRecords.listData = Seq(medicalRecordJson.foreach(x => Seq(x.medicalRecordID.value, String.valueOf(x.isClosed))).toString)
+    println("surgeonGui" + listMedicalRecords)
+    val listData = List[String](listMedicalRecords.map(m => m.medicalRecordID.toString.concat(m.patientID.value.concat(m.isClosed.toString).concat("\n"))).toString)
+    listMedicalRecords.foreach(m => {listModel.addElement(m.medicalRecordID.toString.concat(m.patientID.value.concat(m.isClosed.toString)))})
+    //listMedicalRecords.foreach(m => listData.+(m.medicalRecordID.toString.concat(m.patientID.value.concat(m.isClosed.toString).concat("\n"))))
+    prova.listData = Seq(listMedicalRecords.map(m => m.medicalRecordID.toString.concat(m.patientID.value.concat(m.isClosed.toString).concat("\n"))).toString)
+    println("listDATA " + listData)
+    println("ppl" + prova.listData)
+    prova.peer.repaint()
+    //medicalRecords.listData = Seq(medicalRecordJson.foreach(x => Seq(x.medicalRecordID.value, String.valueOf(x.isClosed))).toString)
   }
 }
 
