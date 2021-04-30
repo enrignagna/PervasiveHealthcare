@@ -84,7 +84,7 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
   }
 
   val loginActor: ActorRef = actorSystem.actorOf(Props(
-    new LoginActor(this)), name = "loginActor")
+    new LoginActor(this)))
 
 
   private def checkLogin(userID: String, password: String): Unit = {

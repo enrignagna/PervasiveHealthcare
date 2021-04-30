@@ -20,28 +20,7 @@ import client.Message
 
 object Message {
 
-  /**
-   * Patient login message.
-   *
-   * @param id       , id of user.
-   * @param password , password of user
-   */
-  case class PatientLoginMessage(id: String, password: String) extends Message
-
-  /**
-   * All Medical Record Message.
-   */
-  case class AllMedicalRecordMessage() extends Message
-
-  /**
-   * General Info Message.
-   */
-  case class GeneralInfoMessage() extends Message
-
-  /**
-   * General Practitioner Info Message.
-   */
-  case class GeneralPractitionerInfoMessage() extends Message
+  case class GetMyInfoMessage() extends Message
 
 
 }

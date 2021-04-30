@@ -21,10 +21,9 @@ import java.awt.{Dimension, Toolkit}
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.surgeon.SurgeonActor
-import client.surgeon.SurgeonMessage.{AllMedicalRecordsMessage, InsertMedicalRecordMessage, UpdateMedicalRecordMessage}
-import domainmodel.medicalrecords.initialanalysis.{Educational, HospitalizationMotivation, InitialAnalysis, Nutritional, PhysicalExamination, Psychological, Social, StateEvaluation, SystemsInvestigation}
-import domainmodel.{DoctorID, PatientID}
-import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
+import client.surgeon.SurgeonMessage.AllMedicalRecordsMessage
+import domainmodel.DoctorID
+import domainmodel.medicalrecords.MedicalRecord
 
 import scala.swing.BorderPanel.Position._
 import scala.swing.ListView._
@@ -45,7 +44,7 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
   title = "Scala Swing Surgeon Demo"
 
   val id : DoctorID = DoctorID(surgeonID)
-  val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id, token,this)), name = "surgeon")
+  val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id, token,this)))
 
   /*
   surgeonActor ! AllMedicalRecordsMessage()
@@ -120,8 +119,8 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
         if (list.selection.items.length == 1)
           tabs.selection.page = list.selection.items.head
       case ListSelectionChanged(list, _, _) =>
-        val medicalRecordsGUI = MedicalRecordsGUI()(listMedicalRecords.filter(id => id.medicalRecordID.value.equals(list.selection.items.head.toString)).head, id, surgeonActor)
-        medicalRecordsGUI.visible = true
+        //val medicalRecordsGUI = MedicalRecordsGUI()(listMedicalRecords.filter(id => id.medicalRecordID.value.equals(list.selection.items.head.toString)).head, id, surgeonActor)
+        //medicalRecordsGUI.visible = true
         println("Selection item", list.selection.items.head)
     }
   }

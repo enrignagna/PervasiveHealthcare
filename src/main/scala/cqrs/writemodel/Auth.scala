@@ -44,7 +44,6 @@ class Auth {
 
   def login(user: User): (Option[Role], String) = {
     val userFound = Await.result(authCollection.find(equal("id", user.id)).toFuture(), Duration(1, TimeUnit.SECONDS))
-
     if(userFound.isEmpty) (None, "User not found.") else {
       if(userFound.head.get("password").asString().getValue != user.password) (None, "Credentials error.")
       else (Some(Role(userFound.head.get("role").asInt32().getValue)), "Login done.")

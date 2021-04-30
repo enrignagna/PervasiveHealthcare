@@ -49,7 +49,8 @@ object Requests {
       HttpRequest(
         method = HttpMethods.GET,
         headers = List(APITokenHeader(token)),
-        uri = "http://127.0.0.1:8080/api/patients/" + patientID.value
+        uri = s"http://127.0.0.1:8080/api/patients/${patientID.value}",
+        entity = HttpEntity(ContentTypes.`application/json`, ""),
       )
     )
   }
