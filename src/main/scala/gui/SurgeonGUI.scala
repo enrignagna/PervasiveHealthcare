@@ -47,7 +47,7 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
 
   val id : DoctorID = DoctorID(surgeonID)
   val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id, token,this)))
-
+  surgeonActor ! AllMedicalRecordsMessage()
   /*
   surgeonActor ! AllMedicalRecordsMessage()
   Thread.sleep(1000)
@@ -55,20 +55,11 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
     MedicalRecordsID("MR000001"), isClosed = true, initialAnalysis = Some(InitialAnalysis(
       physicalExamination = PhysicalExamination(HospitalizationMotivation("Rottura dell'omero"), SystemsInvestigation("Nessuna")),
       stateEvaluation = StateEvaluation(Psychological("OK"), Nutritional("OK"), Educational("OK"), Social("OK"))))))
-
-
-  val listModel = new DefaultListModel[String]
-  //var medicalRecords: JPanel = new JPanel{listModel}
-
-
    */
-  var medicalRecords: ListView[String] = new ListView[String]()
   var listMedicalRecords: List[MedicalRecord] = List()
   val dialogGui = new DialogGUI()
   val listModel = new DefaultListModel[String]
-  val prova = new ListView[String]{
-    listModel
-  }
+  val prova = new ListView[String]
   /*
    * The root component in this frame is a panel with a border layout.
    */
@@ -136,15 +127,8 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
 
   def updateMedicalRecord(medicalRecordJson: List[MedicalRecord]): Unit = {
     listMedicalRecords = medicalRecordJson
-    println("surgeonGui" + listMedicalRecords)
-    val listData = List[String](listMedicalRecords.map(m => m.medicalRecordID.toString.concat(m.patientID.value.concat(m.isClosed.toString).concat("\n"))).toString)
-    listMedicalRecords.foreach(m => {listModel.addElement(m.medicalRecordID.toString.concat(m.patientID.value.concat(m.isClosed.toString)))})
-    //listMedicalRecords.foreach(m => listData.+(m.medicalRecordID.toString.concat(m.patientID.value.concat(m.isClosed.toString).concat("\n"))))
-    prova.listData = Seq(listMedicalRecords.map(m => m.medicalRecordID.toString.concat(m.patientID.value.concat(m.isClosed.toString).concat("\n"))).toString)
-    println("listDATA " + listData)
-    println("ppl" + prova.listData)
+    prova.listData = listMedicalRecords.map(m => m.medicalRecordID.value.concat(" ").concat(m.patientID.value.concat(" ").concat(m.isClosed.toString).concat("\n")))
     prova.peer.repaint()
-    //medicalRecords.listData = Seq(medicalRecordJson.foreach(x => Seq(x.medicalRecordID.value, String.valueOf(x.isClosed))).toString)
   }
 }
 
