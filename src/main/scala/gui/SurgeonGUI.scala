@@ -47,6 +47,7 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
   val id : DoctorID = DoctorID(surgeonID)
   val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id, token,this)), name = "surgeon")
 
+  /*
   surgeonActor ! AllMedicalRecordsMessage()
   Thread.sleep(1000)
   surgeonActor ! UpdateMedicalRecordMessage(MedicalRecord(DoctorID("000000"), PatientID("000006"),
@@ -55,6 +56,8 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
       stateEvaluation = StateEvaluation(Psychological("OK"), Nutritional("OK"), Educational("OK"), Social("OK"))))))
 
 
+
+   */
   var medicalRecords: ListView[String] = new ListView[String]()
   var listMedicalRecords: List[MedicalRecord] = List()
   val dialogGui = new DialogGUI()
