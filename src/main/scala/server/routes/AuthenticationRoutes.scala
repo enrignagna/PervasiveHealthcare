@@ -47,9 +47,6 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
 
   private implicit val timeout = Timeout(500.milliseconds)
 
-  //TODO: Understand how to get object from read model.
-  /*def getSurgeons(): Future[Surgeons] =
-    administratorController.ask(GetSurgeons)*/
   /**
    * Method for login
    *
@@ -76,7 +73,6 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
       pathPrefix("login") {
         pathEnd {
           post {
-
             entity(as[User]) { user =>
               val hashedPassword = Utils.getHashedPassword(user.password) //password hashing
               val newUser = User(user.id, hashedPassword)

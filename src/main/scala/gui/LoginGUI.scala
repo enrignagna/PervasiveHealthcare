@@ -84,7 +84,7 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
   }
 
   val loginActor: ActorRef = actorSystem.actorOf(Props(
-    new LoginActor(this)), name = "loginActor")
+    new LoginActor(this)))
 
 
   private def checkLogin(userID: String, password: String): Unit = {
@@ -100,7 +100,7 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
 
     role match {
       case "0"=> new PatientGUI(userID, token, actorSystem);
-      case "1" => new GeneralPractitionerGUI(userID, actorSystem)
+      case "1" => new GeneralPractitionerGUI(userID, token, actorSystem)
       case "2" => new SurgeonGUI(userID, token, actorSystem)
       case "8" => new CardiologistGUI(userID)
       case _ => dialogGUI.showErrorDialog("Errore!")

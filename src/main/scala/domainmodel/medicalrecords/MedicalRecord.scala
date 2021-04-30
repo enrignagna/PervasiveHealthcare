@@ -33,19 +33,19 @@ case class MedicalRecord(
                           patientID: PatientID,
                           medicalRecordID: MedicalRecordsID,
                           isClosed: Boolean,
-                          initialAnalysis: Option[InitialAnalysis],
-                          clinicalDiary: Option[ClinicalDiary],
-                          diagnosticServicesRequests: Option[DiagnosticServicesRequests],
-                          graphic: Option[Graphic],
-                          painReliefHistory: Option[PainreliefHistory],
-                          singleSheetTherapyHistory: Option[SingleSheetTherapies],
-                          adviceRequest: Option[AdviceRequest],
-                          reports: Option[Reports],
-                          operatingReports: Option[OperatingReports],
-                          nursingDocumentation: Option[NursingDocumentation],
-                          anesthesiologyRecord: Option[AnesthesiologyRecord],
-                          medicalSurgicalDevices: Option[MedicalSurgicalDevices],
-                          dischargeLetter: Option[DischargeLetter]
+                          initialAnalysis: Option[InitialAnalysis] = None,
+                          clinicalDiary: Option[ClinicalDiary] = None,
+                          diagnosticServicesRequests: Option[DiagnosticServicesRequests] = None,
+                          graphic: Option[Graphic] = None,
+                          painReliefHistory: Option[PainreliefHistory] = None,
+                          singleSheetTherapyHistory: Option[SingleSheetTherapies] = None,
+                          adviceRequest: Option[AdviceRequest] = None,
+                          reports: Option[Reports] = None,
+                          operatingReports: Option[OperatingReports] = None,
+                          nursingDocumentation: Option[NursingDocumentation] = None,
+                          anesthesiologyRecord: Option[AnesthesiologyRecord] = None,
+                          medicalSurgicalDevices: Option[MedicalSurgicalDevices] = None,
+                          dischargeLetter: Option[DischargeLetter] = None
                         ) {}
 
 

@@ -94,6 +94,5 @@ object JwtAuthentication {
    * @param token , token to authentication.
    * @return if have specific permission.
    */
-  def hasCommonPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.SURGEON.id || tokens.tokens(token) == Role.WARD_NURSE.id || tokens.tokens(token) == Role.INSTRUMENTALIST.id || tokens.tokens(token) == Role.ANESTHETIST.id || tokens.tokens(token) == Role.RESCUER.id || tokens.tokens(token) == Role.PATIENT.id
-
+  def hasCommonPermissions(token: String): Boolean = tokens.tokens.contains(token) && Role.maxId >= tokens.tokens(token)
 }

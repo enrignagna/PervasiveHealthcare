@@ -22,6 +22,8 @@ import akka.http.scaladsl.model._
 import client.APITokenHeader
 import domainmodel.DoctorID
 import domainmodel.medicalrecords.MedicalRecord
+import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
+import spray.json.enrichAny
 
 import scala.concurrent.Future
 
@@ -50,7 +52,7 @@ object Requests {
         method = HttpMethods.POST,
         uri = "http://127.0.0.1:8080/api/medicalrecords",
         headers = List(APITokenHeader(token)),
-        entity = HttpEntity(ContentTypes.`application/json`, s"""$medicalRecord"""),
+        entity = HttpEntity(ContentTypes.`application/json`, s"${medicalRecord.toJson}"),
       )
     )
   }
@@ -68,7 +70,7 @@ object Requests {
         method = HttpMethods.PUT,
         uri = s"http://127.0.0.1:8080/api/medicalrecords/${medicalRecord.medicalRecordID.value}",
         headers = List(APITokenHeader(token)),
-        entity = HttpEntity(ContentTypes.`application/json`, s"""$medicalRecord"""),
+        entity = HttpEntity(ContentTypes.`application/json`, s"${medicalRecord.toJson}"),
       )
     )
   }

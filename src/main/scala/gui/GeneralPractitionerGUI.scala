@@ -31,7 +31,7 @@ import scala.swing.TabbedPane._
 import scala.swing._
 import scala.swing.event._
 
-class GeneralPractitionerGUI(generalPractitionerID: String, actorSystem: ActorSystem) extends MainFrame {
+class GeneralPractitionerGUI(generalPractitionerID: String, token:String, actorSystem: ActorSystem) extends MainFrame {
 
   val heightRatio = 1.5
   val widthRatio = 2
@@ -102,7 +102,7 @@ class GeneralPractitionerGUI(generalPractitionerID: String, actorSystem: ActorSy
       case ValueChanged(`slider`) =>
         if (!slider.adjusting || reactLive) tabs.selection.index = slider.value
         slider.value match {
-         // case 0 => _//generalPractitionerActor ! //todo:manca messaggio
+          case 0 => println("")//generalPractitionerActor ! //todo:manca messaggio
           case 2 => showDialog()
         }
       case SelectionChanged(`tabs`) =>

@@ -20,11 +20,12 @@ package gui
 import java.awt.{Dimension, Toolkit}
 
 import akka.actor.{ActorRef, ActorSystem, Props}
-import client.patient.Message.{AllMedicalRecordMessage, GeneralInfoMessage, GeneralPractitionerInfoMessage}
+import client.patient.Message.{GetMyInfoMessage}
 import client.patient.PatientActor
 import domainmodel.PatientID
 import domainmodel.medicalrecords.MedicalRecord
 import org.bson.json.JsonObject
+
 import scala.swing.BorderPanel.Position._
 import scala.swing.ListView._
 import scala.swing.TabbedPane._
@@ -39,6 +40,7 @@ class PatientGUI(val patientID: String, token: String, actorSystem: ActorSystem)
   val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / widthRatio
   preferredSize = new Dimension(windowWidth.toInt, windowHeight.toInt)
   resizable = false
+  visible = true
 
   val dialogGUI = new DialogGUI()
   val id: PatientID = PatientID(patientID)
@@ -51,10 +53,10 @@ class PatientGUI(val patientID: String, token: String, actorSystem: ActorSystem)
   title = "Scala Swing Patient Demo"
 
   val patientActor: ActorRef = actorSystem.actorOf(Props(
-    new PatientActor(PatientID(patientID))
-  ), name = "patient")
+    new PatientActor(PatientID(patientID), token, this)
+  ))
 
-  patientActor ! GeneralInfoMessage
+  patientActor ! GetMyInfoMessage()
 
   val generalInfo: TextArea = new TextArea(5, 25) {
 
@@ -108,9 +110,12 @@ class PatientGUI(val patientID: String, token: String, actorSystem: ActorSystem)
       case ValueChanged(`slider`) =>
         if (!slider.adjusting || reactLive) tabs.selection.index = slider.value
         slider.value match {
+            /*
           case 0 => patientActor ! GeneralInfoMessage
           case 1 => patientActor ! GeneralPractitionerInfoMessage
           case 2 => patientActor ! AllMedicalRecordMessage
+
+             */
           case 3 => dialogGUI.showDialog()
         }
       case SelectionChanged(`tabs`) =>

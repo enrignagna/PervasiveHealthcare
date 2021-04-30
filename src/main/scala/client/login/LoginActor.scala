@@ -22,11 +22,10 @@ import akka.http.scaladsl.{Http, HttpExt}
 import akka.pattern.pipe
 import akka.util.ByteString
 import client.Client
-import client.login.Requests._
 import client.login.Message._
+import client.login.Requests._
 import gui.{DialogGUI, LoginGUI}
-import json.RequestJsonFormats.{JsValueFormat, StringJsonFormat}
-import spray.json.{JsonParser, enrichAny}
+import spray.json.JsonParser
 
 import scala.concurrent.ExecutionContextExecutor
 
@@ -36,8 +35,6 @@ class LoginActor(gui: LoginGUI) extends Actor with ActorLogging {
   val http: HttpExt = Http(Client.system)
   implicit val system: ClassicActorSystemProvider = Client.system
   implicit val executionContext: ExecutionContextExecutor = Client.system.classicSystem.dispatcher
-  var token: Option[String] = None
-  var role: Option[String] = None
   val dialogGUI= new DialogGUI
 
   private lazy val onInteractionBehaviour: Receive = {
@@ -49,10 +46,10 @@ class LoginActor(gui: LoginGUI) extends Actor with ActorLogging {
   private lazy val onAttendResponseLoginMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
-        token = Some(
+        val token = Some(
           JsonParser(body.utf8String).asJsObject.getFields("token").mkString replaceAll("[\"]", "")
         )
-        role = Some(
+        val role = Some(
           JsonParser(body.utf8String).asJsObject.getFields("role").
             head.asJsObject().getFields("id").mkString
         )
