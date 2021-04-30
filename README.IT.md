@@ -25,9 +25,13 @@ Leggi questo in un'altra lingua: [English](README.md).
 - [Manutenzione](#Manutenzione)
 - [Licenza](#Licenza)
 
-# Come iniziare
+# Cos'è Pervasive Healthcare
+Pervasive Healthcare è un progetto nato con lo scopo di realizzare un Digital Twin per quanto riguarda la figura del 
+paziente in ambito healthcare. Nello specifico, l'obiettivo è creare un sistema software che permetta ad un paziente di 
+monitorare il suo passato clinico e a diverse figure professionali di aggiornare tale storico in modo semplice e veloce.
 
 ## Dipendenze
+
 ## Come installare
 
 ## Documentazione
