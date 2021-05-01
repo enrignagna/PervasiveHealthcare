@@ -178,7 +178,7 @@ object EventStore {
         Filters.or(
           equal("eventID", EventType.INSERT_GENERAL_PRACTITIONER_INFO.id),
           equal("eventID", EventType.UPDATE_GENERAL_PRACTITIONER_INFO.id)),
-        equal("m.doctorID.value", doctorID.value)))
+        equal("g.doctorID.value", doctorID.value)))
       .toFuture(),
       Duration(1, TimeUnit.SECONDS))
     if (res.nonEmpty) {

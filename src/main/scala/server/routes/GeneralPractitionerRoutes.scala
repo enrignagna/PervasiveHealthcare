@@ -67,11 +67,21 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
   def updateGeneralPractitionerInfo(patientID: PatientID, generalPractitionerInfo: GeneralPractitionerInfo): Future[Confirmation] =
     generalPractitionerController.ask(UpdateGeneralPractitionerInfo(patientID, generalPractitionerInfo, _))
 
+
+  /**
+   * Method to obtain all the general practitioners info in the db
+   *
+   * @param doctorID doctor's id
+   * @return the general practitioner info
+   */
+  def getGeneralPractitionerInfo(doctorID: DoctorID): Future[Set[GeneralPractitionerInfo]] =
+    generalPractitionerController.ask(GetGeneralPractitionerInfo(doctorID, _))
+
   /**
    * Method to obtain all cardiology predictions in the db
    *
    * @param doctorID doctor's id
-   * @return confirmation
+   * @return the cardiology predictions
    */
   def getCardiologyPredictions(doctorID: DoctorID): Future[Set[CardiologyPrediction]] =
     generalPractitionerController.ask(GetCardiologyPredictions(doctorID, _))
@@ -89,7 +99,6 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
     pathPrefix("api") {
       pathPrefix("generalpractitionerinfo") {
         pathEnd {
-
           post {
             headerValueByName("x-access-token") { value =>
               authorize(hasDoctorPermissions(value)) {
@@ -111,13 +120,21 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                 put {
                   headerValueByName("x-access-token") { value =>
                     authorize(hasDoctorPermissions(value)) {
-                      entity(as[GeneralPractitionerInfo]) { medicalRecord =>
-                        onSuccess(updateGeneralPractitionerInfo(PatientID(id), medicalRecord)) { response =>
+                      entity(as[GeneralPractitionerInfo]) { generalPractitionerInfo =>
+                        onSuccess(updateGeneralPractitionerInfo(PatientID(id), generalPractitionerInfo)) { response =>
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
                           }
                         }
+                      }
+                    }
+                  }
+                },
+                get {
+                  headerValueByName("x-access-token") { value =>
+                    authorize(hasDoctorPermissions(value)) {
+                      onSuccess(getGeneralPractitionerInfo(DoctorID(id))) { response => complete(StatusCodes.OK, response)
                       }
                     }
                   }

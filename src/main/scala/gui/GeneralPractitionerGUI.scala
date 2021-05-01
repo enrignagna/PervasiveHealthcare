@@ -18,11 +18,15 @@
 package gui
 
 import java.awt.{Dimension, Toolkit}
+import java.time.LocalDate
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.generalpractitioner.GeneralPractitionerActor
-import domainmodel.DoctorID
+import client.generalpractitioner.Message.{GetGeneralPractitionerInfoMessage, InsertGeneralPractitionerInfoMessage, UpdateGeneralPractitionerInfoMessage}
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
+import domainmodel.{DoctorID, PatientID}
+import domainmodel.generalpractitionerinfo.{GeneralPractitionerInfo, Therapy, TherapyDate, TherapyDescription, TherapyInitialDate}
+import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
 import javax.swing.{JList, JOptionPane, JPanel}
 
 import scala.swing.BorderPanel.Position._
@@ -39,18 +43,35 @@ class GeneralPractitionerGUI(generalPractitionerID: String, token:String, actorS
   val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / widthRatio
   preferredSize = new Dimension(windowWidth.toInt, windowHeight.toInt)
   resizable = false
+  visible = true
 
   title = "Scala Swing General Practitioner Demo"
 
   val id : DoctorID = DoctorID(generalPractitionerID)
   var listGeneralPractitionerInformations: List[GeneralPractitionerInfo] = List()
   val generalPractitionerActor: ActorRef = actorSystem.actorOf(Props(
-    new GeneralPractitionerActor(id)
+    new GeneralPractitionerActor(id, token, this)
   ), name = "generalPractitioner")
 
   var generalPractitionerInformations: JList[JPanel] = new JList[JPanel]()
   var newGeneralPractitionerInformation: JPanel= new JPanel
-  //generalPractitionerActor ! //TODO: manca mesaggio
+
+ // generalPractitionerActor ! GetGeneralPractitionerInfoMessage(id)
+/*
+  val generalPInfo: GeneralPractitionerInfo = GeneralPractitionerInfo(PatientID("000006"), id, therapies = Some(TherapyHistory(
+    Set(Therapy(
+      TherapyDate(),
+      TherapyDescription("Terapia"),
+      TherapyInitialDate(LocalDate.parse("2021-04-20")),
+      None
+    ))
+  )))
+  println(generalPInfo)
+  generalPractitionerActor ! UpdateGeneralPractitionerInfoMessage(generalPInfo)
+
+
+ */
+
 
   /*
    * The root component in this frame is a panel with a border layout.
@@ -112,11 +133,12 @@ class GeneralPractitionerGUI(generalPractitionerID: String, token:String, actorS
         if (list.selection.items.length == 1)
           tabs.selection.page = list.selection.items.head
       case ListSelectionChanged(list, _, _) =>
-        val generalPractitionerInfoGUI = ??? //new GeneralPractitionerInfoGUI(listGeneralPractitionerInformations.filter(genParc => genParc..value.equals(list.selection.items.head.toString)).head, id, generalPractitionerActor)
+        //val generalPractitionerInfoGUI = ??? //new GeneralPractitionerInfoGUI(listGeneralPractitionerInformations.filter(genParc => genParc..value.equals(list.selection.items.head.toString)).head, id, generalPractitionerActor)
         //generalPractitionerInfoGUI.visible = true
         println("Selection item", list.selection.items.head)
     }
   }
+
 
   def updateGeneralPractitionerInfoRecord(generalPractitionerInformationJson: List[GeneralPractitionerInfo]): Unit = {
     listGeneralPractitionerInformations = generalPractitionerInformationJson

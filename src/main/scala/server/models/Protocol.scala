@@ -29,6 +29,9 @@ import domainmodel.professionalfigure._
 
 object Protocol {
 
+  /**
+   * Basilar actions.
+   */
   sealed trait CQRSAction
 
   sealed trait Command extends CQRSAction
@@ -80,6 +83,8 @@ object Protocol {
   final case class UpdateGeneralPractitioner(id: String, generalPractitioner: GeneralPractitioner, replyTo: ActorRef[Confirmation]) extends Command
 
   final case class GetGeneralPractitioners(replyTo: ActorRef[Set[GeneralPractitioner]]) extends Query
+
+  final case class GetGeneralPractitionerInfo(id: DoctorID, replyTo: ActorRef[Set[GeneralPractitionerInfo]]) extends Query
 
   final case class GetGeneralPractitioner(id: String, replyTo: ActorRef[Option[GeneralPractitioner]]) extends Query
 

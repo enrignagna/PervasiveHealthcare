@@ -40,11 +40,11 @@ import domainmodel.generalpractitionerinfo.VisitHistory._
 case class GeneralPractitionerInfo(
                                     patientID: PatientID,
                                     doctorID: DoctorID,
-                                    visits: Option[VisitHistory],
-                                    anamnesis: Option[Anamnesis],
-                                    bookingVisits: Option[BookingVisitHistory],
-                                    prescriptions: Option[PrescriptionHistory],
-                                    therapies: Option[TherapyHistory],
-                                    medicalCertificateHistory: Option[MedicalCertificateHistory]
+                                    visits: Option[VisitHistory] = None,
+                                    anamnesis: Option[Anamnesis] = None,
+                                    bookingVisits: Option[BookingVisitHistory] = None,
+                                    prescriptions: Option[PrescriptionHistory] = None,
+                                    therapies: Option[TherapyHistory] = None,
+                                    medicalCertificateHistory: Option[MedicalCertificateHistory] = None
                                   )
 

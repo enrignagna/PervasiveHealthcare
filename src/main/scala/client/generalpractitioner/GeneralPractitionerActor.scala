@@ -27,32 +27,36 @@ import client.Client
 import client.generalpractitioner.Message._
 import client.generalpractitioner.Requests._
 import domainmodel.{CardiologyPrediction, DoctorID}
+import gui.GeneralPractitionerGUI
 import json.CardiologyPredictionJsonFormat.cardiologyPredictionJsonFormat
 import spray.json.JsonParser
 
 import scala.concurrent.ExecutionContextExecutor
 
-class GeneralPractitionerActor(doctorID: DoctorID) extends Actor with ActorLogging {
+class GeneralPractitionerActor(doctorID: DoctorID, token: String,
+                               generalPractitionerGUI: GeneralPractitionerGUI) extends Actor with ActorLogging {
   val http: HttpExt = Http(Client.system)
   implicit val system: ClassicActorSystemProvider = Client.system
   implicit val executionContext: ExecutionContextExecutor = Client.system.classicSystem.dispatcher
-  var token: Option[String] = None
 
   private lazy val onInteractionBehaviour: Receive = {
     //    case GeneralPractitionerLoginMessage(id, password) =>
     //      generalPractitionerLoginRequest(id, password).pipeTo(self)
     //      this.context become onAttendResponseGeneralPractitionerLoginMessageBehaviour
+    case GetGeneralPractitionerInfoMessage(doctorID) =>
+      getGeneralPractitionerInfoRequest(doctorID, token).pipeTo(self)
+      this.context become onAttendResponseGeneralPractitionerInfoMessageBehaviour
     case InsertGeneralPractitionerInfoMessage(generalPractitionerInfo) =>
-      insertGeneralPractitionerInfoRequest(token.get, generalPractitionerInfo).pipeTo(self)
+      insertGeneralPractitionerInfoRequest(token, generalPractitionerInfo).pipeTo(self)
       this.context become onAttendResponseInsertGeneralPractitionerInfoMessageBehaviour
-    case UpdateGeneralPractitionerInfoMessage(patientID, generalPractitionerInfo) =>
-      updateGeneralPractitionerInfoRequest(token.get, patientID, generalPractitionerInfo).pipeTo(self)
+    case UpdateGeneralPractitionerInfoMessage(generalPractitionerInfo) =>
+      updateGeneralPractitionerInfoRequest(token, generalPractitionerInfo.patientID, generalPractitionerInfo).pipeTo(self)
       this.context become onAttendResponseUpdateGeneralPractitionerInfoMessageBehaviour
     case UpdateCardiologyPredictionMessage() =>
-      updateCardiologyPredictionsRequest(token.get, doctorID).pipeTo(self)
+      updateCardiologyPredictionsRequest(token, doctorID).pipeTo(self)
     //Qui non c'è bisogno di nulla
     case GetCardiologyPredictionMessage() =>
-      getCardiologyPredictionsRequest(token.get).pipeTo(self)
+      getCardiologyPredictionsRequest(token).pipeTo(self)
       this.context become onAttendResponseCardiologyPredictionMessageBehaviour
 
   }
@@ -71,8 +75,22 @@ class GeneralPractitionerActor(doctorID: DoctorID) extends Actor with ActorLoggi
   //      this.context become onInteractionBehaviour
   //  }
 
-  private lazy val onAttendResponseInsertGeneralPractitionerInfoMessageBehaviour: Receive = {
+  private lazy val onAttendResponseGeneralPractitionerInfoMessageBehaviour: Receive = {
     case HttpResponse(StatusCodes.OK, _, entity, _) =>
+      entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
+        println(body.utf8String)
+        //val generalPractitionerInfo: GeneralPractitionerInfo = JsonParser(body.utf8String).convertTo[CardiologyPrediction]
+        //TODO qui ritorna solo ok o meno
+      }
+      this.context become onInteractionBehaviour
+    case resp@HttpResponse(code, _, _, _) =>
+      println("Error: " + code.value)
+      resp.discardEntityBytes()
+      this.context become onInteractionBehaviour
+  }
+
+  private lazy val onAttendResponseInsertGeneralPractitionerInfoMessageBehaviour: Receive = {
+    case HttpResponse(StatusCodes.Created, _, entity, _) =>
       entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
         //val generalPractitionerInfo: GeneralPractitionerInfo = JsonParser(body.utf8String).convertTo[CardiologyPrediction]
         //TODO qui ritorna solo ok o meno

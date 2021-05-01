@@ -24,20 +24,12 @@ import akka.http.scaladsl.model._
 import client.APITokenHeader
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
 import domainmodel.{DoctorID, PatientID}
+import json.generalpractitionerinfo.GeneralPractitionerInfoJsonFormat.generalPractitionerInfoJsonFormat
+import spray.json.enrichAny
 
 import scala.concurrent.Future
 
 object Requests {
-
-  //  def generalPractitionerLoginRequest(id: String, password: String)(implicit system: ClassicActorSystemProvider): Future[HttpResponse] = {
-  //    Http().singleRequest(
-  //      HttpRequest(
-  //        method = HttpMethods.POST,
-  //        uri = "http://127.0.0.1:8080/api/login",
-  //        entity = HttpEntity(ContentTypes.`application/json`, s"""{ "id": "$id", "password" : "$password" }""")
-  //      )
-  //    )
-  //  }
 
   /**
    *
@@ -50,9 +42,9 @@ object Requests {
     Http().singleRequest(
       HttpRequest(
         method = HttpMethods.POST,
-        uri = "http://127.0.0.1:8080/api/generalpractitioner",
+        uri = "http://127.0.0.1:8080/api/generalpractitionerinfo",
         headers = List(APITokenHeader(token)),
-        entity = HttpEntity(ContentTypes.`application/json`, s"""$generalPractitionerInfo"""),
+        entity = HttpEntity(ContentTypes.`application/json`, s"""${generalPractitionerInfo.toJson}"""),
       )
     )
   }
@@ -69,9 +61,9 @@ object Requests {
     Http().singleRequest(
       HttpRequest(
         method = HttpMethods.PUT,
-        uri = s"http://127.0.0.1:8080/api/generalpractitioner/${patientID.value}",
+        uri = s"http://127.0.0.1:8080/api/generalpractitionerinfo/${patientID.value}",
         headers = List(APITokenHeader(token)),
-        entity = HttpEntity(ContentTypes.`application/json`, s"""$generalPractitionerInfo"""),
+        entity = HttpEntity(ContentTypes.`application/json`, s"""${generalPractitionerInfo.toJson}"""),
       )
     )
   }
@@ -105,6 +97,23 @@ object Requests {
       HttpRequest(
         method = HttpMethods.GET,
         uri = "http://127.0.0.1:8080/api/cardiologypredictions",
+        headers = List(APITokenHeader(token)),
+        entity = HttpEntity(ContentTypes.`application/json`, "")
+      )
+    )
+  }
+
+  /**
+   *
+   * @param token  , token for authentication.
+   * @param system , actor system provider.
+   * @return http response
+   */
+  def getGeneralPractitionerInfoRequest(doctorID: DoctorID, token: String)(implicit system: ClassicActorSystemProvider): Future[HttpResponse] = {
+    Http().singleRequest(
+      HttpRequest(
+        method = HttpMethods.GET,
+        uri = s"http://127.0.0.1:8080/api/generalpractitionerinfo/${doctorID.value}",
         headers = List(APITokenHeader(token)),
         entity = HttpEntity(ContentTypes.`application/json`, "")
       )
