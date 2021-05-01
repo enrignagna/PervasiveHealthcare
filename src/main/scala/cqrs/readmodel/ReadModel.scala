@@ -354,11 +354,19 @@ object ReadModel {
   /**
    * Update cardiology prediction in read model with event sourcing.
    *
-   * @param doctorID             , id of the doctor.
-   * @param cardiologyPrediction , cardiology prediction to add.
+   * @param doctorID , id of the doctor.
    */
-  def updateCardiologyPrediction(doctorID: DoctorID, cardiologyPrediction: CardiologyPrediction): Unit = {
-    EventStore.addEvent(UpdateCardiologyPredictionsEvent(doctorID, cardiologyPrediction))
+  def updateCardiologyPrediction(doctorID: DoctorID): Unit = {
+    val predictions = EventStore.getNewPredictionsEvents(doctorID)
+    predictions.foreach(x =>
+      EventStore.addEvent(
+        UpdateCardiologyPredictionsEvent(
+          doctorID,
+          CardiologyPrediction(x.patientID, x.doctorID, x.cardiologyVisit, seen = true)
+        )
+      )
+    )
+
   }
 
 
