@@ -31,7 +31,9 @@ import scala.swing.ListView._
 import scala.swing.TabbedPane._
 import scala.swing.event._
 import scala.swing.{BorderPanel, Dimension, ListView, MainFrame, Orientation, Slider, SplitPane, TabbedPane, TextArea, _}
-
+import javax.swing.DefaultListModel
+import java.awt.event.MouseAdapter
+import java.awt.event.MouseListener
 
 class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) extends MainFrame {
 
@@ -45,8 +47,9 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
 
   title = "Scala Swing Surgeon Demo"
 
-  val id : DoctorID = DoctorID(surgeonID)
-  val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id, token,this)))
+  val id: DoctorID = DoctorID(surgeonID)
+  var i: Int = 0
+  val surgeonActor: ActorRef = actorSystem.actorOf(Props(new SurgeonActor(id, token, this)))
   surgeonActor ! AllMedicalRecordsMessage()
   /*
   surgeonActor ! AllMedicalRecordsMessage()
@@ -58,8 +61,8 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
    */
   var listMedicalRecords: List[MedicalRecord] = List()
   val dialogGui = new DialogGUI()
-  val listModel = new DefaultListModel[String]
-  val prova = new ListView[String]
+  val medicalRecords = new ListView[String]
+
   /*
    * The root component in this frame is a panel with a border layout.
    */
@@ -72,7 +75,7 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
         editable = false
       }
 
-      pages += new Page("Cartelle cliniche", prova)
+      pages += new Page("Cartelle cliniche", medicalRecords)
       pages += new Page("Logout", logout)
     }
 
@@ -104,7 +107,10 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
      */
     listenTo(slider)
     listenTo(tabs.selection)
+    listenTo(list)
     listenTo(list.selection)
+    listenTo(medicalRecords.selection)
+    listenTo(mouse.clicks)
     reactions += {
       case ValueChanged(`slider`) =>
         if (!slider.adjusting || reactLive) tabs.selection.index = slider.value
@@ -118,18 +124,20 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
       case SelectionChanged(`list`) =>
         if (list.selection.items.length == 1)
           tabs.selection.page = list.selection.items.head
-      case ListSelectionChanged(list, _, _) =>
-        //val medicalRecordsGUI = MedicalRecordsGUI()(listMedicalRecords.filter(id => id.medicalRecordID.value.equals(list.selection.items.head.toString)).head, id, surgeonActor)
-        //medicalRecordsGUI.visible = true
-        println("Selection item", list.selection.items.head)
+      case ListSelectionChanged(_) =>
+        val index = medicalRecords.peer.getSelectedIndex + 1
+
+        val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords.take(index).head, id, surgeonActor)
+        medicalRecordsGUI.visible = true
     }
   }
 
   def updateMedicalRecord(medicalRecordJson: List[MedicalRecord]): Unit = {
     listMedicalRecords = medicalRecordJson
-    prova.listData = listMedicalRecords.map(m => m.medicalRecordID.value.concat(" ").concat(m.patientID.value.concat(" ").concat(m.isClosed.toString).concat("\n")))
-    prova.peer.repaint()
+    medicalRecords.listData = listMedicalRecords.map(m => m.medicalRecordID.value.concat(" ").concat(m.patientID.value.concat(" ").concat(m.isClosed.toString).concat("\n")))
+    medicalRecords.peer.repaint()
   }
+
 }
 
 /*

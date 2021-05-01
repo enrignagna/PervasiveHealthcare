@@ -41,9 +41,13 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
   val widthRatio = 2
   val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height / heightRatio
   val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / widthRatio
+  val componentDimension: Double = windowWidth/1.5
   preferredSize = new Dimension(windowWidth.toInt, windowHeight.toInt)
   resizable = false
 
+  override def closeOperation(): Unit = {
+    this.visible = false
+  }
   private val patientID = new Label {
     text = "ID paziente"
   }
@@ -57,14 +61,22 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
   private val patientIDtxt = new TextArea {
     editable = false
     text = id.value
-    preferredSize = new Dimension(5, 3)
+    maximumSize = new Dimension(componentDimension.toInt, 25)
+    minimumSize = new Dimension(componentDimension.toInt, 25)
+    preferredSize = new Dimension(componentDimension.toInt, 25)
   }
   private val medicalRecordsIDtxt = new TextArea {
-    preferredSize = new Dimension(2, 1)
+    maximumSize = new Dimension(componentDimension.toInt, 25)
+    minimumSize = new Dimension(componentDimension.toInt, 25)
+    preferredSize = new Dimension(componentDimension.toInt, 25)
+    resizable = false
     text = medicalRecord.medicalRecordID.value
-    editable = false
   }
   val isClosedButton: RadioButton = new RadioButton() {
+    maximumSize = new Dimension(componentDimension.toInt, 25)
+    minimumSize = new Dimension(componentDimension.toInt, 25)
+    preferredSize = new Dimension(componentDimension.toInt, 25)
+    resizable = false
     name = "Cartella clinica:"
     text = "Aperta"
     text = "Chiusa"
@@ -81,7 +93,7 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
 
     var reactLive = false
 
-    var familiarPanel: JList[JPanel] = new JList[JPanel]
+    /*var familiarPanel: JList[JPanel] = new JList[JPanel]
     medicalRecord.initialAnalysis.get.anamensis.get.familiars.familiars.foreach { f => createFamiliarPanel(f, familiarPanel) }
     var remotePanel: JList[JPanel] = new JList[JPanel]
     medicalRecord.initialAnalysis.get.anamensis.get.remotes.history.foreach { r => createRemotePanel(r, remotePanel) }
@@ -129,7 +141,7 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
     operatingReports.add(medical)
     operatingReports.add(operatingReportsDate)
     operatingReports.add(interventionTypePanel)
-
+*/
     val tabs: TabbedPane = new TabbedPane {
 
       val home: BoxPanel = new BoxPanel(Orientation.Vertical) {
@@ -168,7 +180,7 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
       oneTouchExpandable = true
       continuousLayout = true
     }
-    layout(center) = Center
+    layout(center) = West
 
     /*
    * This slider is used above, so we need lazy initialization semantics.
@@ -206,8 +218,8 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
 
 
   private def createTextArea(value: Option[_]): JTextArea = new JTextArea(5, 25) {
-    setText(value.get.toString)
-    setEditable(utility.checkId(id))
+    /*setText(value.get.toString)
+    setEditable(utility.checkId(id))*/
   }
 
   private def recreateMedicalRecord(): Unit = {
@@ -383,7 +395,7 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
 
 }
 
-
+/*
 object MedicalRecordsGUI {
-  def apply()(medicalRecord: MedicalRecord, id: ID, actorRef: ActorRef): MedicalRecordsGUI = new MedicalRecordsGUI(medicalRecord, id, actorRef)
-}
+  def apply(medicalRecord: MedicalRecord, id: ID, actorRef: ActorRef): MedicalRecordsGUI = new MedicalRecordsGUI(medicalRecord, id, actorRef)
+}*/

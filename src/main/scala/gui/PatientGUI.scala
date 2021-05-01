@@ -125,7 +125,7 @@ class PatientGUI(val patientID: String, token: String, actorSystem: ActorSystem)
         if (list.selection.items.length == 1)
           tabs.selection.page = list.selection.items(0)
       case ListSelectionChanged(list, _, _) =>
-        val medicalRecordsGUI = MedicalRecordsGUI()(listMedicalRecords.filter(id => id.medicalRecordID.value.equals(list.selection.items.head.toString)).head, id, patientActor)
+        val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords.filter(id => id.medicalRecordID.value.equals(list.selection.items.head.toString)).head, id, patientActor)
         medicalRecordsGUI.visible = true
         println("Selection item", list.selection.items.head)
     }

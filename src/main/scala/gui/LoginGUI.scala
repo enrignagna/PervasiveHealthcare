@@ -35,6 +35,7 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
   val widthRatio = 5
   val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height / heightRatio
   val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / widthRatio
+  val componentDimension: Double = windowWidth/1.5
   preferredSize = new Dimension(windowWidth.toInt, windowHeight.toInt)
   resizable = false
   val dialogGUI = new DialogGUI()
@@ -54,15 +55,15 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
   }
 
   private val txtUserID: TextField = new TextField() {
-    maximumSize = new Dimension(windowWidth.toInt, 25)
-    minimumSize = new Dimension(windowWidth.toInt, 25)
-    preferredSize = new Dimension(windowWidth.toInt, 25)
+    maximumSize = new Dimension(componentDimension.toInt, 25)
+    minimumSize = new Dimension(componentDimension.toInt, 25)
+    preferredSize = new Dimension(componentDimension.toInt, 25)
     resizable = false
   }
   private val txtPwd = new PasswordField() {
-    maximumSize = new Dimension(windowWidth.toInt, 25)
-    minimumSize = new Dimension(windowWidth.toInt, 25)
-    preferredSize = new Dimension(windowWidth.toInt, 25)
+    maximumSize = new Dimension(componentDimension.toInt, 25)
+    minimumSize = new Dimension(componentDimension.toInt, 25)
+    preferredSize = new Dimension(componentDimension.toInt, 25)
     resizable = false
   }
 
@@ -107,7 +108,6 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
       case "8" => new CardiologistGUI(userID)
       case _ => dialogGUI.showErrorDialog("Errore!")
     }
-
     close()
   }
 
