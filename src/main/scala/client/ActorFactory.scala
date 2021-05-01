@@ -25,7 +25,7 @@ import gui.{PatientGUI, SurgeonGUI}
 
 import java.util.UUID
 
-class ActorFactory {
+object ActorFactory {
 
 
   /**
