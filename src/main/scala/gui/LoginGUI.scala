@@ -18,28 +18,27 @@
 
 package gui
 
-import java.awt.{Dimension, Toolkit}
+import java.awt.Toolkit
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.login.LoginActor
 import client.login.Message.LoginMessage
 
-import scala.swing.event.ButtonClicked
-import scala.swing.{BoxPanel, Button, Label, MainFrame, Orientation, PasswordField, TextField}
-import scala.sys.props
+import scala.swing.event._
+import scala.swing.{BoxPanel, Button, Dimension, Label, MainFrame, Orientation, _}
 
 class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
 
   title = "Login Demo"
   visible = true
-  val heightRatio = 1.5
-  val widthRatio = 2
+  val heightRatio = 5
+  val widthRatio = 5
   val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height / heightRatio
   val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / widthRatio
   preferredSize = new Dimension(windowWidth.toInt, windowHeight.toInt)
   resizable = false
   val dialogGUI = new DialogGUI()
-  var userID: String =_
+  var userID: String = _
 
   private val loginLabel = new Label {
     text = "Login"
@@ -53,15 +52,18 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
   private val loginButton = new Button {
     text = "Login"
   }
+
   private val txtUserID: TextField = new TextField() {
-    val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height / 1000
-    val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / 500
-    preferredSize = new Dimension(windowWidth.toInt, windowHeight.toInt)
+    maximumSize = new Dimension(windowWidth.toInt, 25)
+    minimumSize = new Dimension(windowWidth.toInt, 25)
+    preferredSize = new Dimension(windowWidth.toInt, 25)
     resizable = false
   }
   private val txtPwd = new PasswordField() {
-    preferredSize = new Dimension(2, 3)
-    size
+    maximumSize = new Dimension(windowWidth.toInt, 25)
+    minimumSize = new Dimension(windowWidth.toInt, 25)
+    preferredSize = new Dimension(windowWidth.toInt, 25)
+    resizable = false
   }
 
   contents = new BoxPanel(Orientation.Vertical) {
@@ -99,7 +101,7 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
     println(role, token)
 
     role match {
-      case "0"=> new PatientGUI(userID, token, actorSystem);
+      case "0" => new PatientGUI(userID, token, actorSystem);
       case "1" => new GeneralPractitionerGUI(userID, token, actorSystem)
       case "2" => new SurgeonGUI(userID, token, actorSystem)
       case "8" => new CardiologistGUI(userID)
