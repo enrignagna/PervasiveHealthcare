@@ -36,10 +36,9 @@ object Message {
   /**
    * Update General Practitioner Info Message.
    *
-   * @param patientID               , id of patient.
    * @param generalPractitionerInfo , general practitioner info.
    */
-  case class UpdateGeneralPractitionerInfoMessage(patientID: PatientID, generalPractitionerInfo: GeneralPractitionerInfo) extends Message
+  case class UpdateGeneralPractitionerInfoMessage(generalPractitionerInfo: GeneralPractitionerInfo) extends Message
 
   /**
    * Get General Practitioner Info Message.
