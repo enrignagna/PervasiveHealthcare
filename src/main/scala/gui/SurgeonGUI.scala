@@ -62,6 +62,8 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
   var listMedicalRecords: List[MedicalRecord] = List()
   val dialogGui = new DialogGUI()
   val medicalRecords = new ListView[String]
+  val labelMedicalRecords = Seq("Medical Record ID              Patient ID")
+  medicalRecords.listData = labelMedicalRecords
 
   /*
    * The root component in this frame is a panel with a border layout.
@@ -107,10 +109,8 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
      */
     listenTo(slider)
     listenTo(tabs.selection)
-    listenTo(list)
     listenTo(list.selection)
     listenTo(medicalRecords.selection)
-    listenTo(mouse.clicks)
     reactions += {
       case ValueChanged(`slider`) =>
         if (!slider.adjusting || reactLive) tabs.selection.index = slider.value
@@ -125,32 +125,21 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
         if (list.selection.items.length == 1)
           tabs.selection.page = list.selection.items.head
       case ListSelectionChanged(_) =>
-        val index = medicalRecords.peer.getSelectedIndex + 1
+        val index = medicalRecords.peer.getSelectedIndex - 1
+        println(index)
+        if(index >= 0){
+          val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords(index), id, surgeonActor)
+          medicalRecordsGUI.visible = true
+        }
 
-        val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords.take(index).head, id, surgeonActor)
-        medicalRecordsGUI.visible = true
     }
   }
 
   def updateMedicalRecord(medicalRecordJson: List[MedicalRecord]): Unit = {
     listMedicalRecords = medicalRecordJson
-    medicalRecords.listData = listMedicalRecords.map(m => m.medicalRecordID.value.concat(" ").concat(m.patientID.value.concat(" ").concat(m.isClosed.toString).concat("\n")))
+    medicalRecords.listData = labelMedicalRecords ++ listMedicalRecords.map(m => s"${m.medicalRecordID.value}                 " +
+      s"${m.patientID.value} ")
     medicalRecords.peer.repaint()
   }
 
 }
-
-/*
-object SurgeonGUI {
-
-  def main(args: Array[String]): Unit = {
-    val gui = SurgeonGUI("prova")
-    gui.visible = true
-  }
-
-  def apply(surgeonID: String): SurgeonGUI = new SurgeonGUI(surgeonID)
-
-
-}
-
- */

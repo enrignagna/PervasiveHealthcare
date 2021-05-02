@@ -23,6 +23,8 @@ import java.awt.Toolkit
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.login.LoginActor
 import client.login.Message.LoginMessage
+import javax.swing.border.Border
+import javax.swing.plaf.basic.BasicBorders.MarginBorder
 
 import scala.swing.event._
 import scala.swing.{BoxPanel, Button, Dimension, Label, MainFrame, Orientation, _}
@@ -44,8 +46,10 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
   private val loginLabel = new Label {
     text = "Login"
   }
-  private val userIDLabel = new Label {
+  private val userIDLabel = new Label() {
     text = "User ID"
+    horizontalTextPosition = Alignment.Left
+
   }
   private val passwordLabel = new Label {
     text = "Password"
@@ -67,7 +71,7 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
     resizable = false
   }
 
-  contents = new BoxPanel(Orientation.Vertical) {
+  contents = new GridPanel(6, 1) {
     contents += loginLabel
     contents += userIDLabel
     contents += txtUserID
@@ -99,8 +103,6 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
     val role = responseRole.getOrElse("")
     val token = responseToken.getOrElse("")
 
-    println(role, token)
-
     role match {
       case "0" => new PatientGUI(userID, token, actorSystem);
       case "1" => new GeneralPractitionerGUI(userID, token, actorSystem)
@@ -113,17 +115,3 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
 
   def showAlert(message: String): Unit = dialogGUI.alertDialog(message)
 }
-
-/*
-object LoginGUI {
-
-
-  def main(args: Array[String]): Unit = {
-    val gui = new LoginGUI
-    gui.visible = true
-  }
-
-  def apply: LoginGUI = new LoginGUI
-}
-
- */
