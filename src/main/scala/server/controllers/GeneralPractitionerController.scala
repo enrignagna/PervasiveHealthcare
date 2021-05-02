@@ -64,7 +64,7 @@ object GeneralPractitionerController {
       case UpdateCardiologyPredictions(doctorID, replyTo) =>
         val res = Repository.generalPractitionerRepository.updatePredictions(doctorID)
         if (res == "Previsions updated.") {
-          ReadModel.updateCardiologyPrediction(doctorID, ???)
+          ReadModel.updateCardiologyPrediction(doctorID)
           replyTo ! Accepted(res)
         }
         else {

@@ -50,6 +50,10 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
   }
   private val patientID = new Label {
     text = "ID paziente"
+    maximumSize = new Dimension(componentDimension.toInt, 25)
+    minimumSize = new Dimension(componentDimension.toInt, 25)
+    preferredSize = new Dimension(componentDimension.toInt, 25)
+    horizontalTextPosition = Alignment.Left
   }
   private val medicalRecordIDtitle = new Label {
     text = "ID cartella clinica"
@@ -92,8 +96,8 @@ class MedicalRecordsGUI(medicalRecord: MedicalRecord, id: ID, actor: ActorRef) e
   contents = new BorderPanel {
 
     var reactLive = false
-
-    /*var familiarPanel: JList[JPanel] = new JList[JPanel]
+/*
+    var familiarPanel: JList[JPanel] = new JList[JPanel]
     medicalRecord.initialAnalysis.get.anamensis.get.familiars.familiars.foreach { f => createFamiliarPanel(f, familiarPanel) }
     var remotePanel: JList[JPanel] = new JList[JPanel]
     medicalRecord.initialAnalysis.get.anamensis.get.remotes.history.foreach { r => createRemotePanel(r, remotePanel) }

@@ -21,8 +21,7 @@ import client.generalpractitioner.GeneralPractitionerActor
 import client.patient.PatientActor
 import client.surgeon.SurgeonActor
 import domainmodel.{DoctorID, PatientID}
-import gui.{PatientGUI, SurgeonGUI}
-
+import gui.{GeneralPractitionerGUI, PatientGUI, SurgeonGUI}
 import java.util.UUID
 
 object ActorFactory {
@@ -45,7 +44,7 @@ object ActorFactory {
       Tuple2(new SurgeonActor(doctorID, token, new SurgeonGUI(doctorID.value, token, actorSystem)), s"surgeon$doctorID")
     case "general practitioner" =>
       val doctorID = DoctorID(UUID.randomUUID().toString)
-      Tuple2(new GeneralPractitionerActor(doctorID), s"generalpractitioner$doctorID")
+      Tuple2(new GeneralPractitionerActor(doctorID, token, new GeneralPractitionerGUI(doctorID.value, token, actorSystem)), s"generalpractitioner$doctorID")
   }
 
 }

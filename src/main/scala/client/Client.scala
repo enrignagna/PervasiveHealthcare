@@ -16,10 +16,8 @@
 
 package client
 
-import akka.actor.{ActorSystem, Props}
-import client.patient.Message.AllMedicalRecordMessage
-import client.patient.PatientActor
-import domainmodel.PatientID
+import akka.actor.ActorSystem
+import gui.LoginGUI
 
 /**
  * System for launching all client actor.
@@ -27,13 +25,13 @@ import domainmodel.PatientID
 object Client extends App {
   val system = ActorSystem("PatientSystem")
 
-  //val loginGUI: LoginGUI = new LoginGUI(system)
+  val loginGUI: LoginGUI = new LoginGUI(system)
 
-
+/*
   val patient = system.actorOf(Props(new PatientActor(PatientID("111"))), name = "patient")
 
   patient ! AllMedicalRecordMessage
 
-  patient ! AllMedicalRecordMessage
-
+  patient ! AllMedicalRecordMessage()
+*/
 }
