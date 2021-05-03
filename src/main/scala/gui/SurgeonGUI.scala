@@ -57,16 +57,23 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
    */
   var listMedicalRecords: List[MedicalRecord] = List()
   val dialogGui = new DialogGUI()
-  val medicalRecords: ListView[String] = new ListView[String] {
+
+  val medicalRecords: ListView[String] = new ListView[String]{
     listenTo(mouse.clicks)
     reactions += {
       case _: MouseClicked =>
         val index = this.peer.getSelectedIndex - 1
+
         val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords.apply(index), id, surgeonActor)
         medicalRecordsGUI.visible = true
     }
   }
-  val labelMedicalRecords = Seq("Medical Record ID              Patient ID")
+  val medicalRecordLabel = s"Medical Record ID          Patient ID          Closed"
+  val labelMedicalRecords = Seq(medicalRecordLabel)
+
+
+
+
   medicalRecords.listData = labelMedicalRecords
 
   /*
@@ -132,8 +139,12 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
 
   def updateMedicalRecord(medicalRecordJson: List[MedicalRecord]): Unit = {
     listMedicalRecords = medicalRecordJson
-    medicalRecords.listData = labelMedicalRecords ++ listMedicalRecords.map(m => s"${m.medicalRecordID.value}                 " +
-      s"${m.patientID.value} ")
+    medicalRecords.listData = labelMedicalRecords ++ listMedicalRecords.map(m => s"${m.medicalRecordID.value}" +
+      "                        " +
+      s"${m.patientID.value}" +
+      "              " +
+      s"${if(m.isClosed)  "Yes" else "No"}"
+   )
     medicalRecords.peer.repaint()
   }
 

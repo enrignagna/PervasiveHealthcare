@@ -28,7 +28,7 @@ import domainmodel.User
 import json.RequestJsonFormats.acceptedJsonFormat
 import json.UserJsonFormat.userJsonFormat
 import server.models.JwtAuthentication.isLogged
-import server.models.Protocol
+import server.models.{JwtAuthentication, Protocol}
 import server.models.Protocol._
 import server.utils.Utils
 

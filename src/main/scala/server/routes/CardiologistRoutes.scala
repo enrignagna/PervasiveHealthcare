@@ -21,13 +21,13 @@ package server.routes
 import akka.actor.typed.scaladsl.AskPattern.{Askable, schedulerFromActorSystem}
 import akka.actor.typed.{ActorRef, ActorSystem}
 import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.server.Directives.{as, authorize, complete, entity, headerValueByName, onSuccess, pathEnd, pathPrefix, post}
+import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import domainmodel.CardiologyVisit
+import domainmodel.{CardiologyVisit, DoctorID}
 import json.CardiologyVisitJsonFormat.cardiologyVisitJsonFormat
-import json.RequestJsonFormats.acceptedJsonFormat
-import server.models.JwtAuthentication.hasCardiologistPermissions
+import json.RequestJsonFormats.{acceptedJsonFormat, immSetFormat}
+import server.models.JwtAuthentication.{hasCardiologistPermissions, hasDoctorPermissions}
 import server.models.Protocol
 import server.models.Protocol._
 
@@ -54,12 +54,20 @@ class CardiologistRoutes(cardiologistController: ActorRef[Protocol.CQRSAction])(
   def insertCardiologyVisit(cardiologyVisit: CardiologyVisit): Future[Confirmation] =
     cardiologistController.ask(InsertCardiologyVisit(cardiologyVisit, _))
 
-  //TODO get da inserire
+
+  /**
+   * Method to get all the cardiology visit for the specific cardiologist.
+   *
+   * @param doctorID the cardiologist ID
+   * @return a set of cardiology visits
+   */
+  def getCardiologyVisits(doctorID: DoctorID): Future[Set[CardiologyVisit]] =
+    cardiologistController.ask(GetCardiologyVisits(doctorID, _))
+
   val cardiologistRoutes: Route =
     pathPrefix("api") {
       pathPrefix("cardiologyvisits") {
         pathEnd {
-
           post {
             headerValueByName("x-access-token") { value =>
               authorize(hasCardiologistPermissions(value)) {
@@ -74,7 +82,18 @@ class CardiologistRoutes(cardiologistController: ActorRef[Protocol.CQRSAction])(
               }
             }
           }
-        }
+        } ~
+          path(Segment) {
+            id =>
+              get {
+                headerValueByName("x-access-token") { value =>
+                  authorize(hasCardiologistPermissions(value)) {
+                    onSuccess(getCardiologyVisits(DoctorID(id))) { response => complete(StatusCodes.OK, response)
+                    }
+                  }
+                }
+              }
+          }
       }
     }
 }

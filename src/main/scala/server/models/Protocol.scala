@@ -124,6 +124,8 @@ object Protocol {
 
   final case class GetPatient(id: String, replyTo: ActorRef[Option[Patient]]) extends Query
 
+  final case class GetCardiologyVisits(id: DoctorID, replyTo: ActorRef[Set[CardiologyVisit]]) extends Query
+
   final case class GetCardiologyPredictions(id: DoctorID, replyTo: ActorRef[Set[CardiologyPrediction]]) extends Query
 
   final case class UpdateCardiologyPredictions(id: DoctorID, replyTo: ActorRef[Confirmation]) extends Command

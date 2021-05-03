@@ -61,7 +61,7 @@ object PatientDigitalTwin{
           val patient = patientOp.get
           val prediction = this.makeCardiologyPrediction(patient)
           if(prediction.isInstanceOf[CardiologyDiseasesPresence] && patient.generalPractitionerInfo.nonEmpty){
-            println("ok")
+
               patientRepository.insertCardiologyPrediction(CardiologyPrediction(
                 patientID,
                 patient.generalPractitionerInfo.get.doctorID,
