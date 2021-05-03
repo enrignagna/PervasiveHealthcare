@@ -145,6 +145,28 @@ object EventStore {
   }
 
   /**
+   * Get all cardiology visits for a doctor.
+   *
+   * @param doctorID , doctor ID.
+   * @return all cardiology visits for a doctor.
+   */
+  def getAllCardiologyVisitsForDoctorEvents(doctorID: DoctorID): Set[Event] = {
+    val res: Seq[BsonDocument] = Await.result(eventsCollection.find(
+      and(
+        Filters.or(
+          equal("eventID", EventType.INSERT_CARDIOLOGY_VISIT.id),
+          equal("eventID", EventType.UPDATE_CARDIOLOGY_VISIT.id)),
+        equal("c.doctorID.value", doctorID.value)))
+      .toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if (res.nonEmpty) {
+      res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
+        .toSet
+    }
+    else Set.empty
+  }
+
+  /**
    * Get all medical record for a doctor.
    *
    * @param doctorID , doctor ID.

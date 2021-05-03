@@ -21,7 +21,7 @@ import domainmodel.Patient._
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
 import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
 import domainmodel.professionalfigure._
-import domainmodel.{CardiologyPrediction, DoctorID, PatientID}
+import domainmodel.{Patient => _, _}
 
 object RMUtility {
   /**
@@ -36,6 +36,7 @@ object RMUtility {
     events.foreach {
       case x: InsertSurgeonEvent => user = x.s
       case x: UpdateSurgeonEvent => user = x.s
+
     }
     Option(user)
   }
@@ -52,6 +53,7 @@ object RMUtility {
     events.foreach {
       case x: InsertInstrumentalistEvent => user = x.i
       case x: UpdateInstrumentalistEvent => user = x.i
+      case _ =>
     }
     Option(user)
   }
@@ -68,6 +70,7 @@ object RMUtility {
     events.foreach {
       case x: InsertGeneralPractitionerEvent => user = x.g
       case x: UpdateGeneralPractitionerEvent => user = x.g
+      case _ =>
     }
     Option(user)
   }
@@ -84,6 +87,7 @@ object RMUtility {
     events.foreach {
       case x: InsertAnesthetistEvent => user = x.a
       case x: UpdateAnesthetistEvent => user = x.a
+      case _ =>
     }
     Option(user)
   }
@@ -100,6 +104,7 @@ object RMUtility {
     events.foreach {
       case x: InsertWardNurseEvent => user = x.w
       case x: UpdateWardNurseEvent => user = x.w
+      case _ =>
     }
     Option(user)
   }
@@ -116,6 +121,7 @@ object RMUtility {
     events.foreach {
       case x: InsertRescuerEvent => user = x.r
       case x: UpdateRescuerEvent => user = x.r
+      case _ =>
     }
     Option(user)
   }
@@ -132,6 +138,7 @@ object RMUtility {
     events.foreach {
       case x: InsertCardiologistEvent => user = x.c
       case x: UpdateCardiologistEvent => user = x.c
+      case _ =>
     }
     Option(user)
   }
@@ -156,8 +163,25 @@ object RMUtility {
       case x: UpdateGeneralPractitionerInfoEvent => user = updateGeneralPractitionerInfo(user, x.g)
       case x: InsertCardiologyVisitEvent => user = updateCardiologyVisit(user, x.c)
       case x: UpdateCardiologyVisitEvent => user = updateCardiologyVisit(user, x.c)
+      case _ =>
     }
     Option(user)
+  }
+
+  /**
+   * Get all cardiology visits for a doctor.
+   *
+   * @param doctorID , doctor ID.
+   * @return all cardiology visits for a doctor.
+   */
+  def getAllCardiologyVisitForDoctor(doctorID: DoctorID): Set[CardiologyVisit] = {
+    val events = EventStore.getAllCardiologyVisitsForDoctorEvents(doctorID)
+    var cardiologyVisitSet = Map.empty[CardiologyVisitID, CardiologyVisit]
+    events.foreach {
+      case x: InsertCardiologyVisitEvent => cardiologyVisitSet = cardiologyVisitSet + (x.c.cardiologyVisitID -> x.c)
+      case x: UpdateCardiologyVisitEvent => cardiologyVisitSet = cardiologyVisitSet + (x.c.cardiologyVisitID -> x.c)
+    }
+    cardiologyVisitSet.values.toSet
   }
 
   /**
