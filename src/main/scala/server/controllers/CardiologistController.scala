@@ -55,5 +55,8 @@ object CardiologistController {
           replyTo ! Rejected(res)
         }
         Behaviors.same
+      case GetCardiologyVisits(doctorID, replyTo) =>
+        replyTo ! Set()
+        Behaviors.same
     }
 }

@@ -156,7 +156,7 @@ object AdministratorController {
       case InsertCardiologist(cardiologist, replyTo) =>
         val res = Repository.adminRepository.insertCardiologist(cardiologist)
         if (res == "Cardiologist created.") { //if there is an error the events are not stored, otherwise the events will be stored.
-          //ReadModel.createCardiologist(cardiologist)
+          ReadModel.createCardiologist(cardiologist)
           replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
@@ -165,7 +165,7 @@ object AdministratorController {
       case UpdateCardiologist(id, cardiologist, replyTo) =>
         val res = Repository.adminRepository.updateCardiologist(DoctorID(id), cardiologist)
         if (res == "Cardiologist updated.") {
-          //ReadModel.updateCardiologist(cardiologist)
+          ReadModel.updateCardiologist(cardiologist)
           replyTo ! Accepted(res) // actions that are to be performed after successful.
         } else {
           replyTo ! Rejected(res)

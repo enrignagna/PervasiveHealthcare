@@ -17,23 +17,19 @@
  */
 package gui
 
-import java.awt.{Graphics, Toolkit}
+import java.awt.Toolkit
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.surgeon.SurgeonActor
 import client.surgeon.SurgeonMessage.AllMedicalRecordsMessage
 import domainmodel._
 import domainmodel.medicalrecords.MedicalRecord
-import javax.swing._
-import javax.swing.DefaultListModel
+
 import scala.swing.BorderPanel.Position._
 import scala.swing.ListView._
 import scala.swing.TabbedPane._
 import scala.swing.event._
 import scala.swing.{BorderPanel, Dimension, ListView, MainFrame, Orientation, Slider, SplitPane, TabbedPane, TextArea, _}
-import javax.swing.DefaultListModel
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseListener
 
 class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) extends MainFrame {
 
@@ -62,7 +58,8 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
   var listMedicalRecords: List[MedicalRecord] = List()
   val dialogGui = new DialogGUI()
   val medicalRecords = new ListView[String]
-  val labelMedicalRecords = Seq("Medical Record ID              Patient ID")
+  val medicalRecordLabel = s"Medical Record ID          Patient ID          Closed"
+  val labelMedicalRecords = Seq(medicalRecordLabel)
   medicalRecords.listData = labelMedicalRecords
 
   /*
@@ -126,7 +123,6 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
           tabs.selection.page = list.selection.items.head
       case ListSelectionChanged(_) =>
         val index = medicalRecords.peer.getSelectedIndex - 1
-        println(index)
         if(index >= 0){
           val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords(index), id, surgeonActor)
           medicalRecordsGUI.visible = true
@@ -137,8 +133,12 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
 
   def updateMedicalRecord(medicalRecordJson: List[MedicalRecord]): Unit = {
     listMedicalRecords = medicalRecordJson
-    medicalRecords.listData = labelMedicalRecords ++ listMedicalRecords.map(m => s"${m.medicalRecordID.value}                 " +
-      s"${m.patientID.value} ")
+    medicalRecords.listData = labelMedicalRecords ++ listMedicalRecords.map(m => s"${m.medicalRecordID.value}" +
+      "                        " +
+      s"${m.patientID.value}" +
+      "              " +
+      s"${if(m.isClosed)  "Yes" else "No"}"
+   )
     medicalRecords.peer.repaint()
   }
 

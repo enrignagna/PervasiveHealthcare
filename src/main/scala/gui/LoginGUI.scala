@@ -107,7 +107,7 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
       case "0" => new PatientGUI(userID, token, actorSystem);
       case "1" => new GeneralPractitionerGUI(userID, token, actorSystem)
       case "2" => new SurgeonGUI(userID, token, actorSystem)
-      case "8" => new CardiologistGUI(userID)
+      case "8" => new CardiologistGUI(userID, token, actorSystem)
       case _ => dialogGUI.showErrorDialog("Errore!")
     }
     close()
