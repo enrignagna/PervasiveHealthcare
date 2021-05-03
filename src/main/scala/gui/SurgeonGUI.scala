@@ -61,7 +61,15 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
    */
   var listMedicalRecords: List[MedicalRecord] = List()
   val dialogGui = new DialogGUI()
-  val medicalRecords = new ListView[String]
+  val medicalRecords: ListView[String] = new ListView[String]{
+    listenTo(mouse.clicks)
+    reactions+= {
+      case _: MouseClicked =>
+        val index = this.peer.getSelectedIndex + 1
+        val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords.take(index).head, id, surgeonActor)
+        medicalRecordsGUI.visible = true
+    }
+  }
   val labelMedicalRecords = Seq("Medical Record ID              Patient ID")
   medicalRecords.listData = labelMedicalRecords
 
@@ -110,7 +118,6 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
     listenTo(slider)
     listenTo(tabs.selection)
     listenTo(list.selection)
-    listenTo(medicalRecords.selection)
     reactions += {
       case ValueChanged(`slider`) =>
         if (!slider.adjusting || reactLive) tabs.selection.index = slider.value
@@ -124,14 +131,6 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
       case SelectionChanged(`list`) =>
         if (list.selection.items.length == 1)
           tabs.selection.page = list.selection.items.head
-      case ListSelectionChanged(_) =>
-        val index = medicalRecords.peer.getSelectedIndex - 1
-        println(index)
-        if(index >= 0){
-          val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords(index), id, surgeonActor)
-          medicalRecordsGUI.visible = true
-        }
-
     }
   }
 
