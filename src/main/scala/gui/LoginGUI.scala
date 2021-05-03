@@ -23,11 +23,8 @@ import java.awt.Toolkit
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.login.LoginActor
 import client.login.Message.LoginMessage
-import javax.swing.border.Border
-import javax.swing.plaf.basic.BasicBorders.MarginBorder
-
 import scala.swing.event._
-import scala.swing.{BoxPanel, Button, Dimension, Label, MainFrame, Orientation, _}
+import scala.swing.{Button, Dimension, Label, MainFrame, _}
 
 class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
 
@@ -35,8 +32,8 @@ class LoginGUI(actorSystem: ActorSystem) extends MainFrame {
   visible = true
   val heightRatio = 5
   val widthRatio = 5
-  val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height / heightRatio
-  val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width / widthRatio
+  val windowHeight: Double = Toolkit.getDefaultToolkit.getScreenSize.height /heightRatio
+  val windowWidth: Double = Toolkit.getDefaultToolkit.getScreenSize.width /widthRatio
   val componentDimension: Double = windowWidth/1.5
   preferredSize = new Dimension(windowWidth.toInt, windowHeight.toInt)
   resizable = false

@@ -17,23 +17,19 @@
  */
 package gui
 
-import java.awt.{Graphics, Toolkit}
+import java.awt.Toolkit
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.surgeon.SurgeonActor
 import client.surgeon.SurgeonMessage.AllMedicalRecordsMessage
 import domainmodel._
 import domainmodel.medicalrecords.MedicalRecord
-import javax.swing._
-import javax.swing.DefaultListModel
+
 import scala.swing.BorderPanel.Position._
 import scala.swing.ListView._
 import scala.swing.TabbedPane._
 import scala.swing.event._
 import scala.swing.{BorderPanel, Dimension, ListView, MainFrame, Orientation, Slider, SplitPane, TabbedPane, TextArea, _}
-import javax.swing.DefaultListModel
-import java.awt.event.MouseAdapter
-import java.awt.event.MouseListener
 
 class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) extends MainFrame {
 
@@ -61,12 +57,12 @@ class SurgeonGUI(surgeonID: String, token: String, actorSystem: ActorSystem) ext
    */
   var listMedicalRecords: List[MedicalRecord] = List()
   val dialogGui = new DialogGUI()
-  val medicalRecords: ListView[String] = new ListView[String]{
+  val medicalRecords: ListView[String] = new ListView[String] {
     listenTo(mouse.clicks)
-    reactions+= {
+    reactions += {
       case _: MouseClicked =>
-        val index = this.peer.getSelectedIndex + 1
-        val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords.take(index).head, id, surgeonActor)
+        val index = this.peer.getSelectedIndex - 1
+        val medicalRecordsGUI = new MedicalRecordsGUI(listMedicalRecords.apply(index), id, surgeonActor)
         medicalRecordsGUI.visible = true
     }
   }

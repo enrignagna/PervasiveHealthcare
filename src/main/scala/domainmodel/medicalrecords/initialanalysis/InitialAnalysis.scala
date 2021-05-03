@@ -19,7 +19,7 @@ package domainmodel.medicalrecords.initialanalysis
 import domainmodel.Anamnesis
 
 case class InitialAnalysis(
-                            anamensis: Option[Anamnesis] = None,
+                            anamnesis: Option[Anamnesis] = None,
                             physicalExamination: PhysicalExamination,
                             stateEvaluation: StateEvaluation
                           )
