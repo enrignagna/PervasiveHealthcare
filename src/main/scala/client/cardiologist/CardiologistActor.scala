@@ -24,8 +24,8 @@ import akka.http.scaladsl.{Http, HttpExt}
 import akka.pattern.pipe
 import akka.util.ByteString
 import client.Client
-import client.cardiologist.Message.InsertCardiologyVisitMessage
-import client.cardiologist.Requests.insertCardiologyVisitRequest
+import client.cardiologist.Message.{AllCardiologyVisitsMessage, InsertCardiologyVisitMessage}
+import client.cardiologist.Requests.{allCardiologyVisitsRequest, insertCardiologyVisitRequest}
 import domainmodel.DoctorID
 import gui.CardiologistGUI
 
@@ -38,9 +38,11 @@ class CardiologistActor(doctorID: DoctorID, token: String, cardiologistGUI: Card
 
     private lazy val onInteractionBehaviour: Receive = {
       case InsertCardiologyVisitMessage(cardiologyVisit) =>
-        println("ok")
         insertCardiologyVisitRequest(token, cardiologyVisit).pipeTo(self)
         this.context become onAttendResponseInsertCardiologyVisitMessageBehaviour
+      case AllCardiologyVisitsMessage() =>
+        allCardiologyVisitsRequest(token, doctorID).pipeTo(self)
+        this.context become onAttendResponseAllCardiologyVisitsMessageBehaviour
 
     }
 
@@ -71,6 +73,20 @@ class CardiologistActor(doctorID: DoctorID, token: String, cardiologistGUI: Card
         resp.discardEntityBytes()
         this.context become onInteractionBehaviour
     }
+
+  private lazy val onAttendResponseAllCardiologyVisitsMessageBehaviour: Receive = {
+    case HttpResponse(StatusCodes.OK, _, entity, _) =>
+      entity.dataBytes.runFold(ByteString(""))(_ ++ _).foreach { body =>
+        println(body.utf8String)
+        //val generalPractitionerInfo: GeneralPractitionerInfo = JsonParser(body.utf8String).convertTo[CardiologyPrediction]
+        //TODO qui ritorna solo ok o meno
+      }
+      this.context become onInteractionBehaviour
+    case resp@HttpResponse(code, _, _, _) =>
+      println("Error: " + code.value)
+      resp.discardEntityBytes()
+      this.context become onInteractionBehaviour
+  }
 
 
     override def receive: Receive =

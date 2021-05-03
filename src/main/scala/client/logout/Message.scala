@@ -16,15 +16,12 @@
  *
  */
 
-package client.cardiologist
+package client.logout
 
 import client.Message
-import domainmodel.{CardiologyVisit, DoctorID}
 
 object Message {
 
-  case class AllCardiologyVisitsMessage() extends Message
-
-  case class InsertCardiologyVisitMessage(cardiologyVisit: CardiologyVisit) extends Message
+  case class LogoutMessage() extends Message
 
 }

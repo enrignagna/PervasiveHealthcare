@@ -20,7 +20,7 @@ package server.controllers
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
-import cqrs.readmodel.ReadModel
+import cqrs.readmodel.{RMUtility, ReadModel}
 import cqrs.writemodel.Repository
 import digitaltwins.{CardiologyVisitInserted, PatientDigitalTwin}
 import server.models.Protocol._
@@ -56,7 +56,8 @@ object CardiologistController {
         }
         Behaviors.same
       case GetCardiologyVisits(doctorID, replyTo) =>
-        replyTo ! Set()
+        val res = RMUtility.getAllCardiologyVisitForDoctor(doctorID)
+        replyTo ! res
         Behaviors.same
     }
 }

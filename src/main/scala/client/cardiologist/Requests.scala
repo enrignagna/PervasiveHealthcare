@@ -29,20 +29,19 @@ import spray.json.enrichAny
 import scala.concurrent.Future
 
 object Requests {
-/*
+
   def allCardiologyVisitsRequest(token: String, doctorID: DoctorID)(implicit system: ClassicActorSystemProvider): Future[HttpResponse] = {
-    println(doctorID, token)
     Http().singleRequest(
       HttpRequest(
         method = HttpMethods.GET,
-        uri = s"http://127.0.0.1:8080/api/medicalrecords/${doctorID.value}",
+        uri = s"http://127.0.0.1:8080/api/cardiologyvisits/${doctorID.value}",
         headers = List(APITokenHeader(token)),
         entity = HttpEntity(ContentTypes.`application/json`, ""),
       )
     )
   }
 
- */
+
 
   def insertCardiologyVisitRequest(token: String, cardiologyVisit: CardiologyVisit)(implicit system: ClassicActorSystemProvider): Future[HttpResponse] = {
     Http().singleRequest(

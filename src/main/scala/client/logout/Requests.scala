@@ -16,15 +16,32 @@
  *
  */
 
-package client.cardiologist
+package client.logout
 
-import client.Message
-import domainmodel.{CardiologyVisit, DoctorID}
+import akka.actor.ClassicActorSystemProvider
+import akka.http.scaladsl.Http
+import akka.http.scaladsl.model.{ContentTypes, HttpEntity, HttpMethods, HttpRequest, HttpResponse}
+import client.APITokenHeader
 
-object Message {
+import scala.concurrent.Future
 
-  case class AllCardiologyVisitsMessage() extends Message
+object Requests {
 
-  case class InsertCardiologyVisitMessage(cardiologyVisit: CardiologyVisit) extends Message
-
+  /**
+   * Logout request.
+   *
+   * @param token  , the user token.
+   * @param system , actor system provider.
+   * @return http response
+   */
+  def logoutRequest(token: String)(implicit system: ClassicActorSystemProvider): Future[HttpResponse] = {
+    Http().singleRequest(
+      HttpRequest(
+        method = HttpMethods.POST,
+        uri = "http://127.0.0.1:8080/api/logout",
+        headers = List(APITokenHeader(token)),
+        entity = HttpEntity(ContentTypes.`application/json`, "")
+      )
+    )
+  }
 }

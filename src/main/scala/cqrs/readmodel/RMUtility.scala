@@ -217,8 +217,6 @@ object RMUtility {
       case x: UpdateGeneralPractitionerInfoEvent => generalPractitionerInfoSet =
         generalPractitionerInfoSet + (x.g.patientID -> x.g)
     }
-    println("read out")
-    println(generalPractitionerInfoSet)
     generalPractitionerInfoSet.values.toSet
   }
 

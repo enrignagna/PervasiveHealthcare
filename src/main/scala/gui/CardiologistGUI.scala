@@ -4,15 +4,15 @@ import java.awt.Toolkit
 
 import akka.actor.{ActorRef, ActorSystem, Props}
 import client.cardiologist.CardiologistActor
-import client.cardiologist.Message.InsertCardiologyVisitMessage
-import client.surgeon.SurgeonMessage.AllMedicalRecordsMessage
-import domainmodel.generalpractitionerinfo.VisitDate
+import client.cardiologist.Message.AllCardiologyVisitsMessage
+import client.logout.LogoutActor
 import domainmodel._
+import domainmodel.generalpractitionerinfo.VisitDate
 
 import scala.swing.BorderPanel.Position.Center
 import scala.swing.TabbedPane.Page
-import scala.swing.event.{ListSelectionChanged, SelectionChanged, ValueChanged}
-import scala.swing.{BorderPanel, BoxPanel, Dimension, Label, ListView, MainFrame, Orientation, ScrollPane, Slider, SplitPane, TabbedPane, TextArea}
+import scala.swing.event.{ListSelectionChanged, MouseClicked, SelectionChanged, ValueChanged}
+import scala.swing.{BorderPanel, Dimension, ListView, MainFrame, Orientation, ScrollPane, Slider, SplitPane, TabbedPane, TextArea}
 
 class CardiologistGUI(cardiologistID: String, token: String, actorSystem: ActorSystem) extends MainFrame {
 
@@ -29,7 +29,7 @@ class CardiologistGUI(cardiologistID: String, token: String, actorSystem: ActorS
 
   val id: DoctorID = DoctorID(cardiologistID)
   val cardiologistActor: ActorRef = actorSystem.actorOf(Props(new CardiologistActor(id, token, this)))
-
+  val logoutActor: ActorRef = actorSystem.actorOf(Props(new LogoutActor(token)))
 
   val visit: CardiologyVisit = CardiologyVisit(
     PatientID("000006"),
@@ -49,10 +49,28 @@ class CardiologistGUI(cardiologistID: String, token: String, actorSystem: ActorS
     VisitDate()
   )
 
- // cardiologistActor ! InsertCardiologyVisitMessage(visit)
+  cardiologistActor ! AllCardiologyVisitsMessage()
 
-  val cardiologyVisits = new ListView[String]
   val dialogGui = new DialogGUI()
+  var listCardiologyVisits: List[CardiologyVisit] = List()
+  val cardiologyVisits: ListView[String] = new ListView[String]{
+    listenTo(mouse.clicks)
+    reactions+= {
+      case _: MouseClicked =>
+        val index = this.peer.getSelectedIndex - 1
+        if(index >= 0){
+         //TODO open gui
+        }
+
+    }
+  }
+  val cardiologyVisitLabel = s"Cardiology Visit ID          Patient ID"
+  val labelCardiologyVisits = Seq(cardiologyVisitLabel)
+
+
+
+
+  cardiologyVisits.listData = labelCardiologyVisits
 
   /*
   * The root component in this frame is a panel with a border layout.
@@ -93,6 +111,10 @@ class CardiologistGUI(cardiologistID: String, token: String, actorSystem: ActorS
       majorTickSpacing = 1
     }
 
+    def negativeLogout(): Unit = {
+
+    }
+
     /*
      * Establish connection between the tab pane, slider, and list view.
      */
@@ -104,8 +126,15 @@ class CardiologistGUI(cardiologistID: String, token: String, actorSystem: ActorS
       case ValueChanged(`slider`) =>
         if (!slider.adjusting || reactLive) tabs.selection.index = slider.value
         slider.value match {
-          case 0 => cardiologistActor ! AllMedicalRecordsMessage()
-          case 1 => dialogGui.showDialog()
+          case 0 => cardiologistActor ! AllCardiologyVisitsMessage()
+          case 1 => dialogGui.logoutDialog(logoutActor,
+            () => {
+              close()
+            },
+            () => {
+            slider.value = 0
+            list.selectIndices(0)
+          })
         }
       case SelectionChanged(`tabs`) =>
         slider.value = tabs.selection.index
@@ -113,13 +142,18 @@ class CardiologistGUI(cardiologistID: String, token: String, actorSystem: ActorS
       case SelectionChanged(`list`) =>
         if (list.selection.items.length == 1)
           tabs.selection.page = list.selection.items.head
-      case ListSelectionChanged(_) =>
-        val index = cardiologyVisits.peer.getSelectedIndex - 1
-        if(index >= 0){
-          println(index)
-        }
-
     }
+  }
+
+
+
+  def refreshCardiologyVisits(cardiologyVisitsJson: List[CardiologyVisit]): Unit = {
+    listCardiologyVisits = cardiologyVisitsJson
+    cardiologyVisits.listData = labelCardiologyVisits ++ listCardiologyVisits.map(v => s"${v.cardiologyVisitID.value}" +
+      "                        " +
+      s"${v.patientID.value}"
+    )
+    cardiologyVisits.peer.repaint()
   }
 
 
