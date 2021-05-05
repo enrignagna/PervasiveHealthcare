@@ -64,10 +64,18 @@ object GeneralPractitionerController {
       case UpdateCardiologyPredictions(doctorID, replyTo) =>
         val res = Repository.generalPractitionerRepository.updatePredictions(doctorID)
         if (res == "Previsions updated.") {
+          ReadModel.updateCardiologyPrediction(doctorID)
           replyTo ! Accepted(res)
         }
         else {
           replyTo ! Rejected(res)
+        }
+        Behaviors.same
+      case GetGeneralPractitionerInfo(doctorID, replyTo) =>
+        println("ok")
+        val res = RMUtility.getAllGeneralPractitionerInfoForDoctor(doctorID)
+        if(res.nonEmpty){
+          replyTo ! res
         }
         Behaviors.same
       case GetCardiologyPredictions(doctorID, replyTo) =>

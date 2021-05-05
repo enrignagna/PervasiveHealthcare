@@ -19,12 +19,22 @@ package server.models
 
 import akka.actor.typed.ActorRef
 import cqrs.writemodel.Role.Role
+import domainmodel.ChestPainType.ChestPainType
+import domainmodel.Gender.Gender
+import domainmodel.KinshipDegree.KinshipDegree
 import domainmodel.Patient.Patient
+import domainmodel.RestingElectrocardiographic.RestingElectrocardiographic
+import domainmodel.SlopeST.SlopeST
+import domainmodel.Thal.Thal
 import domainmodel._
+import domainmodel.generalinfo.AllergyClass.AllergyClass
+import domainmodel.generalinfo.BloodType.BloodType
 import domainmodel.generalinfo.GeneralInfo
+import domainmodel.generalinfo.Rh.Rh
 import domainmodel.generalpractitionerinfo.{GeneralPractitionerInfo, Visit}
 import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import domainmodel.medicalrecords.{DrugsAdministered, MedicalRecord, MedicalRecordsID}
+import domainmodel.professionalfigure.Specialization.Specialization
 import domainmodel.professionalfigure._
 
 /**
@@ -32,6 +42,9 @@ import domainmodel.professionalfigure._
  */
 object Protocol {
 
+  /**
+   * Basilar actions.
+   */
   sealed trait CQRSAction
 
   sealed trait Command extends CQRSAction
@@ -84,6 +97,8 @@ object Protocol {
 
   final case class GetGeneralPractitioners(replyTo: ActorRef[Set[GeneralPractitioner]]) extends Query
 
+  final case class GetGeneralPractitionerInfo(id: DoctorID, replyTo: ActorRef[Set[GeneralPractitionerInfo]]) extends Query
+
   final case class GetGeneralPractitioner(id: String, replyTo: ActorRef[Option[GeneralPractitioner]]) extends Query
 
   final case class InsertInstrumentalist(instrumentalist: Instrumentalist, replyTo: ActorRef[Confirmation]) extends Command
@@ -122,6 +137,8 @@ object Protocol {
 
   final case class GetPatient(id: String, replyTo: ActorRef[Option[Patient]]) extends Query
 
+  final case class GetCardiologyVisits(id: DoctorID, replyTo: ActorRef[Set[CardiologyVisit]]) extends Query
+
   final case class GetCardiologyPredictions(id: DoctorID, replyTo: ActorRef[Set[CardiologyPrediction]]) extends Query
 
   final case class UpdateCardiologyPredictions(id: DoctorID, replyTo: ActorRef[Confirmation]) extends Command
@@ -153,6 +170,30 @@ object Protocol {
   final case class UpdateGeneralInfo(patientID: PatientID, generalInfo: GeneralInfo, replyTo: ActorRef[Confirmation]) extends Command
 
   final case class InsertCardiologyVisit(cardiologyVisit: CardiologyVisit, replyTo: ActorRef[Confirmation]) extends Command
+
+  //Enumerations
+
+  final case class GetRoles(replyTo: ActorRef[Set[Role]]) extends Query
+
+  final case class GetGenders(replyTo: ActorRef[Set[Gender]]) extends Query
+
+  final case class GetAllergies(replyTo: ActorRef[Set[AllergyClass]]) extends Query
+
+  final case class GetBloodTypes(replyTo: ActorRef[Set[BloodType]]) extends Query
+
+  final case class GetRh(replyTo: ActorRef[Set[Rh]]) extends Query
+
+  final case class GetSpecializations(replyTo: ActorRef[Set[Specialization]]) extends Query
+
+  final case class GetKinshipDegrees(replyTo: ActorRef[Set[KinshipDegree]]) extends Query
+
+  final case class GetChestPainTypes(replyTo: ActorRef[Set[ChestPainType]]) extends Query
+
+  final case class GetRestingECG(replyTo: ActorRef[Set[RestingElectrocardiographic]]) extends Query
+
+  final case class GetSlopeST(replyTo: ActorRef[Set[SlopeST]]) extends Query
+
+  final case class GetThals(replyTo: ActorRef[Set[Thal]]) extends Query
 
 }
 

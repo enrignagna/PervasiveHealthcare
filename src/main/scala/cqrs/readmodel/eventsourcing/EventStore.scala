@@ -145,6 +145,28 @@ object EventStore {
   }
 
   /**
+   * Get all cardiology visits for a doctor.
+   *
+   * @param doctorID , doctor ID.
+   * @return all cardiology visits for a doctor.
+   */
+  def getAllCardiologyVisitsForDoctorEvents(doctorID: DoctorID): Set[Event] = {
+    val res: Seq[BsonDocument] = Await.result(eventsCollection.find(
+      and(
+        Filters.or(
+          equal("eventID", EventType.INSERT_CARDIOLOGY_VISIT.id),
+          equal("eventID", EventType.UPDATE_CARDIOLOGY_VISIT.id)),
+        equal("c.doctorID.value", doctorID.value)))
+      .toFuture(),
+      Duration(1, TimeUnit.SECONDS))
+    if (res.nonEmpty) {
+      res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
+        .toSet
+    }
+    else Set.empty
+  }
+
+  /**
    * Get all medical record for a doctor.
    *
    * @param doctorID , doctor ID.
@@ -178,7 +200,7 @@ object EventStore {
         Filters.or(
           equal("eventID", EventType.INSERT_GENERAL_PRACTITIONER_INFO.id),
           equal("eventID", EventType.UPDATE_GENERAL_PRACTITIONER_INFO.id)),
-        equal("m.doctorID.value", doctorID.value)))
+        equal("g.doctorID.value", doctorID.value)))
       .toFuture(),
       Duration(1, TimeUnit.SECONDS))
     if (res.nonEmpty) {
@@ -195,17 +217,26 @@ object EventStore {
    * @return all new predictions for a doctor.
    */
   def getNewPredictionsEvents(doctorID: DoctorID): Set[CardiologyPrediction] = {
-    val res = Await.result(eventsCollection.find(
+    val insertedPredBson = Await.result(eventsCollection.find(
       and(
-        and(
-          equal("doctorID", doctorID),
-          equal("seen", false)
-        ),
+        equal("doctorID", doctorID),
         equal("eventID", EventType.INSERT_CARDIOLOGY_PREDICTION.id)
       )
     ).toFuture(), Duration(1, TimeUnit.SECONDS))
-    if (res.isEmpty) {
-      res.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction]).toSet
+    val updatePredBson = Await.result(eventsCollection.find(
+      and(
+        equal("doctorID", doctorID),
+        equal("eventID", EventType.UPDATE_CARDIOLOGY_PREDICTION.id)
+      )
+    ).toFuture(), Duration(1, TimeUnit.SECONDS))
+    if (insertedPredBson.nonEmpty) {
+      var insertedPredictions = insertedPredBson.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction]).toSet
+      if (updatePredBson.nonEmpty) {
+        val updatePredictions = updatePredBson.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction]).toSet
+        insertedPredictions = insertedPredictions.filter(x => !updatePredictions.contains(CardiologyPrediction(x.patientID, x.doctorID, x.cardiologyVisit, seen = true))
+        )
+      }
+      insertedPredictions
     }
     else Set.empty
   }

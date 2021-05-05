@@ -125,7 +125,7 @@ class SurgeonRoutes(surgeonController: ActorRef[Protocol.CQRSAction])(implicit v
               )
           }
       } ~
-        path("clinicaldiary") {
+        pathPrefix("clinicaldiary") {
           path(Segment) {
             id =>
               put {
