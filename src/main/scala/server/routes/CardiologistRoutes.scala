@@ -53,7 +53,7 @@ class CardiologistRoutes(cardiologistController: ActorRef[Protocol.CQRSAction])(
    */
   def insertCardiologyVisit(cardiologyVisit: CardiologyVisit): Future[Confirmation] =
     cardiologistController.ask(InsertCardiologyVisit(cardiologyVisit, _))
-  
+
   /**
    * Method to get all the cardiology visit for the specific cardiologist.
    *

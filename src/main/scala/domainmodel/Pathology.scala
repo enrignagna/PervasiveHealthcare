@@ -19,7 +19,7 @@
 package domainmodel
 
 
-import domainmodel.PathologySeverity.PathologySeverity
+import domainmodel.PathologySeverity._
 
 import java.time.LocalDate
 

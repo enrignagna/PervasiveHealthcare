@@ -18,7 +18,6 @@
 
 package domainmodel.generalpractitionerinfo
 
-import domainmodel.generalpractitionerinfo.MedicalCertificateHistory.MedicalCertificateHistory
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner

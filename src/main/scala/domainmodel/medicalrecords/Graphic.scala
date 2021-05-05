@@ -16,7 +16,7 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.medicalrecords.VitalSigns.VitalSigns
+import domainmodel.medicalrecords.VitalSigns._
 import domainmodel.utility.Info
 
 import java.time.LocalDateTime

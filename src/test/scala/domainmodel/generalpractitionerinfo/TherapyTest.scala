@@ -19,7 +19,7 @@
 package domainmodel.generalpractitionerinfo
 
 import java.time.LocalDate
-import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
+import domainmodel.generalpractitionerinfo.TherapyHistory._
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner

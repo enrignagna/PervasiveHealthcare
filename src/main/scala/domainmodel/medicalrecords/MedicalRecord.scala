@@ -20,7 +20,7 @@ import domainmodel.medicalrecords.DiagnosticServicesRequests._
 import domainmodel.medicalrecords.MedicalSurgicalDevices._
 import domainmodel.medicalrecords.PainreliefHistory._
 import domainmodel.medicalrecords.Reports._
-import domainmodel.medicalrecords.SingleSheetTherapies.SingleSheetTherapies
+import domainmodel.medicalrecords.SingleSheetTherapies._
 import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
 import domainmodel.medicalrecords.initialanalysis.InitialAnalysis
 import domainmodel.{DoctorID, PatientID}

@@ -16,7 +16,7 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.medicalrecords.PharmacologicalTherapies.PharmacologicalTherapies
+import domainmodel.medicalrecords.PharmacologicalTherapies._
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
