@@ -123,7 +123,7 @@ object EventStore {
       Duration(1, TimeUnit.SECONDS))
     if (res.nonEmpty) {
       res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
-        .toSet
+        .sortWith((e1, e2) => e1.time.isBefore(e2.time)).toSet
     }
     else Set.empty
   }
