@@ -150,7 +150,8 @@ object RMUtility {
    * @return required patient
    */
   def recreatePatientState(patientID: PatientID): Option[Patient] = {
-    val events = EventStore.getEvents(patientID)
+    val events = EventStore.getEvents(patientID).toSeq.sortWith((e1, e2) => e1.time.isBefore(e2.time))
+
     var user: Patient = null
     events.foreach {
       case x: InsertPatientInfoEvent => user = x.p
