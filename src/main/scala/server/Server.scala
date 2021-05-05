@@ -80,6 +80,9 @@ object Server {
       val authenticationControllerActor = context.spawn(AuthenticationController(), "AuthenticationControllerActor")
       context.watch(authenticationControllerActor)
 
+      val enumerationControllerActor = context.spawn(EnumerationController(), "EnumerationControllerActor")
+      context.watch(enumerationControllerActor)
+
       val commonControllerActor = context.spawn(CommonController(), "CommonControllerActor")
       context.watch(commonControllerActor)
 
@@ -92,6 +95,7 @@ object Server {
       val instrumentalistRoutes = new InstrumentalistRoutes(instrumentalistControllerActor)(context.system)
       val cardiologistRoutes = new CardiologistRoutes(cardiologistControllerActor)(context.system)
       val authenticationRoutes = new AuthenticationRoutes(authenticationControllerActor)(context.system)
+      val enumerationRoutes = new EnumerationRoutes(enumerationControllerActor)(context.system)
       val commonRoutes = new CommonRoutes(commonControllerActor)(context.system)
 
 
@@ -104,6 +108,7 @@ object Server {
         instrumentalistRoutes,
         cardiologistRoutes,
         authenticationRoutes,
+        enumerationRoutes,
         commonRoutes)
 
       startHttpServer(mainRoutes.routes)(context.system)
@@ -116,4 +121,5 @@ object Server {
     PatientDigitalTwin.initialize()
     val system = ActorSystem[Nothing](rootBehavior, "PervasiveHealthcare")
   }
+
 }

@@ -18,9 +18,13 @@ package cqrs.readmodel
 
 import cqrs.readmodel.eventsourcing._
 import cqrs.writemodel.Role.Role
+import domainmodel.ChestPainType.ChestPainType
 import domainmodel.Gender.Gender
 import domainmodel.KinshipDegree.KinshipDegree
 import domainmodel.Patient.Patient
+import domainmodel.RestingElectrocardiographic.RestingElectrocardiographic
+import domainmodel.SlopeST.SlopeST
+import domainmodel.Thal.Thal
 import domainmodel.generalinfo.AllergyClass.AllergyClass
 import domainmodel.generalinfo.BloodType.BloodType
 import domainmodel.generalinfo.GeneralInfo
@@ -48,6 +52,10 @@ object ReadModel {
     RhCollection.initialize()
     SpecializationCollection.initialize()
     KinshipDegreeCollection.initialize()
+    ChestPainTypeCollection.initialize()
+    RestingElectrocardiographicCollection.initialize()
+    SlopeSTCollection.initialize()
+    ThalCollection.initialize()
   }
 
 
@@ -112,6 +120,42 @@ object ReadModel {
    */
   def getKinshipDegree: Set[KinshipDegree] = {
     KinshipDegreeCollection.get()
+  }
+
+  /**
+   * Get all chest pain types in system.
+   *
+   * @return all chest pain types.
+   */
+  def getChestPainType: Set[ChestPainType] = {
+    ChestPainTypeCollection.get()
+  }
+
+  /**
+   * Get all resting electrocardiographic values in system.
+   *
+   * @return all resting electrocardiographic values.
+   */
+  def getRestingECG: Set[RestingElectrocardiographic] = {
+    RestingElectrocardiographicCollection.get()
+  }
+
+  /**
+   * Get all slope ST values in system.
+   *
+   * @return all slope ST values.
+   */
+  def getSlopeST: Set[SlopeST] = {
+    SlopeSTCollection.get()
+  }
+
+  /**
+   * Get all defect types in system.
+   *
+   * @return all defect types.
+   */
+  def getThal: Set[Thal] = {
+    ThalCollection.get()
   }
 
   /**

@@ -68,40 +68,42 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
 
   }
 
-  val authenticationRoutes: Route =
-    pathPrefix("api") {
-      pathPrefix("login") {
-        pathEnd {
-          post {
-            entity(as[User]) { user =>
-              val hashedPassword = Utils.getHashedPassword(user.password) //password hashing
-              val newUser = User(user.id, hashedPassword)
-              onSuccess(login(newUser)) { response =>
-                response match {
-                  case _: LoginAccepted => complete(StatusCodes.OK, response)
-                  case _: Rejected => complete(StatusCodes.BadRequest, response)
-                  case _ => throw new IllegalArgumentException()
+  val authenticationRoutes: Route = {
+      pathPrefix("api") {
+        pathPrefix("login") {
+          pathEnd {
+            post {
+              entity(as[User]) { user =>
+                val hashedPassword = Utils.getHashedPassword(user.password) //password hashing
+                val newUser = User(user.id, hashedPassword)
+                onSuccess(login(newUser)) { response =>
+                  response match {
+                    case _: LoginAccepted => complete(StatusCodes.OK, response)
+                    case _: Rejected => complete(StatusCodes.BadRequest, response)
+                    case _ => throw new IllegalArgumentException()
+                  }
                 }
               }
             }
           }
-        }
-      } ~
-        pathPrefix("logout") {
-          pathEnd {
-            post {
-              headerValueByName("x-access-token") { value =>
-                authorize(isLogged(value)) {
-                  onSuccess(logout(value)) { response =>
-                    response match {
-                      case _: Accepted => complete(StatusCodes.OK, response)
-                      case _: Rejected => complete(StatusCodes.BadRequest, response)
+        } ~
+          pathPrefix("logout") {
+            pathEnd {
+              post {
+                headerValueByName("x-access-token") { value =>
+                  authorize(isLogged(value)) {
+                    onSuccess(logout(value)) { response =>
+                      response match {
+                        case _: Accepted => complete(StatusCodes.OK, response)
+                        case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      }
                     }
                   }
                 }
               }
             }
           }
-        }
+      }
     }
+
 }
