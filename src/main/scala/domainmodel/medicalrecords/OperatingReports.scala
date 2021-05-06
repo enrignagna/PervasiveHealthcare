@@ -92,6 +92,4 @@ case class InterventionType(value: String)
  */
 case class OperatingReports(medical: Medical,
                             datetime: LocalDateTime = LocalDateTime.now(),
-                            interventionType: InterventionType) {
-
-}
+                            interventionType: InterventionType)

@@ -71,7 +71,7 @@ case class MedicalRecord(
                           anesthesiologyRecord: Option[AnesthesiologyRecord] = None,
                           medicalSurgicalDevices: Option[MedicalSurgicalDevices] = None,
                           dischargeLetter: Option[DischargeLetter] = None
-                        ) {}
+                        )
 
 
 /**
