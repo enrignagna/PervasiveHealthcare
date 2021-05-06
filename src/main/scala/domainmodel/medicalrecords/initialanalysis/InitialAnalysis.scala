@@ -21,7 +21,7 @@ import domainmodel.Anamnesis
 /**
  * Initial Analysis.
  *
- * @param anamensis           , anamensis.
+ * @param anamnesis           , anamnesis.
  * @param physicalExamination , physical examination.
  * @param stateEvaluation     , state evaluation.
  */
