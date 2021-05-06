@@ -24,8 +24,8 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import domainmodel.{CardiologyPrediction, DoctorID, PatientID}
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
+import domainmodel.{CardiologyPrediction, DoctorID, PatientID}
 import json.CardiologyPredictionJsonFormat.cardiologyPredictionJsonFormat
 import json.RequestJsonFormats.{acceptedJsonFormat, immSetFormat}
 import json.generalpractitionerinfo.GeneralPractitionerInfoJsonFormat.generalPractitionerInfoJsonFormat
@@ -44,7 +44,7 @@ import scala.concurrent.duration.DurationInt
  */
 class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 

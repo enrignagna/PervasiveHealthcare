@@ -17,13 +17,13 @@
  */
 package json.medicalrecords
 
-import domainmodel.medicalrecords.PainreliefHistory.PainreliefHistory
 import domainmodel.medicalrecords.Painrelief
+import domainmodel.medicalrecords.PainreliefHistory.PainreliefHistory
+import json.LocalDateTimeJsonFormat.DateTimeFormat
+import json.RequestJsonFormats.immSetFormat
+import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
-import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
-import json.RequestJsonFormats.immSetFormat
-import json.LocalDateTimeJsonFormat.DateTimeFormat
 
 /**
  * Json format for pain relief object.

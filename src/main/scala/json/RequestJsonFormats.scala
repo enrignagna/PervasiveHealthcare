@@ -26,15 +26,21 @@ import spray.json.{DefaultJsonProtocol, DerivedFormats, RootJsonFormat}
 /**
  * Json format for request object.
  */
-object RequestJsonFormats extends DefaultJsonProtocol with DerivedFormats{
+object RequestJsonFormats extends DefaultJsonProtocol with DerivedFormats {
 
   /**
    * Implicit for confirmation object.
    */
   implicit lazy val acceptedJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
 
+  /**
+   * Implicit for login object.
+   */
   implicit lazy val loginJsonFormat: RootJsonFormat[Confirmation] = jsonFormat[Confirmation]
 
+  /**
+   * Implicit for role object.
+   */
   implicit val roleJsonFormat: EnumJsonConverter[Role.type] = new EnumJsonConverter(Role)
 }
 

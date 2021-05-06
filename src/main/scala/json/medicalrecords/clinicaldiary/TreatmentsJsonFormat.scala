@@ -22,12 +22,12 @@ import domainmodel.medicalrecords.clinicaldiary.DiagnosticTreatments.DiagnosticT
 import domainmodel.medicalrecords.clinicaldiary.RehabilitationTreatments.RehabilitationTreatments
 import domainmodel.medicalrecords.clinicaldiary.TherapeuticTreatments.TherapeuticTreatments
 import domainmodel.medicalrecords.clinicaldiary._
-import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat3}
-import json.RequestJsonFormats.immSetFormat
-import spray.json.RootJsonFormat
-import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
-import json.LocalDateJsonFormat.DateFormat
 import json.IDJsonFormat.doctorIDJsonFormat
+import json.LocalDateJsonFormat.DateFormat
+import json.RequestJsonFormats.immSetFormat
+import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
+import spray.json.DefaultJsonProtocol.{jsonFormat1, jsonFormat3}
+import spray.json.RootJsonFormat
 
 /**
  * Json format for treatments object.

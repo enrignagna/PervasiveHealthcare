@@ -47,7 +47,7 @@ object GeneralPractitionerController {
         val res = Repository.generalPractitionerRepository.insertGeneralPractitionerInfo(generalPractitionerInfo)
         if (res == "General practitioner info created.") {
           ReadModel.insertGeneralPractitionerInfo(generalPractitionerInfo.patientID, generalPractitionerInfo)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
@@ -56,7 +56,7 @@ object GeneralPractitionerController {
         val res = Repository.generalPractitionerRepository.updateGeneralPractitionerInfo(patientID, generalPractitionerInfo)
         if (res == "General practitioner info updated.") {
           ReadModel.updateGeneralPractitionerInfo(patientID, generalPractitionerInfo)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
@@ -74,13 +74,13 @@ object GeneralPractitionerController {
       case GetGeneralPractitionerInfo(doctorID, replyTo) =>
         println("ok")
         val res = RMUtility.getAllGeneralPractitionerInfoForDoctor(doctorID)
-        if(res.nonEmpty){
+        if (res.nonEmpty) {
           replyTo ! res
         }
         Behaviors.same
       case GetCardiologyPredictions(doctorID, replyTo) =>
         val res = RMUtility.getNewPredictions(doctorID)
-        if(res.nonEmpty){
+        if (res.nonEmpty) {
           replyTo ! res
         }
         Behaviors.same

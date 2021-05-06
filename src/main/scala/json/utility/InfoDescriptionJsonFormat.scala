@@ -18,7 +18,7 @@ package json.utility
 
 import domainmodel.utility._
 import json.RequestJsonFormats.{StringJsonFormat, jsonFormat1}
-import spray.json.{JsonFormat, RootJsonFormat}
+import spray.json.RootJsonFormat
 
 /**
  * Json format for info description object.

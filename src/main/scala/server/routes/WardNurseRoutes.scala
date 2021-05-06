@@ -45,7 +45,7 @@ import scala.concurrent.duration.DurationInt
  */
 class WardNurseRoutes(wardnurseController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 

@@ -23,38 +23,74 @@ import org.mongodb.scala.{MongoClient, MongoCollection, MongoDatabase}
 
 object WriteModel {
 
+  /**
+   * Database.
+   */
   val database: MongoDatabase = MongoClient().getDatabase("WriteModel")
 
+  /**
+   * Auth Collection.
+   */
   val authCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("credentials")
 
+  /**
+   * Doctors Collection.
+   */
   val doctorsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("doctors")
 
+  /**
+   * Medical Records Collection.
+   */
   val medicalRecordsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("medicalrecords")
 
+  /**
+   * Patients Collection.
+   */
   val patientsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("patients")
 
+  /**
+   * Clinical Diaries Collection.
+   */
   val clinicalDiariesCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("clinicalDiaries")
 
+  /**
+   * Discharge Letter Collection.
+   */
   val dischargeLetterCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("dischargeLetters")
 
+  /**
+   * Visits Collection.
+   */
   val visitsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("visits")
 
+  /**
+   * Prescriptions Collection.
+   */
   val prescriptionsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("prescriptions")
 
+  /**
+   * General Practitioner Info Collection.
+   */
   val generalPractitionerInfoCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("generalpractitionerinfo")
 
+  /**
+   * Cardiology Visits Collection.
+   */
   val cardiologyVisitsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("cardiologyvisits")
 
+  /**
+   * Cardiology Predictions Collection.
+   */
   val cardiologyPredictionsCollection: MongoCollection[BsonDocument] =
     database.getCollection[BsonDocument]("cardiologypredictions")
 

@@ -19,10 +19,10 @@
 package json
 
 import domainmodel.CardiologyVisitHistory.CardiologyVisitHistory
-import domainmodel.{CardiologyVisit, CardiologyVisitID, ChestPainType, Cholesterol, FastingBloodSugar, MaxHeartRate, NumberVesselColoured, OldPeakST, RestingBloodPressure, RestingElectrocardiographic, SlopeST, Thal}
+import domainmodel._
 import json.EnumerationJsonFormat.EnumJsonConverter
 import json.IDJsonFormat.{doctorIDJsonFormat, patientIDJsonFormat}
-import json.RequestJsonFormats.{BooleanJsonFormat, DoubleJsonFormat, IntJsonFormat, StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat13, jsonFormat14, jsonFormat15}
+import json.RequestJsonFormats.{BooleanJsonFormat, DoubleJsonFormat, IntJsonFormat, StringJsonFormat, immSetFormat, jsonFormat1, jsonFormat15}
 import json.generalpractitionerinfo.VisitJsonFormat.visitDateJsonFormat
 import spray.json.RootJsonFormat
 

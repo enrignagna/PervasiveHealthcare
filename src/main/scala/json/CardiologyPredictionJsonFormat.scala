@@ -19,10 +19,9 @@
 package json
 
 import domainmodel.CardiologyPrediction
-import json.IDJsonFormat.{doctorIDJsonFormat, patientIDJsonFormat}
 import json.CardiologyVisitJsonFormat.cardiologyVisitJsonFormat
+import json.IDJsonFormat.{doctorIDJsonFormat, patientIDJsonFormat}
 import json.RequestJsonFormats.{BooleanJsonFormat, jsonFormat4}
-import spray.json.ImplicitDerivedJsonProtocol.implicitJsonFormat
 import spray.json.RootJsonFormat
 
 /**

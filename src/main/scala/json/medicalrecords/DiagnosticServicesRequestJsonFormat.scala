@@ -20,11 +20,11 @@ package json.medicalrecords
 
 import domainmodel.medicalrecords.DiagnosticServicesRequests.DiagnosticServicesRequests
 import domainmodel.medicalrecords.{DiagnosticServicesRequest, DiagnosticServicesRequestID, Form}
-import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat4}
-import spray.json.RootJsonFormat
-import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import json.IDJsonFormat.doctorIDJsonFormat
 import json.RequestJsonFormats.immSetFormat
+import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat4}
+import spray.json.RootJsonFormat
 
 /**
  * Json format for diagnostic services request object.

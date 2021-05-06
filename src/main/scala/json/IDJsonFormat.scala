@@ -17,9 +17,10 @@
  */
 
 package json
+
 import domainmodel.{DoctorID, PatientID}
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1}
 import spray.json.RootJsonFormat
-import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2}
 
 /**
  * Json format for id's object.

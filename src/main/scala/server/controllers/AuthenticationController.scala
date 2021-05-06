@@ -51,7 +51,7 @@ object AuthenticationController {
         if (res._1.nonEmpty) {
           val token: String = Random.alphanumeric take 64 mkString ""
           JwtAuthentication.tokens = JwtAuthentication.tokens.addNewToken(Token((token, res._1.get.id)))
-          replyTo ! LoginAccepted(res._1.get, res._2, token) // actions that are to be performed after successful.
+          replyTo ! LoginAccepted(res._1.get, res._2, token)
         } else {
           replyTo ! Rejected(res._2)
         }
@@ -59,12 +59,11 @@ object AuthenticationController {
       case Logout(tokenId, replyTo) =>
         if (JwtAuthentication.tokens.tokens.contains(tokenId)) {
           JwtAuthentication.tokens = JwtAuthentication.tokens.removeToken(tokenId)
-          replyTo ! Accepted("Logout avvenuto.") // actions that are to be performed after successful.
+          replyTo ! Accepted("Logout avvenuto.")
         }
         else {
-          replyTo ! Accepted("Non puoi effettuare il logout senza aver fatto il login.") // actions that are to be performed after successful.
+          replyTo ! Accepted("Non puoi effettuare il logout senza aver fatto il login.")
         }
-
         Behaviors.same
       case _ => throw new IllegalArgumentException()
     }

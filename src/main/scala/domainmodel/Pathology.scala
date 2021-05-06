@@ -105,7 +105,7 @@ object PreviousPathologies {
   }
 
   /**
-   * Factory method for domainmodel.PreviousPathologies.
+   * Apply method for domain model.PreviousPathologies.
    *
    * @return an empty set of previous pathologies.
    */

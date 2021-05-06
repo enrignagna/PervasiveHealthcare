@@ -16,8 +16,8 @@
 
 package json.generalpractitionerinfo
 
-import domainmodel.generalpractitionerinfo.BookingVisitHistory.BookingVisitHistory
 import domainmodel.generalpractitionerinfo.BookingVisit
+import domainmodel.generalpractitionerinfo.BookingVisitHistory.BookingVisitHistory
 import json.LocalDateJsonFormat.DateFormat
 import json.RequestJsonFormats.{IntJsonFormat, immSetFormat, jsonFormat4}
 import json.generalpractitionerinfo.VisitJsonFormat.visitJsonFormat

@@ -37,13 +37,13 @@ import scala.concurrent.duration.DurationInt
 
 class CommonRoutes(commonController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
 
-  def getSurgeons(): Future[Set[Surgeon]] =
-    commonController.ask(GetSurgeons(_))
+  def getSurgeons: Future[Set[Surgeon]] =
+    commonController.ask(GetSurgeons)
 
   def getSurgeon(id: String): Future[Option[Surgeon]] =
     commonController.ask(GetSurgeon(id, _))
