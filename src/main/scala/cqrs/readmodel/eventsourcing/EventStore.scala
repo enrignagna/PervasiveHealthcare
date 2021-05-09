@@ -118,14 +118,14 @@ object EventStore {
    * @param id , id for filter events.
    * @return set of events
    */
-  def getEvents(id: ID): Set[Event] = {
+  def getEvents(id: ID): Seq[Event] = {
     val res: Seq[BsonDocument] = Await.result(eventsCollection.find(equal("id.value", id.value)).toFuture(),
       Duration(1, TimeUnit.SECONDS))
     if (res.nonEmpty) {
       res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
-        .sortWith((e1, e2) => e1.time.isBefore(e2.time)).toSet
+        .sortWith((e1, e2) => e1.time.isBefore(e2.time))
     }
-    else Set.empty
+    else Seq.empty
   }
 
 
