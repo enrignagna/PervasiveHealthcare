@@ -18,6 +18,9 @@
 
 package cqrs.writemodel
 
+/**
+ * Role enumeration.
+ */
 object Role extends Enumeration {
   type Role = Value
   val PATIENT, GENERAL_PRACTITIONER, SURGEON, ANESTHETIST, INSTRUMENTALIST, ADMIN, RESCUER, WARD_NURSE, CARDIOLOGIST = Value

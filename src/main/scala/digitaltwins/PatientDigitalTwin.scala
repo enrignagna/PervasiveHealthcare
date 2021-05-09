@@ -28,8 +28,14 @@ import domainmodel.{CardiologyDiseasePrediction, CardiologyDiseasesPresence, Car
 
 import java.time.{LocalDate, Period}
 
+/**
+ * interface Message.
+ */
 trait Message
 
+/**
+ * Cardiology Visit Inserted Message.
+ */
 case class CardiologyVisitInserted() extends Message
 
 object PatientDigitalTwin {
@@ -37,16 +43,31 @@ object PatientDigitalTwin {
   val digitalTwins: actor.ActorSystem = akka.actor.ActorSystem.create("PervasiveHealthcare")
   var patientsDigitalTwins: Map[PatientID, ActorRef] = Map[PatientID, ActorRef]()
 
+  /**
+   * Set props.
+   *
+   * @param patientID , id of patient.
+   * @return props.
+   */
   def props(patientID: PatientID): Props = {
     Props(PatientDigitalTwin(patientID))
   }
 
+  /**
+   * Initialize.
+   */
   def initialize(): Unit = {
     RMUtility.getAllPatientID.foreach(id => patientsDigitalTwins = patientsDigitalTwins + (id -> digitalTwins.actorOf(props(id), id.value)))
   }
 
   case class PatientDigitalTwin(patientID: PatientID) extends Actor with ActorLogging {
 
+    /**
+     * Make cardiology prediction.
+     *
+     * @param patient , patient to analyse.
+     * @return a cardiology disease prediction.
+     */
     def makeCardiologyPrediction(patient: Patient): CardiologyDiseasePrediction = {
       val cardiologyVisits = patient.cardiologyVisitHistory.get.history.toList.sortWith((c1, c2) => c1.visitDate.visitDate.isAfter(c2.visitDate.visitDate))
       val age = Period.between(patient.birthDate, LocalDate.now()).toTotalMonths / 24

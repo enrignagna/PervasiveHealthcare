@@ -17,12 +17,12 @@
  */
 package json.medicalrecords
 
-import domainmodel.medicalrecords.{CareDiary, InterventionEvaluation, NeedsIdentification, NursingDocumentation, NursingInterventionPlanning, Registration}
+import domainmodel.medicalrecords._
+import json.LocalDateTimeJsonFormat.DateTimeFormat
+import json.generalinfo.GeneralInfoJsonFormat.generalInfoJsonFormat
+import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2, jsonFormat5, optionFormat}
 import spray.json.RootJsonFormat
-import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
-import json.generalinfo.GeneralInfoJsonFormat.generalInfoJsonFormat
-import json.LocalDateTimeJsonFormat.DateTimeFormat
 
 /**
  * Json format for nursing documentation object.

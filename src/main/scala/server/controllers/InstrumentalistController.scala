@@ -20,6 +20,7 @@ package server.controllers
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
+import cqrs.readmodel.ReadModel
 import cqrs.writemodel.Repository
 import server.models.Protocol._
 
@@ -44,8 +45,8 @@ object InstrumentalistController {
     Behaviors.receiveMessage {
       case InsertMedicalRecord(medicalRecord, replyTo) =>
         val res = Repository.instrumentalistRepository.insertMedicalRecord(medicalRecord)
-        if (res == "Medical record created.") { //if there is an error the events are not stored, otherwise the events will be stored.
-          //ReadModel.insertMedicalRecord(medicalRecord)
+        if (res == "Medical record created.") {
+          ReadModel.insertMedicalRecord(medicalRecord.patientID, medicalRecord)
           replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
@@ -54,8 +55,8 @@ object InstrumentalistController {
       case UpdateMedicalRecord(medicalRecordID, medicalRecord, replyTo) =>
         val res = Repository.instrumentalistRepository.updateMedicalRecord(medicalRecordID, medicalRecord)
         if (res == "Medical record updated.") {
-          //ReadModel.updateMedicalRecord(medicalRecordID, medicalRecord)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          ReadModel.updateMedicalRecord(medicalRecord.patientID, medicalRecord)
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }

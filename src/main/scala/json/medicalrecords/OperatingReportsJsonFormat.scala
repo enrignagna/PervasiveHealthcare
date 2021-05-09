@@ -18,13 +18,13 @@
 package json.medicalrecords
 
 import domainmodel.medicalrecords.Medical.Medical
-import domainmodel.medicalrecords.{AnesthetistReport, InstrumentalistReport, InterventionType, OperatingReports, SurgeonReport}
-import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2, jsonFormat3, optionFormat}
-import spray.json.RootJsonFormat
+import domainmodel.medicalrecords._
+import json.LocalDateTimeJsonFormat.DateTimeFormat
+import json.RequestJsonFormats.immSetFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat._
 import json.utility.InfoDescriptionJsonFormat.noteJsonFormat
-import json.RequestJsonFormats.immSetFormat
-import json.LocalDateTimeJsonFormat.DateTimeFormat
+import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2, jsonFormat3, optionFormat}
+import spray.json.RootJsonFormat
 
 /**
  * Json format for operating reports object.

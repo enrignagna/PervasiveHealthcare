@@ -58,14 +58,14 @@ object AdministratorController {
         val res = Repository.adminRepository.updateSurgeon(DoctorID(id), surgeon)
         if (res == "Surgeon updated.") {
           ReadModel.updateSurgeon(surgeon)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case InsertAnesthetist(anesthetist, replyTo) =>
         val res = Repository.adminRepository.insertAnesthetist(anesthetist)
-        if (res == "Anesthetist created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+        if (res == "Anesthetist created.") {
           ReadModel.createAnesthetist(anesthetist)
           replyTo ! Accepted(res)
         } else {
@@ -76,14 +76,14 @@ object AdministratorController {
         val res = Repository.adminRepository.updateAnesthetist(DoctorID(id), anesthetist)
         if (res == "Anesthetist updated.") {
           ReadModel.updateAnesthetist(anesthetist)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case InsertInstrumentalist(instrumentalist, replyTo) =>
         val res = Repository.adminRepository.insertInstrumentalist(instrumentalist)
-        if (res == "Instrumentalist created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+        if (res == "Instrumentalist created.") {
           ReadModel.createInstrumentalist(instrumentalist)
           replyTo ! Accepted(res)
         } else {
@@ -94,14 +94,14 @@ object AdministratorController {
         val res = Repository.adminRepository.updateInstrumentalist(DoctorID(id), instrumentalist)
         if (res == "Instrumentalist updated.") {
           ReadModel.updateInstrumentalist(instrumentalist)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case InsertGeneralPractitioner(generalPractitioner, replyTo) =>
         val res = Repository.adminRepository.insertGeneralPractitioner(generalPractitioner)
-        if (res == "General practitioner created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+        if (res == "General practitioner created.") {
           ReadModel.createGeneralPractitioner(generalPractitioner)
           replyTo ! Accepted(res)
         } else {
@@ -112,14 +112,14 @@ object AdministratorController {
         val res = Repository.adminRepository.updateGeneralPractitioner(DoctorID(id), generalPractitioner)
         if (res == "General practitioner updated.") {
           ReadModel.updateGeneralPractitioner(generalPractitioner)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case InsertRescuer(rescuer, replyTo) =>
         val res = Repository.adminRepository.insertRescuer(rescuer)
-        if (res == "Rescuer created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+        if (res == "Rescuer created.") {
           ReadModel.createRescuer(rescuer)
           replyTo ! Accepted(res)
         } else {
@@ -130,15 +130,15 @@ object AdministratorController {
         val res = Repository.adminRepository.updateRescuer(DoctorID(id), rescuer)
         if (res == "Rescuer updated.") {
           ReadModel.updateRescuer(rescuer)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case InsertWardNurse(wardnurse, replyTo) =>
         val res = Repository.adminRepository.insertWardNurse(wardnurse)
-        if (res == "Ward nurse created.") { //if there is an error the events are not stored, otherwise the events will be stored.
-          //ReadModel.ins(wardNurse)
+        if (res == "Ward nurse created.") {
+          ReadModel.createWardNurse(wardnurse)
           replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
@@ -148,14 +148,14 @@ object AdministratorController {
         val res = Repository.adminRepository.updateWardNurse(DoctorID(id), wardNurse)
         if (res == "Ward nurse updated.") {
           ReadModel.updateWardNurse(wardNurse)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case InsertCardiologist(cardiologist, replyTo) =>
         val res = Repository.adminRepository.insertCardiologist(cardiologist)
-        if (res == "Cardiologist created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+        if (res == "Cardiologist created.") {
           ReadModel.createCardiologist(cardiologist)
           replyTo ! Accepted(res)
         } else {
@@ -166,14 +166,14 @@ object AdministratorController {
         val res = Repository.adminRepository.updateCardiologist(DoctorID(id), cardiologist)
         if (res == "Cardiologist updated.") {
           ReadModel.updateCardiologist(cardiologist)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
         Behaviors.same
       case InsertPatient(patient, replyTo) =>
         val res = Repository.adminRepository.insertPatient(patient)
-        if (res == "Patient created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+        if (res == "Patient created.") {
           ReadModel.insertPatient(patient)
           val patientActor = PatientDigitalTwin.digitalTwins.actorOf(PatientDigitalTwin props patient.patientID, patient.patientID.value)
           PatientDigitalTwin.patientsDigitalTwins = PatientDigitalTwin.patientsDigitalTwins + (patient.patientID -> patientActor)
@@ -186,7 +186,7 @@ object AdministratorController {
         val res = Repository.adminRepository.updatePatient(PatientID(id), patient)
         if (res == "Patient updated.") {
           ReadModel.updatePatientInfo(patient)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }

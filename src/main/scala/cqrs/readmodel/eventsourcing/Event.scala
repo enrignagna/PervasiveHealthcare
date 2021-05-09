@@ -49,8 +49,8 @@ object EventType extends Enumeration {
 /**
  * Abstract class of general event.
  *
- * @param created , date
- * @param userID
+ * @param created , date.
+ * @param userID, id of user.
  */
 abstract class Event(created: LocalDateTime, userID: ID) {
   final val time = created

@@ -19,14 +19,54 @@
 package cqrs.writemodel
 
 object Repository {
+  /**
+   * Auth value.
+   */
   val auth: Auth = new Auth()
+
+  /**
+   * Admin CRUD value.
+   */
   val adminRepository: AdminCRUD = new AdminCRUD()
+
+  /**
+   * Surgeon CRUD value.
+   */
   val surgeonRepository: SurgeonCRUD = new SurgeonCRUD()
+
+  /**
+   * Rescuer CRUD value.
+   */
   val rescuerRepository: RescuerCRUD = new RescuerCRUD()
+
+  /**
+   * WardNurse CRUD value.
+   */
   val wardNurseRepository: WardNurseCRUD = new WardNurseCRUD()
+
+  /**
+   * GeneralPractitioner CRUD value.
+   */
   val generalPractitionerRepository: GeneralPractitionerCRUD = new GeneralPractitionerCRUD()
+
+  /**
+   * Instrumentalist CRUD value.
+   */
   val instrumentalistRepository: InstrumentalistCRUD = new InstrumentalistCRUD()
+
+  /**
+   * Anesthetist CRUD value.
+   */
   val anesthetistRepository: AnesthetistCRUD = new AnesthetistCRUD()
+
+  /**
+   * Cardiologist CRUD value.
+   */
   val cardiologyRepository: CardiologistCRUD = new CardiologistCRUD()
+
+  /**
+   * Patient CRUD value.
+   */
   val patientRepository: PatientCRUD = new PatientCRUD()
+
 }

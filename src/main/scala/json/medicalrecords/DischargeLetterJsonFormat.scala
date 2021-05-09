@@ -19,14 +19,14 @@
 package json.medicalrecords
 
 import domainmodel.medicalrecords.PharmacologicalTherapies.PharmacologicalTherapies
-import domainmodel.medicalrecords.{AdmissionReason, ClinicalProblemsEncountered, DischargeDiagnosis, DischargeLetter, FollowUpInstructions, PharmacologicalTherapy, PostHospitalCareInformation, SdoCompilation, SignificantFindings}
+import domainmodel.medicalrecords._
+import json.IDJsonFormat.doctorIDJsonFormat
+import json.LocalDateJsonFormat.DateFormat
+import json.LocalDateTimeJsonFormat.DateTimeFormat
+import json.RequestJsonFormats.immSetFormat
+import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat5, jsonFormat7}
 import spray.json.RootJsonFormat
-import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
-import json.LocalDateJsonFormat.DateFormat
-import json.IDJsonFormat.doctorIDJsonFormat
-import json.RequestJsonFormats.immSetFormat
-import json.LocalDateTimeJsonFormat.DateTimeFormat
 
 /**
  * Json format for discharge letter object.

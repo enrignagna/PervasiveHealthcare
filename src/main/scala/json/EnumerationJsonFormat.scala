@@ -29,18 +29,15 @@ object EnumerationJsonFormat {
   /**
    * Implicit class for enumeration object.
    *
-   * @param enu, generic enumeration
-   * @tparam T, generic type
+   * @param enu , generic enumeration
+   * @tparam T , generic type
    */
   implicit class EnumJsonConverter[T <: scala.Enumeration](enu: T) extends RootJsonFormat[T#Value] {
     override def write(obj: T#Value): JsValue = JsObject("id" -> JsNumber(obj.id), "value" -> JsString(obj.toString.replace("_", " ")))
 
     override def read(json: JsValue): T#Value = {
       json match {
-        case JsObject(obj) => {
-          enu(obj("id").convertTo[Int])
-
-        }
+        case JsObject(obj) => enu(obj("id").convertTo[Int])
         case somethingElse => throw DeserializationException(s"Expected a value from enum $enu instead of $somethingElse")
       }
     }

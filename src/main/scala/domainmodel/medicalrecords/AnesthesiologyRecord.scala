@@ -27,9 +27,7 @@ import java.time.LocalDateTime
  * @param anesthetist         , anesthetist.
  * @param operationEvaluation , operation evaluation.
  */
-case class AnesthesiologyRecord(anesthetist: Anesthetist, operationEvaluation: OperationEvaluation) {
-
-}
+case class AnesthesiologyRecord(anesthetist: Anesthetist, operationEvaluation: OperationEvaluation)
 
 /**
  * Operation Evaluation.

@@ -27,7 +27,6 @@ import org.mongodb.scala.model.Filters
 import org.mongodb.scala.model.Filters.{and, equal}
 import spray.json.{JsValue, JsonParser, enrichAny}
 
-import java.time.LocalDateTime
 import java.util.concurrent.TimeUnit
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
@@ -109,9 +108,6 @@ object EventStore {
   }
 
 
-  implicit val localDateOrdering: Ordering[LocalDateTime] = _ compareTo _
-
-
   /**
    * Get events from selected id.
    *
@@ -160,8 +156,7 @@ object EventStore {
       .toFuture(),
       Duration(1, TimeUnit.SECONDS))
     if (res.nonEmpty) {
-      res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
-        .toSet
+      res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString))).toSet
     }
     else Set.empty
   }
@@ -182,8 +177,7 @@ object EventStore {
       .toFuture(),
       Duration(1, TimeUnit.SECONDS))
     if (res.nonEmpty) {
-      res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
-        .toSet
+      res.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString))).toSet
     }
     else Set.empty
   }
@@ -230,13 +224,17 @@ object EventStore {
       )
     ).toFuture(), Duration(1, TimeUnit.SECONDS))
     if (insertedPredBson.nonEmpty) {
-      var insertedPredictions = insertedPredBson.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction]).toSet
+      var insertedPredictions: Seq[CardiologyPrediction] =
+        insertedPredBson.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction])
       if (updatePredBson.nonEmpty) {
-        val updatePredictions = updatePredBson.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction]).toSet
-        insertedPredictions = insertedPredictions.filter(x => !updatePredictions.contains(CardiologyPrediction(x.patientID, x.doctorID, x.cardiologyVisit, seen = true))
-        )
+        val updatePredictions = updatePredBson.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction])
+        insertedPredictions = insertedPredictions
+          .filter(x => !updatePredictions.contains(
+            CardiologyPrediction(x.patientID, x.doctorID, x.cardiologyVisit, seen = true)
+          )
+          )
       }
-      insertedPredictions
+      insertedPredictions.toSet
     }
     else Set.empty
   }

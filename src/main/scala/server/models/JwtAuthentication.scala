@@ -25,13 +25,35 @@ object JwtAuthentication {
 
   var tokens: Tokens = Tokens()
 
+  /**
+   * Token.
+   *
+   * @param token , a token.
+   */
   case class Token(token: (String, Int))
 
   object Tokens {
 
+    /**
+     * Collections of tokens.
+     *
+     * @param tokens , tokens in collection.
+     */
     case class Tokens private(tokens: Map[String, Int] = Map.empty) {
+      /**
+       * Add token.
+       *
+       * @param token , token to add.
+       * @return new collection of token.
+       */
       def addNewToken(token: Token): Tokens = Tokens(tokens + token.token)
 
+      /**
+       * Remove token.
+       *
+       * @param tokenId , token to remove.
+       * @return new collection of token.
+       */
       def removeToken(tokenId: String): Tokens = Tokens(tokens.filter(t => t._1 != tokenId))
     }
 

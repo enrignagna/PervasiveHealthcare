@@ -20,12 +20,12 @@ package json.medicalrecords
 
 import domainmodel.medicalrecords.SingleSheetTherapies.SingleSheetTherapies
 import domainmodel.medicalrecords.{DrugsAdministered, DrugsPrescription}
-import spray.json.DefaultJsonProtocol.{jsonFormat2, jsonFormat3}
-import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
-import spray.json.RootJsonFormat
-import json.RequestJsonFormats.immSetFormat
-import json.LocalDateTimeJsonFormat.DateTimeFormat
 import json.IDJsonFormat.doctorIDJsonFormat
+import json.LocalDateTimeJsonFormat.DateTimeFormat
+import json.RequestJsonFormats.immSetFormat
+import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
+import spray.json.DefaultJsonProtocol.{jsonFormat2, jsonFormat3}
+import spray.json.RootJsonFormat
 
 /**
  * Json format for single sheet therapy object.

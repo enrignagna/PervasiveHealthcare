@@ -37,13 +37,13 @@ import domainmodel.generalinfo.Rh.Rh
 import domainmodel.professionalfigure.Specialization.Specialization
 import json.AnamnesisJsonFormat.kinshipDegreeJsonFormat
 import json.CardiologyVisitJsonFormat.{chestPainTypeJsonFormat, restingElectrocardiographicJsonFormat, slopeSTJsonFormat, thalJsonFormat}
-import json.RequestJsonFormats.{immSetFormat, roleJsonFormat}
-import server.models.Protocol
-import server.models.Protocol._
 import json.PatientJsonFormat.genderJsonFormat
+import json.RequestJsonFormats.{immSetFormat, roleJsonFormat}
 import json.generalinfo.AllergyJsonFormat.allergyClassJsonFormat
 import json.generalinfo.BloodGroupJsonFormat.{bloodTypeJsonFormat, rhJsonFormat}
 import json.professionalfigure.ProfessionalFigureJsonFormat.specializationJsonFormat
+import server.models.Protocol
+import server.models.Protocol._
 
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt

@@ -21,12 +21,7 @@ package server.controllers
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 import cqrs.readmodel.ReadModel
-import cqrs.writemodel.Repository
-import server.models.JwtAuthentication
-import server.models.JwtAuthentication.Token
-import server.models.Protocol.{Accepted, CQRSAction, GetAllergies, GetBloodTypes, GetChestPainTypes, GetGenders, GetKinshipDegrees, GetRestingECG, GetRh, GetRoles, GetSlopeST, GetSpecializations, GetThals, Login, LoginAccepted, Logout, Rejected}
-
-import scala.util.Random
+import server.models.Protocol._
 
 object EnumerationController {
 
