@@ -24,10 +24,12 @@ import json.CardiologyPredictionJsonFormat.cardiologyPredictionJsonFormat
 import org.mongodb.scala.MongoCollection
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters
-import org.mongodb.scala.model.Filters.{and, equal}
+import org.mongodb.scala.model.Filters.{and, equal, or}
 import spray.json.{JsValue, JsonParser, enrichAny}
-
 import java.util.concurrent.TimeUnit
+
+import json.IDJsonFormat.doctorIDJsonFormat
+
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -213,28 +215,17 @@ object EventStore {
   def getNewPredictionsEvents(doctorID: DoctorID): Set[CardiologyPrediction] = {
     val insertedPredBson = Await.result(eventsCollection.find(
       and(
-        equal("doctorID", doctorID),
-        equal("eventID", EventType.INSERT_CARDIOLOGY_PREDICTION.id)
-      )
-    ).toFuture(), Duration(1, TimeUnit.SECONDS))
-    val updatePredBson = Await.result(eventsCollection.find(
-      and(
-        equal("doctorID", doctorID),
-        equal("eventID", EventType.UPDATE_CARDIOLOGY_PREDICTION.id)
+        equal("c.doctorID.value", doctorID.value),
+        or(
+          equal("eventID", EventType.INSERT_CARDIOLOGY_PREDICTION.id),
+          equal("eventID", EventType.UPDATE_CARDIOLOGY_PREDICTION.id)
+        )
+
       )
     ).toFuture(), Duration(1, TimeUnit.SECONDS))
     if (insertedPredBson.nonEmpty) {
-      var insertedPredictions: Seq[CardiologyPrediction] =
-        insertedPredBson.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction])
-      if (updatePredBson.nonEmpty) {
-        val updatePredictions = updatePredBson.map(bson => JsonParser(bson.toString).convertTo[CardiologyPrediction])
-        insertedPredictions = insertedPredictions
-          .filter(x => !updatePredictions.contains(
-            CardiologyPrediction(x.patientID, x.doctorID, x.cardiologyVisit, seen = true)
-          )
-          )
-      }
-      insertedPredictions.toSet
+      insertedPredBson.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
+        .map(x => x.asInstanceOf[InsertCardiologyPredictionsEvent].c).toSet
     }
     else Set.empty
   }

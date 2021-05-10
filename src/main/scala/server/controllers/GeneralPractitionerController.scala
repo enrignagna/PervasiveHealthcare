@@ -72,7 +72,6 @@ object GeneralPractitionerController {
         }
         Behaviors.same
       case GetGeneralPractitionerInfo(doctorID, replyTo) =>
-        println("ok")
         val res = RMUtility.getAllGeneralPractitionerInfoForDoctor(doctorID)
         if (res.nonEmpty) {
           replyTo ! res

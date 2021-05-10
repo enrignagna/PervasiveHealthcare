@@ -21,11 +21,10 @@ package digitaltwins
 import akka.actor
 import akka.actor.{Actor, ActorLogging, ActorRef, Props}
 import behaviours.CardiologyDiseasesPredictor
-import cqrs.readmodel.RMUtility
+import cqrs.readmodel.{RMUtility, ReadModel}
 import cqrs.writemodel.Repository.patientRepository
 import domainmodel.Patient.Patient
 import domainmodel.{CardiologyDiseasePrediction, CardiologyDiseasesPresence, CardiologyPrediction, PatientID}
-
 import java.time.{LocalDate, Period}
 
 /**
@@ -81,11 +80,13 @@ object PatientDigitalTwin {
           val patient = patientOp.get
           val prediction = this.makeCardiologyPrediction(patient)
           if (prediction.isInstanceOf[CardiologyDiseasesPresence] && patient.generalPractitionerInfo.nonEmpty) {
-            patientRepository.insertCardiologyPrediction(CardiologyPrediction(
+            val prediction = CardiologyPrediction(
               patientID,
               patient.generalPractitionerInfo.get.doctorID,
               patient.cardiologyVisitHistory.get.history.head
-            ))
+            )
+            patientRepository.insertCardiologyPrediction(prediction)
+            ReadModel.insertCardiologyPrediction(patient.generalPractitionerInfo.get.doctorID, prediction)
           }
         }
     }

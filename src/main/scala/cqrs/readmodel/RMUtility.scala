@@ -207,7 +207,6 @@ object RMUtility {
    * @return all general practitioner info for a doctor.
    */
   def getAllGeneralPractitionerInfoForDoctor(doctorID: DoctorID): Set[GeneralPractitionerInfo] = {
-    println("read in")
     EventStore.getAllGeneralPractitionerInfoForDoctorEvents(doctorID)
     val events = EventStore.getAllGeneralPractitionerInfoForDoctorEvents(doctorID)
     var generalPractitionerInfoSet = Map.empty[PatientID, GeneralPractitionerInfo]
