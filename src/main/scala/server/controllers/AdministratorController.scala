@@ -47,7 +47,7 @@ object AdministratorController {
     Behaviors.receiveMessage {
       case InsertSurgeon(surgeon, replyTo) =>
         val res = Repository.adminRepository.insertSurgeon(surgeon)
-        if (res == "Surgeon created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+        if (res == "Surgeon created.") {
           ReadModel.createSurgeon(surgeon)
           replyTo ! Accepted(res)
         } else {
