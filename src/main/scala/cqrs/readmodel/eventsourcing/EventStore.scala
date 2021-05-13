@@ -20,16 +20,13 @@ import cqrs.readmodel.ReadModel.database
 import cqrs.readmodel.eventjsonformat.EventJsonFormat.{insertAnesthetistEventJsonFormat, insertCardiologistEventJsonFormat, insertCardiologyInfoEventJsonFormat, insertCardiologyPredictionsEventJsonFormat, insertGeneralInfoEventJsonFormat, insertGeneralPractitionerEventJsonFormat, insertGeneralPractitionerInfoEventJsonFormat, insertInstrumentalistEventJsonFormat, insertMedicalRecordEventJsonFormat, insertPatientInfoEventJsonFormat, insertRescuerEventJsonFormat, insertSurgeonEventJsonFormat, insertWardNurseEventJsonFormat, updateAnesthetistEventJsonFormat, updateCardiologistEventJsonFormat, updateCardiologyInfoEventJsonFormat, updateCardiologyPredictionsEventJsonFormat, updateGeneralInfoEventJsonFormat, updateGeneralPractitionerEventJsonFormat, updateGeneralPractitionerInfoEventJsonFormat, updateInstrumentalistEventJsonFormat, updateMedicalRecordEventJsonFormat, updatePatientInfoEventJsonFormat, updateRescuerEventJsonFormat, updateSurgeonEventJsonFormat, updateWardNurseEventJsonFormat}
 import cqrs.readmodel.eventsourcing.EventType.EventType
 import domainmodel._
-import json.CardiologyPredictionJsonFormat.cardiologyPredictionJsonFormat
 import org.mongodb.scala.MongoCollection
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.model.Filters
 import org.mongodb.scala.model.Filters.{and, equal, or}
 import spray.json.{JsValue, JsonParser, enrichAny}
+
 import java.util.concurrent.TimeUnit
-
-import json.IDJsonFormat.doctorIDJsonFormat
-
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -212,7 +209,7 @@ object EventStore {
    * @param doctorID , doctor ID.
    * @return all new predictions for a doctor.
    */
-  def getNewPredictionsEvents(doctorID: DoctorID): Set[CardiologyPrediction] = {
+  def getNewPredictionsEvents(doctorID: DoctorID): Seq[Event] = {
     val insertedPredBson = Await.result(eventsCollection.find(
       and(
         equal("c.doctorID.value", doctorID.value),
@@ -224,9 +221,10 @@ object EventStore {
       )
     ).toFuture(), Duration(1, TimeUnit.SECONDS))
     if (insertedPredBson.nonEmpty) {
-      insertedPredBson.map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
-        .map(x => x.asInstanceOf[InsertCardiologyPredictionsEvent].c).toSet
+      insertedPredBson
+        .map(bson => convertInEvent(EventType(bson.get("eventID").asInt32().intValue()), JsonParser(bson.toString)))
+        .sortWith((e1, e2) => e1.time.isBefore(e2.time))
     }
-    else Set.empty
+    else Seq.empty
   }
 }

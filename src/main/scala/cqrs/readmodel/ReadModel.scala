@@ -401,8 +401,8 @@ object ReadModel {
    * @param doctorID , id of the doctor.
    */
   def updateCardiologyPrediction(doctorID: DoctorID): Unit = {
-    val predictions = EventStore.getNewPredictionsEvents(doctorID)
-    predictions.foreach(x =>
+    val predictions = RMUtility.getNewPredictions(doctorID)
+    predictions.filter(!_.seen).foreach(x =>
       EventStore.addEvent(
         UpdateCardiologyPredictionsEvent(
           doctorID,

@@ -212,6 +212,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                     response match {
                       case _: Accepted => complete(StatusCodes.Created, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
@@ -227,6 +228,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                     response match {
                       case _: Accepted => complete(StatusCodes.Created, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
@@ -246,6 +248,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -264,6 +267,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -283,6 +287,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -301,6 +306,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -320,6 +326,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -338,6 +345,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -357,6 +365,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -375,6 +384,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -394,6 +404,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -412,6 +423,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
                       }
@@ -431,6 +443,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -449,6 +462,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
                       }
@@ -468,6 +482,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -486,6 +501,7 @@ class AdministratorRoutes(administratorController: ActorRef[Protocol.CQRSAction]
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }

@@ -78,6 +78,7 @@ class AnesthetistRoutes(anesthetistController: ActorRef[Protocol.CQRSAction])(im
                     response match {
                       case _: Accepted => complete(StatusCodes.Created, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
@@ -96,6 +97,7 @@ class AnesthetistRoutes(anesthetistController: ActorRef[Protocol.CQRSAction])(im
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
                       }
@@ -117,6 +119,7 @@ class AnesthetistRoutes(anesthetistController: ActorRef[Protocol.CQRSAction])(im
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
                       }

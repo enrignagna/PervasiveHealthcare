@@ -100,6 +100,7 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.CQRSAction])(implic
                     response match {
                       case _: Accepted => complete(StatusCodes.Created, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
@@ -118,6 +119,7 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.CQRSAction])(implic
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
                       }
@@ -137,6 +139,7 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.CQRSAction])(implic
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -155,6 +158,7 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.CQRSAction])(implic
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -176,6 +180,7 @@ class WardNurseRoutes(wardnurseController: ActorRef[Protocol.CQRSAction])(implic
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
                       }
