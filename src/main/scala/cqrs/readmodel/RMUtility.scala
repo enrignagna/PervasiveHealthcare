@@ -180,6 +180,7 @@ object RMUtility {
     events.foreach {
       case x: InsertCardiologyVisitEvent => cardiologyVisitSet = cardiologyVisitSet + (x.c.cardiologyVisitID -> x.c)
       case x: UpdateCardiologyVisitEvent => cardiologyVisitSet = cardiologyVisitSet + (x.c.cardiologyVisitID -> x.c)
+      case _ =>
     }
     cardiologyVisitSet.values.toSet
   }
@@ -196,6 +197,7 @@ object RMUtility {
     events.foreach {
       case x: InsertMedicalRecordEvent => medicalRecordSet = medicalRecordSet + (x.m.medicalRecordID -> x.m)
       case x: UpdateMedicalRecordEvent => medicalRecordSet = medicalRecordSet + (x.m.medicalRecordID -> x.m)
+      case _ =>
     }
     medicalRecordSet.values.toSet
   }
@@ -207,7 +209,6 @@ object RMUtility {
    * @return all general practitioner info for a doctor.
    */
   def getAllGeneralPractitionerInfoForDoctor(doctorID: DoctorID): Set[GeneralPractitionerInfo] = {
-    EventStore.getAllGeneralPractitionerInfoForDoctorEvents(doctorID)
     val events = EventStore.getAllGeneralPractitionerInfoForDoctorEvents(doctorID)
     var generalPractitionerInfoSet = Map.empty[PatientID, GeneralPractitionerInfo]
     events.foreach {
@@ -215,6 +216,7 @@ object RMUtility {
         generalPractitionerInfoSet + (x.g.patientID -> x.g)
       case x: UpdateGeneralPractitionerInfoEvent => generalPractitionerInfoSet =
         generalPractitionerInfoSet + (x.g.patientID -> x.g)
+      case _ =>
     }
     generalPractitionerInfoSet.values.toSet
   }
@@ -232,7 +234,17 @@ object RMUtility {
    * @param doctorID , doctor ID.
    * @return all new predictions for a doctor.
    */
-  def getNewPredictions(doctorID: DoctorID): Set[CardiologyPrediction] = EventStore.getNewPredictionsEvents(doctorID)
-
+  def getNewPredictions(doctorID: DoctorID): Seq[CardiologyPrediction] = {
+    val events = EventStore.getNewPredictionsEvents(doctorID)
+    var cardiologyPredictionSet = Map.empty[CardiologyVisitID, CardiologyPrediction]
+    events.foreach {
+      case x: InsertCardiologyPredictionsEvent => cardiologyPredictionSet =
+        cardiologyPredictionSet + (x.c.cardiologyVisit.cardiologyVisitID -> x.c)
+      case x: UpdateCardiologyPredictionsEvent => cardiologyPredictionSet =
+        cardiologyPredictionSet + (x.c.cardiologyVisit.cardiologyVisitID -> x.c)
+      case _ =>
+    }
+    cardiologyPredictionSet.values.toSeq
+  }
 
 }
