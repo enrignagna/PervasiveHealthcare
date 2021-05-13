@@ -24,7 +24,7 @@ import behaviours.CardiologyDiseasesPredictor
 import cqrs.readmodel.{RMUtility, ReadModel}
 import cqrs.writemodel.Repository.patientRepository
 import domainmodel.Patient.Patient
-import domainmodel.{CardiologyDiseasePrediction, CardiologyDiseasesPresence, CardiologyPrediction, PatientID}
+import domainmodel.{CardiologyDiseasePrediction, CardiologyDiseasesPresence, CardiologyPrediction, CardiologyVisit, PatientID}
 import java.time.{LocalDate, Period}
 
 /**
@@ -68,9 +68,19 @@ object PatientDigitalTwin {
      * @return a cardiology disease prediction.
      */
     def makeCardiologyPrediction(patient: Patient): CardiologyDiseasePrediction = {
-      val cardiologyVisits = patient.cardiologyVisitHistory.get.history.toList.sortWith((c1, c2) => c1.visitDate.visitDate.isAfter(c2.visitDate.visitDate))
+      val cardiologyVisits = getLastVisit(patient)
       val age = Period.between(patient.birthDate, LocalDate.now()).toTotalMonths / 24
-      CardiologyDiseasesPredictor.predict(age.toInt, patient.gender, cardiologyVisits.head)
+      CardiologyDiseasesPredictor.predict(age.toInt, patient.gender, cardiologyVisits)
+    }
+
+    /**
+     * Method to get the last visit of a patient.
+     *
+     * @param patient , the patient.
+     * @return the last cardiology visit inserted.
+     */
+    def getLastVisit(patient: Patient): CardiologyVisit = {
+      patient.cardiologyVisitHistory.get.history.toList.sortWith((c1, c2) => c1.visitDate.visitDate.isAfter(c2.visitDate.visitDate)).head
     }
 
     private lazy val onInteractionBehaviour: Receive = {
@@ -83,7 +93,7 @@ object PatientDigitalTwin {
             val prediction = CardiologyPrediction(
               patientID,
               patient.generalPractitionerInfo.get.doctorID,
-              patient.cardiologyVisitHistory.get.history.head
+              getLastVisit(patient)
             )
             patientRepository.insertCardiologyPrediction(prediction)
             ReadModel.insertCardiologyPrediction(patient.generalPractitionerInfo.get.doctorID, prediction)
