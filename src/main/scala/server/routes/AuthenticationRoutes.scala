@@ -80,7 +80,7 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
                 response match {
                   case _: LoginAccepted => complete(StatusCodes.OK, response)
                   case _: Rejected => complete(StatusCodes.BadRequest, response)
-                  case _ => throw new IllegalArgumentException()
+                  case _ => complete(StatusCodes.BadRequest, response)
                 }
               }
             }
@@ -96,6 +96,7 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
                     response match {
                       case _: Accepted => complete(StatusCodes.OK, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
