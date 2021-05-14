@@ -10,7 +10,7 @@
 
 <!---Sottotitolo / Slogan / Descrizione breve-->
 > Progetto per il corso di Pervasive Computing e Laboratorio di Sistemi Software.
->
+> Il progetto è nato con lo scopo di realizzare un Digital Twin per quanto riguarda la figura del paziente in ambito healthcare. Nello specifico, l'obiettivo è creare un sistema software che permetta ad un paziente di monitorare il suo passato clinico e a diverse figure professionali di aggiornare tale storico in modo semplice e veloce.
 
 Leggi questo in un'altra lingua: [English](README.md).
 
@@ -20,47 +20,51 @@ Leggi questo in un'altra lingua: [English](README.md).
 *-->
 # Indice
 
-- [Come iniziare](#Come-iniziare)
-- [Come contribuire](#Come-contribuire)
-- [Manutenzione](#Manutenzione)
-- [Licenza](#Licenza)
+- [Come iniziare]
+- [Licenza]
 
 # Come iniziare
+Il sistema mostra una architettura client-server, quindi il deployment e la messa in funzione prevede l'avvio del server in un primo momento e poi ogni paziente o medico potrà connettersi al sistema tramite il proprio client. 
 
 ## Dipendenze
-## Come installare
+Il progetto necessita dei seguenti requisiti:
+
+- linguaggio Scala
+- installazione di Spark
 
 ## Documentazione
-La documentazione aggiornata del progetto è disponibile 
-[qui](https://enrignagna.github.io/PervasiveHealthcare/).
-# Come contribuire
+La documentazione del progetto è divisa in due parti:
+
+- documentazione dell'implementazione, accessibile al seguente [link](https://enrignagna.github.io/PervasiveHealthcare/)
+- relazione, accessibile al seguente link
+
 ## Struttura delle directory / branch
-
-## Community
-
-### Code of conduct
-
-### Responsible Disclosure
-
-### Segnalazione bug e richieste di aiuto
-
-# Manutenzione
+Il ramo è stato strutturato utilizzando git-flow. Il ramo principale è il ramo principale che contiene la versione finale del sistema. Ogni funzionalità richiedeva l'apertura di una filiale con lo stesso nome che viene chiusa solo al termine dell'implementazione della funzionalità stessa.
 
 # Licenza
-
 Concesso in licenza con la licenza Apache, versione 2.0 (la "Licenza");
 non è possibile utilizzare questo file se non in conformità con la licenza.
 È possibile ottenere una copia della licenza all'indirizzo
 http://www.apache.org/licenses/LICENSE-2.0
-A meno che non sia richiesto dalla legge applicabile o concordato per iscritto, il software
-distribuito con la Licenza è distribuito "COSÌ COM'È",
-SENZA GARANZIE O CONDIZIONI DI ALCUN TIPO, esplicite o implicite.
-Vedere la Licenza per la lingua specifica che regola le autorizzazioni e le limitazioni ai sensi della Licenza.
 
+Una licenza permissiva le cui condizioni principali richiedono la conservazione del copyright e degli avvisi di licenza. 
+I contributori forniscono una concessione esplicita di diritti di brevetto.
+Opere concesse in licenza, modifiche e opere più grandi possono essere distribuite in termini diversi e senza codice sorgente.
+
+ Autorizzazioni:
+ - Uso commerciale 
+ - Modifica Distribuzione
+ - Uso del brevetto 
+ - Uso privato
+
+ Limitazioni:
+ - Garanzia di responsabilità sull'uso del marchio
 
 ## Autori e Copyright
+Autori:
+
+- [Battistini Ylenia](https://github.com/yleniaBattistini)
+- [Gnagnarella Enrico](https://github.com/enrignagna)
+- [Scucchia Matteo](https://github.com/scumatteo)
 
 Copyright (c) 2021.
-
-**Autori:** Ylenia Battistini, Enrico Gnagnarella, Matteo Scucchia
-
