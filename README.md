@@ -4,7 +4,7 @@
 ![GitHub top language](https://img.shields.io/github/languages/top/enrignagna/PervasiveHealthcare)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/enrignagna/PervasiveHealthcare)
 ![GitHub issues](https://img.shields.io/github/issues/enrignagna/PervasiveHealthcare)
-
+[![CodeFactor](https://www.codefactor.io/repository/github/enrignagna/pervasivehealthcare/badge)](https://www.codefactor.io/repository/github/enrignagna/pervasivehealthcare)
 
 # Pervasive Healthcare
 
