@@ -18,9 +18,10 @@
 
 package json
 
+import spray.json.{JsString, JsValue, RootJsonFormat, deserializationError}
+
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
-import spray.json.{JsString, JsValue, RootJsonFormat, deserializationError}
 
 /**
  * Json format for local date object.

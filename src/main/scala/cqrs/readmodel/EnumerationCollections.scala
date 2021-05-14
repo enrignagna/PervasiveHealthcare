@@ -29,7 +29,7 @@ import domainmodel.generalinfo.Rh.Rh
 import domainmodel.generalinfo.{AllergyClass, BloodType, Rh}
 import domainmodel.professionalfigure.Specialization
 import domainmodel.professionalfigure.Specialization.Specialization
-import domainmodel.{Gender, KinshipDegree}
+import domainmodel.{ChestPainType, Gender, KinshipDegree, RestingElectrocardiographic, SlopeST, Thal}
 import json.AnamnesisJsonFormat.kinshipDegreeJsonFormat
 import json.PatientJsonFormat.genderJsonFormat
 import json.generalinfo.AllergyJsonFormat.allergyClassJsonFormat
@@ -38,8 +38,15 @@ import json.professionalfigure.ProfessionalFigureJsonFormat.{roleJsonFormat, spe
 import org.mongodb.scala.bson.BsonDocument
 import org.mongodb.scala.{Document, MongoCollection}
 import spray.json.{JsonParser, enrichAny}
-
 import java.util.concurrent.TimeUnit
+
+import cqrs.readmodel.KinshipDegreeCollection.kinshipDegreeCollection
+import domainmodel.ChestPainType.ChestPainType
+import domainmodel.RestingElectrocardiographic.RestingElectrocardiographic
+import domainmodel.SlopeST.SlopeST
+import domainmodel.Thal.Thal
+import json.CardiologyVisitJsonFormat.{chestPainTypeJsonFormat, restingElectrocardiographicJsonFormat, slopeSTJsonFormat, thalJsonFormat}
+
 import scala.concurrent.Await
 import scala.concurrent.duration.Duration
 
@@ -53,8 +60,8 @@ object RoleCollection {
    * Initialize method.
    */
   def initialize(): Unit = {
-    val numberRolesDocs: Int = Await.result(roleCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
-    if (numberRolesDocs == 0) {
+    val numberDocs: Int = Await.result(roleCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
       Await.result(roleCollection.insertMany(Role.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
     }
   }
@@ -84,8 +91,8 @@ object GenderCollection {
    * Initialize method.
    */
   def initialize(): Unit = {
-    val numberGenderDocs: Int = Await.result(genderCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
-    if (numberGenderDocs == 0) {
+    val numberDocs: Int = Await.result(genderCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
       Await.result(genderCollection.insertMany(Gender.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
     }
   }
@@ -114,8 +121,8 @@ object AllergyClassCollection {
    * Initialize method.
    */
   def initialize(): Unit = {
-    val numberAllergiesDocs: Int = Await.result(allergyClassCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
-    if (numberAllergiesDocs == 0) {
+    val numberDocs: Int = Await.result(allergyClassCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
       Await.result(allergyClassCollection.insertMany(AllergyClass.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
     }
   }
@@ -144,8 +151,8 @@ object BloodTypeCollection {
    * Initialize method.
    */
   def initialize(): Unit = {
-    val numberBloodTypesDocs: Int = Await.result(bloodTypeCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
-    if (numberBloodTypesDocs == 0) {
+    val numberDocs: Int = Await.result(bloodTypeCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
       Await.result(bloodTypeCollection.insertMany(BloodType.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
     }
   }
@@ -174,8 +181,8 @@ object RhCollection {
    * Initialize method.
    */
   def initialize(): Unit = {
-    val numberRhDocs: Int = Await.result(rhCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
-    if (numberRhDocs == 0) {
+    val numberDocs: Int = Await.result(rhCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
       Await.result(rhCollection.insertMany(Rh.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
     }
   }
@@ -204,8 +211,8 @@ object SpecializationCollection {
    * Initialize method.
    */
   def initialize(): Unit = {
-    val numberSpecializationDocs: Int = Await.result(specializationCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
-    if (numberSpecializationDocs == 0) {
+    val numberDocs: Int = Await.result(specializationCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
       Await.result(specializationCollection.insertMany(Specialization.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
     }
   }
@@ -234,8 +241,8 @@ object KinshipDegreeCollection {
    * Initialize method.
    */
   def initialize(): Unit = {
-    val numberKinshipDocs: Int = Await.result(kinshipDegreeCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
-    if (numberKinshipDocs == 0) {
+    val numberDocs: Int = Await.result(kinshipDegreeCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
       Await.result(kinshipDegreeCollection.insertMany(KinshipDegree.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
     }
   }
@@ -253,3 +260,121 @@ object KinshipDegreeCollection {
     else Set.empty
   }
 }
+
+/**
+ * Chest Pain Type Collection.
+ */
+object ChestPainTypeCollection {
+  val chestPainTypeCollection: MongoCollection[Document] = database.getCollection("chestpaintypes")
+
+  /**
+   * Initialize method.
+   */
+  def initialize(): Unit = {
+    val numberDocs: Int = Await.result(chestPainTypeCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
+      Await.result(chestPainTypeCollection.insertMany(ChestPainType.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
+    }
+  }
+
+  /**
+   * Get method.
+   *
+   * @return set of chest pain type.
+   */
+  def get(): Set[ChestPainType] = {
+    val res: Seq[BsonDocument] = Await.result(chestPainTypeCollection.find().toFuture(), Duration(1, TimeUnit.SECONDS)).map(BsonDocument(_))
+    if (res.nonEmpty) {
+      res.map(document => JsonParser(document.toString).convertTo[ChestPainType.ChestPainType]).toSet
+    }
+    else Set.empty
+  }
+}
+/**
+ * Resting Electrocardiographic Collection.
+ */
+object RestingElectrocardiographicCollection {
+  val restingECGCollection: MongoCollection[Document] = database.getCollection("restingecg")
+
+  /**
+   * Initialize method.
+   */
+  def initialize(): Unit = {
+    val numberDocs: Int = Await.result(restingECGCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
+      Await.result(restingECGCollection.insertMany(RestingElectrocardiographic.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
+    }
+  }
+
+  /**
+   * Get method.
+   *
+   * @return set of resting electrocardiographic.
+   */
+  def get(): Set[RestingElectrocardiographic] = {
+    val res: Seq[BsonDocument] = Await.result(kinshipDegreeCollection.find().toFuture(), Duration(1, TimeUnit.SECONDS)).map(BsonDocument(_))
+    if (res.nonEmpty) {
+      res.map(document => JsonParser(document.toString).convertTo[RestingElectrocardiographic.RestingElectrocardiographic]).toSet
+    }
+    else Set.empty
+  }
+}
+/**
+ * Slope ST Collection.
+ */
+object SlopeSTCollection {
+  val slopeSTCollection: MongoCollection[Document] = database.getCollection("slopest")
+
+  /**
+   * Initialize method.
+   */
+  def initialize(): Unit = {
+    val numberDocs: Int = Await.result(slopeSTCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
+      Await.result(slopeSTCollection.insertMany(SlopeST.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
+    }
+  }
+
+  /**
+   * Get method.
+   *
+   * @return set of slope ST.
+   */
+  def get(): Set[SlopeST] = {
+    val res: Seq[BsonDocument] = Await.result(slopeSTCollection.find().toFuture(), Duration(1, TimeUnit.SECONDS)).map(BsonDocument(_))
+    if (res.nonEmpty) {
+      res.map(document => JsonParser(document.toString).convertTo[SlopeST.SlopeST]).toSet
+    }
+    else Set.empty
+  }
+}
+/**
+ * Thal Collection.
+ */
+object ThalCollection {
+  val thalCollection: MongoCollection[Document] = database.getCollection("thal")
+
+  /**
+   * Initialize method.
+   */
+  def initialize(): Unit = {
+    val numberDocs: Int = Await.result(thalCollection.countDocuments().toFuture(), Duration(1, TimeUnit.SECONDS)).intValue()
+    if (numberDocs == 0) {
+      Await.result(thalCollection.insertMany(Thal.values.map(value => Document(value.toJson.compactPrint)).toSeq).toFuture(), Duration(1, TimeUnit.SECONDS))
+    }
+  }
+
+  /**
+   * Get method.
+   *
+   * @return set of thals.
+   */
+  def get(): Set[Thal] = {
+    val res: Seq[BsonDocument] = Await.result(thalCollection.find().toFuture(), Duration(1, TimeUnit.SECONDS)).map(BsonDocument(_))
+    if (res.nonEmpty) {
+      res.map(document => JsonParser(document.toString).convertTo[Thal.Thal]).toSet
+    }
+    else Set.empty
+  }
+}
+

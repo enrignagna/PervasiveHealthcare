@@ -20,9 +20,8 @@ package json.generalinfo
 
 import domainmodel.generalinfo.{GeneralInfo, Height, Weight}
 import json.PathologyJsonFormat.previousPathologiesJsonFormat
-
-import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
 import json.generalinfo.AllergyJsonFormat._
+import json.generalinfo.BloodGroupJsonFormat.bloodGroupJsonFormat
 import json.generalinfo.ExamJsonFormat.examHistoryJsonFormat
 import json.generalinfo.PrescriptionJsonFormat.prescriptionHistoryJsonFormat
 import spray.json.{DefaultJsonProtocol, RootJsonFormat}
@@ -34,6 +33,7 @@ import spray.json.{DefaultJsonProtocol, RootJsonFormat}
 object GeneralInfoJsonFormat {
 
   import DefaultJsonProtocol._
+
   /**
    * Implicit for weight object.
    */

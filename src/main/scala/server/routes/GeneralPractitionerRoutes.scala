@@ -24,10 +24,10 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import domainmodel.{CardiologyPrediction, DoctorID, PatientID}
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo
+import domainmodel.{CardiologyPrediction, DoctorID, PatientID}
 import json.CardiologyPredictionJsonFormat.cardiologyPredictionJsonFormat
-import json.RequestJsonFormats.{acceptedJsonFormat, immSetFormat}
+import json.RequestJsonFormats.{acceptedJsonFormat, immSetFormat, seqFormat}
 import json.generalpractitionerinfo.GeneralPractitionerInfoJsonFormat.generalPractitionerInfoJsonFormat
 import server.models.JwtAuthentication.hasDoctorPermissions
 import server.models.Protocol
@@ -44,7 +44,7 @@ import scala.concurrent.duration.DurationInt
  */
 class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
@@ -67,13 +67,23 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
   def updateGeneralPractitionerInfo(patientID: PatientID, generalPractitionerInfo: GeneralPractitionerInfo): Future[Confirmation] =
     generalPractitionerController.ask(UpdateGeneralPractitionerInfo(patientID, generalPractitionerInfo, _))
 
+
+  /**
+   * Method to obtain all the general practitioners info in the db
+   *
+   * @param doctorID doctor's id
+   * @return the general practitioner info
+   */
+  def getGeneralPractitionerInfo(doctorID: DoctorID): Future[Set[GeneralPractitionerInfo]] =
+    generalPractitionerController.ask(GetGeneralPractitionerInfo(doctorID, _))
+
   /**
    * Method to obtain all cardiology predictions in the db
    *
    * @param doctorID doctor's id
-   * @return confirmation
+   * @return the cardiology predictions
    */
-  def getCardiologyPredictions(doctorID: DoctorID): Future[Set[CardiologyPrediction]] =
+  def getCardiologyPredictions(doctorID: DoctorID): Future[Seq[CardiologyPrediction]] =
     generalPractitionerController.ask(GetCardiologyPredictions(doctorID, _))
 
   /**
@@ -89,7 +99,6 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
     pathPrefix("api") {
       pathPrefix("generalpractitionerinfo") {
         pathEnd {
-
           post {
             headerValueByName("x-access-token") { value =>
               authorize(hasDoctorPermissions(value)) {
@@ -98,6 +107,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                     response match {
                       case _: Accepted => complete(StatusCodes.Created, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
@@ -111,13 +121,22 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                 put {
                   headerValueByName("x-access-token") { value =>
                     authorize(hasDoctorPermissions(value)) {
-                      entity(as[GeneralPractitionerInfo]) { medicalRecord =>
-                        onSuccess(updateGeneralPractitionerInfo(PatientID(id), medicalRecord)) { response =>
+                      entity(as[GeneralPractitionerInfo]) { generalPractitionerInfo =>
+                        onSuccess(updateGeneralPractitionerInfo(PatientID(id), generalPractitionerInfo)) { response =>
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
+                      }
+                    }
+                  }
+                },
+                get {
+                  headerValueByName("x-access-token") { value =>
+                    authorize(hasDoctorPermissions(value)) {
+                      onSuccess(getGeneralPractitionerInfo(DoctorID(id))) { response => complete(StatusCodes.OK, response)
                       }
                     }
                   }
@@ -136,6 +155,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -154,6 +174,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -174,6 +195,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -192,6 +214,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -212,6 +235,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -230,6 +254,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -250,6 +275,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -268,6 +294,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -288,6 +315,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                       response match {
                         case _: Accepted => complete(StatusCodes.Created, response)
                         case _: Rejected => complete(StatusCodes.BadRequest, response)
+                        case _ => complete(StatusCodes.BadRequest, response)
                       }
                     }
                   }
@@ -306,6 +334,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                             response match {
                               case _: Accepted => complete(StatusCodes.Created, response)
                               case _: Rejected => complete(StatusCodes.BadRequest, response)
+                              case _ => complete(StatusCodes.BadRequest, response)
                             }
                           }
                         }
@@ -333,6 +362,7 @@ class GeneralPractitionerRoutes(generalPractitionerController: ActorRef[Protocol
                         response match {
                           case _: Accepted => complete(StatusCodes.Created, response)
                           case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          case _ => complete(StatusCodes.BadRequest, response)
                         }
                       }
                     }

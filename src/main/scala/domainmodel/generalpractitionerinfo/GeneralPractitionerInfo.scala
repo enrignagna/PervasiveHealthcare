@@ -18,10 +18,10 @@
 
 package domainmodel.generalpractitionerinfo
 
-import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
-import domainmodel.generalpractitionerinfo.BookingVisitHistory.BookingVisitHistory
-import domainmodel.generalpractitionerinfo.MedicalCertificateHistory.MedicalCertificateHistory
-import domainmodel.generalpractitionerinfo.TherapyHistory.TherapyHistory
+import domainmodel.generalinfo.PrescriptionHistory._
+import domainmodel.generalpractitionerinfo.BookingVisitHistory._
+import domainmodel.generalpractitionerinfo.MedicalCertificateHistory._
+import domainmodel.generalpractitionerinfo.TherapyHistory._
 import domainmodel.generalpractitionerinfo.VisitHistory._
 import domainmodel.{Anamnesis, DoctorID, PatientID}
 
@@ -40,11 +40,11 @@ import domainmodel.{Anamnesis, DoctorID, PatientID}
 case class GeneralPractitionerInfo(
                                     patientID: PatientID,
                                     doctorID: DoctorID,
-                                    visits: Option[VisitHistory],
-                                    anamnesis: Option[Anamnesis],
-                                    bookingVisits: Option[BookingVisitHistory],
-                                    prescriptions: Option[PrescriptionHistory],
-                                    therapies: Option[TherapyHistory],
-                                    medicalCertificateHistory: Option[MedicalCertificateHistory]
+                                    visits: Option[VisitHistory] = None,
+                                    anamnesis: Option[Anamnesis] = None,
+                                    bookingVisits: Option[BookingVisitHistory] = None,
+                                    prescriptions: Option[PrescriptionHistory] = None,
+                                    therapies: Option[TherapyHistory] = None,
+                                    medicalCertificateHistory: Option[MedicalCertificateHistory] = None
                                   )
 

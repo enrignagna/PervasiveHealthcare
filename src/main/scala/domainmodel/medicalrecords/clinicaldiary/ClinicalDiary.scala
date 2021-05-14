@@ -16,9 +16,9 @@
 
 package domainmodel.medicalrecords.clinicaldiary
 
-import domainmodel.medicalrecords.clinicaldiary.DiagnosticTreatments.DiagnosticTreatments
-import domainmodel.medicalrecords.clinicaldiary.RehabilitationTreatments.RehabilitationTreatments
-import domainmodel.medicalrecords.clinicaldiary.TherapeuticTreatments.TherapeuticTreatments
+import domainmodel.medicalrecords.clinicaldiary.DiagnosticTreatments._
+import domainmodel.medicalrecords.clinicaldiary.RehabilitationTreatments._
+import domainmodel.medicalrecords.clinicaldiary.TherapeuticTreatments._
 
 /**
  * Clinical diary.

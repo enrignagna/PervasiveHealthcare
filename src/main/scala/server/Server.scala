@@ -49,6 +49,9 @@ object Server {
   }
 
 
+  /**
+   * Start method for server.
+   */
   def start(): Unit = {
     val rootBehavior = Behaviors.setup[Nothing] { context =>
 
@@ -80,6 +83,9 @@ object Server {
       val authenticationControllerActor = context.spawn(AuthenticationController(), "AuthenticationControllerActor")
       context.watch(authenticationControllerActor)
 
+      val enumerationControllerActor = context.spawn(EnumerationController(), "EnumerationControllerActor")
+      context.watch(enumerationControllerActor)
+
       val commonControllerActor = context.spawn(CommonController(), "CommonControllerActor")
       context.watch(commonControllerActor)
 
@@ -92,6 +98,7 @@ object Server {
       val instrumentalistRoutes = new InstrumentalistRoutes(instrumentalistControllerActor)(context.system)
       val cardiologistRoutes = new CardiologistRoutes(cardiologistControllerActor)(context.system)
       val authenticationRoutes = new AuthenticationRoutes(authenticationControllerActor)(context.system)
+      val enumerationRoutes = new EnumerationRoutes(enumerationControllerActor)(context.system)
       val commonRoutes = new CommonRoutes(commonControllerActor)(context.system)
 
 
@@ -104,6 +111,7 @@ object Server {
         instrumentalistRoutes,
         cardiologistRoutes,
         authenticationRoutes,
+        enumerationRoutes,
         commonRoutes)
 
       startHttpServer(mainRoutes.routes)(context.system)
@@ -117,9 +125,12 @@ object Server {
     val system = ActorSystem[Nothing](rootBehavior, "PervasiveHealthcare")
   }
 
-
+  /**
+   * Server main to launch it.
+   *
+   * @param args , args.
+   */
   def main(args: Array[String]): Unit = {
     start()
   }
-
 }

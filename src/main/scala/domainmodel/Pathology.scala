@@ -19,7 +19,7 @@
 package domainmodel
 
 
-import domainmodel.PathologySeverity.PathologySeverity
+import domainmodel.PathologySeverity._
 
 import java.time.LocalDate
 
@@ -105,7 +105,7 @@ object PreviousPathologies {
   }
 
   /**
-   * Factory method for domainmodel.PreviousPathologies.
+   * Apply method for domain model.PreviousPathologies.
    *
    * @return an empty set of previous pathologies.
    */

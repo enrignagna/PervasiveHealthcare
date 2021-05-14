@@ -17,7 +17,7 @@
 package domainmodel.medicalrecords
 
 import domainmodel.DoctorID
-import domainmodel.medicalrecords.DiagnosticServicesRequests.DiagnosticServicesRequests
+import domainmodel.medicalrecords.DiagnosticServicesRequests._
 import domainmodel.utility.Description
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec

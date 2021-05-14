@@ -29,8 +29,18 @@ import server.models.Protocol._
  */
 object CommonController {
 
+  /**
+   * Create a new handleAction.
+   *
+   * @return an instance of a Behavior[CQRSAction]
+   */
   def apply(): Behavior[CQRSAction] = handleAction()
 
+  /**
+   * Behaviors for received messages.
+   *
+   * @return behaviour confirmation
+   */
   def handleAction(): Behavior[CQRSAction] =
     Behaviors.receiveMessage {
       case GetSurgeon(id, replyTo) =>

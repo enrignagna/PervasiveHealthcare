@@ -18,11 +18,11 @@
 package json.medicalrecords
 
 import domainmodel.medicalrecords.Reports.Reports
-import domainmodel.medicalrecords.{Activity, Assistance, Consulting, Diagnostics, Rehabilitation, Report, TherapeuticDelivery, TreatmentType}
+import domainmodel.medicalrecords._
+import json.LocalDateTimeJsonFormat.DateTimeFormat
+import json.RequestJsonFormats.immSetFormat
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat3, jsonFormat5}
 import spray.json.RootJsonFormat
-import json.RequestJsonFormats.immSetFormat
-import json.LocalDateTimeJsonFormat.DateTimeFormat
 
 /**
  * Json format for reports object

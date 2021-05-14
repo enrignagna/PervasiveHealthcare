@@ -16,7 +16,7 @@
 
 package domainmodel
 
-import domainmodel.PreviousPathologies.PreviousPathologies
+import domainmodel.PreviousPathologies._
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner

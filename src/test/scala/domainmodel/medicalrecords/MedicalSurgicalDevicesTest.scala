@@ -16,7 +16,7 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.medicalrecords.MedicalSurgicalDevices.MedicalSurgicalDevices
+import domainmodel.medicalrecords.MedicalSurgicalDevices._
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner

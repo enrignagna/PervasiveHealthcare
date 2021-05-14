@@ -16,10 +16,9 @@
  *
  */
 
-package domainmodel.generalinfo
+package domainmodel.medicalrecords
 
-import domainmodel.medicalrecords.Reports.Reports
-import domainmodel.medicalrecords._
+import domainmodel.medicalrecords.Reports._
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner
@@ -62,7 +61,7 @@ class ReportsTest extends AnyFreeSpec {
   "Prescription history" - {
     "should be" - {
       "a set" in {
-        assert(reports.reports.isInstanceOf[Set[Prescription]])
+        assert(reports.reports.isInstanceOf[Set[Report]])
       }
       "initially empty" in {
         assert(reports.reports.isEmpty)

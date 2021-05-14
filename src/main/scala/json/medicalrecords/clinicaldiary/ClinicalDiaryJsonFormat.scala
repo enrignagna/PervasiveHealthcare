@@ -19,9 +19,9 @@
 package json.medicalrecords.clinicaldiary
 
 import domainmodel.medicalrecords.clinicaldiary.ClinicalDiary
-import spray.json.DefaultJsonProtocol.{jsonFormat4, optionFormat}
 import json.medicalrecords.clinicaldiary.HealthEvolutionJsonFormat.healthEvolutionJsonFormat
-import json.medicalrecords.clinicaldiary.TreatmentsJsonFormat.{rehabilitationTreatmentsJsonFormat, therapeuticTreatmentsJsonFormat, diagnosticTreatmentsJsonFormat}
+import json.medicalrecords.clinicaldiary.TreatmentsJsonFormat.{diagnosticTreatmentsJsonFormat, rehabilitationTreatmentsJsonFormat, therapeuticTreatmentsJsonFormat}
+import spray.json.DefaultJsonProtocol.{jsonFormat4, optionFormat}
 import spray.json.RootJsonFormat
 
 /**
@@ -29,8 +29,8 @@ import spray.json.RootJsonFormat
  */
 object ClinicalDiaryJsonFormat {
 
- /**
-  * Implicit for clinical diary object.
-  */
- implicit val clinicalDiaryJsonFormat: RootJsonFormat[ClinicalDiary] = jsonFormat4(ClinicalDiary)
+  /**
+   * Implicit for clinical diary object.
+   */
+  implicit val clinicalDiaryJsonFormat: RootJsonFormat[ClinicalDiary] = jsonFormat4(ClinicalDiary)
 }

@@ -21,13 +21,9 @@ package server.controllers
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
 import cqrs.readmodel.ReadModel
-import cqrs.writemodel.Repository
 import server.models.Protocol._
 
-/**
- * This object represents the set of actions that are carried out following a resource's request by instrumentalist.
- */
-object InstrumentalistController {
+object EnumerationController {
 
   /**
    * Create a new handleAction.
@@ -43,23 +39,50 @@ object InstrumentalistController {
    */
   def handleAction(): Behavior[CQRSAction] =
     Behaviors.receiveMessage {
-      case InsertMedicalRecord(medicalRecord, replyTo) =>
-        val res = Repository.instrumentalistRepository.insertMedicalRecord(medicalRecord)
-        if (res == "Medical record created.") {
-          ReadModel.insertMedicalRecord(medicalRecord.patientID, medicalRecord)
-          replyTo ! Accepted(res)
-        } else {
-          replyTo ! Rejected(res)
-        }
+      case GetRoles(replyTo) =>
+        val res = ReadModel.getRole
+        replyTo ! res
         Behaviors.same
-      case UpdateMedicalRecord(medicalRecordID, medicalRecord, replyTo) =>
-        val res = Repository.instrumentalistRepository.updateMedicalRecord(medicalRecordID, medicalRecord)
-        if (res == "Medical record updated.") {
-          ReadModel.updateMedicalRecord(medicalRecord.patientID, medicalRecord)
-          replyTo ! Accepted(res)
-        } else {
-          replyTo ! Rejected(res)
-        }
+      case GetGenders(replyTo) =>
+        val res = ReadModel.getGender
+        replyTo ! res
         Behaviors.same
+      case GetAllergies(replyTo) =>
+        val res = ReadModel.getAllergy
+        replyTo ! res
+        Behaviors.same
+      case GetBloodTypes(replyTo) =>
+        val res = ReadModel.getBloodType
+        replyTo ! res
+        Behaviors.same
+      case GetRh(replyTo) =>
+        val res = ReadModel.getRh
+        replyTo ! res
+        Behaviors.same
+      case GetSpecializations(replyTo) =>
+        val res = ReadModel.getSpecialization
+        replyTo ! res
+        Behaviors.same
+      case GetKinshipDegrees(replyTo) =>
+        val res = ReadModel.getKinshipDegree
+        replyTo ! res
+        Behaviors.same
+      case GetChestPainTypes(replyTo) =>
+        val res = ReadModel.getChestPainType
+        replyTo ! res
+        Behaviors.same
+      case GetRestingECG(replyTo) =>
+        val res = ReadModel.getRestingECG
+        replyTo ! res
+        Behaviors.same
+      case GetSlopeST(replyTo) =>
+        val res = ReadModel.getSlopeST
+        replyTo ! res
+        Behaviors.same
+      case GetThals(replyTo) =>
+        val res = ReadModel.getThal
+        replyTo ! res
+        Behaviors.same
+      case _ => throw new IllegalArgumentException()
     }
 }

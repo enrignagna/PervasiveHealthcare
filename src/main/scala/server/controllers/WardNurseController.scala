@@ -20,6 +20,7 @@ package server.controllers
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
+import cqrs.readmodel.ReadModel
 import cqrs.writemodel.Repository
 import server.models.Protocol._
 
@@ -44,8 +45,8 @@ object WardNurseController {
     Behaviors.receiveMessage {
       case InsertMedicalRecord(medicalRecord, replyTo) =>
         val res = Repository.wardNurseRepository.insertMedicalRecord(medicalRecord)
-        if (res == "Medical record created.") { //if there is an error the events are not stored, otherwise the events will be stored.
-          //ReadModel().createMedicalRecord(medicalRecord)
+        if (res == "Medical record created.") {
+          ReadModel.insertMedicalRecord(medicalRecord.patientID, medicalRecord)
           replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
@@ -54,8 +55,8 @@ object WardNurseController {
       case UpdateMedicalRecord(medicalRecordID, medicalRecord, replyTo) =>
         val res = Repository.wardNurseRepository.updateMedicalRecord(medicalRecordID, medicalRecord)
         if (res == "Medical record updated.") {
-          // ReadModel().updateMedicalRecord(medicalRecord)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          ReadModel.updateMedicalRecord(medicalRecord.patientID, medicalRecord)
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }
@@ -63,8 +64,8 @@ object WardNurseController {
       case UpdateGeneralInfo(patientID, generalInfo, replyTo) =>
         val res = Repository.wardNurseRepository.updateGeneralInfo(patientID, generalInfo)
         if (res == "General info updated.") {
-          // ReadModel().updateGeneralInfo(generalInfo)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          ReadModel.updateGeneralInfo(patientID, generalInfo)
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }

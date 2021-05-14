@@ -20,6 +20,7 @@ package server.controllers
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl._
+import cqrs.readmodel.ReadModel
 import cqrs.writemodel.Repository
 import server.models.Protocol._
 
@@ -45,8 +46,8 @@ object RescuerController {
       case UpdateMedicalRecord(medicalRecordID, medicalRecord, replyTo) =>
         val res = Repository.rescuerRepository.updateMedicalRecord(medicalRecordID, medicalRecord)
         if (res == "Medical record updated.") {
-          // ReadModel().updateMedicalRecord(medicalRecordID, medicalRecord)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          ReadModel.updateMedicalRecord(medicalRecord.patientID, medicalRecord)
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }

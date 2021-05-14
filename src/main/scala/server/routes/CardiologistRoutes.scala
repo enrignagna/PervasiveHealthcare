@@ -21,12 +21,12 @@ package server.routes
 import akka.actor.typed.scaladsl.AskPattern.{Askable, schedulerFromActorSystem}
 import akka.actor.typed.{ActorRef, ActorSystem}
 import akka.http.scaladsl.model.StatusCodes
-import akka.http.scaladsl.server.Directives.{as, authorize, complete, entity, headerValueByName, onSuccess, pathEnd, pathPrefix, post}
+import akka.http.scaladsl.server.Directives.{complete, pathPrefix, _}
 import akka.http.scaladsl.server.Route
 import akka.util.Timeout
-import domainmodel.CardiologyVisit
+import domainmodel.{CardiologyVisit, DoctorID}
 import json.CardiologyVisitJsonFormat.cardiologyVisitJsonFormat
-import json.RequestJsonFormats.acceptedJsonFormat
+import json.RequestJsonFormats.{acceptedJsonFormat, immSetFormat}
 import server.models.JwtAuthentication.hasCardiologistPermissions
 import server.models.Protocol
 import server.models.Protocol._
@@ -41,7 +41,7 @@ import scala.concurrent.duration.DurationInt
  * @param system                 represent the actor system
  */
 class CardiologistRoutes(cardiologistController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
@@ -54,11 +54,19 @@ class CardiologistRoutes(cardiologistController: ActorRef[Protocol.CQRSAction])(
   def insertCardiologyVisit(cardiologyVisit: CardiologyVisit): Future[Confirmation] =
     cardiologistController.ask(InsertCardiologyVisit(cardiologyVisit, _))
 
+  /**
+   * Method to get all the cardiology visit for the specific cardiologist.
+   *
+   * @param doctorID the cardiologist ID
+   * @return a set of cardiology visits
+   */
+  def getCardiologyVisits(doctorID: DoctorID): Future[Set[CardiologyVisit]] =
+    cardiologistController.ask(GetCardiologyVisits(doctorID, _))
+
   val cardiologistRoutes: Route =
     pathPrefix("api") {
       pathPrefix("cardiologyvisits") {
         pathEnd {
-
           post {
             headerValueByName("x-access-token") { value =>
               authorize(hasCardiologistPermissions(value)) {
@@ -67,13 +75,25 @@ class CardiologistRoutes(cardiologistController: ActorRef[Protocol.CQRSAction])(
                     response match {
                       case _: Accepted => complete(StatusCodes.Created, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
               }
             }
           }
-        }
+        } ~
+          path(Segment) {
+            id =>
+              get {
+                headerValueByName("x-access-token") { value =>
+                  authorize(hasCardiologistPermissions(value)) {
+                    onSuccess(getCardiologyVisits(DoctorID(id))) { response => complete(StatusCodes.OK, response)
+                    }
+                  }
+                }
+              }
+          }
       }
     }
 }

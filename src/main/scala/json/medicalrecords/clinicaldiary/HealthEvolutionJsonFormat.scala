@@ -19,10 +19,10 @@
 package json.medicalrecords.clinicaldiary
 
 import domainmodel.medicalrecords.clinicaldiary.HealthEvolution
+import json.LocalDateTimeJsonFormat.DateTimeFormat
+import json.utility.InfoDescriptionJsonFormat.infoJsonFormat
 import spray.json.DefaultJsonProtocol.jsonFormat2
 import spray.json.RootJsonFormat
-import json.utility.InfoDescriptionJsonFormat.infoJsonFormat
-import json.LocalDateTimeJsonFormat.DateTimeFormat
 
 /**
  * Json format for health evolution object.

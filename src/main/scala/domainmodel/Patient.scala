@@ -16,7 +16,7 @@
 
 package domainmodel
 
-import domainmodel.CardiologyVisitHistory.CardiologyVisitHistory
+import domainmodel.CardiologyVisitHistory._
 import domainmodel.Gender.Gender
 import domainmodel.generalinfo.GeneralInfo
 import domainmodel.generalpractitionerinfo.GeneralPractitionerInfo

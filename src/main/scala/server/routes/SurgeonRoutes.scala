@@ -43,7 +43,7 @@ import scala.concurrent.duration.DurationInt
  */
 class SurgeonRoutes(surgeonController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
@@ -88,6 +88,7 @@ class SurgeonRoutes(surgeonController: ActorRef[Protocol.CQRSAction])(implicit v
                     response match {
                       case _: Accepted => complete(StatusCodes.Created, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
@@ -106,6 +107,7 @@ class SurgeonRoutes(surgeonController: ActorRef[Protocol.CQRSAction])(implicit v
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
                       }
@@ -125,7 +127,7 @@ class SurgeonRoutes(surgeonController: ActorRef[Protocol.CQRSAction])(implicit v
               )
           }
       } ~
-        path("clinicaldiary") {
+        pathPrefix("clinicaldiary") {
           path(Segment) {
             id =>
               put {
@@ -136,6 +138,7 @@ class SurgeonRoutes(surgeonController: ActorRef[Protocol.CQRSAction])(implicit v
                         response match {
                           case _: Accepted => complete(StatusCodes.Created, response)
                           case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          case _ => complete(StatusCodes.BadRequest, response)
                         }
                       }
                     }

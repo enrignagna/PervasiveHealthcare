@@ -18,8 +18,6 @@
 
 package json
 
-import java.time.LocalDate
-
 import cqrs.writemodel.Role
 import domainmodel.CardiologyVisitHistory.CardiologyVisitHistory
 import domainmodel.Gender.Gender
@@ -39,6 +37,9 @@ import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordsJsonFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat.roleJsonFormat
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.{DeserializationException, JsObject, JsString, JsValue, RootJsonFormat, enrichAny}
+
+import java.time.LocalDate
+
 /**
  * Json format for patient object.
  */
@@ -54,23 +55,21 @@ object PatientJsonFormat {
     override def read(json: JsValue): Patient = {
       json.asJsObject.getFields(
         "patientID", "cf", "name", "surname", "birthDate", "birthplace", "gender", "phone",
-          "address", "residenceAddress", "residenceCity", "province", "generalInfo", "generalPractitionerInfo",
-          "medicalRecords", "cardiologyVisitHistory", "role") match {
+        "address", "residenceAddress", "residenceCity", "province", "generalInfo", "generalPractitionerInfo",
+        "medicalRecords", "cardiologyVisitHistory", "role") match {
         case Seq(patientID, cf, JsString(name), JsString(surname), birthDate, JsString(birthplace), gender,
-             JsString(phone), JsString(address), JsString(residenceAddress), JsString(residenceCity),
-             JsString(province), generalInfo, generalPractitionerInfo, medicalRecords, cardiologyVisitHistory, JsObject(_)) =>
-          {
+        JsString(phone), JsString(address), JsString(residenceAddress), JsString(residenceCity),
+        JsString(province), generalInfo, generalPractitionerInfo, medicalRecords, cardiologyVisitHistory, JsObject(_)) => {
 
-            Patient(patientID.convertTo[PatientID], cf.convertTo[CF], name, surname, birthDate.convertTo[LocalDate], birthplace, gender.convertTo[Gender],
-              phone,
-              Option(json.asJsObject.fields("mobilePhone")).map(mobilePhone => mobilePhone.convertTo[String]),
-              address, residenceAddress, residenceCity, province,
-              if (generalInfo.asJsObject.fields.nonEmpty) Some(generalInfo.convertTo[GeneralInfo]) else None,
-              if (generalPractitionerInfo.asJsObject.fields.nonEmpty) Some(generalPractitionerInfo.convertTo[GeneralPractitionerInfo]) else None,
-              if (medicalRecords.asJsObject.fields.nonEmpty) Some(medicalRecords.convertTo[MedicalRecordHistory]) else None,
-              if (cardiologyVisitHistory.asJsObject.fields.nonEmpty) Some(cardiologyVisitHistory.convertTo[CardiologyVisitHistory]) else None)
-          }
-
+          Patient(patientID.convertTo[PatientID], cf.convertTo[CF], name, surname, birthDate.convertTo[LocalDate], birthplace, gender.convertTo[Gender],
+            phone,
+            Option(json.asJsObject.fields("mobilePhone")).map(mobilePhone => mobilePhone.convertTo[String]),
+            address, residenceAddress, residenceCity, province,
+            if (generalInfo.asJsObject.fields.nonEmpty) Some(generalInfo.convertTo[GeneralInfo]) else None,
+            if (generalPractitionerInfo.asJsObject.fields.nonEmpty) Some(generalPractitionerInfo.convertTo[GeneralPractitionerInfo]) else None,
+            if (medicalRecords.asJsObject.fields.nonEmpty) Some(medicalRecords.convertTo[MedicalRecordHistory]) else None,
+            if (cardiologyVisitHistory.asJsObject.fields.nonEmpty) Some(cardiologyVisitHistory.convertTo[CardiologyVisitHistory]) else None)
+        }
         case _ => throw DeserializationException("Patient expected")
       }
     }
@@ -95,14 +94,12 @@ object PatientJsonFormat {
         "cardiologyVisitHistory" -> obj.cardiologyVisitHistory.map(_.toJson).getOrElse(JsObject()),
         "role" -> Role.PATIENT.toJson
       )
-      if(obj.mobilePhone.nonEmpty){
+      if (obj.mobilePhone.nonEmpty) {
         jsObj = JsObject(jsObj.fields + ("mobilePhone" -> JsString(obj.mobilePhone.get)))
       }
       jsObj
     }
   }
-
-
 
 
   /**

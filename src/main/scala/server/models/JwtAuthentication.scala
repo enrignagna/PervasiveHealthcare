@@ -25,13 +25,35 @@ object JwtAuthentication {
 
   var tokens: Tokens = Tokens()
 
+  /**
+   * Token.
+   *
+   * @param token , a token.
+   */
   case class Token(token: (String, Int))
 
   object Tokens {
 
+    /**
+     * Collections of tokens.
+     *
+     * @param tokens , tokens in collection.
+     */
     case class Tokens private(tokens: Map[String, Int] = Map.empty) {
+      /**
+       * Add token.
+       *
+       * @param token , token to add.
+       * @return new collection of token.
+       */
       def addNewToken(token: Token): Tokens = Tokens(tokens + token.token)
 
+      /**
+       * Remove token.
+       *
+       * @param tokenId , token to remove.
+       * @return new collection of token.
+       */
       def removeToken(tokenId: String): Tokens = Tokens(tokens.filter(t => t._1 != tokenId))
     }
 
@@ -94,6 +116,5 @@ object JwtAuthentication {
    * @param token , token to authentication.
    * @return if have specific permission.
    */
-  def hasCommonPermissions(token: String): Boolean = tokens.tokens.contains(token) && tokens.tokens(token) == Role.SURGEON.id || tokens.tokens(token) == Role.WARD_NURSE.id || tokens.tokens(token) == Role.INSTRUMENTALIST.id || tokens.tokens(token) == Role.ANESTHETIST.id || tokens.tokens(token) == Role.RESCUER.id || tokens.tokens(token) == Role.PATIENT.id
-
+  def hasCommonPermissions(token: String): Boolean = tokens.tokens.contains(token) && Role.maxId >= tokens.tokens(token)
 }

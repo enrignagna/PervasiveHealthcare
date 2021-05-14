@@ -37,13 +37,13 @@ import scala.concurrent.duration.DurationInt
 
 class CommonRoutes(commonController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
 
-  def getSurgeons(): Future[Set[Surgeon]] =
-    commonController.ask(GetSurgeons(_))
+  def getSurgeons: Future[Set[Surgeon]] =
+    commonController.ask(GetSurgeons)
 
   def getSurgeon(id: String): Future[Option[Surgeon]] =
     commonController.ask(GetSurgeon(id, _))
@@ -70,15 +70,6 @@ class CommonRoutes(commonController: ActorRef[Protocol.CQRSAction])(implicit val
   val commonRoutes: Route =
     pathPrefix("api") {
       pathPrefix("surgeons") {
-        //pathEnd {
-        //          get {
-        //            headerValueByName("x-access-token") { value =>
-        //              authorize(hasAdminPermissions(value)) {
-        //                onSuccess(getSurgeons()) { response => complete(StatusCodes.Accepted, response) }
-        //              }
-        //            }
-        //          } ~
-        // } ~
         path(Segment) { id =>
           get {
             headerValueByName("x-access-token") { value =>
@@ -91,9 +82,6 @@ class CommonRoutes(commonController: ActorRef[Protocol.CQRSAction])(implicit val
         }
       } ~
         pathPrefix("anesthetists") {
-          //          pathEnd {
-          //
-          //          } ~
           path(Segment) {
             id =>
               get {
@@ -107,9 +95,6 @@ class CommonRoutes(commonController: ActorRef[Protocol.CQRSAction])(implicit val
           }
         } ~
         pathPrefix("generalpractitioners") {
-          //          pathEnd {
-          //
-          //          } ~
           path(Segment) {
             id =>
               get {
@@ -123,9 +108,6 @@ class CommonRoutes(commonController: ActorRef[Protocol.CQRSAction])(implicit val
           }
         } ~
         pathPrefix("instrumentalists") {
-          //          pathEnd {
-          //
-          //          } ~
           path(Segment) {
             id =>
               get {
@@ -139,9 +121,6 @@ class CommonRoutes(commonController: ActorRef[Protocol.CQRSAction])(implicit val
           }
         } ~
         pathPrefix("rescuers") {
-          //          pathEnd {
-          //
-          //          } ~
           path(Segment) {
             id =>
               get {
@@ -155,9 +134,6 @@ class CommonRoutes(commonController: ActorRef[Protocol.CQRSAction])(implicit val
           }
         } ~
         pathPrefix("wardnurses") {
-          //          pathEnd {
-          //
-          //          } ~
           path(Segment) {
             id =>
               get {
@@ -171,9 +147,6 @@ class CommonRoutes(commonController: ActorRef[Protocol.CQRSAction])(implicit val
           }
         } ~
         pathPrefix("patients") {
-          //          pathEnd {
-          //
-          //          } ~
           path(Segment) {
             id =>
               get {

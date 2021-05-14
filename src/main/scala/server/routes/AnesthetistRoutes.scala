@@ -38,11 +38,11 @@ import scala.concurrent.duration.DurationInt
  * This class contains the implementation of all the routes that the anesthetist can call up to insert or update elements in the db.
  *
  * @param anesthetistController anesthetist controller
- * @param system                    represent the actor system
+ * @param system                represent the actor system
  */
 class AnesthetistRoutes(anesthetistController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
@@ -78,6 +78,7 @@ class AnesthetistRoutes(anesthetistController: ActorRef[Protocol.CQRSAction])(im
                     response match {
                       case _: Accepted => complete(StatusCodes.Created, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
@@ -96,6 +97,7 @@ class AnesthetistRoutes(anesthetistController: ActorRef[Protocol.CQRSAction])(im
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
                       }
@@ -117,6 +119,7 @@ class AnesthetistRoutes(anesthetistController: ActorRef[Protocol.CQRSAction])(im
                           response match {
                             case _: Accepted => complete(StatusCodes.Created, response)
                             case _: Rejected => complete(StatusCodes.BadRequest, response)
+                            case _ => complete(StatusCodes.BadRequest, response)
                           }
                         }
                       }

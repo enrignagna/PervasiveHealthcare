@@ -45,7 +45,7 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   /**
    * Method for login
@@ -68,12 +68,11 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
 
   }
 
-  val authenticationRoutes: Route =
+  val authenticationRoutes: Route = {
     pathPrefix("api") {
       pathPrefix("login") {
         pathEnd {
           post {
-
             entity(as[User]) { user =>
               val hashedPassword = Utils.getHashedPassword(user.password) //password hashing
               val newUser = User(user.id, hashedPassword)
@@ -81,7 +80,7 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
                 response match {
                   case _: LoginAccepted => complete(StatusCodes.OK, response)
                   case _: Rejected => complete(StatusCodes.BadRequest, response)
-                  case _ => throw new IllegalArgumentException()
+                  case _ => complete(StatusCodes.BadRequest, response)
                 }
               }
             }
@@ -97,6 +96,7 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
                     response match {
                       case _: Accepted => complete(StatusCodes.OK, response)
                       case _: Rejected => complete(StatusCodes.BadRequest, response)
+                      case _ => complete(StatusCodes.BadRequest, response)
                     }
                   }
                 }
@@ -105,4 +105,6 @@ class AuthenticationRoutes(authenticationController: ActorRef[Protocol.CQRSActio
           }
         }
     }
+  }
+
 }

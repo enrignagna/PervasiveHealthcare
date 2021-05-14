@@ -45,7 +45,7 @@ object AnesthetistController {
     Behaviors.receiveMessage {
       case InsertMedicalRecord(medicalRecord, replyTo) =>
         val res = Repository.anesthetistRepository.insertMedicalRecord(medicalRecord)
-        if (res == "Medical record created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+        if (res == "Medical record created.") {
           ReadModel.insertMedicalRecord(medicalRecord.patientID, medicalRecord)
           replyTo ! Accepted(res)
         } else {
@@ -56,7 +56,7 @@ object AnesthetistController {
         val res = Repository.anesthetistRepository.updateMedicalRecord(medicalRecordID, medicalRecord)
         if (res == "Medical record updated.") {
           ReadModel.updateMedicalRecord(medicalRecord.patientID, medicalRecord)
-          replyTo ! Accepted(res) // actions that are to be performed after successful.
+          replyTo ! Accepted(res)
         } else {
           replyTo ! Rejected(res)
         }

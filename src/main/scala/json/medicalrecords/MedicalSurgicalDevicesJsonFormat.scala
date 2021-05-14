@@ -17,11 +17,11 @@
  */
 package json.medicalrecords
 
-import domainmodel.medicalrecords.MedicalSurgicalDevices.MedicalSurgicalDevices
 import domainmodel.medicalrecords.MedicalSurgicalDevice
+import domainmodel.medicalrecords.MedicalSurgicalDevices.MedicalSurgicalDevices
+import json.RequestJsonFormats.immSetFormat
 import spray.json.DefaultJsonProtocol.{StringJsonFormat, jsonFormat1, jsonFormat2}
 import spray.json.RootJsonFormat
-import json.RequestJsonFormats.immSetFormat
 
 /**
  * Json format for medical surgical devices object.

@@ -69,7 +69,7 @@ object CardiologyDiseasesPredictor {
 
   import spark.implicits._
 
-  private var model: PipelineModel = null
+  private var model: PipelineModel = _
 
   def train(): Unit = {
     var data = spark.read.format("csv").option("inferSchema", "true").option("header", value = true).load("src/main/resources/heart.csv")

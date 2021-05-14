@@ -18,9 +18,13 @@ package cqrs.readmodel
 
 import cqrs.readmodel.eventsourcing._
 import cqrs.writemodel.Role.Role
+import domainmodel.ChestPainType.ChestPainType
 import domainmodel.Gender.Gender
 import domainmodel.KinshipDegree.KinshipDegree
 import domainmodel.Patient.Patient
+import domainmodel.RestingElectrocardiographic.RestingElectrocardiographic
+import domainmodel.SlopeST.SlopeST
+import domainmodel.Thal.Thal
 import domainmodel.generalinfo.AllergyClass.AllergyClass
 import domainmodel.generalinfo.BloodType.BloodType
 import domainmodel.generalinfo.GeneralInfo
@@ -48,6 +52,10 @@ object ReadModel {
     RhCollection.initialize()
     SpecializationCollection.initialize()
     KinshipDegreeCollection.initialize()
+    ChestPainTypeCollection.initialize()
+    RestingElectrocardiographicCollection.initialize()
+    SlopeSTCollection.initialize()
+    ThalCollection.initialize()
   }
 
 
@@ -112,6 +120,42 @@ object ReadModel {
    */
   def getKinshipDegree: Set[KinshipDegree] = {
     KinshipDegreeCollection.get()
+  }
+
+  /**
+   * Get all chest pain types in system.
+   *
+   * @return all chest pain types.
+   */
+  def getChestPainType: Set[ChestPainType] = {
+    ChestPainTypeCollection.get()
+  }
+
+  /**
+   * Get all resting electrocardiographic values in system.
+   *
+   * @return all resting electrocardiographic values.
+   */
+  def getRestingECG: Set[RestingElectrocardiographic] = {
+    RestingElectrocardiographicCollection.get()
+  }
+
+  /**
+   * Get all slope ST values in system.
+   *
+   * @return all slope ST values.
+   */
+  def getSlopeST: Set[SlopeST] = {
+    SlopeSTCollection.get()
+  }
+
+  /**
+   * Get all defect types in system.
+   *
+   * @return all defect types.
+   */
+  def getThal: Set[Thal] = {
+    ThalCollection.get()
   }
 
   /**
@@ -354,11 +398,19 @@ object ReadModel {
   /**
    * Update cardiology prediction in read model with event sourcing.
    *
-   * @param doctorID             , id of the doctor.
-   * @param cardiologyPrediction , cardiology prediction to add.
+   * @param doctorID , id of the doctor.
    */
-  def updateCardiologyPrediction(doctorID: DoctorID, cardiologyPrediction: CardiologyPrediction): Unit = {
-    EventStore.addEvent(UpdateCardiologyPredictionsEvent(doctorID, cardiologyPrediction))
+  def updateCardiologyPrediction(doctorID: DoctorID): Unit = {
+    val predictions = RMUtility.getNewPredictions(doctorID)
+    predictions.filter(!_.seen).foreach(x =>
+      EventStore.addEvent(
+        UpdateCardiologyPredictionsEvent(
+          doctorID,
+          CardiologyPrediction(x.patientID, x.doctorID, x.cardiologyVisit, seen = true)
+        )
+      )
+    )
+
   }
 
 

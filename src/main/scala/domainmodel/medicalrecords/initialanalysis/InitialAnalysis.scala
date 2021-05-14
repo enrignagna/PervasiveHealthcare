@@ -21,12 +21,12 @@ import domainmodel.Anamnesis
 /**
  * Initial Analysis.
  *
- * @param anamensis           , anamensis.
+ * @param anamnesis           , anamnesis.
  * @param physicalExamination , physical examination.
  * @param stateEvaluation     , state evaluation.
  */
 case class InitialAnalysis(
-                            anamensis: Option[Anamnesis],
+                            anamnesis: Option[Anamnesis] = None,
                             physicalExamination: PhysicalExamination,
                             stateEvaluation: StateEvaluation
                           )

@@ -26,12 +26,13 @@ import akka.http.scaladsl.server.Route
 import akka.util.Timeout
 import domainmodel.medicalrecords.{MedicalRecord, MedicalRecordsID}
 import json.RequestJsonFormats.acceptedJsonFormat
+import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
 import server.models.JwtAuthentication.hasRescuerPermissions
 import server.models.Protocol
 import server.models.Protocol._
+
 import scala.concurrent.Future
 import scala.concurrent.duration.DurationInt
-import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
 
 /**
  * This class contains the implementation of all the routes that the rescuer can call up to insert or update elements in the db.
@@ -41,7 +42,7 @@ import json.medicalrecords.MedicalRecordJsonFormat.medicalRecordJsonFormat
  */
 class RescuerRoutes(rescuerController: ActorRef[Protocol.CQRSAction])(implicit val system: ActorSystem[_]) {
 
-  private implicit val timeout = Timeout(500.milliseconds)
+  private implicit val timeout: Timeout = Timeout(500.milliseconds)
 
   import akka.http.scaladsl.marshallers.sprayjson.SprayJsonSupport._
 
@@ -69,6 +70,7 @@ class RescuerRoutes(rescuerController: ActorRef[Protocol.CQRSAction])(implicit v
                         response match {
                           case _: Accepted => complete(StatusCodes.Created, response)
                           case _: Rejected => complete(StatusCodes.BadRequest, response)
+                          case _ => complete(StatusCodes.BadRequest, response)
                         }
                       }
                     }

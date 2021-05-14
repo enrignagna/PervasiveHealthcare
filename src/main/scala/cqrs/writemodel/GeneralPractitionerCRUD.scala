@@ -125,9 +125,7 @@ class GeneralPractitionerCRUD {
       equal("seen", false))).toFuture(), Duration(1, TimeUnit.SECONDS))
     val res = Await.result(cardiologyPredictionsCollection.updateMany(and(equal("doctorID", doctorID),
       equal("seen", false)), set("seen", true)).toFuture(), Duration(1, TimeUnit.SECONDS))
-    if (res.getModifiedCount == count) {
-      return "Previsions updated."
-    }
+    if (res.getModifiedCount == count) return "Previsions updated."
     "Error in the previsions update."
   }
 }

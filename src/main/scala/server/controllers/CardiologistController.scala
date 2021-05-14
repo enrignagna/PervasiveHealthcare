@@ -20,7 +20,7 @@ package server.controllers
 
 import akka.actor.typed.Behavior
 import akka.actor.typed.scaladsl.Behaviors
-import cqrs.readmodel.ReadModel
+import cqrs.readmodel.{RMUtility, ReadModel}
 import cqrs.writemodel.Repository
 import digitaltwins.{CardiologyVisitInserted, PatientDigitalTwin}
 import server.models.Protocol._
@@ -46,7 +46,7 @@ object CardiologistController {
     Behaviors.receiveMessage {
       case InsertCardiologyVisit(cardiologyVisit, replyTo) =>
         val res: String = Repository.cardiologyRepository.insertCardiologyVisit(cardiologyVisit)
-        if (res == "Cardiology report created.") { //if there is an error the events are not stored, otherwise the events will be stored.
+        if (res == "Cardiology report created.") {
           ReadModel.insertCardiologyVisit(cardiologyVisit.patientID, cardiologyVisit)
           PatientDigitalTwin.patientsDigitalTwins.filter(_._1 == cardiologyVisit.patientID).head._2 ! CardiologyVisitInserted
 
@@ -54,6 +54,10 @@ object CardiologistController {
         } else {
           replyTo ! Rejected(res)
         }
+        Behaviors.same
+      case GetCardiologyVisits(doctorID, replyTo) =>
+        val res = RMUtility.getAllCardiologyVisitForDoctor(doctorID)
+        replyTo ! res
         Behaviors.same
     }
 }

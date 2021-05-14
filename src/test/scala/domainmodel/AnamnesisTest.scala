@@ -17,8 +17,8 @@
 package domainmodel
 
 
-import domainmodel.Familiars.Familiars
-import domainmodel.Remotes.Remotes
+import domainmodel.Familiars._
+import domainmodel.Remotes._
 import org.junit.runner.RunWith
 import org.scalatest.freespec._
 import org.scalatestplus.junit.JUnitRunner

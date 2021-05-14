@@ -28,23 +28,25 @@ import akka.http.scaladsl.server.Route
  * @param surgeonRoutes             routes for surgeon,
  * @param wardNurseRoutes           routes for ward nurse,
  * @param rescuerRoutes             routes for rescuer,
- * @param generalPractitionerRoutes routes for general pactitioner,
+ * @param generalPractitionerRoutes routes for general practitioner,
  * @param anesthetistRoutes         routes for anesthetist,
- * @param instrumentalistRoutes     routes for instruemntalist,
+ * @param instrumentalistRoutes     routes for instrumentalist,
  * @param cardiologistRoutes        routes for cardiologist,
  * @param authenticationRoutes      routes for authentication,
+ * @param enumerationRoutes         routes for enumeration,
  * @param commonRoutes              common routes.
  */
 class Routes(administratorRoutes: AdministratorRoutes, surgeonRoutes: SurgeonRoutes, wardNurseRoutes: WardNurseRoutes,
              rescuerRoutes: RescuerRoutes, generalPractitionerRoutes: GeneralPractitionerRoutes,
              anesthetistRoutes: AnesthetistRoutes, instrumentalistRoutes: InstrumentalistRoutes,
-             cardiologistRoutes: CardiologistRoutes, authenticationRoutes: AuthenticationRoutes, commonRoutes: CommonRoutes) {
+             cardiologistRoutes: CardiologistRoutes, authenticationRoutes: AuthenticationRoutes,
+             enumerationRoutes: EnumerationRoutes, commonRoutes: CommonRoutes) {
 
   val routes: Route = administratorRoutes.administratorRoutes ~ surgeonRoutes.surgeonRoutes ~ wardNurseRoutes.wardnurseRoutes ~
     rescuerRoutes.rescuerRoutes ~ generalPractitionerRoutes.generalPractitionerRoutes ~
     anesthetistRoutes.anesthetistRoutes ~ instrumentalistRoutes.instrumentalistRoutes ~
     cardiologistRoutes.cardiologistRoutes ~ authenticationRoutes.authenticationRoutes ~
-    commonRoutes.commonRoutes
+    commonRoutes.commonRoutes ~ enumerationRoutes.enumerationRoutes
 
 
 }

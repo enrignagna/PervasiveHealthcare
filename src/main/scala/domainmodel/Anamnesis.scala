@@ -16,10 +16,10 @@
 
 package domainmodel
 
-import domainmodel.Familiars.Familiars
+import domainmodel.Familiars._
 import domainmodel.KinshipDegree.KinshipDegree
-import domainmodel.PreviousPathologies.PreviousPathologies
-import domainmodel.Remotes.Remotes
+import domainmodel.PreviousPathologies._
+import domainmodel.Remotes._
 
 import java.time.LocalDate
 

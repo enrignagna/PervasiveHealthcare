@@ -19,11 +19,11 @@
 package json.medicalrecords
 
 import domainmodel.medicalrecords.{AnesthesiologyRecord, AnestheticCard, OperationEvaluation, PostOperationEvaluation}
-import spray.json.DefaultJsonProtocol.jsonFormat2
-import spray.json.RootJsonFormat
+import json.LocalDateTimeJsonFormat.DateTimeFormat
 import json.professionalfigure.ProfessionalFigureJsonFormat.AnesthetistJsonFormat
 import json.utility.InfoDescriptionJsonFormat.descriptionJsonFormat
-import json.LocalDateTimeJsonFormat.DateTimeFormat
+import spray.json.DefaultJsonProtocol.jsonFormat2
+import spray.json.RootJsonFormat
 
 /**
  * Json format for anesthesiology record object.

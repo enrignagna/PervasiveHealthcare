@@ -18,7 +18,7 @@ package json.generalpractitionerinfo
 
 import domainmodel.generalpractitionerinfo.MedicalCertificateHistory.MedicalCertificateHistory
 import domainmodel.generalpractitionerinfo.{MedicalCertificate, MedicalCertificateID}
-import json.RequestJsonFormats.{ByteJsonFormat, immSetFormat, jsonFormat2,StringJsonFormat}
+import json.RequestJsonFormats.{ByteJsonFormat, StringJsonFormat, immSetFormat, jsonFormat2}
 import spray.json.DefaultJsonProtocol.jsonFormat1
 import spray.json.RootJsonFormat
 

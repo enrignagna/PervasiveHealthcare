@@ -24,7 +24,7 @@ Leggi questo in un'altra lingua: [English](README.md).
 - [Licenza]
 
 # Come iniziare
-Il sistema mostra una architettura client-server, quindi il deployment e la messa in funzione prevede l'avvio del server in un primo momento e poi ogni paziente o medico potrà connettersi al sistema tramite il proprio client. 
+Il sistema mostra una architettura client-server, quindi il deployment e la messa in funzione prevede l'avvio del server in un primo momento e poi ogni paziente o medico potrà connettersi al sistema tramite il proprio client.
 
 ## Dipendenze
 Il progetto necessita dei seguenti requisiti:
@@ -47,18 +47,18 @@ non è possibile utilizzare questo file se non in conformità con la licenza.
 È possibile ottenere una copia della licenza all'indirizzo
 http://www.apache.org/licenses/LICENSE-2.0
 
-Una licenza permissiva le cui condizioni principali richiedono la conservazione del copyright e degli avvisi di licenza. 
+Una licenza permissiva le cui condizioni principali richiedono la conservazione del copyright e degli avvisi di licenza.
 I contributori forniscono una concessione esplicita di diritti di brevetto.
 Opere concesse in licenza, modifiche e opere più grandi possono essere distribuite in termini diversi e senza codice sorgente.
 
- Autorizzazioni:
- - Uso commerciale 
- - Modifica Distribuzione
- - Uso del brevetto 
- - Uso privato
+Autorizzazioni:
+- Uso commerciale
+- Modifica Distribuzione
+- Uso del brevetto
+- Uso privato
 
- Limitazioni:
- - Garanzia di responsabilità sull'uso del marchio
+Limitazioni:
+- Garanzia di responsabilità sull'uso del marchio
 
 ## Autori e Copyright
 Autori:

@@ -18,7 +18,7 @@
 
 package domainmodel.generalinfo
 
-import domainmodel.generalinfo.PrescriptionHistory.PrescriptionHistory
+import domainmodel.generalinfo.PrescriptionHistory._
 import org.junit.runner.RunWith
 import org.scalatest.freespec.AnyFreeSpec
 import org.scalatestplus.junit.JUnitRunner
