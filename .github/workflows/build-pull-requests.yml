@@ -63,10 +63,10 @@ jobs:
           fi
       - name: Build
         shell: bash
-        run: .github/build-steps/build.sh
+        run: .github/scripts/build.sh
       - name: Check
         shell: bash
-        run: .github/build-steps/check.sh
+        run: .github/scripts/check.sh
         #Upload coverage report to Codecov by action "codecov/codecov-action@v1"
       - name: CodeCov
         uses: codecov/codecov-action@v1
