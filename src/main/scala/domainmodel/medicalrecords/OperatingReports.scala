@@ -16,7 +16,7 @@
 
 package domainmodel.medicalrecords
 
-import domainmodel.medicalrecords.Medical.Medical
+import domainmodel.medicalrecords.Medical._
 import domainmodel.professionalfigure.{Anesthetist, Instrumentalist, Surgeon}
 import domainmodel.utility.Note
 
