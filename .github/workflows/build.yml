@@ -5,7 +5,7 @@ on:
       - main
       - develop
   schedule:
-    - cron: '0 2 * * MON' #At 03:00 on Sunday.
+    - cron: '0 2 * * MON' #At 02:00 on Monday.
 
 jobs:
   Build:
@@ -25,48 +25,10 @@ jobs:
         with:
           fetch-depth: 0
           submodules: recursive
-      - name: Fetch tags #Fetch all tags from remote repository
-        shell: bash
-        run: git fetch --tags -f
-      - name: Populate TAG and BRANCH environment variables
-        shell: bash
-        #Setup up TAG and BRANCH TAG environment variable
-        run: |
-          TAG=$(git describe --tags --exact-match HEAD || echo '')
-          echo "Current tag is: '$TAG'"
-          echo "TAG=$TAG" >> $GITHUB_ENV
-          BRANCH=$([ -z "$TAG" ] && echo ${GITHUB_REF#refs/heads/} || echo $TAG)
-          echo "Current branch is: '$BRANCH'"
-          echo "BRANCH=$BRANCH" >> $GITHUB_ENV
       # Install the JDK
       - uses: joschi/setup-jdk@v2.3.0
         with:
           java-version: ${{ matrix.jvm_version }}
-      # Install additional packages, if are present some specific configurations.
-      - name: Configure Linux
-        shell: bash
-        if: ${{ contains(matrix.os, 'ubuntu') }}
-        run: |
-          if [ -x .github/scripts/configure_linux ]; then
-            .github/scripts/configure_linux
-          fi
-      - name: Configure MacOS X
-        shell: bash
-        if: ${{contains(matrix.os, 'macos')}}
-        run: |
-          if [ -f .github/scripts/configure_macos ]; then
-            .github/scripts/configure_macos
-          fi
-      - name: Configure the Windows Pagefile
-        if: ${{ contains(matrix.os, 'windows') }}
-        uses: al-cheb/configure-pagefile-action@v1.2
-      - name: Configure Windows
-        shell: bash
-        if: ${{ contains(matrix.os, 'windows') }}
-        run: |
-          if [ -f .github/scripts/configure_windows ]; then
-            .github/scripts/configure_windows
-          fi
       - name: Build
         shell: bash
         run: .github/scripts/build.sh
